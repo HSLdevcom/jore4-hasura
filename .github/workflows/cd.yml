@@ -16,8 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Extract branch name to env variable # https://github.community/t/run-step-on-if-branch-tag-is/16965/5
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
+      - name: Extract branch name to env variable
+        run: | # In pull requests
+          BRANCH_NAME="${GITHUB_HEAD_REF}"
+          [ ${BRANCH_NAME} == "" ] && {
+            # In branch pushes
+            BRANCH_NAME="$(echo "${GITHUB_REF}" | cut -d '/' -f 3-)"
+          }
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> "${GITHUB_ENV}"
 
       - name: Set environment variables
         run: |
