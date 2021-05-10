@@ -2,7 +2,8 @@
 version: "3.8"
 services:
   postgis:
-    image: "postgis/postgis:12-3.1-alpine"
+    # Try to match postgis used in Azure to avoid compatability issues. See which version azure currently supports from documentation: https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions
+    image: "postgis/postgis:12-3.0-alpine"
     restart: "unless-stopped"
     networks:
       jore:
@@ -40,19 +41,6 @@ services:
       start_period: 5s
       timeout: 10s
       retries: 3
-
-  proxy:
-    depends_on:
-      - hasura
-    image: nginx:alpine
-    volumes:
-      - $PWD/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      jore:
-        aliases:
-          - proxy
-    ports:
-      - 1234:80
 
 networks:
   jore:
