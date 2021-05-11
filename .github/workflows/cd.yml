@@ -27,7 +27,8 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "IMAGE_NAME=hsldevcom/jore4-hasura" >> $GITHUB_ENV
+          # Docker Hub uses lowercase so use a bashism to convert.
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
           echo "COMMIT_ID=$BRANCH_NAME-$GITHUB_SHA" >> $GITHUB_ENV
 
       - name: Pull previous image to support caching
