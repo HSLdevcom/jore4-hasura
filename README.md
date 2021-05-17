@@ -4,6 +4,12 @@ Minimal hasura & docker setup for jore4 development.
 
 ## Quickstart
 
+Generate local secrets on first start:
+```sh
+./setup-local-env.sh
+```
+
+Start docker:
 ```sh
 docker-compose up --build
 ```
@@ -143,4 +149,16 @@ One way to resolve the Hasura metadata conflicts:
    Once you know what should be changed, click Delete all and OK.
 1. Recreate the missing parts of the metadata as explained above.
 
+## Deployment
 
+Passing secrets as env variables to docker image is insecure. Thus secrets are passed to docker image via "secret files". Those are just regular files which have value of corresponding env variable as their content.
+
+**All secret files should be stored under `/secrets` directory.**
+
+Currently following files are needed in production:
+| Secret file |
+| -------------------------------- |
+| db-username |
+| db-password |
+| db-hostname |
+| db-name |
