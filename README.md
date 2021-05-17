@@ -143,4 +143,14 @@ One way to resolve the Hasura metadata conflicts:
    Once you know what should be changed, click Delete all and OK.
 1. Recreate the missing parts of the metadata as explained above.
 
+## Deployment
 
+Passing secrets as env variables to docker image is insecure. Thus secrets are passed to docker image via "secret files". Those are just regular files which are named 1:1 as env variables, and they have value for corresponding env variable as their content.
+
+**All secret files should be stored under `/secrets` directory.**
+
+Currently following files are needed in production:
+| Secret file |
+| -------------------------------- |
+| HASURA_GRAPHQL_DATABASE_URL |
+| HASURA_GRAPHQL_ADMIN_SECRET |
