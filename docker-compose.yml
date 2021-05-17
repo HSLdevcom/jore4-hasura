@@ -31,10 +31,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_GRAPHQL_ADMIN_SECRET:-hasura-admin-secret-key}"
-      HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgis:5432/postgres"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+    secrets:
+      - hsl-jore4-hasura-username
+      - hsl-jore4-hasura-password
+      - hsl-jore4-public-db-hostname
+      - hsl-jore4-public-db-database
     healthcheck:
       test: ["CMD", "wget", "-O", "-", "-q", "http://localhost:8080/healthz"]
       interval: 30s
@@ -45,3 +48,13 @@ services:
 networks:
   jore:
     name: jore4
+
+secrets:
+  hsl-jore4-hasura-username:
+    file: ./secrets/hsl-jore4-hasura-username
+  hsl-jore4-hasura-password:
+    file: ./secrets/hsl-jore4-hasura-password
+  hsl-jore4-public-db-hostname:
+    file: ./secrets/hsl-jore4-public-db-hostname
+  hsl-jore4-public-db-database:
+    file: ./secrets/hsl-jore4-public-db-database
