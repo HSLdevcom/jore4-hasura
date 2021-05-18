@@ -2,13 +2,13 @@
 version: "3.8"
 services:
   postgis:
-    # Try to match postgis used in Azure to avoid compatability issues. See which version azure currently supports from documentation: https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions
+    # Try to match postgis used in Azure to avoid compatability
+    # issues. See which version azure currently supports from documentation:
+    # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions
     image: "postgis/postgis:12-3.0-alpine"
     restart: "unless-stopped"
     networks:
-      jore:
-        aliases:
-          - postgis
+      - jore4
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
     healthcheck:
@@ -22,9 +22,7 @@ services:
     build: .
     restart: "unless-stopped"
     networks:
-      jore:
-        aliases:
-          - hasura
+      - jore4
     depends_on:
       postgis:
         condition: "service_healthy"
@@ -43,5 +41,4 @@ services:
       retries: 3
 
 networks:
-  jore:
-    name: jore4
+  jore4:
