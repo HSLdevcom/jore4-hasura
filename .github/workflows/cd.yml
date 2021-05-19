@@ -29,7 +29,8 @@ jobs:
         run: |
           # Docker Hub uses lowercase so use a bashism to convert.
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-          echo "COMMIT_ID=$BRANCH_NAME-$GITHUB_SHA" >> $GITHUB_ENV
+          # Docker tags can use only some special characters.
+          echo "COMMIT_ID=$(echo "${BRANCH_NAME}" | tr -C '0-9a-zA-Z._' '-')-${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Pull previous image to support caching
         run: docker pull $IMAGE_NAME:latest || >&2 echo "Previous image not found"
