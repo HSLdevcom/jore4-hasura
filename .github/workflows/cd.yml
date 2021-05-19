@@ -17,7 +17,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Extract branch name to env variable
-        run: | # In pull requests
+        run: |
+          # In pull requests
           BRANCH_NAME="${GITHUB_HEAD_REF}"
           [ ${BRANCH_NAME} = "" ] && {
             # In branch pushes
