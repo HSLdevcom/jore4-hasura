@@ -148,7 +148,7 @@ One way to resolve the Hasura metadata conflicts:
 
 Passing secrets as env variables to docker image is insecure. Thus secrets are passed to docker image via "secret files". Those are just regular files which have value of corresponding env variable as their content.
 
-**All secret files should be stored under `/secrets` directory.**
+**All secret files should be stored under the `./secrets` directory.**
 
 Currently following files are needed in production:
 | Secret file |
