@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -euo pipefail
+set -eu
 
 SECRET_STORE_BASE_PATH="${SECRET_STORE_BASE_PATH:-/run/secrets}"
 HASURA_ADMIN_SECRET="$(cat ${SECRET_STORE_BASE_PATH}/hasura-admin-secret)"
