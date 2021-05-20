@@ -4,7 +4,6 @@ Minimal hasura & docker setup for jore4 development.
 
 ## Quickstart
 
-
 ```sh
 docker-compose up --build
 ```
