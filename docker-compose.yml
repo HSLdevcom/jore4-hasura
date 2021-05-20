@@ -9,8 +9,7 @@ services:
     restart: "unless-stopped"
     networks:
       - jore4
-    environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+    env_file: './.env'
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-U", "${POSTGRES_USER:-postgres}"]
       interval: 30s
