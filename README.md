@@ -4,55 +4,28 @@ Minimal hasura & docker setup for jore4 development.
 
 ## Quickstart
 
-
 ```sh
+./generate-secrets-for-local-development.sh # Press y<enter>
 docker-compose up --build
 ```
-
-## Use of the Docker image
-
-The Docker image expects the following values for the following environment variables or for the corresponding CLI options.
-The expected values are **set by default**.
-
-| Environment variable             | Default value      |
-| -------------------------------- | ------------------ |
-| HASURA_GRAPHQL_UNAUTHORIZED_ROLE | anonymous          |
-| HASURA_GRAPHQL_MIGRATIONS_DIR    | /hasura-migrations |
-| HASURA_GRAPHQL_METADATA_DIR      | /hasura-metadata   |
-
-**Please don't change them. Either don't define them at all or set them to the same values as documented above.**
-
-We are using [hasura/graphql-engine](https://registry.hub.docker.com/r/hasura/graphql-engine) as a base image.
-Please see the link for detailed documentation.
 
 ## Development
 
 To play with the GraphQL API or to modify the backend, it is easiest to use the Hasura admin UI ("console").
 
-To play around, in 2 minutes:
-
-1. Set `HASURA_GRAPHQL_ENABLE_CONSOLE` to `"true"` in [`docker-compose.yml`](docker-compose.yml).
-1. Open http://localhost:8080 to access the console.
-   The default admin secret is also in `docker-compose.yml`.
-   The initial view opens up with a beefed-up GraphiQL.
-
-To contribute, in 10 minutes:
-
-1. Leave `HASURA_GRAPHQL_ENABLE_CONSOLE` as `"false"` in `docker-compose.yml`.
+1. Make sure you have generated the required secrets with `./generate-secrets-for-local-development.sh`.
 1. Install [Hasura CLI](https://hasura.io/docs/1.0/graphql/core/hasura-cli/install-hasura-cli.html).
-1. Use the provided example environment file as a template:
-   ```sh
-   cp .env.example .env
-   ```
-1. Replace your own secrets into `.env`.
-1. Groan... to have `hasura/config.yml` in `hasura/` and to still use `.env` with Hasura CLI: `ln -s "$(pwd)/.env" hasura/.env`
-1. Start PostGIS and the Hasura server with `docker-compose up`.
+1. Start PostGIS and the Hasura server with `docker-compose up --build`.
    Hasura will apply the existing SQL migrations and server metadata.
-
-To adjust hasura manually:
-
-1. `cd hasura/`
+   Wait until the service `hasura` is healthy.
+1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura console` to start the console.
+1. Open <http://localhost:8080> in the browser to access the console.
+   The initial view opens up with a beefed-up GraphiQL for testing queries.
+
+Other possibly relevant commands for Hasura CLI:
+
+1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura migrate ...` to read or write DB migration files.
 1. Run `hasura metadata ...` to read or write Hasura configuration.
 
@@ -121,7 +94,7 @@ When you are done clicking, commit the metadata changes into git.
 #### Advice for permissions
 
 The role name for public, unauthenticated use is given to the Hasura server with the environment variable `HASURA_GRAPHQL_UNAUTHORIZED_ROLE`.
-Currently that name is set to `anonymous` in `docker-compose.yml` and in the committed metadata.
+That name is set to `anonymous` within the Docker image.
 Keep using the same name unless you have a reason for renaming.
 The name is not visible in the GraphQL API.
 
@@ -146,11 +119,12 @@ One way to resolve the Hasura metadata conflicts:
 
 ## Deployment
 
-Passing secrets as env variables to docker image is insecure. Thus secrets are passed to docker image via "secret files". Those are just regular files which have value of corresponding env variable as their content.
+Secrets should be passed as files to Docker images in production environments.
+[As long as Hasura cannot read secrets from files](https://github.com/hasura/graphql-engine/issues/3989), we need to provide our own entrypoint for the Docker image.
+Our entrypoint reads the secrets and delivers them to Hasura.
 
-**All secret files should be stored under `/secrets` directory.**
-
-Currently following files are needed in production:
+**All secret files should be stored under the `./secrets` directory.**
+Our Docker image expects the following files under `./secrets` to contain the secrets:
 | Secret file |
 | -------------------------------- |
 | hasura-admin-secret |
@@ -158,3 +132,19 @@ Currently following files are needed in production:
 | db-password |
 | db-hostname |
 | db-name |
+
+### Use of the Docker image
+
+The Docker image expects the following values for the following environment variables or for the corresponding CLI options.
+The expected values are **set by default**.
+
+| Environment variable             | Default value      |
+| -------------------------------- | ------------------ |
+| HASURA_GRAPHQL_UNAUTHORIZED_ROLE | anonymous          |
+| HASURA_GRAPHQL_MIGRATIONS_DIR    | /hasura-migrations |
+| HASURA_GRAPHQL_METADATA_DIR      | /hasura-metadata   |
+
+**Please don't change them. Either don't define them at all or set them to the same values as documented above.**
+
+We are using [hasura/graphql-engine](https://registry.hub.docker.com/r/hasura/graphql-engine) as a base image.
+Please see the link for detailed documentation.
