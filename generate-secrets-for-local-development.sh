@@ -4,10 +4,15 @@ set -Eeuo pipefail
 
 SECRETS_DIR='./secrets'
 ENV_PATH='./.env'
+HASURA_ENV_PATH='./hasura/.env'
 
 prompt () {
   while true; do
-    read -r -p "Do you wish to overwrite your secrets in ${SECRETS_DIR} and ${ENV_PATH}? [y/n] " answer
+    echo "Going to overwrite secrets in:"
+    echo "- ${SECRETS_DIR}"
+    echo "- ${ENV_PATH}"
+    echo "- ${HASURA_ENV_PATH}"
+    read -r -p "Do you wish to proceed? [y/n] " answer
     case "${answer}" in
       [Yy]* ) echo 'Creating secrets' && return 0;;
       [Nn]* ) echo 'Doing nothing and exiting' && exit 0;;
@@ -18,7 +23,7 @@ prompt () {
 
 generate_password () {
   # SIGPIPE ensues from writing into the pipe after the reading stops so use
-  # echo for exit status.
+  # echo for pipefail.
   echo "$(</dev/urandom tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 }
 
@@ -42,3 +47,6 @@ echo "${DB_NAME}" > "${SECRETS_DIR}/db-name"
 : > "${ENV_PATH}"
 echo "POSTGRES_USER=${DB_USERNAME}" >> "${ENV_PATH}"
 echo "POSTGRES_PASSWORD=${DB_PASSWORD}" >> "${ENV_PATH}"
+
+# Link env files for running hasura-cli.
+ln -f -s -r "${ENV_PATH}" "${HASURA_ENV_PATH}"
