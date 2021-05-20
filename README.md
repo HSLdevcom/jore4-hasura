@@ -21,7 +21,6 @@ To play with the GraphQL API or to modify the backend, it is easiest to use the 
 1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura console` to start the console.
 1. Open <http://localhost:8080> in the browser to access the console.
-   The Hasura admin secret can be found in `./secrets/hasura-admin-secret`.
    The initial view opens up with a beefed-up GraphiQL for testing queries.
 
 Other possibly relevant commands for Hasura CLI:
