@@ -3,11 +3,11 @@
 set -eu
 
 SECRET_STORE_BASE_PATH="${SECRET_STORE_BASE_PATH:-/run/secrets}"
-HASURA_ADMIN_SECRET="$(cat ${SECRET_STORE_BASE_PATH}/hasura-admin-secret)"
-DB_USERNAME="$(cat ${SECRET_STORE_BASE_PATH}/db-username)"
-DB_PASSWORD="$(cat ${SECRET_STORE_BASE_PATH}/db-password)"
-DB_HOSTNAME="$(cat ${SECRET_STORE_BASE_PATH}/db-hostname)"
-DB_NAME="$(cat ${SECRET_STORE_BASE_PATH}/db-name)"
+HASURA_ADMIN_SECRET="$(cat "${SECRET_STORE_BASE_PATH}/hasura-admin-secret")"
+DB_USERNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-username")"
+DB_PASSWORD="$(cat "${SECRET_STORE_BASE_PATH}/db-password")"
+DB_HOSTNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-hostname")"
+DB_NAME="$(cat "${SECRET_STORE_BASE_PATH}/db-name")"
 
 # This script extends the functionality of the original Hasura docker image’s /bin/docker-entrypoint.sh script
 # HASURA_GRAPHQL_DATABASE_URL format: postgres://<user>:<password>@<host>:<port>/<db-name>
