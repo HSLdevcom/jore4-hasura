@@ -48,5 +48,5 @@ echo "${DB_NAME}" > "${SECRETS_DIR}/db-name"
 echo "POSTGRES_USER=${DB_USERNAME}" >> "${ENV_PATH}"
 echo "POSTGRES_PASSWORD=${DB_PASSWORD}" >> "${ENV_PATH}"
 
-# Link env files for running hasura-cli.
+# Link the env files for running hasura-cli.
 ln -f -s -r "${ENV_PATH}" "${HASURA_ENV_PATH}"
