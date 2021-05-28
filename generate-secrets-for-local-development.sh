@@ -24,6 +24,7 @@ prompt () {
 generate_password () {
   # SIGPIPE ensues from writing into the pipe after the reading stops so use
   # echo for pipefail.
+  export LC_CTYPE=C
   echo "$(</dev/urandom tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 }
 
@@ -50,4 +51,4 @@ echo "POSTGRES_PASSWORD=${DB_PASSWORD}" >> "${ENV_PATH}"
 echo "HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_ADMIN_SECRET}" >> "${ENV_PATH}"
 
 # Link the env files for running hasura-cli.
-ln -f -s -r "${ENV_PATH}" "${HASURA_ENV_PATH}"
+ln -s "$(pwd)/${ENV_PATH}" "${HASURA_ENV_PATH}"
