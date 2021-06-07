@@ -1,0 +1,4 @@
+The basename for secret
+/run/secrets/foo_
+is not unique enough. The basenames of the secrets should differ by alphanumeric
+characters.
