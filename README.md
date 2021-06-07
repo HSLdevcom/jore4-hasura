@@ -148,3 +148,65 @@ The expected values are **set by default**.
 
 We are using [hasura/graphql-engine](https://registry.hub.docker.com/r/hasura/graphql-engine) as a base image.
 Please see the link for detailed documentation.
+
+### Authorizing PostgreSQL users in the SQL schema migrations
+
+The PostgreSQL usernames for the other users are stored in Docker or Kubernetes secrets.
+The service responsible for authorizing other users has to read the usernames from the secrets at runtime.
+Yet the SQL schema migrations are stored in git and stored in the Docker image before runtime.
+
+This conundrum is solved by the script [`./replace-placeholders-in-sql-schema-migrations.sh`](./replace-placeholders-in-sql-schema-migrations.sh) which is run in the Docker entrypoint.
+The script does string interpolation by replacing placeholders in the SQL schema migration files with the contents of the Docker secrets.
+
+The placeholders are mangled secret filenames with bracket delimiters `xxx_` and `_xxx`.
+The mangling turns every character not in `[0-9A-Za-z_]` into `_`.
+For example the username stored in a secret named `foo-bar.baz` is used with the placeholder `xxx_foo_bar_baz_xxx` in the SQL schema migration files.
+
+It's a known issue that if the SQL migration files contain placeholders catenated together, e.g. `xxx_foo_xxxxxx_bar_xxx`, and if both secrets `foo` and `bar` are missing, the error message will complain about only one missing secret.
+The developer is expected to interpret that two secrets are required.
+The issue could be solved with PCRE which is not available for the current implementation.
+
+Another issue is that **the secrets may not contain newlines within the strings**.
+Newlines at the end of a secret are permitted.
+This might be fixable with `sed -z`, if available, or switching from `sed` to `awk`.
+
+#### Requirements for the secrets
+
+1. With the default value of 63 for the PostgreSQL option [`max_identifier_length`](https://www.postgresql.org/docs/13/runtime-config-preset.html) and the current choice of bracket delimiters:
+
+   - the names of the secrets containing the Jore4 DB usernames should have at most 55 ASCII characters (`63 - length("xxx_") - length("_xxx") == 55`)
+   - the contents of those secrets should have at most 63 ASCII characters
+
+   If we hit the limit, either we shorten the name or increase the limit.
+
+1. The names of the secrets should not contain the substring `xxx`.
+
+#### Design rationale
+
+The mangling is used because of the limitations of SQL identifiers as per [the PostgreSQL documentation](https://www.postgresql.org/docs/13/sql-syntax-lexical.html):
+
+> SQL identifiers and key words must begin with a letter (a-z, but also letters with diacritical marks and non-Latin letters) or an underscore (\_). Subsequent characters in an identifier or key word can be letters, underscores, digits (0-9), or dollar signs ($). Note that dollar signs are not allowed in identifiers according to the letter of the SQL standard, so their use might render applications less portable. The SQL standard will not define a key word that contains digits or starts or ends with an underscore, so identifiers of this form are safe against possible conflict with future extensions of the standard.
+
+The shell in `hasura/graphql-engine:v1.3.3` is `ash` from BusyBox v1.31.0.
+That limits us to barebones POSIX shell capabilities in the replacer script.
+
+Requirements for the string interpolation:
+
+1. Simply replace strings. No string formatting is needed.
+1. Do not rely on shell variables marked with `$` as plpgsql uses `$`.
+1. Fail when a placeholder cannot be replaced.
+1. Before replacing the placeholders, the SQL schema files must be valid SQL.
+1. Use the tools available in our Hasura Docker image.
+
+Consequences:
+
+1. String interpolation with bracket delimiters is enough.
+1. Do not use `eval` or `envsubst` to avoid mistaken `$` replacements.
+1. A trivial `sed` oneliner is not enough.
+1. Use only valid SQL identifier letters in the bracket delimiters.
+1. `sed`, `grep` and `awk` are available, `perl` and `python` are not.
+1. The names of the secrets must not contain the bracket delimiters.
+
+#### Tests
+
+There are tests for the string interpolation script in [`./test/string-interpolation`](./test/string-interpolation).
