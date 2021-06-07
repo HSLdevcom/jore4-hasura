@@ -1,0 +1,6 @@
+The migration file
+/migrations/test.sql
+contains some placeholders for which there are no corresponding secrets. The
+offending placeholders are:
+xxx_bar_xxx
+xxx_baz_xxx
