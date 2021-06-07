@@ -3,6 +3,7 @@
 
 !/LICENSE
 !/docker-entrypoint.sh
+!/replace-placeholders-in-sql-schema-migrations.sh
 
 !/hasura/**
 # /hasura/** covers the following files so ignore them explicitly.
