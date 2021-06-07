@@ -1,0 +1,10 @@
+# Deny everything.
+**
+
+!/LICENSE
+!/docker-entrypoint.sh
+
+!/hasura/**
+# /hasura/** covers the following files so ignore them explicitly.
+/hasura/.env
+/hasura/config.yaml
