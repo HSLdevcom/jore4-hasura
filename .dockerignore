@@ -1,0 +1,10 @@
+# Deny everything.
+**
+
+!/LICENSE
+!/README.md
+!/docker-entrypoint.sh
+
+!/hasura/**
+/hasura/.env
+/hasura/config.yaml
