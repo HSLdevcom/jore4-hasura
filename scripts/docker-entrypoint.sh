@@ -8,7 +8,7 @@ DB_USERNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-username")"
 DB_PASSWORD="$(cat "${SECRET_STORE_BASE_PATH}/db-password")"
 DB_HOSTNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-hostname")"
 DB_NAME="$(cat "${SECRET_STORE_BASE_PATH}/db-name")"
-REPLACE_PLACEHOLDERS_SCRIPT='/app/replace-placeholders-in-sql-schema-migrations.sh'
+REPLACE_PLACEHOLDERS_SCRIPT='/app/scripts/replace-placeholders-in-sql-schema-migrations.sh'
 
 # Replace the possible placeholders in the SQL schema migrations.
 #
