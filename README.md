@@ -5,7 +5,7 @@ Minimal hasura & docker setup for jore4 development.
 ## Quickstart
 
 ```sh
-./generate-secrets-for-local-development.sh # Press y<enter>
+./scripts/generate-secrets-for-local-development.sh # Press y<enter>
 docker-compose up --build
 ```
 
@@ -13,7 +13,7 @@ docker-compose up --build
 
 To play with the GraphQL API or to modify the backend, it is easiest to use the Hasura admin UI ("console").
 
-1. Make sure you have generated the required secrets with `./generate-secrets-for-local-development.sh`.
+1. Make sure you have generated the required secrets with `./scripts/generate-secrets-for-local-development.sh`.
 1. Install [Hasura CLI](https://hasura.io/docs/1.0/graphql/core/hasura-cli/install-hasura-cli.html).
 1. Start PostGIS and the Hasura server with `docker-compose up --build`.
    Hasura will apply the existing SQL migrations and server metadata.
@@ -155,7 +155,7 @@ The PostgreSQL usernames for the other users are stored in Docker or Kubernetes 
 The service responsible for authorizing other users has to read the usernames from the secrets at runtime.
 Yet the SQL schema migrations are stored in git and stored in the Docker image before runtime.
 
-This conundrum is solved by the script [`./replace-placeholders-in-sql-schema-migrations.sh`](./replace-placeholders-in-sql-schema-migrations.sh) which is run in the Docker entrypoint.
+This conundrum is solved by the script [`./scripts/replace-placeholders-in-sql-schema-migrations.sh`](./scripts/replace-placeholders-in-sql-schema-migrations.sh) which is run in the Docker entrypoint.
 The script does string interpolation by replacing placeholders in the SQL schema migration files with the contents of the Docker secrets.
 
 The placeholders are mangled secret filenames with bracket delimiters `xxx_` and `_xxx`.

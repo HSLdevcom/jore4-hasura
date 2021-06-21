@@ -12,7 +12,7 @@ secrets_dir='./secrets'
 migrations_dir='./migrations'
 
 script_name='replace-placeholders-in-sql-schema-migrations.sh'
-script_path="../../../${script_name}"
+script_path="../../../scripts/${script_name}"
 
 secrets_dir_in_docker='/run/secrets'
 migrations_dir_in_docker='/migrations'

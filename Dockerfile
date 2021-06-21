@@ -5,7 +5,6 @@ ENV HASURA_GRAPHQL_METADATA_DIR="/hasura-metadata"
 COPY ./hasura/migrations "${HASURA_GRAPHQL_MIGRATIONS_DIR}"
 COPY ./hasura/metadata "${HASURA_GRAPHQL_METADATA_DIR}"
 WORKDIR /app
-COPY ./replace-placeholders-in-sql-schema-migrations.sh ./
-COPY ./docker-entrypoint.sh ./
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+COPY ./scripts ./scripts
+ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
 CMD ["graphql-engine", "serve"]
