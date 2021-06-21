@@ -1,0 +1,33 @@
+CREATE SCHEMA IF NOT EXISTS jore3 AUTHORIZATION jore3importer;
+CREATE SCHEMA IF NOT EXISTS internal_jore3 AUTHORIZATION jore3importer;
+
+GRANT
+  USAGE
+  ON SCHEMA jore3
+  TO
+    jore3transformer,
+    mapmatcher;
+
+GRANT
+  SELECT, REFERENCES
+  ON ALL TABLES
+  IN SCHEMA jore3
+  TO
+    jore3transformer,
+    mapmatcher;
+
+GRANT
+  SELECT
+  ON ALL SEQUENCES
+  IN SCHEMA jore3
+  TO
+    jore3transformer,
+    mapmatcher;
+
+GRANT
+  EXECUTE
+  ON ALL ROUTINES
+  IN SCHEMA jore3
+  TO
+    jore3transformer,
+    mapmatcher;
