@@ -1,0 +1,4 @@
+The basename for secret
+/run/secrets/fooxxxbar
+should not contain the alphanumeric part of the delimiter:
+xxx
