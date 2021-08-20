@@ -30,6 +30,8 @@ services:
     environment:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+      HASURA_GRAPHQL_AUTH_HOOK: "http://localhost:3001/api/public/v1/hasura/webhook"
+      HASURA_GRAPHQL_AUTH_HOOK_MODE: "GET"
     secrets:
       - db-username
       - db-password
