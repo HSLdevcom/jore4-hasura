@@ -1,1 +1,9 @@
-[]
+- table:
+    schema: test
+    name: data
+  select_permissions:
+  - role: jore4-network-infra-write
+    permission:
+      columns:
+      - message
+      filter: {}
