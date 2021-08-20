@@ -146,6 +146,19 @@ The expected values are **set by default**.
 
 **Please don't change them. Either don't define them at all or set them to the same values as documented above.**
 
+In addition, you should properly set the following environment variables for authorization to work:
+
+| Environment variable             | Value                                                   |
+| -------------------------------- | ------------------------------------------------------- |
+| HASURA_GRAPHQL_AUTH_HOOK_MODE    | GET                                                     |
+| HASURA_GRAPHQL_AUTH_HOOK         | auth-backend webhook url, e.g. "http://localhost:3001/api/public/v1/hasura/webhook" |
+
+When using authorization via the web hook, you should normally leave the above mentioned
+`HASURA_GRAPHQL_UNAUTHORIZED_ROLE` variable _unset_.
+
+For more detailed documentation on the used environment variables, please see
+[the Hasura documentation](https://hasura.io/docs/latest/graphql/core/deployment/graphql-engine-flags/reference.html).
+
 We are using [hasura/graphql-engine](https://registry.hub.docker.com/r/hasura/graphql-engine) as a base image.
 Please see the link for detailed documentation.
 
