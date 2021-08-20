@@ -119,6 +119,10 @@ echo "Starting to replace placeholders in SQL schema migration files."
 # As `read -d ''` is not supported by the available shell, `find -print0` cannot
 # be used here.
 
+echo "List of defined secrets:"
+find "${secrets_dir}" -type f \
+  | LC_ALL=C sort
+
 # Loop over secrets.
 find "${secrets_dir}" -type f \
   | LC_ALL=C sort \
