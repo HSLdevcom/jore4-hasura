@@ -16,22 +16,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Extract branch name to env variable
-        run: |
-          # In pull requests
-          BRANCH_NAME="${GITHUB_HEAD_REF}"
-          [ ${BRANCH_NAME} = "" ] && {
-            # In branch pushes
-            BRANCH_NAME="$(echo "${GITHUB_REF}" | cut -d '/' -f 3-)"
-          }
-          echo "BRANCH_NAME=${BRANCH_NAME}" >> "${GITHUB_ENV}"
-
-      - name: Set environment variables
-        run: |
-          # Docker Hub uses lowercase so use a bashism to convert.
-          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-          # Docker tags can use only some special characters.
-          echo "COMMIT_ID=$(echo "${BRANCH_NAME}" | tr -C '0-9a-zA-Z._' '-')-${GITHUB_SHA}" >> $GITHUB_ENV
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: Pull previous image to support caching
         run: docker pull $IMAGE_NAME:latest || >&2 echo "Previous image not found"
