@@ -7,6 +7,45 @@ COMMENT ON SCHEMA
   internal_utils IS
   'General utilities';
 
+CREATE FUNCTION internal_utils.determine_SRID(
+  geog geography
+)
+RETURNS integer
+LANGUAGE sql
+IMMUTABLE
+STRICT
+PARALLEL SAFE
+AS $internal_utils_determine_srid_geog$
+  SELECT _ST_BestSRID(geog)
+$internal_utils_determine_srid_geog$;
+COMMENT ON FUNCTION
+  internal_utils.determine_SRID(geography) IS
+  'Determine the most suitable SRID to be used for the given geography when converting it to a geometry.
+   At the moment, this function serves as a wrapper for the internal _ST_BestSRID function, which is poorly
+   documented and may be removed in the future.
+   If needed, modify this function and its overloads to return the correct SRID(s) for your use case(s). For many
+   projects, returning a constant may be a good choice.';
+
+CREATE FUNCTION internal_utils.determine_SRID(
+  geog1 geography,
+  geog2 geography
+)
+RETURNS integer
+LANGUAGE sql
+IMMUTABLE
+STRICT
+PARALLEL SAFE
+AS $internal_utils_determine_srid_geog1_geog2$
+  SELECT _ST_BestSRID(geog1, geog2)
+$internal_utils_determine_srid_geog1_geog2$;
+COMMENT ON FUNCTION
+  internal_utils.determine_SRID(geography, geography) IS
+  'Determine the most suitable common SRID to be used for the given geographies when converting them into geometries.
+   At the moment, this function serves as a wrapper for the internal _ST_BestSRID function, which is poorly
+   documented and may be removed in the future.
+   If needed, modify this function and its overloads to return the correct SRID(s) for your use case(s). For many
+   projects, returning a constant may be a good choice.';
+
 CREATE FUNCTION internal_utils.ST_LineLocatePoint (
   a_linestring geography,
   a_point geography
@@ -18,7 +57,7 @@ STRICT
 PARALLEL SAFE
 AS $internal_utils_st_linelocatepoint$
   WITH local_srid AS (
-    SELECT _ST_BestSRID(a_linestring, a_point) AS srid
+    SELECT internal_utils.determine_SRID(a_linestring, a_point) AS srid
   )
   SELECT
     ST_LineLocatePoint(
@@ -43,7 +82,7 @@ STRICT
 PARALLEL SAFE
 AS $internal_utils_st_lineinterpolatepoint$
   WITH local_srid AS (
-    SELECT _ST_BestSRID(a_linestring) AS srid
+    SELECT internal_utils.determine_SRID(a_linestring) AS srid
   )
   SELECT
     ST_Transform(
