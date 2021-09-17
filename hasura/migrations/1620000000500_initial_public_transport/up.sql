@@ -69,9 +69,15 @@ COMMENT ON SCHEMA
   infrastructure_network IS
   'The infrastructure network model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:1:1:445';
 
+-- Hasura does not support pg enums, therefore we create this as a table.
+CREATE TABLE infrastructure_network.direction (value text PRIMARY KEY);
+INSERT INTO infrastructure_network.direction VALUES ('forward'), ('backward'), ('bidirectional');
+COMMENT ON TABLE infrastructure_network.direction IS
+  'The direction in which an e.g. infrastructure link can be traversed';
+
 CREATE TABLE infrastructure_network.infrastructure_link (
   infrastructure_link_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  is_direction_forwards boolean DEFAULT NULL,
+  direction text REFERENCES infrastructure_network.direction NOT NULL,
   shape geography(LinestringZ, 4326) NOT NULL,
   estimated_length_in_metres double precision
 );
@@ -82,8 +88,8 @@ COMMENT ON COLUMN
   infrastructure_network.infrastructure_link.infrastructure_link_id IS
   'The ID of the infrastructure link.';
 COMMENT ON COLUMN
-  infrastructure_network.infrastructure_link.is_direction_forwards IS
-  'Is the direction of traffic the same as the direction of the linestring? If NULL, both directions are allowed for traffic. If TRUE, the only allowed direction of traffic is from the beginning of the infrastructure link to the end. If FALSE, the only allowed direction of traffic is from the end of the infrastructure link to the beginning.';
+  infrastructure_network.infrastructure_link.direction IS
+  'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified line string.';
 COMMENT ON COLUMN
   infrastructure_network.infrastructure_link.shape IS
   'A PostGIS LinestringZ geography in EPSG:4326 describing the infrastructure link.';
@@ -122,7 +128,7 @@ CREATE TABLE internal_service_pattern.scheduled_stop_point (
   scheduled_stop_point_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   measured_location geography(PointZ, 4326) NOT NULL,
   located_on_infrastructure_link_id uuid NOT NULL REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
-  is_direction_forwards_on_infrastructure_link boolean NOT NULL,
+  direction text REFERENCES infrastructure_network.direction NOT NULL,
   label text NOT NULL
 );
 CREATE INDEX ON
@@ -145,7 +151,7 @@ COMMENT ON SCHEMA
 CREATE FUNCTION service_pattern.insert_scheduled_stop_point (
   measured_location geography(PointZ, 4326),
   located_on_infrastructure_link_id uuid,
-  is_direction_forwards_on_infrastructure_link boolean,
+  direction text,
   label text
 )
 RETURNS uuid
@@ -156,12 +162,12 @@ AS $service_pattern_insert_scheduled_stop_point$
   INSERT INTO internal_service_pattern.scheduled_stop_point (
     measured_location,
     located_on_infrastructure_link_id,
-    is_direction_forwards_on_infrastructure_link,
+    direction,
     label
   ) VALUES (
     measured_location,
     located_on_infrastructure_link_id,
-    is_direction_forwards_on_infrastructure_link,
+    direction,
     label
   ) RETURNING scheduled_stop_point_id
 $service_pattern_insert_scheduled_stop_point$;
@@ -173,7 +179,7 @@ CREATE VIEW service_pattern.scheduled_stop_point AS
       ssp.label,
       ssp.measured_location,
       ssp.located_on_infrastructure_link_id,
-      ssp.is_direction_forwards_on_infrastructure_link,
+      ssp.direction,
       il.shape,
       internal_utils.ST_LineLocatePoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start
     FROM
@@ -185,7 +191,7 @@ CREATE VIEW service_pattern.scheduled_stop_point AS
     label,
     measured_location,
     located_on_infrastructure_link_id,
-    is_direction_forwards_on_infrastructure_link,
+    direction,
     relative_distance_from_infrastructure_link_start,
     internal_utils.ST_LineInterpolatePoint(shape, relative_distance_from_infrastructure_link_start) AS closest_point_on_infrastructure_link
   FROM
@@ -206,12 +212,12 @@ COMMENT ON COLUMN
   service_pattern.scheduled_stop_point.located_on_infrastructure_link_id IS
   'The infrastructure link on which the stop is located.';
 COMMENT ON COLUMN
-  service_pattern.scheduled_stop_point.is_direction_forwards_on_infrastructure_link IS
-  'Is the direction of traffic on this stop the same as the direction of the linestring describing the infrastructure link? If TRUE, the stop lies in the direction of the linestring. If FALSE, the stop lies in the direction opposite to the linestring.';
+  service_pattern.scheduled_stop_point.direction IS
+  'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified line string.';
 
 COMMENT ON COLUMN
   service_pattern.scheduled_stop_point.relative_distance_from_infrastructure_link_start IS
-  'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the value of is_direction_forwards_on_infrastructure_link, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+  'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
 COMMENT ON COLUMN
   service_pattern.scheduled_stop_point.closest_point_on_infrastructure_link IS
   'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
