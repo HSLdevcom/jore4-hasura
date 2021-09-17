@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS import_jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
+CREATE SCHEMA import_jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
