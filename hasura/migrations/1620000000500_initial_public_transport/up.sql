@@ -97,23 +97,23 @@ COMMENT ON COLUMN
   infrastructure_network.infrastructure_link.estimated_length_in_metres IS
   'The estimated length of the infrastructure link in metres.';
 
-CREATE TABLE infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode (
+CREATE TABLE infrastructure_network.vehicle_sub_mode_on_infrastructure_link (
   infrastructure_link_id uuid REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
   vehicle_sub_mode text REFERENCES reusable_components.vehicle_sub_mode (vehicle_sub_mode),
   PRIMARY KEY (infrastructure_link_id, vehicle_sub_mode)
 );
 COMMENT ON TABLE
-  infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode IS
+  infrastructure_network.vehicle_sub_mode_on_infrastructure_link IS
   'Which infrastructure links are safely traversed by which vehicle sub modes?';
 COMMENT ON COLUMN
-  infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode.infrastructure_link_id IS
+  infrastructure_network.vehicle_sub_mode_on_infrastructure_link.infrastructure_link_id IS
   'The infrastructure link that can be safely traversed by the vehicle sub mode.';
 COMMENT ON COLUMN
-  infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode.vehicle_sub_mode IS
+  infrastructure_network.vehicle_sub_mode_on_infrastructure_link.vehicle_sub_mode IS
   'The vehicle sub mode that can safely traverse the infrastructure link.';
 -- The primary key constraint handles the other multicolumn index.
 CREATE INDEX ON
-  infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode
+  infrastructure_network.vehicle_sub_mode_on_infrastructure_link
   (vehicle_sub_mode, infrastructure_link_id);
 
 
