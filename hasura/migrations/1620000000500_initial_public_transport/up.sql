@@ -6,12 +6,12 @@
 -- Reusable components
 --
 
-CREATE SCHEMA IF NOT EXISTS reusable_components;
+CREATE SCHEMA reusable_components;
 COMMENT ON SCHEMA
   reusable_components IS
   'The reusable components model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:260';
 
-CREATE TABLE IF NOT EXISTS reusable_components.vehicle_mode (
+CREATE TABLE reusable_components.vehicle_mode (
   vehicle_mode text PRIMARY KEY
 );
 COMMENT ON TABLE
@@ -30,7 +30,7 @@ INSERT INTO reusable_components.vehicle_mode
   ('ferry')
   ON CONFLICT (vehicle_mode) DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS reusable_components.vehicle_sub_mode (
+CREATE TABLE reusable_components.vehicle_sub_mode (
   vehicle_sub_mode text PRIMARY KEY,
   belonging_to_vehicle_mode text NOT NULL REFERENCES reusable_components.vehicle_mode (vehicle_mode)
 );
@@ -64,12 +64,12 @@ CREATE INDEX ON
 -- Infrastructure network
 --
 
-CREATE SCHEMA IF NOT EXISTS infrastructure_network;
+CREATE SCHEMA infrastructure_network;
 COMMENT ON SCHEMA
   infrastructure_network IS
   'The infrastructure network model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:1:1:445';
 
-CREATE TABLE IF NOT EXISTS infrastructure_network.infrastructure_link (
+CREATE TABLE infrastructure_network.infrastructure_link (
   infrastructure_link_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   is_direction_forwards boolean DEFAULT NULL,
   shape geography(LinestringZ, 4326) NOT NULL,
@@ -91,7 +91,7 @@ COMMENT ON COLUMN
   infrastructure_network.infrastructure_link.estimated_length_in_metres IS
   'The estimated length of the infrastructure link in metres.';
 
-CREATE TABLE IF NOT EXISTS infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode (
+CREATE TABLE infrastructure_network.infrastructure_link_safely_traversed_by_vehicle_sub_mode (
   infrastructure_link_id uuid REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
   vehicle_sub_mode text REFERENCES reusable_components.vehicle_sub_mode (vehicle_sub_mode),
   PRIMARY KEY (infrastructure_link_id, vehicle_sub_mode)
@@ -116,9 +116,9 @@ CREATE INDEX ON
 -- Service pattern
 --
 
-CREATE SCHEMA IF NOT EXISTS internal_service_pattern;
+CREATE SCHEMA internal_service_pattern;
 
-CREATE TABLE IF NOT EXISTS internal_service_pattern.scheduled_stop_point (
+CREATE TABLE internal_service_pattern.scheduled_stop_point (
   scheduled_stop_point_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   measured_location geography(PointZ, 4326) NOT NULL,
   located_on_infrastructure_link_id uuid NOT NULL REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
@@ -136,13 +136,13 @@ CREATE INDEX ON
 
 
 
-CREATE SCHEMA IF NOT EXISTS service_pattern;
+CREATE SCHEMA service_pattern;
 COMMENT ON SCHEMA
   service_pattern IS
   'The service pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:840';
 
 -- FIXME: functions for updating and deleting
-CREATE OR REPLACE FUNCTION service_pattern.insert_scheduled_stop_point (
+CREATE FUNCTION service_pattern.insert_scheduled_stop_point (
   measured_location geography(PointZ, 4326),
   located_on_infrastructure_link_id uuid,
   is_direction_forwards_on_infrastructure_link boolean,
@@ -166,7 +166,7 @@ AS $service_pattern_insert_scheduled_stop_point$
   ) RETURNING scheduled_stop_point_id
 $service_pattern_insert_scheduled_stop_point$;
 
-CREATE OR REPLACE VIEW service_pattern.scheduled_stop_point AS
+CREATE VIEW service_pattern.scheduled_stop_point AS
   WITH everything_but_closest_point AS (
     SELECT
       ssp.scheduled_stop_point_id,
@@ -216,7 +216,7 @@ COMMENT ON COLUMN
   service_pattern.scheduled_stop_point.closest_point_on_infrastructure_link IS
   'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
 
-CREATE TABLE IF NOT EXISTS service_pattern.scheduled_stop_point_serviced_by_vehicle_mode (
+CREATE TABLE service_pattern.scheduled_stop_point_serviced_by_vehicle_mode (
   scheduled_stop_point_id uuid REFERENCES internal_service_pattern.scheduled_stop_point (scheduled_stop_point_id),
   vehicle_mode text REFERENCES reusable_components.vehicle_mode (vehicle_mode),
   PRIMARY KEY (scheduled_stop_point_id, vehicle_mode)
@@ -242,9 +242,9 @@ CREATE INDEX ON
 -- Route
 --
 
-CREATE SCHEMA IF NOT EXISTS internal_route;
+CREATE SCHEMA internal_route;
 
-CREATE TABLE IF NOT EXISTS internal_route.route (
+CREATE TABLE internal_route.route (
   route_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   -- FIXME: starting location and destination might become separate tables referred to from each scheduled stop point, e.g. "Erottaja". If that happens and description has form "starting loction - destination", normalize description out of this table.
   description_i18n text,
@@ -260,12 +260,12 @@ CREATE INDEX ON
 
 
 
-CREATE SCHEMA IF NOT EXISTS route;
+CREATE SCHEMA route;
 COMMENT ON SCHEMA
   route IS
   'The route model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:475';
 
-CREATE TABLE IF NOT EXISTS route.infrastructure_link_along_route (
+CREATE TABLE route.infrastructure_link_along_route (
   route_id uuid REFERENCES internal_route.route (route_id),
   infrastructure_link_id uuid NOT NULL REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
   infrastructure_link_sequence int,
@@ -297,7 +297,7 @@ CREATE INDEX ON
 -- FIXME: view constraint: try the no-gap window approach to sequence numbers: https://dba.stackexchange.com/a/135446 . then expose only the view and rename route.infrastructure_link_along_route to internal_route.infrastructure_link_along_route. Same applies to other sequence numbers.
 -- FIXME: trigger constraint: is_traversal_forwards must match available directions in infrastructure_link
 
-CREATE TABLE IF NOT EXISTS route.direction (
+CREATE TABLE route.direction (
   direction text PRIMARY KEY,
   the_opposite_of_direction text REFERENCES route.direction (direction)
 );
@@ -324,7 +324,7 @@ INSERT INTO route.direction
   ON CONFLICT (direction)
     DO UPDATE SET the_opposite_of_direction = EXCLUDED.the_opposite_of_direction;
 
-CREATE OR REPLACE VIEW route.route AS
+CREATE VIEW route.route AS
   SELECT
     r.route_id,
     r.description_i18n,
@@ -371,12 +371,12 @@ COMMENT ON COLUMN
 -- Journey pattern
 --
 
-CREATE SCHEMA IF NOT EXISTS journey_pattern;
+CREATE SCHEMA journey_pattern;
 COMMENT ON SCHEMA
   journey_pattern IS
   'The journey pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:1:799';
 
-CREATE TABLE IF NOT EXISTS journey_pattern.journey_pattern (
+CREATE TABLE journey_pattern.journey_pattern (
   journey_pattern_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   on_route_id uuid NOT NULL REFERENCES internal_route.route (route_id)
 );
@@ -393,7 +393,7 @@ CREATE INDEX ON
   journey_pattern.journey_pattern
   (on_route_id);
 
-CREATE TABLE IF NOT EXISTS journey_pattern.scheduled_stop_point_in_journey_pattern (
+CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
   journey_pattern_id uuid REFERENCES journey_pattern.journey_pattern (journey_pattern_id),
   scheduled_stop_point_id uuid NOT NULL REFERENCES internal_service_pattern.scheduled_stop_point (scheduled_stop_point_id),
   scheduled_stop_point_sequence int,

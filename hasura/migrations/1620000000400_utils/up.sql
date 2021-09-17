@@ -2,12 +2,12 @@
 -- General utilities
 --
 
-CREATE SCHEMA IF NOT EXISTS internal_utils;
+CREATE SCHEMA internal_utils;
 COMMENT ON SCHEMA
   internal_utils IS
   'General utilities';
 
-CREATE OR REPLACE FUNCTION internal_utils.ST_LineLocatePoint (
+CREATE FUNCTION internal_utils.ST_LineLocatePoint (
   a_linestring geography,
   a_point geography
 )
@@ -32,7 +32,7 @@ COMMENT ON FUNCTION
   internal_utils.ST_LineLocatePoint IS
   'ST_LineLocatePoint for geography';
 
-CREATE OR REPLACE FUNCTION internal_utils.ST_LineInterpolatePoint (
+CREATE FUNCTION internal_utils.ST_LineInterpolatePoint (
   a_linestring geography,
   a_fraction double precision
 )
