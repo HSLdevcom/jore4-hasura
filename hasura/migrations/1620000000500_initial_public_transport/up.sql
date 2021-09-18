@@ -264,6 +264,24 @@ CREATE INDEX ON
   internal_route.route
   (ends_at_scheduled_stop_point_id);
 
+CREATE TABLE internal_route.infrastructure_link_along_route (
+  route_id uuid REFERENCES internal_route.route (route_id),
+  infrastructure_link_id uuid NOT NULL REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
+  infrastructure_link_sequence_raw int,
+  is_traversal_forwards boolean NOT NULL,
+  PRIMARY KEY (route_id, infrastructure_link_sequence_raw)
+);
+COMMENT ON TABLE
+  internal_route.infrastructure_link_along_route IS
+  'The infrastructure links along which the routes are defined, with potentially incoherent sequence numbers.';
+-- The primary key constraint handles the other multicolumn index.
+CREATE INDEX ON
+  internal_route.infrastructure_link_along_route
+    (infrastructure_link_sequence_raw, route_id);
+CREATE INDEX ON
+  internal_route.infrastructure_link_along_route
+    (infrastructure_link_id);
+-- FIXME: trigger constraint: is_traversal_forwards must match available directions in infrastructure_link
 
 
 CREATE SCHEMA route;
@@ -271,14 +289,14 @@ COMMENT ON SCHEMA
   route IS
   'The route model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:475';
 
-CREATE TABLE route.infrastructure_link_along_route (
-  route_id uuid REFERENCES internal_route.route (route_id),
-  infrastructure_link_id uuid NOT NULL REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
-  infrastructure_link_sequence int,
-  is_traversal_forwards boolean NOT NULL,
-  PRIMARY KEY (route_id, infrastructure_link_sequence)
-);
-COMMENT ON TABLE
+CREATE VIEW route.infrastructure_link_along_route AS
+  SELECT
+    route_id,
+    infrastructure_link_id,
+    row_number() OVER (PARTITION BY route_id ORDER BY infrastructure_link_sequence_raw) AS infrastructure_link_sequence,
+    is_traversal_forwards
+  FROM internal_route.infrastructure_link_along_route;
+COMMENT ON VIEW
   route.infrastructure_link_along_route IS
   'The infrastructure links along which the routes are defined.';
 COMMENT ON COLUMN
@@ -293,15 +311,6 @@ COMMENT ON COLUMN
 COMMENT ON COLUMN
   route.infrastructure_link_along_route.is_traversal_forwards IS
   'Is the infrastructure link traversed in the direction of its linestring?';
--- The primary key constraint handles the other multicolumn index.
-CREATE INDEX ON
-  route.infrastructure_link_along_route
-  (infrastructure_link_sequence, route_id);
-CREATE INDEX ON
-  route.infrastructure_link_along_route
-  (infrastructure_link_id);
--- FIXME: view constraint: try the no-gap window approach to sequence numbers: https://dba.stackexchange.com/a/135446 . then expose only the view and rename route.infrastructure_link_along_route to internal_route.infrastructure_link_along_route. Same applies to other sequence numbers.
--- FIXME: trigger constraint: is_traversal_forwards must match available directions in infrastructure_link
 
 CREATE TABLE route.direction (
   direction text PRIMARY KEY,
@@ -377,6 +386,7 @@ COMMENT ON COLUMN
 -- Journey pattern
 --
 
+CREATE SCHEMA internal_journey_pattern;
 CREATE SCHEMA journey_pattern;
 COMMENT ON SCHEMA
   journey_pattern IS
@@ -399,15 +409,35 @@ CREATE INDEX ON
   journey_pattern.journey_pattern
   (on_route_id);
 
-CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
+CREATE TABLE internal_journey_pattern.scheduled_stop_point_in_journey_pattern (
   journey_pattern_id uuid REFERENCES journey_pattern.journey_pattern (journey_pattern_id),
   scheduled_stop_point_id uuid NOT NULL REFERENCES internal_service_pattern.scheduled_stop_point (scheduled_stop_point_id),
-  scheduled_stop_point_sequence int,
+  scheduled_stop_point_sequence_raw int,
   is_timing_point boolean DEFAULT false NOT NULL,
   is_via_point boolean DEFAULT false NOT NULL,
-  PRIMARY KEY (journey_pattern_id, scheduled_stop_point_sequence)
+  PRIMARY KEY (journey_pattern_id, scheduled_stop_point_sequence_raw)
 );
 COMMENT ON TABLE
+  internal_journey_pattern.scheduled_stop_point_in_journey_pattern IS
+  'The scheduled stop points that form the journey pattern, with potentially incoherent sequence numbers.';
+-- The primary key constraint handles the other multicolumn index.
+CREATE INDEX ON
+  internal_journey_pattern.scheduled_stop_point_in_journey_pattern
+    (scheduled_stop_point_sequence_raw, journey_pattern_id);
+CREATE INDEX ON
+  internal_journey_pattern.scheduled_stop_point_in_journey_pattern
+    (scheduled_stop_point_id);
+-- FIXME: constraint: allow only stops that are positioned along the route of the journey pattern
+
+CREATE VIEW journey_pattern.scheduled_stop_point_in_journey_pattern AS
+SELECT
+  journey_pattern_id,
+  scheduled_stop_point_id,
+  row_number() OVER (PARTITION BY journey_pattern_id ORDER BY scheduled_stop_point_sequence_raw) AS scheduled_stop_point_sequence,
+  is_timing_point,
+  is_via_point
+FROM internal_journey_pattern.scheduled_stop_point_in_journey_pattern;
+COMMENT ON VIEW
   journey_pattern.scheduled_stop_point_in_journey_pattern IS
   'The scheduled stop points that form the journey pattern, in order: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:1:813 . For HSL, all timing points are stops, hence journey pattern instead of service pattern.';
 COMMENT ON COLUMN
@@ -425,11 +455,3 @@ COMMENT ON COLUMN
 COMMENT ON COLUMN
   journey_pattern.scheduled_stop_point_in_journey_pattern.is_via_point IS
   'Is this scheduled stop point a via point?';
--- The primary key constraint handles the other multicolumn index.
-CREATE INDEX ON
-  journey_pattern.scheduled_stop_point_in_journey_pattern
-  (scheduled_stop_point_sequence, journey_pattern_id);
-CREATE INDEX ON
-  journey_pattern.scheduled_stop_point_in_journey_pattern
-  (scheduled_stop_point_id);
--- FIXME: constraint: allow only stops that are positioned along the route of the journey pattern
