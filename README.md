@@ -18,6 +18,9 @@ To play with the GraphQL API or to modify the backend, it is easiest to use the 
 1. Start PostGIS and the Hasura server with `docker-compose up --build`.
    Hasura will apply the existing SQL migrations and server metadata.
    Wait until the service `hasura` is healthy.
+1. In case you want to use a locally running instance of jore4-auth with hasura, use
+   `docker-compose -f docker-compose.yml -f docker-compose.auth.yml up --build` instead of the
+   above mentioned docker-compose command.
 1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura console` to start the console.
 1. Open <http://localhost:8080> in the browser to access the console.
