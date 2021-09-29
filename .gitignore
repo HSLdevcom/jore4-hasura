@@ -1,6 +1,5 @@
 /secrets
 /.env
-/hasura/.env
 node_modules
 /.idea
 __snapshots__
