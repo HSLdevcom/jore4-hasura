@@ -41,7 +41,7 @@ cd hasura # To allow hasura-cli to find config.yaml
 hasura migrate create ${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}
 ```
 
-Write your SQL schema changes in the files `up.sql` and `down.sql` in the created directory `hasura/migrations/${TIMESTAMP}_${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}/`.
+Write your SQL schema changes in the files `up.sql` and `down.sql` in the created directory `migrations/${TIMESTAMP}_${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}/`.
 
 Assuming your database has the previously created migrations applied and you have created only one new SQL migration, apply both your up and down migration files to your development database with
 
@@ -71,7 +71,7 @@ Once you are convinced your SQL schema migration is correct, commit the new SQL 
 ### Change the Hasura API
 
 To change what to expose, to whom and how in the API served by Hasura, you need to modify the metadata of Hasura.
-These yaml files in `hasura/metadata/` _could_ be changed by writing text.
+These yaml files in `metadata/` _could_ be changed by writing text.
 On the other hand, the admin UI exposes all the choices.
 
 Start the admin UI:
@@ -90,7 +90,7 @@ In the admin UI:
 1. Write the names of any roles that are missing but should be authorized.
 1. To change any operation authorization, click on the corresponding cell in the table that you wish to change.
 
-When you make changes in the admin UI, `hasura console` will modify `hasura/metadata/*.yaml` files accordingly in the background.
+When you make changes in the admin UI, `hasura console` will modify `metadata/*.yaml` files accordingly in the background.
 
 When you are done clicking, commit the metadata changes into git.
 

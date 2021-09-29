@@ -5,7 +5,5 @@
 !/scripts/docker-entrypoint.sh
 !/scripts/replace-placeholders-in-sql-schema-migrations.sh
 
-!/hasura/**
-# /hasura/** covers the following files so ignore them explicitly.
-/hasura/.env
-/hasura/config.yaml
+!/metadata/**
+!/migrations/**
