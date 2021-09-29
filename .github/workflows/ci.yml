@@ -20,3 +20,32 @@ jobs:
       - name: Run tests
         run: |
           ./test/string-interpolation/test.sh
+
+  run_integration_tests:
+    name: Run integration tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate secrets
+        run: >
+          JORE4HASURA_HASURA_ADMIN_SECRET=hasura_admin_secret
+          JORE4HASURA_DB_PASSWORD=db_password
+          scripts/generate-secrets.sh -f
+
+      - name: Set up docker containers
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.integration-test.yml up --build -d
+
+      - name: Verify that hasura is up and running
+        uses: HSLdevcom/jore4-tools/github-actions/healthcheck@healthcheck-v1
+        with:
+          command: "curl --fail http://localhost:8080/healthz --output /dev/null --silent"
+
+      - name: Run integration tests
+        run: |
+          cd integration-test
+          yarn --frozen-lockfile
+          yarn test
