@@ -10,6 +10,8 @@ services:
     networks:
       - jore4
     env_file: './.env'
+    volumes:
+     - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-U", "${POSTGRES_USER:-postgres}"]
       interval: 30s
