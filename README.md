@@ -13,7 +13,7 @@ docker-compose up --build
 
 To play with the GraphQL API or to modify the backend, it is easiest to use the Hasura admin UI ("console").
 
-1. Make sure you have generated the required secrets with `./scripts/generate-secrets-for-local-development.sh`.
+1. Make sure you have generated the required secrets with `./scripts/generate-secrets.sh`.
 1. Install [Hasura CLI](https://hasura.io/docs/1.0/graphql/core/hasura-cli/install-hasura-cli.html).
 1. Start PostGIS and the Hasura server with `docker-compose up --build`.
    Hasura will apply the existing SQL migrations and server metadata.
