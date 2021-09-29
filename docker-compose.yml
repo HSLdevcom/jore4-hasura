@@ -39,6 +39,7 @@ services:
       - db-name
       - hasura-admin-secret
       - db-auth-username
+      - db-jore3importer-username
     healthcheck:
       test: ["CMD", "wget", "-O", "-", "-q", "http://localhost:8080/healthz"]
       interval: 30s
@@ -62,3 +63,5 @@ secrets:
     file: ./secrets/hasura-admin-secret
   db-auth-username:
     file: ./secrets/db-auth-username
+  db-jore3importer-username:
+    file: ./secrets/db-jore3importer-username

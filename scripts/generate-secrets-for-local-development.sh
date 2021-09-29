@@ -35,6 +35,7 @@ DB_PASSWORD="$(generate_password)"
 DB_HOSTNAME='postgis'
 DB_NAME='postgres'
 DB_AUTH_USERNAME='jore4auth'
+JORE3_IMPORTER_DB_USERNAME='jore3importer'
 
 # Write the secrets for Hasura.
 mkdir -p "${SECRETS_DIR}"
@@ -44,6 +45,7 @@ echo "${DB_PASSWORD}" > "${SECRETS_DIR}/db-password"
 echo "${DB_HOSTNAME}" > "${SECRETS_DIR}/db-hostname"
 echo "${DB_NAME}" > "${SECRETS_DIR}/db-name"
 echo "${DB_AUTH_USERNAME}" > "${SECRETS_DIR}/db-auth-username"
+echo "${JORE3_IMPORTER_DB_USERNAME}" > "${SECRETS_DIR}/db-jore3importer-username"
 
 # Write the secrets for PostGIS.
 : > "${ENV_PATH}"
