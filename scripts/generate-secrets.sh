@@ -8,14 +8,12 @@ set -Eeuo pipefail
 
 SECRETS_DIR='./secrets'
 ENV_PATH='./.env'
-HASURA_ENV_PATH='./hasura/.env'
 
 prompt () {
   while true; do
     echo "Going to overwrite secrets in:"
     echo "- ${SECRETS_DIR}"
     echo "- ${ENV_PATH}"
-    echo "- ${HASURA_ENV_PATH}"
     read -r -p "Do you wish to proceed? [y/n] " answer
     case "${answer}" in
       [Yy]* ) echo 'Creating secrets' && return 0;;
@@ -66,12 +64,8 @@ echo "${DB_NAME}" > "${SECRETS_DIR}/db-name"
 echo "${DB_AUTH_USERNAME}" > "${SECRETS_DIR}/db-auth-username"
 echo "${JORE3_IMPORTER_DB_USERNAME}" > "${SECRETS_DIR}/db-jore3importer-username"
 
-# Write the secrets for PostGIS.
+# Write the secrets in the .env file.
 : > "${ENV_PATH}"
 echo "POSTGRES_USER=${DB_USERNAME}" >> "${ENV_PATH}"
 echo "POSTGRES_PASSWORD=${DB_PASSWORD}" >> "${ENV_PATH}"
 echo "HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_ADMIN_SECRET}" >> "${ENV_PATH}"
-
-# Link the env files for running hasura-cli.
-rm -f "${HASURA_ENV_PATH}"
-ln -s "$(pwd)/${ENV_PATH}" "${HASURA_ENV_PATH}"
