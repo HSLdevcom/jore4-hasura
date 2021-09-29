@@ -8,8 +8,8 @@
 # the placeholders with the contents of the Docker secrets at runtime.
 #
 # E.g. the username stored in a secret named
-# "hsl-jore4-db-jore3importer-username" is used with the placeholder
-# "xxx_hsl_jore4_db_jore3importer_username_xxx" within the SQL schema migration
+# "db-jore3importer-username" is used with the placeholder
+# "xxx_db_jore3importer_username_xxx" within the SQL schema migration
 # files.
 
 set -eu

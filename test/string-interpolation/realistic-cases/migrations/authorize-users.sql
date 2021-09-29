@@ -1,5 +1,5 @@
-CREATE SCHEMA IF NOT EXISTS jore3 AUTHORIZATION xxx_hsl_jore4_db_jore3importer_username_xxx;
-CREATE SCHEMA IF NOT EXISTS internal_jore3 AUTHORIZATION xxx_hsl_jore4_db_jore3importer_username_xxx;
+CREATE SCHEMA IF NOT EXISTS jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
+CREATE SCHEMA IF NOT EXISTS internal_jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
 
 GRANT
   USAGE
