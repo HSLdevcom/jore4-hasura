@@ -38,6 +38,7 @@ services:
       - db-hostname
       - db-name
       - hasura-admin-secret
+      - db-auth-username
     healthcheck:
       test: ["CMD", "wget", "-O", "-", "-q", "http://localhost:8080/healthz"]
       interval: 30s
@@ -59,3 +60,5 @@ secrets:
     file: ./secrets/db-name
   hasura-admin-secret:
     file: ./secrets/hasura-admin-secret
+  db-auth-username:
+    file: ./secrets/db-auth-username
