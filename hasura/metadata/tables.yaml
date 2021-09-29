@@ -1,1 +1,3 @@
-[]
+- table:
+    schema: infrastructure_network
+    name: infrastructure_link
