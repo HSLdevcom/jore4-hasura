@@ -173,29 +173,17 @@ AS $service_pattern_insert_scheduled_stop_point$
 $service_pattern_insert_scheduled_stop_point$;
 
 CREATE VIEW service_pattern.scheduled_stop_point AS
-  WITH everything_but_closest_point AS (
-    SELECT
-      ssp.scheduled_stop_point_id,
-      ssp.label,
-      ssp.measured_location,
-      ssp.located_on_infrastructure_link_id,
-      ssp.direction,
-      il.shape,
-      internal_utils.ST_LineLocatePoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start
-    FROM
-      internal_service_pattern.scheduled_stop_point AS ssp
-      INNER JOIN infrastructure_network.infrastructure_link AS il ON (ssp.located_on_infrastructure_link_id = il.infrastructure_link_id)
-  )
-  SELECT
-    scheduled_stop_point_id,
-    label,
-    measured_location,
-    located_on_infrastructure_link_id,
-    direction,
-    relative_distance_from_infrastructure_link_start,
-    internal_utils.ST_LineInterpolatePoint(shape, relative_distance_from_infrastructure_link_start) AS closest_point_on_infrastructure_link
-  FROM
-    everything_but_closest_point;
+SELECT
+  ssp.scheduled_stop_point_id,
+  ssp.label,
+  ssp.measured_location,
+  ssp.located_on_infrastructure_link_id,
+  ssp.direction,
+  internal_utils.ST_LineLocatePoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+  internal_utils.ST_ClosestPoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+FROM
+  internal_service_pattern.scheduled_stop_point AS ssp
+    INNER JOIN infrastructure_network.infrastructure_link AS il ON (ssp.located_on_infrastructure_link_id = il.infrastructure_link_id);
 COMMENT ON VIEW
   service_pattern.scheduled_stop_point IS
   'The scheduled stop points: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:845 . Colloquially known as stops from the perspective of timetable planning.';
