@@ -98,3 +98,31 @@ $internal_utils_st_lineinterpolatepoint$;
 COMMENT ON FUNCTION
   internal_utils.ST_LineInterpolatePoint IS
   'ST_LineInterpolatePoint for geography';
+
+CREATE FUNCTION internal_utils.ST_ClosestPoint (
+  a_linestring geography,
+  a_point geography
+)
+  RETURNS geography
+  LANGUAGE sql
+  IMMUTABLE
+  STRICT
+  PARALLEL SAFE
+AS $internal_utils_st_closestpoint$
+WITH local_srid AS (
+  SELECT internal_utils.determine_SRID(a_linestring, a_point) AS srid
+)
+SELECT
+  ST_Transform(
+    ST_ClosestPoint(
+      ST_Transform(a_linestring::geometry, srid),
+      ST_Transform(a_point::geometry, srid)
+    ),
+    ST_SRID(a_linestring::geometry)
+  )::geography
+FROM
+  local_srid
+$internal_utils_st_closestpoint$;
+COMMENT ON FUNCTION
+  internal_utils.ST_ClosestPoint IS
+  'ST_ClosestPoint for geography';
