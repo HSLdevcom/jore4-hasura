@@ -133,6 +133,7 @@ Our Docker image expects the following files under `./secrets` to contain the se
 | db-hostname |
 | db-name |
 | db-auth-username |
+| db-jore3importer-username |
 
 ### Use of the Docker image
 
