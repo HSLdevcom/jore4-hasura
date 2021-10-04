@@ -397,6 +397,64 @@ COMMENT ON COLUMN
   'A PostGIS LinestringZ geography in EPSG:4326 describing the shape of the route.';
 
 
+CREATE FUNCTION route.insert_route ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $route_insert_route$
+BEGIN
+  INSERT INTO internal_route.route (
+    description_i18n,
+    starts_from_scheduled_stop_point_id,
+    ends_at_scheduled_stop_point_id
+  ) VALUES (
+    NEW.description_i18n,
+    NEW.starts_from_scheduled_stop_point_id,
+    NEW.ends_at_scheduled_stop_point_id
+  ) RETURNING route_id INTO NEW.route_id;
+  RETURN NEW;
+END;
+$route_insert_route$;
+
+CREATE TRIGGER route_insert_route_trigger
+  INSTEAD OF INSERT ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.insert_route();
+
+CREATE FUNCTION route.update_route ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $route_update_route$
+BEGIN
+  UPDATE internal_route.route
+  SET
+    route_id = NEW.route_id,
+    description_i18n = NEW.description_i18n,
+    starts_from_scheduled_stop_point_id = NEW.starts_from_scheduled_stop_point_id,
+    ends_at_scheduled_stop_point_id = NEW.ends_at_scheduled_stop_point_id
+  WHERE route_id = OLD.route_id;
+  RETURN NEW;
+END;
+$route_update_route$;
+
+CREATE TRIGGER route_update_route_trigger
+  INSTEAD OF UPDATE ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.update_route();
+
+CREATE FUNCTION route.delete_route ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $route_delete_route$
+BEGIN
+  DELETE FROM internal_route.route
+  WHERE route_id = OLD.route_id;
+  RETURN OLD;
+END;
+$route_delete_route$;
+
+CREATE TRIGGER route_delete_route_trigger
+  INSTEAD OF DELETE ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.delete_route();
+
+
 
 --
 -- Journey pattern
