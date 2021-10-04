@@ -147,31 +147,6 @@ COMMENT ON SCHEMA
   service_pattern IS
   'The service pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:840';
 
--- FIXME: functions for updating and deleting
-CREATE FUNCTION service_pattern.insert_scheduled_stop_point (
-  measured_location geography(PointZ, 4326),
-  located_on_infrastructure_link_id uuid,
-  direction text,
-  label text
-)
-RETURNS uuid
-LANGUAGE sql
-VOLATILE
-STRICT
-AS $service_pattern_insert_scheduled_stop_point$
-  INSERT INTO internal_service_pattern.scheduled_stop_point (
-    measured_location,
-    located_on_infrastructure_link_id,
-    direction,
-    label
-  ) VALUES (
-    measured_location,
-    located_on_infrastructure_link_id,
-    direction,
-    label
-  ) RETURNING scheduled_stop_point_id
-$service_pattern_insert_scheduled_stop_point$;
-
 CREATE VIEW service_pattern.scheduled_stop_point AS
 SELECT
   ssp.scheduled_stop_point_id,
@@ -209,6 +184,68 @@ COMMENT ON COLUMN
 COMMENT ON COLUMN
   service_pattern.scheduled_stop_point.closest_point_on_infrastructure_link IS
   'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
+
+
+CREATE FUNCTION service_pattern.insert_scheduled_stop_point ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $service_pattern_insert_scheduled_stop_point$
+BEGIN
+  INSERT INTO internal_service_pattern.scheduled_stop_point (
+    measured_location,
+    located_on_infrastructure_link_id,
+    direction,
+    label
+  ) VALUES (
+    NEW.measured_location,
+    NEW.located_on_infrastructure_link_id,
+    NEW.direction,
+    NEW.label
+  ) RETURNING scheduled_stop_point_id INTO NEW.scheduled_stop_point_id;
+  RETURN NEW;
+END;
+$service_pattern_insert_scheduled_stop_point$;
+
+CREATE TRIGGER service_pattern_insert_scheduled_stop_point_trigger
+  INSTEAD OF INSERT ON service_pattern.scheduled_stop_point
+  FOR EACH ROW EXECUTE PROCEDURE service_pattern.insert_scheduled_stop_point();
+
+CREATE FUNCTION service_pattern.update_scheduled_stop_point ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $service_pattern_update_scheduled_stop_point$
+BEGIN
+  UPDATE internal_service_pattern.scheduled_stop_point
+  SET
+    scheduled_stop_point_id = NEW.scheduled_stop_point_id,
+    measured_location = NEW.measured_location,
+    located_on_infrastructure_link_id = NEW.located_on_infrastructure_link_id,
+    direction = NEW.direction,
+    label = NEW.label
+  WHERE scheduled_stop_point_id = OLD.scheduled_stop_point_id;
+  RETURN NEW;
+END;
+$service_pattern_update_scheduled_stop_point$;
+
+CREATE TRIGGER service_pattern_update_scheduled_stop_point_trigger
+  INSTEAD OF UPDATE ON service_pattern.scheduled_stop_point
+  FOR EACH ROW EXECUTE PROCEDURE service_pattern.update_scheduled_stop_point();
+
+CREATE FUNCTION service_pattern.delete_scheduled_stop_point ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $service_pattern_delete_scheduled_stop_point$
+BEGIN
+  DELETE FROM internal_service_pattern.scheduled_stop_point
+  WHERE scheduled_stop_point_id = OLD.scheduled_stop_point_id;
+  RETURN OLD;
+END;
+$service_pattern_delete_scheduled_stop_point$;
+
+CREATE TRIGGER service_pattern_delete_scheduled_stop_point_trigger
+  INSTEAD OF DELETE ON service_pattern.scheduled_stop_point
+  FOR EACH ROW EXECUTE PROCEDURE service_pattern.delete_scheduled_stop_point();
+
 
 CREATE TABLE service_pattern.scheduled_stop_point_serviced_by_vehicle_mode (
   scheduled_stop_point_id uuid REFERENCES internal_service_pattern.scheduled_stop_point (scheduled_stop_point_id),
