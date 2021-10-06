@@ -1,8 +1,8 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as fs from "fs";
-import * as config from "../config";
-import * as dbUtil from "../util/db";
+import * as config from "@config";
+import * as dbUtil from "@util/db";
 
 const dbConnectionPool = new pg.Pool(config.databaseConfig);
 
