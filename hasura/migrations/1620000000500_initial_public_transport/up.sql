@@ -75,11 +75,18 @@ INSERT INTO infrastructure_network.direction VALUES ('forward'), ('backward'), (
 COMMENT ON TABLE infrastructure_network.direction IS
   'The direction in which an e.g. infrastructure link can be traversed';
 
+CREATE TABLE infrastructure_network.external_source (value text PRIMARY KEY);
+INSERT INTO infrastructure_network.external_source VALUES ('digiroad_r'), ('fixup');
+COMMENT ON TABLE infrastructure_network.external_source IS
+  'An external source from which infrastructure network parts are imported';
+
 CREATE TABLE infrastructure_network.infrastructure_link (
   infrastructure_link_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   direction text REFERENCES infrastructure_network.direction NOT NULL,
   shape geography(LinestringZ, 4326) NOT NULL,
-  estimated_length_in_metres double precision
+  estimated_length_in_metres double precision,
+  external_link_id text NOT NULL,
+  external_link_source text REFERENCES infrastructure_network.external_source NOT NULL
 );
 COMMENT ON TABLE
   infrastructure_network.infrastructure_link IS
@@ -96,6 +103,7 @@ COMMENT ON COLUMN
 COMMENT ON COLUMN
   infrastructure_network.infrastructure_link.estimated_length_in_metres IS
   'The estimated length of the infrastructure link in metres.';
+CREATE UNIQUE INDEX ON infrastructure_network.infrastructure_link (external_link_id, external_link_source);
 
 CREATE TABLE infrastructure_network.vehicle_submode_on_infrastructure_link (
   infrastructure_link_id uuid REFERENCES infrastructure_network.infrastructure_link (infrastructure_link_id),
