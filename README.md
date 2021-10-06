@@ -120,6 +120,22 @@ One way to resolve the Hasura metadata conflicts:
    Once you know what should be changed, click Delete all and OK.
 1. Recreate the missing parts of the metadata as explained above.
 
+## Integration tests
+
+In order to run the integration tests, follow the following steps:
+
+1. Make sure you have generated the required secrets with `./scripts/generate-secrets.sh`. In case you already have
+   the secrets generated (e.g. for developing), you don't need to repeat this step.
+1. Start hasura and the database containers by running
+   `docker-compose -f docker-compose.yml -f docker-compose.integration-test.yml up --build`.
+1. Install the required node packages:
+   ```
+   cd integration-test
+   yarn install
+   ```
+1. Run the tests in the `integration-test`-directory:
+   `yarn test`
+
 ## Deployment
 
 Secrets should be passed as files to Docker images in production environments.
