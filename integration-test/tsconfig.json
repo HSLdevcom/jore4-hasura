@@ -18,8 +18,9 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@config": [ "config.ts" ],
-      "@util/*": [ "util/*" ]
+      "@config": ["config.ts"],
+      "@util/*": ["util/*"],
+      "@datasets/*": ["datasets/*"]
     }
   },
   "include": ["**/*.ts"],
