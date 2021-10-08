@@ -1,18 +1,48 @@
-import { Client, ClientConfig, Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 
-// When setting up the database, constraint triggers need to be disabled, otherwise initialization could fail due to
-// e.g. failing foreign key constraints.
-// This function runs a query with the constraints deferred, and it runs the query in its own db session, so that
-// the session_replication_role setting does not affect subsequent queries run in a connection pool.
-export function setup(config: ClientConfig, query: string) {
-  const client = new Client(config);
-  return client
-    .connect()
-    .then(() => client.query("SET session_replication_role = replica;" + query))
-    .finally(() => client.end());
+class QueryRunner {
+  connectionPool: Pool;
+  queries: { query: string; params?: any[] }[] = [];
+
+  constructor(connectionPool: Pool) {
+    this.connectionPool = connectionPool;
+  }
+
+  query(query: string, params?: any[]) {
+    this.queries.push({ query, params });
+    return this;
+  }
+
+  truncate = (table: string) => this.query(`TRUNCATE ${table} CASCADE`);
+
+  insertFromJson = (table: string, jsonObjects: Record<string, unknown>[]) =>
+    this.query(
+      `INSERT INTO ${table} ` +
+        `SELECT *
+       FROM jsonb_populate_recordset(NULL::${table}, $1::jsonb)`,
+      [JSON.stringify(jsonObjects)]
+    );
+
+  run = () =>
+    this.connectionPool
+      .connect()
+      .then((client) =>
+        this.queries
+          .reduce(
+            (promise: Promise<void | QueryResult>, nextQuery) =>
+              promise.then(() =>
+                client.query(nextQuery.query, nextQuery.params)
+              ),
+            Promise.resolve()
+          )
+          .finally(() => client.release())
+      );
 }
 
-export const query = (connectionPool: Pool, query: string) =>
+export const queryRunner = (connectionPool: Pool) =>
+  new QueryRunner(connectionPool);
+
+export const singleQuery = (connectionPool: Pool, query: string) =>
   connectionPool
     .connect()
     .then((client) => client.query(query).finally(() => client.release()));
