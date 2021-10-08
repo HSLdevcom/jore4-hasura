@@ -3,13 +3,18 @@ import * as pg from "pg";
 import * as fs from "fs";
 import * as config from "@config";
 import * as dbUtil from "@util/db";
-
-const dbConnectionPool = new pg.Pool(config.databaseConfig);
+import { Pool } from "pg";
 
 describe("Demo tests", () => {
+  let dbConnectionPool: Pool;
+
+  beforeAll(() => {
+    dbConnectionPool = new pg.Pool(config.databaseConfig);
+  });
+
   beforeEach(async () => {
     const sql = fs.readFileSync("sql/infrastructure-links.sql").toString();
-    await dbUtil.setup(config.databaseConfig, sql);
+    await dbUtil.setup(config.databaseConfig).query(sql).run();
   });
 
   afterAll(() => dbConnectionPool.end());
