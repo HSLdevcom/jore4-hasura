@@ -1,0 +1,26 @@
+[
+  {
+    "route_id": "61bef596-84a0-40ea-b818-423d6b9b1fcf",
+    "description_i18n": "route 1",
+    "starts_from_scheduled_stop_point_id": "3f604abf-06a9-42c6-90fc-649bf7d8c5eb",
+    "ends_at_scheduled_stop_point_id": "5be29866-4a74-45f3-9b85-b0717283231b"
+  },
+  {
+    "route_id": "91994146-0569-44be-b2f1-da3c073d416c",
+    "description_i18n": "route 2",
+    "starts_from_scheduled_stop_point_id": "5be29866-4a74-45f3-9b85-b0717283231b",
+    "ends_at_scheduled_stop_point_id": "d269d7e7-3ff4-48eb-8a07-3acec1bc349d"
+  },
+  {
+    "route_id": "0dac4416-1f84-4951-86b7-149f643594de",
+    "description_i18n": "route 3",
+    "starts_from_scheduled_stop_point_id": "3f604abf-06a9-42c6-90fc-649bf7d8c5eb",
+    "ends_at_scheduled_stop_point_id": "5be29866-4a74-45f3-9b85-b0717283231b"
+  },
+  {
+    "route_id": "a77b98e5-cfaf-4c65-bfc5-169d00bcd8d9",
+    "description_i18n": "route 4",
+    "starts_from_scheduled_stop_point_id": "5be29866-4a74-45f3-9b85-b0717283231b",
+    "ends_at_scheduled_stop_point_id": "d269d7e7-3ff4-48eb-8a07-3acec1bc349d"
+  }
+]
