@@ -380,10 +380,11 @@ CREATE VIEW route.route AS
     )::geography AS route_shape
   FROM
     internal_route.route AS r
-    INNER JOIN route.infrastructure_link_along_route AS ilar
-      ON (r.route_id = ilar.route_id)
+  LEFT JOIN (
+    route.infrastructure_link_along_route AS ilar
     INNER JOIN infrastructure_network.infrastructure_link AS il
       ON (ilar.infrastructure_link_id = il.infrastructure_link_id)
+    ) ON (r.route_id = ilar.route_id)
   GROUP BY r.route_id;
 COMMENT ON VIEW
   route.route IS
