@@ -2,5 +2,8 @@
     schema: infrastructure_network
     name: infrastructure_link
 - table:
+    schema: route
+    name: route
+- table:
     schema: service_pattern
     name: scheduled_stop_point
