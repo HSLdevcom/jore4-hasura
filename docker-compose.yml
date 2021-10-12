@@ -7,12 +7,6 @@ services:
     networks:
       - jore4
     env_file: "./.env"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-q", "-U", "${POSTGRES_USER:-postgres}"]
-      interval: 30s
-      start_period: 5s
-      timeout: 10s
-      retries: 3
     environment:
       SECRET_STORE_BASE_PATH: "/mnt/secrets-store"
     secrets:
@@ -30,9 +24,6 @@ services:
     restart: "unless-stopped"
     networks:
       - jore4
-    depends_on:
-      postgis:
-        condition: "service_healthy"
     ports:
       - "127.0.0.1:8080:8080"
     environment:
@@ -46,12 +37,6 @@ services:
       - hasura-admin-secret
       - db-auth-username
       - db-jore3importer-username
-    healthcheck:
-      test: ["CMD", "wget", "-O", "-", "-q", "http://localhost:8080/healthz"]
-      interval: 30s
-      start_period: 5s
-      timeout: 10s
-      retries: 3
 
 networks:
   jore4:
