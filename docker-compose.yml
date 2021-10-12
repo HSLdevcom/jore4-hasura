@@ -2,22 +2,28 @@
 version: "3.8"
 services:
   postgis:
-    # Try to match postgis used in Azure to avoid compatability
-    # issues. See which version azure currently supports from documentation:
-    # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions
-    image: "postgis/postgis:12-3.0-alpine"
+    image: "hsldevcom/jore4-postgres:azuredbmock"
     restart: "unless-stopped"
     networks:
       - jore4
     env_file: "./.env"
-    volumes:
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-U", "${POSTGRES_USER:-postgres}"]
       interval: 30s
       start_period: 5s
       timeout: 10s
       retries: 3
+    environment:
+      SECRET_STORE_BASE_PATH: "/mnt/secrets-store"
+    secrets:
+      - source: db-auth-username
+        target: /mnt/secrets-store/db-auth-username
+      - source: db-auth-password
+        target: /mnt/secrets-store/db-auth-password
+      - source: db-jore3importer-username
+        target: /mnt/secrets-store/db-jore3importer-username
+      - source: db-jore3importer-password
+        target: /mnt/secrets-store/db-jore3importer-password
 
   hasura:
     build: .
@@ -63,5 +69,9 @@ secrets:
     file: ./secrets/hasura-admin-secret
   db-auth-username:
     file: ./secrets/db-auth-username
+  db-auth-password:
+    file: ./secrets/db-auth-password
   db-jore3importer-username:
     file: ./secrets/db-jore3importer-username
+  db-jore3importer-password:
+    file: ./secrets/db-jore3importer-password
