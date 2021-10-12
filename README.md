@@ -21,7 +21,6 @@ To play with the GraphQL API or to modify the backend, it is easiest to use the 
 1. In case you want to use a locally running instance of jore4-auth with hasura, use
    `docker-compose -f docker-compose.yml -f docker-compose.auth.yml up --build` instead of the
    above mentioned docker-compose command.
-1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura console` to start the console.
 1. Open <http://localhost:8080> in the browser to access the console.
    The initial view opens up with a beefed-up GraphiQL for testing queries.
@@ -41,7 +40,7 @@ cd hasura # To allow hasura-cli to find config.yaml
 hasura migrate create ${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}
 ```
 
-Write your SQL schema changes in the files `up.sql` and `down.sql` in the created directory `migrations/${TIMESTAMP}_${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}/`.
+Write your SQL schema changes in the files `up.sql` and `down.sql` in the created directory `migrations/default/${TIMESTAMP}_${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}/`.
 
 Assuming your database has the previously created migrations applied and you have created only one new SQL migration, apply both your up and down migration files to your development database with
 
@@ -169,10 +168,10 @@ The expected values are **set by default**.
 
 In addition, you should properly set the following environment variables for authorization to work:
 
-| Environment variable             | Value                                                   |
-| -------------------------------- | ------------------------------------------------------- |
-| HASURA_GRAPHQL_AUTH_HOOK_MODE    | GET                                                     |
-| HASURA_GRAPHQL_AUTH_HOOK         | auth-backend webhook url, e.g. "http://localhost:3001/api/public/v1/hasura/webhook" |
+| Environment variable          | Value                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| HASURA_GRAPHQL_AUTH_HOOK_MODE | GET                                                                                 |
+| HASURA_GRAPHQL_AUTH_HOOK      | auth-backend webhook url, e.g. "http://localhost:3001/api/public/v1/hasura/webhook" |
 
 When using authorization via the web hook, you should normally leave the above mentioned
 `HASURA_GRAPHQL_UNAUTHORIZED_ROLE` variable _unset_.
@@ -221,7 +220,7 @@ The mangling is used because of the limitations of SQL identifiers as per [the P
 
 > SQL identifiers and key words must begin with a letter (a-z, but also letters with diacritical marks and non-Latin letters) or an underscore (\_). Subsequent characters in an identifier or key word can be letters, underscores, digits (0-9), or dollar signs ($). Note that dollar signs are not allowed in identifiers according to the letter of the SQL standard, so their use might render applications less portable. The SQL standard will not define a key word that contains digits or starts or ends with an underscore, so identifiers of this form are safe against possible conflict with future extensions of the standard.
 
-The shell in `hasura/graphql-engine:v1.3.3` is `ash` from BusyBox v1.31.0.
+The shell in `hasura/graphql-engine:v2.0.9` is `ash` from BusyBox v1.31.0.
 That limits us to barebones POSIX shell capabilities in the replacer script.
 
 Requirements for the string interpolation:
