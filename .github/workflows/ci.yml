@@ -31,8 +31,6 @@ jobs:
 
       - name: Generate secrets
         run: >
-          JORE4HASURA_HASURA_ADMIN_SECRET=hasura_admin_secret
-          JORE4HASURA_DB_PASSWORD=db_password
           scripts/generate-secrets.sh -f
 
       - name: Set up docker containers
