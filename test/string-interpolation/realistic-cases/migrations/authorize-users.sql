@@ -1,5 +1,8 @@
-CREATE SCHEMA jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
-CREATE SCHEMA internal_jore3 AUTHORIZATION xxx_db_jore3importer_username_xxx;
+CREATE SCHEMA jore3;
+GRANT ALL PRIVILEGES ON SCHEMA jore3 TO xxx_db_jore3importer_username_xxx;
+
+CREATE SCHEMA internal_jore3;
+GRANT ALL PRIVILEGES ON SCHEMA internal_jore3 TO xxx_db_jore3importer_username_xxx;
 
 GRANT
   USAGE
