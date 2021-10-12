@@ -1,6 +1,6 @@
 version: 3
-endpoint: http://localhost:8080/
-admin_secret: yuxuY4CEggFLX6ICn9iesYkMSmOIm7g3
+endpoint: http://localhost:3201/
+admin_secret: hasura
 api_paths:
   v1_query: v1/query
   v2_query: v2/query

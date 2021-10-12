@@ -2,32 +2,21 @@
 
 Minimal hasura & docker setup for jore4 development.
 
-## Quickstart
-
-```sh
-./scripts/generate-secrets-for-local-development.sh # Press y<enter>
-docker-compose up --build
-```
-
 ## Development
 
 To play with the GraphQL API or to modify the backend, it is easiest to use the Hasura admin UI ("console").
 
-1. Make sure you have generated the required secrets with `./scripts/generate-secrets.sh`.
 1. Install [Hasura CLI](https://hasura.io/docs/1.0/graphql/core/hasura-cli/install-hasura-cli.html).
-1. Start PostGIS and the Hasura server with `docker-compose up --build`.
+1. Start up all dependencies and build Hasura docker image locally, run `./scripts/start_dependencies.sh`.
    Hasura will apply the existing SQL migrations and server metadata.
    Wait until the service `hasura` is healthy.
-1. In case you want to use a locally running instance of jore4-auth with hasura, use
-   `docker-compose -f docker-compose.yml -f docker-compose.auth.yml up --build` instead of the
-   above mentioned docker-compose command.
 1. Run `hasura console` to start the console.
-1. Open <http://localhost:8080> in the browser to access the console.
+1. Open <http://localhost:3201/console> in the browser to access the console. The admin secret is found from
+   `/docker/secret-hasura-hasura-admin-secret` secret file.
    The initial view opens up with a beefed-up GraphiQL for testing queries.
 
 Other possibly relevant commands for Hasura CLI:
 
-1. `cd hasura` to allow hasura-cli to find `config.yaml`.
 1. Run `hasura migrate ...` to read or write DB migration files.
 1. Run `hasura metadata ...` to read or write Hasura configuration.
 
@@ -36,7 +25,6 @@ Other possibly relevant commands for Hasura CLI:
 While both PostGIS and the Hasura server are running, create a new migration with
 
 ```sh
-cd hasura # To allow hasura-cli to find config.yaml
 hasura migrate create ${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}
 ```
 
@@ -45,7 +33,6 @@ Write your SQL schema changes in the files `up.sql` and `down.sql` in the create
 Assuming your database has the previously created migrations applied and you have created only one new SQL migration, apply both your up and down migration files to your development database with
 
 ```sh
-cd hasura # To allow hasura-cli to find config.yaml
 hasura migrate status
 hasura migrate apply --up 1
 hasura migrate apply --down 1
@@ -76,7 +63,6 @@ On the other hand, the admin UI exposes all the choices.
 Start the admin UI:
 
 ```sh
-cd hasura # To allow hasura-cli to find config.yaml
 hasura console
 ```
 
@@ -123,10 +109,7 @@ One way to resolve the Hasura metadata conflicts:
 
 In order to run the integration tests, follow the following steps:
 
-1. Make sure you have generated the required secrets with `./scripts/generate-secrets.sh`. In case you already have
-   the secrets generated (e.g. for developing), you don't need to repeat this step.
-1. Start hasura and the database containers by running
-   `docker-compose -f docker-compose.yml -f docker-compose.integration-test.yml up --build`.
+1. Make sure you have hasura and its dependencies up and running with `./scripts/start_dependencies.sh`.
 1. Install the required node packages:
    ```
    cd integration-test
@@ -141,17 +124,19 @@ Secrets should be passed as files to Docker images in production environments.
 [As long as Hasura cannot read secrets from files](https://github.com/hasura/graphql-engine/issues/3989), we need to provide our own entrypoint for the Docker image.
 Our entrypoint reads the secrets and delivers them to Hasura.
 
-**All secret files should be stored under the `./secrets` directory.**
-Our Docker image expects the following files under `./secrets` to contain the secrets:
-| Secret file |
-| -------------------------------- |
-| hasura-admin-secret |
-| db-username |
-| db-password |
-| db-hostname |
-| db-name |
-| db-auth-username |
-| db-jore3importer-username |
+### Secrets used by the docker image
+
+Our Docker image expects the following secrets to be bound to the container:
+
+| Secret file               | Description                                                             |
+| ------------------------- | ----------------------------------------------------------------------- |
+| hasura-admin-secret       | Password with which admins can access the console and other features    |
+| db-hostname               | Hostname/IP address for the default database                            |
+| db-name                   | Name of the database instance to connect to within the default database |
+| db-username               | Username for the default database                                       |
+| db-password               | Password for the default database                                       |
+| db-auth-username          | Name of the sql user that is used by the auth backend service           |
+| db-jore3importer-username | Name of the sql user that is used by the jore3 importer service         |
 
 ### Use of the Docker image
 

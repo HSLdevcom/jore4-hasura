@@ -1,0 +1,18 @@
+---
+version: "3.8"
+
+services:
+  jore4-hasura:
+    # build and the docker image from the local repo
+    build: ..
+    environment:
+      # enabling the hasura console locally to ease development
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+    secrets:
+      # fix missing secret (this will be added to the e2e set when hasura image is updated in jore4-flux)
+      - source: db-jore3importer-username
+        target: /mnt/secrets-store/db-jore3importer-username
+
+secrets:
+  db-jore3importer-username:
+    file: ./secret-testdb-db-jore3importer-username

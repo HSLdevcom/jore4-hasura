@@ -1,8 +1,0 @@
----
-version: "3.8"
-
-services:
-  hasura:
-    environment:
-      HASURA_GRAPHQL_AUTH_HOOK: "http://localhost:3001/api/public/v1/hasura/webhook"
-      HASURA_GRAPHQL_AUTH_HOOK_MODE: "GET"
