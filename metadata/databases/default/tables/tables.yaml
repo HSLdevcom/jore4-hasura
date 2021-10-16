@@ -8,6 +8,7 @@
 - "!include reusable_components_vehicle_submode.yaml"
 - "!include route_direction.yaml"
 - "!include route_infrastructure_link_along_route.yaml"
+- "!include route_line.yaml"
 - "!include route_route.yaml"
 - "!include service_pattern_scheduled_stop_point.yaml"
 - "!include service_pattern_scheduled_stop_point_serviced_by_vehicle_mode.yaml"
