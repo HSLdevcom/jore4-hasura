@@ -1,0 +1,10 @@
+table:
+  name: vehicle_submode_on_infrastructure_link
+  schema: infrastructure_network
+object_relationships:
+- name: infrastructure_link
+  using:
+    foreign_key_constraint_on: infrastructure_link_id
+- name: vehicleSubmodeByVehicleSubmode
+  using:
+    foreign_key_constraint_on: vehicle_submode

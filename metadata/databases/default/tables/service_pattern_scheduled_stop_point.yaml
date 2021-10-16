@@ -1,0 +1,3 @@
+table:
+  name: scheduled_stop_point
+  schema: service_pattern

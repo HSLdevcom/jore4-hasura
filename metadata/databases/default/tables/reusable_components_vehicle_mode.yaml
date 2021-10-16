@@ -1,0 +1,19 @@
+table:
+  name: vehicle_mode
+  schema: reusable_components
+is_enum: true
+array_relationships:
+- name: scheduled_stop_point_serviced_by_vehicle_modes
+  using:
+    foreign_key_constraint_on:
+      column: vehicle_mode
+      table:
+        name: scheduled_stop_point_serviced_by_vehicle_mode
+        schema: service_pattern
+- name: vehicle_submodes
+  using:
+    foreign_key_constraint_on:
+      column: belonging_to_vehicle_mode
+      table:
+        name: vehicle_submode
+        schema: reusable_components
