@@ -3,6 +3,7 @@
 - "!include infrastructure_network_infrastructure_link.yaml"
 - "!include infrastructure_network_vehicle_submode_on_infrastructure_link.yaml"
 - "!include journey_pattern_journey_pattern.yaml"
+- "!include journey_pattern_line.yaml"
 - "!include journey_pattern_scheduled_stop_point_in_journey_pattern.yaml"
 - "!include reusable_components_vehicle_mode.yaml"
 - "!include reusable_components_vehicle_submode.yaml"
