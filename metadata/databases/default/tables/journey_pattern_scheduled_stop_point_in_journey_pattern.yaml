@@ -1,0 +1,7 @@
+table:
+  name: scheduled_stop_point_in_journey_pattern
+  schema: journey_pattern
+object_relationships:
+- name: journey_pattern
+  using:
+    foreign_key_constraint_on: journey_pattern_id

@@ -1,0 +1,25 @@
+table:
+  name: infrastructure_link
+  schema: infrastructure_network
+object_relationships:
+- name: directionByDirection
+  using:
+    foreign_key_constraint_on: direction
+- name: external_source
+  using:
+    foreign_key_constraint_on: external_link_source
+array_relationships:
+- name: infrastructure_link_along_routes
+  using:
+    foreign_key_constraint_on:
+      column: infrastructure_link_id
+      table:
+        name: infrastructure_link_along_route
+        schema: route
+- name: vehicle_submode_on_infrastructure_links
+  using:
+    foreign_key_constraint_on:
+      column: infrastructure_link_id
+      table:
+        name: vehicle_submode_on_infrastructure_link
+        schema: infrastructure_network

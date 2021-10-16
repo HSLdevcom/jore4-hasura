@@ -1,0 +1,7 @@
+table:
+  name: infrastructure_link_along_route
+  schema: route
+object_relationships:
+- name: infrastructure_link
+  using:
+    foreign_key_constraint_on: infrastructure_link_id

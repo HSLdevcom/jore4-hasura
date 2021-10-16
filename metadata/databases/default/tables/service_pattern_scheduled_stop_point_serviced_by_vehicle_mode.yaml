@@ -1,0 +1,7 @@
+table:
+  name: scheduled_stop_point_serviced_by_vehicle_mode
+  schema: service_pattern
+object_relationships:
+- name: vehicleModeByVehicleMode
+  using:
+    foreign_key_constraint_on: vehicle_mode
