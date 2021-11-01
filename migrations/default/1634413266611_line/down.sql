@@ -1,12 +1,8 @@
 
-ALTER TABLE journey_pattern.journey_pattern
-  DROP COLUMN line_id;
-
-DROP TABLE journey_pattern.line;
-
 -- restore old versions of view and modification functions
 
-CREATE OR REPLACE VIEW route.route AS
+DROP VIEW route.route;
+CREATE VIEW route.route AS
   SELECT
     r.route_id,
     r.description_i18n,
@@ -63,3 +59,9 @@ BEGIN
   RETURN NEW;
 END;
 $route_update_route$;
+
+
+ALTER TABLE internal_route.route
+  DROP COLUMN on_line_id;
+
+DROP TABLE route.line;

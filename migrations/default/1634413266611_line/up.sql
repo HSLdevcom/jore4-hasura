@@ -34,7 +34,6 @@ CREATE OR REPLACE VIEW route.route AS
     r.description_i18n,
     r.starts_from_scheduled_stop_point_id,
     r.ends_at_scheduled_stop_point_id,
-    r.on_line_id,
     -- FIXME: clamp with start and end stops: join on scheduled stop point view, ST_LineSubstring, consider direction
     ST_LineMerge(
       ST_Collect(
@@ -43,7 +42,8 @@ CREATE OR REPLACE VIEW route.route AS
           ELSE ST_Reverse(il.shape::geometry)
         END
       )
-    )::geography AS route_shape
+    )::geography AS route_shape,
+    r.on_line_id
   FROM
     internal_route.route AS r
   LEFT JOIN (
