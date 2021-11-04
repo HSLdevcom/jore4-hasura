@@ -1,4 +1,4 @@
-name: Docker Build & Push
+name: Run tests and push image to Docker hub
 
 on:
   push:
@@ -8,7 +8,44 @@ on:
   workflow_dispatch:
 
 jobs:
+  run_tests:
+    name: Run tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          ./test/string-interpolation/test.sh
+
+  run_integration_tests:
+    needs: run_tests
+    name: Run integration tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up dependencies
+        run: |
+          ./scripts/start_dependencies.sh -d
+
+      - name: Verify that hasura is up and running
+        uses: HSLdevcom/jore4-tools/github-actions/healthcheck@healthcheck-v1
+        with:
+          command: "curl --fail http://localhost:3201/healthz --output /dev/null --silent"
+
+      - name: Run integration tests
+        run: |
+          cd integration-test
+          yarn --frozen-lockfile
+          yarn test
+
   push_to_registry:
+    needs: run_integration_tests
     name: Build & Push docker image to Docker Hub
     runs-on: ubuntu-20.04
 
@@ -40,3 +77,28 @@ jobs:
       - name: Push :latest tag to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
         run: docker push $IMAGE_NAME:latest
+
+  run_e2e_tests:
+    needs: push_to_registry
+    name: Run e2e tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: $IMAGE_NAME:$COMMIT_ID
+
+      - name: run e2e smoke tests
+        id: tests
+        uses: HSLdevcom/jore4-robot/github-actions/run-rf-tests@actions-v1
+        with:
+          included_tag: smoke
+          e2e_username: ${{ secrets.ROBOT_HSLID_EMAIL }}
+          e2e_password: ${{ secrets.ROBOT_HSLID_PASSWORD }}
+
+      - name: upload test results
+        if: always()
+        uses: HSLdevcom/jore4-robot/github-actions/upload-results@actions-v1
