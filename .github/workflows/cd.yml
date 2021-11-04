@@ -1,4 +1,4 @@
-name: Docker Build & Push
+name: Push image to Docker hub and run e2e tests
 
 on:
   push:
@@ -40,3 +40,28 @@ jobs:
       - name: Push :latest tag to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
         run: docker push $IMAGE_NAME:latest
+
+  run_e2e_tests:
+    needs: push_to_registry
+    name: Run e2e tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: $IMAGE_NAME:$COMMIT_ID
+
+      - name: run e2e smoke tests
+        id: tests
+        uses: HSLdevcom/jore4-robot/github-actions/run-rf-tests@actions-v1
+        with:
+          included_tag: smoke
+          e2e_username: ${{ secrets.ROBOT_HSLID_EMAIL }}
+          e2e_password: ${{ secrets.ROBOT_HSLID_PASSWORD }}
+
+      - name: upload test results
+        if: always()
+        uses: HSLdevcom/jore4-robot/github-actions/upload-results@actions-v1

@@ -1,7 +1,6 @@
----
-name: Run tests
+name: Run integration and unit tests
 
-"on":
+on:
   push:
     branches:
       - main
@@ -32,7 +31,6 @@ jobs:
       - name: Set up dependencies
         run: |
           ./scripts/start_dependencies.sh -d
-
       - name: Verify that hasura is up and running
         uses: HSLdevcom/jore4-tools/github-actions/healthcheck@healthcheck-v1
         with:
