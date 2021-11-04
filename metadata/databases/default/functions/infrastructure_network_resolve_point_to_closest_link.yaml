@@ -1,0 +1,3 @@
+function:
+  name: resolve_point_to_closest_link
+  schema: infrastructure_network
