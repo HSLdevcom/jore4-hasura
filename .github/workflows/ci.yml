@@ -1,7 +1,6 @@
----
-name: Run tests
+name: Run integration and unit tests
 
-"on":
+on:
   push:
     branches:
       - main
