@@ -21,7 +21,8 @@ const mutation = `
         route_id,
         description_i18n,
         starts_from_scheduled_stop_point_id,
-        ends_at_scheduled_stop_point_id
+        ends_at_scheduled_stop_point_id,
+        priority
       }
     }
   }
@@ -86,7 +87,8 @@ describe("Delete route", () => {
           r.route_id,
           r.description_i18n,
           r.starts_from_scheduled_stop_point_id,
-          r.ends_at_scheduled_stop_point_id
+          r.ends_at_scheduled_stop_point_id,
+          r.priority
         FROM route.route r
       `
     );

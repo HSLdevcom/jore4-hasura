@@ -17,7 +17,8 @@ const mutation = `
         located_on_infrastructure_link_id,
         direction,
         measured_location,
-        label
+        label,
+        priority
       }
     }
   }
@@ -81,7 +82,8 @@ describe("Delete scheduled_stop_point", () => {
           ssp.located_on_infrastructure_link_id,
           ssp.direction,
           ssp.measured_location,
-          ssp.label
+          ssp.label,
+          ssp.priority
         FROM service_pattern.scheduled_stop_point ssp
       `
     );

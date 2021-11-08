@@ -16,6 +16,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop1",
+    priority: 10,
   },
   {
     scheduled_stop_point_id: "5be29866-4a74-45f3-9b85-b0717283231b",
@@ -31,6 +32,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop3",
+    priority: 10,
   },
   {
     scheduled_stop_point_id: "d269d7e7-3ff4-48eb-8a07-3acec1bc349d",
@@ -46,5 +48,6 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop2",
+    priority: 30,
   },
 ];

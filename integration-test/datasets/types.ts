@@ -21,6 +21,7 @@ export type ScheduledStopPoint = {
   direction: Direction;
   measured_location: GeometryObject;
   label: string;
+  priority: number;
 };
 
 export type Route = {
@@ -28,4 +29,5 @@ export type Route = {
   description_i18n: string;
   starts_from_scheduled_stop_point_id: string;
   ends_at_scheduled_stop_point_id: string;
+  priority: number;
 };

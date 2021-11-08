@@ -9,6 +9,7 @@ export const routes: Route[] = [
       scheduledStopPoints[0].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[1].scheduled_stop_point_id,
+    priority: 10,
   },
   {
     route_id: "91994146-0569-44be-b2f1-da3c073d416c",
@@ -17,6 +18,7 @@ export const routes: Route[] = [
       scheduledStopPoints[1].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[2].scheduled_stop_point_id,
+    priority: 20,
   },
   {
     route_id: "0dac4416-1f84-4951-86b7-149f643594de",
@@ -25,6 +27,7 @@ export const routes: Route[] = [
       scheduledStopPoints[0].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[1].scheduled_stop_point_id,
+    priority: 10,
   },
   {
     route_id: "a77b98e5-cfaf-4c65-bfc5-169d00bcd8d9",
@@ -33,5 +36,6 @@ export const routes: Route[] = [
       scheduledStopPoints[1].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[2].scheduled_stop_point_id,
+    priority: 10,
   },
 ];

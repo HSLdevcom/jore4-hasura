@@ -14,6 +14,7 @@ const toBeInserted = {
     scheduledStopPoints[0].scheduled_stop_point_id,
   ends_at_scheduled_stop_point_id:
     scheduledStopPoints[2].scheduled_stop_point_id,
+  priority: 40,
 };
 
 const mutation = `
@@ -23,7 +24,8 @@ const mutation = `
         route_id,
         description_i18n,
         starts_from_scheduled_stop_point_id,
-        ends_at_scheduled_stop_point_id
+        ends_at_scheduled_stop_point_id,
+        priority
       }
     }
   }
@@ -98,7 +100,8 @@ describe("Insert route", () => {
           r.route_id,
           r.description_i18n,
           r.starts_from_scheduled_stop_point_id,
-          r.ends_at_scheduled_stop_point_id
+          r.ends_at_scheduled_stop_point_id,
+          r.priority
         FROM route.route r
       `
     );
