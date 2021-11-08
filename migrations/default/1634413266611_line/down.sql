@@ -25,6 +25,36 @@ CREATE VIEW route.route AS
       ON (ilar.infrastructure_link_id = il.infrastructure_link_id)
     ) ON (r.route_id = ilar.route_id)
   GROUP BY r.route_id;
+COMMENT ON VIEW
+  route.route IS
+  'The routes from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:483';
+COMMENT ON COLUMN
+  route.route.route_id IS
+  'The ID of the route.';
+COMMENT ON COLUMN
+  route.route.description_i18n IS
+  'The description of the route in the form of starting location - destination. Placeholder for multilingual strings.';
+COMMENT ON COLUMN
+  route.route.starts_from_scheduled_stop_point_id IS
+  'The scheduled stop point where the route starts from.';
+COMMENT ON COLUMN
+  route.route.ends_at_scheduled_stop_point_id IS
+  'The scheduled stop point where the route ends at.';
+COMMENT ON COLUMN
+  route.route.route_shape IS
+  'A PostGIS LinestringZ geography in EPSG:4326 describing the shape of the route.';
+
+CREATE TRIGGER route_insert_route_trigger
+  INSTEAD OF INSERT ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.insert_route();
+
+CREATE TRIGGER route_update_route_trigger
+  INSTEAD OF UPDATE ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.update_route();
+
+CREATE TRIGGER route_delete_route_trigger
+  INSTEAD OF DELETE ON route.route
+  FOR EACH ROW EXECUTE PROCEDURE route.delete_route();
 
 CREATE OR REPLACE FUNCTION route.insert_route ()
   RETURNS TRIGGER
