@@ -1,3 +1,13 @@
 table:
   name: route
   schema: route
+array_relationships:
+- name: route_journey_patterns
+  using:
+    manual_configuration:
+      column_mapping:
+        route_id: on_route_id
+      insertion_order: null
+      remote_table:
+        name: journey_pattern
+        schema: journey_pattern
