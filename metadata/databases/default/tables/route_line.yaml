@@ -1,3 +1,13 @@
 table:
   name: line
   schema: route
+array_relationships:
+- name: line_routes
+  using:
+    manual_configuration:
+      column_mapping:
+        line_id: on_line_id
+      insertion_order: null
+      remote_table:
+        name: route
+        schema: route
