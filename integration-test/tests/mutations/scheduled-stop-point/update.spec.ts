@@ -11,7 +11,7 @@ import {
 import { Direction, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 
-const toBeUpdated = {
+const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[0].infrastructure_link_id,
   direction: Direction.Backward,
@@ -41,11 +41,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        scheduled_stop_point_id,
-        located_on_infrastructure_link_id,
-        direction,
-        measured_location,
-        label
+        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -105,11 +101,9 @@ describe("Update scheduled_stop_point", () => {
       dbConnectionPool,
       `
         SELECT
-          ssp.scheduled_stop_point_id,
-          ssp.located_on_infrastructure_link_id,
-          ssp.direction,
-          ssp.measured_location,
-          ssp.label
+          ${Object.keys(sampleScheduledStopPoints[0])
+            .map((key) => `ssp.${key}`)
+            .join(",")}
         FROM service_pattern.scheduled_stop_point ssp
       `
     );

@@ -9,7 +9,7 @@ import { routes as sampleRoutes } from "@datasets/routes";
 import { Route } from "@datasets/types";
 import "@util/matchers";
 
-const toBeUpdated = {
+const toBeUpdated: Partial<Route> = {
   description_i18n: "updated route",
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
@@ -29,10 +29,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        route_id,
-        description_i18n,
-        starts_from_scheduled_stop_point_id,
-        ends_at_scheduled_stop_point_id
+        ${Object.keys(sampleRoutes[0]).join(",")}
       }
     }
   }
@@ -94,10 +91,9 @@ describe("Update route", () => {
       dbConnectionPool,
       `
         SELECT
-          r.route_id,
-          r.description_i18n,
-          r.starts_from_scheduled_stop_point_id,
-          r.ends_at_scheduled_stop_point_id
+          ${Object.keys(sampleRoutes[0])
+            .map((key) => `r.${key}`)
+            .join(",")}
         FROM route.route r
       `
     );

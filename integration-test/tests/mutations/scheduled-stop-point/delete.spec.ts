@@ -11,13 +11,11 @@ const toBeDeleted = sampleScheduledStopPoints[1];
 
 const mutation = `
   mutation {
-    delete_service_pattern_scheduled_stop_point(where: {scheduled_stop_point_id: {_eq: "${toBeDeleted.scheduled_stop_point_id}"}}) {
+    delete_service_pattern_scheduled_stop_point(where: {scheduled_stop_point_id: {_eq: "${
+      toBeDeleted.scheduled_stop_point_id
+    }"}}) {
       returning {
-        scheduled_stop_point_id,
-        located_on_infrastructure_link_id,
-        direction,
-        measured_location,
-        label
+        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -77,11 +75,9 @@ describe("Delete scheduled_stop_point", () => {
       dbConnectionPool,
       `
         SELECT
-          ssp.scheduled_stop_point_id,
-          ssp.located_on_infrastructure_link_id,
-          ssp.direction,
-          ssp.measured_location,
-          ssp.label
+          ${Object.keys(sampleScheduledStopPoints[0])
+            .map((key) => `ssp.${key}`)
+            .join(",")}
         FROM service_pattern.scheduled_stop_point ssp
       `
     );
