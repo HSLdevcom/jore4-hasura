@@ -5,10 +5,10 @@ import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { Direction } from "@datasets/types";
+import { Direction, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 
-const toBeInserted = {
+const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[2].infrastructure_link_id,
   direction: Direction.BiDirectional,
@@ -29,11 +29,7 @@ const mutation = `
       toBeInserted
     )}) {
       returning {
-        scheduled_stop_point_id,
-        located_on_infrastructure_link_id,
-        direction,
-        measured_location,
-        label
+        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -103,11 +99,10 @@ describe("Insert scheduled_stop_point", () => {
     const response = await db.singleQuery(
       dbConnectionPool,
       `
-        SELECT ssp.scheduled_stop_point_id,
-               ssp.located_on_infrastructure_link_id,
-               ssp.direction,
-               ssp.measured_location,
-               ssp.label
+        SELECT
+          ${Object.keys(sampleScheduledStopPoints[0])
+            .map((key) => `ssp.${key}`)
+            .join(",")}
         FROM service_pattern.scheduled_stop_point ssp
       `
     );
