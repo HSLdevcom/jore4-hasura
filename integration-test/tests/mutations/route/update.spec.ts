@@ -13,6 +13,8 @@ const toBeUpdated: Partial<Route> = {
   description_i18n: "updated route",
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
+  priority: 50,
+  validity_end: new Date("2079-09-22 23:44:11"),
 };
 
 const completeUpdated: Route = {
@@ -74,7 +76,7 @@ describe("Update route", () => {
       expect.objectContaining({
         data: {
           update_route_route: {
-            returning: [completeUpdated],
+            returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
           },
         },
       })

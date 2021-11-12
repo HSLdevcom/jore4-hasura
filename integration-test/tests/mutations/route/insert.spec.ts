@@ -15,6 +15,12 @@ const toBeInserted: Partial<Route> = {
     scheduledStopPoints[0].scheduled_stop_point_id,
   ends_at_scheduled_stop_point_id:
     scheduledStopPoints[2].scheduled_stop_point_id,
+  priority: 40,
+  validity_start: new Date("2043-02-01 14:20:54Z"),
+};
+
+const insertedDefaultValues: Partial<Route> = {
+  validity_end: null,
 };
 
 const mutation = `
@@ -68,7 +74,8 @@ describe("Insert route", () => {
           insert_route_route: {
             returning: [
               {
-                ...toBeInserted,
+                ...dataset.asGraphQlTimestampObject(toBeInserted),
+                ...insertedDefaultValues,
                 route_id: expect.any(String),
               },
             ],
@@ -106,6 +113,7 @@ describe("Insert route", () => {
       expect.arrayContaining([
         {
           ...toBeInserted,
+          ...insertedDefaultValues,
           route_id: expect.any(String),
         },
         ...sampleRoutes,

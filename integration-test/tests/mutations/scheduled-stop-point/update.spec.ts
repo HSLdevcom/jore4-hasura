@@ -23,6 +23,9 @@ const toBeUpdated: Partial<ScheduledStopPoint> = {
       type: "name",
     },
   } as dataset.GeometryObject,
+  priority: 30,
+  validity_start: new Date("2077-10-22 23:44:11"),
+  validity_end: new Date("2079-10-22 23:44:11"),
 };
 
 const completeUpdated: ScheduledStopPoint = {
@@ -84,7 +87,7 @@ describe("Update scheduled_stop_point", () => {
       expect.objectContaining({
         data: {
           update_service_pattern_scheduled_stop_point: {
-            returning: [completeUpdated],
+            returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
           },
         },
       })

@@ -63,7 +63,7 @@ describe("Delete route", () => {
       expect.objectContaining({
         data: {
           delete_route_route: {
-            returning: [toBeDeleted],
+            returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
           },
         },
       })

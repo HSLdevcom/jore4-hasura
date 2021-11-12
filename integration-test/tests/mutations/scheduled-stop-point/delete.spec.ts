@@ -58,7 +58,7 @@ describe("Delete scheduled_stop_point", () => {
       expect.objectContaining({
         data: {
           delete_service_pattern_scheduled_stop_point: {
-            returning: [toBeDeleted],
+            returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
           },
         },
       })
