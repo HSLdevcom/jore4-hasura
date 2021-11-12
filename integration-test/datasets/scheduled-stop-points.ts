@@ -16,6 +16,9 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop1",
+    priority: 10,
+    validity_start: new Date("2065-02-01 12:34:56"),
+    validity_end: new Date("2065-01-01 12:34:56"),
   },
   {
     scheduled_stop_point_id: "5be29866-4a74-45f3-9b85-b0717283231b",
@@ -31,6 +34,9 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop3",
+    priority: 10,
+    validity_start: new Date("2065-02-03 12:34:56"),
+    validity_end: null,
   },
   {
     scheduled_stop_point_id: "d269d7e7-3ff4-48eb-8a07-3acec1bc349d",
@@ -46,5 +52,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: "stop2",
+    priority: 30,
+    validity_start: null,
+    validity_end: new Date("2064-01-03 12:34:56"),
   },
 ];

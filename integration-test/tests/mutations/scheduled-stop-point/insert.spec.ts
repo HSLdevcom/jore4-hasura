@@ -21,6 +21,12 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
     },
   } as dataset.GeometryObject,
   label: "inserted stop point",
+  priority: 50,
+  validity_end: new Date("2060-11-04 15:30:40Z"),
+};
+
+const insertedDefaultValues: Partial<ScheduledStopPoint> = {
+  validity_start: null,
 };
 
 const mutation = `
@@ -74,7 +80,8 @@ describe("Insert scheduled_stop_point", () => {
           insert_service_pattern_scheduled_stop_point: {
             returning: [
               {
-                ...toBeInserted,
+                ...dataset.asGraphQlTimestampObject(toBeInserted),
+                ...insertedDefaultValues,
                 scheduled_stop_point_id: expect.any(String),
               },
             ],
@@ -115,6 +122,7 @@ describe("Insert scheduled_stop_point", () => {
           [
             {
               ...toBeInserted,
+              ...insertedDefaultValues,
               scheduled_stop_point_id: expect.any(String),
             },
             ...sampleScheduledStopPoints,
