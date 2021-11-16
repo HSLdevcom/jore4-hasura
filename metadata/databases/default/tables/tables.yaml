@@ -1,6 +1,7 @@
 - "!include infrastructure_network_direction.yaml"
 - "!include infrastructure_network_external_source.yaml"
 - "!include infrastructure_network_infrastructure_link.yaml"
+- "!include infrastructure_network_link_properties.yaml"
 - "!include infrastructure_network_vehicle_submode_on_infrastructure_link.yaml"
 - "!include journey_pattern_journey_pattern.yaml"
 - "!include journey_pattern_scheduled_stop_point_in_journey_pattern.yaml"

@@ -1,0 +1,1 @@
+DROP FUNCTION infrastructure_network.find_closest_link_and_direction;

@@ -1,0 +1,3 @@
+function:
+  name: find_closest_link_and_direction
+  schema: infrastructure_network
