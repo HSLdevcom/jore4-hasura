@@ -1,0 +1,3 @@
+function:
+  name: find_point_direction_on_link
+  schema: infrastructure_network

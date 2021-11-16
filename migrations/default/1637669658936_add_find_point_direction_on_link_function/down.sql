@@ -1,0 +1,1 @@
+DROP FUNCTION infrastructure_network.find_point_direction_on_link;
