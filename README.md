@@ -77,6 +77,9 @@ In the admin UI:
 
 When you make changes in the admin UI, `hasura console` will modify `metadata/*.yaml` files accordingly in the background.
 
+Note: seems like `hasura console` won't update metadata in some cases. If that happens, metadata updates can be forced (after doing the changes in `hasura console`) from the [cli](https://hasura.io/docs/latest/graphql/core/migrations/manage-metadata.html#exporting-hasura-metadata):
+`hasura metadata export`
+
 When you are done clicking, commit the metadata changes into git.
 
 #### Advice for permissions
