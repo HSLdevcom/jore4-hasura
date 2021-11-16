@@ -1,0 +1,2 @@
+DROP FUNCTION infrastructure_network.find_closest_link_and_direction;
+DROP TABLE infrastructure_network.link_properties;
