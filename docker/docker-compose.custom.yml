@@ -8,3 +8,6 @@ services:
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+
+  jore4-testdb:
+    image: "hsldevcom/jore4-postgres:azuredbmock-feat-priority-and-validity-period-constraints--5969c6d6ef30ae6bb7e4929609d4f9f617b3e242"
