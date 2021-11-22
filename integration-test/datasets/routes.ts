@@ -1,4 +1,4 @@
-import { Route } from "./types";
+import { Route, RouteDirection } from "./types";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 
 export const routes: Route[] = [
@@ -9,6 +9,8 @@ export const routes: Route[] = [
       scheduledStopPoints[0].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[1].scheduled_stop_point_id,
+    label: "route 1",
+    direction: RouteDirection.Northbound,
     priority: 10,
     validity_start: new Date("2044-05-02 23:11:32Z"),
     validity_end: null,
@@ -20,6 +22,8 @@ export const routes: Route[] = [
       scheduledStopPoints[1].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[2].scheduled_stop_point_id,
+    label: "route 2",
+    direction: RouteDirection.Southbound,
     priority: 20,
     validity_start: null,
     validity_end: new Date("2044-02-02 23:11:32Z"),
@@ -31,6 +35,8 @@ export const routes: Route[] = [
       scheduledStopPoints[0].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[1].scheduled_stop_point_id,
+    label: "route 3",
+    direction: RouteDirection.Eastbound,
     priority: 10,
     validity_start: new Date("2044-01-02 23:11:32Z"),
     validity_end: new Date("2044-09-02 23:11:32Z"),
@@ -42,6 +48,8 @@ export const routes: Route[] = [
       scheduledStopPoints[1].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
       scheduledStopPoints[2].scheduled_stop_point_id,
+    label: "route 4",
+    direction: RouteDirection.Westbound,
     priority: 10,
     validity_start: new Date("2044-01-02 21:11:32Z"),
     validity_end: new Date("2044-09-02 22:11:32Z"),
