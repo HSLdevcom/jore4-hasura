@@ -5,13 +5,13 @@ import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { Direction, ScheduledStopPoint } from "@datasets/types";
+import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[2].infrastructure_link_id,
-  direction: Direction.BiDirectional,
+  direction: LinkDirection.BiDirectional,
   measured_location: {
     type: "Point",
     coordinates: [12.3, 23.4, 34.5],

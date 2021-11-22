@@ -7,7 +7,7 @@ import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { routes as sampleRoutes } from "@datasets/routes";
 import "@util/matchers";
-import { Route } from "@datasets/types";
+import { Route, RouteDirection } from "@datasets/types";
 
 const toBeInserted: Partial<Route> = {
   description_i18n: "new route",
@@ -15,6 +15,8 @@ const toBeInserted: Partial<Route> = {
     scheduledStopPoints[0].scheduled_stop_point_id,
   ends_at_scheduled_stop_point_id:
     scheduledStopPoints[2].scheduled_stop_point_id,
+  label: "new route label",
+  direction: RouteDirection.Clockwise,
   priority: 40,
   validity_start: new Date("2043-02-01 14:20:54Z"),
 };

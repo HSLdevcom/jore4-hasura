@@ -1,9 +1,9 @@
-import { Direction, InfrastructureLink } from "@datasets/types";
+import { LinkDirection, InfrastructureLink } from "@datasets/types";
 
 export const infrastructureLinks: InfrastructureLink[] = [
   {
     infrastructure_link_id: "ced51f16-71ad-49c0-8785-0903240e5a78",
-    direction: Direction.Forward,
+    direction: LinkDirection.Forward,
     shape: {
       type: "LineString",
       crs: {
@@ -23,7 +23,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
   },
   {
     infrastructure_link_id: "96f5419d-5641-46e8-b61e-660db08a87c4",
-    direction: Direction.BiDirectional,
+    direction: LinkDirection.BiDirectional,
     shape: {
       type: "LineString",
       crs: {
@@ -43,7 +43,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
   },
   {
     infrastructure_link_id: "d654ff08-a7c3-4799-820c-6d61147dd1ad",
-    direction: Direction.Backward,
+    direction: LinkDirection.Backward,
     shape: {
       type: "LineString",
       crs: {

@@ -8,13 +8,13 @@ import {
   scheduledStopPoints,
   scheduledStopPoints as sampleScheduledStopPoints,
 } from "@datasets/scheduled-stop-points";
-import { Direction, ScheduledStopPoint } from "@datasets/types";
+import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[0].infrastructure_link_id,
-  direction: Direction.Backward,
+  direction: LinkDirection.Backward,
   measured_location: {
     type: "Point",
     coordinates: [20.1, 19.2, 10],
