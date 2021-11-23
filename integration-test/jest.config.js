@@ -8,4 +8,5 @@ module.exports = {
   },
   moduleDirectories: ["node_modules", "."],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  testTimeout: 30000,
 };
