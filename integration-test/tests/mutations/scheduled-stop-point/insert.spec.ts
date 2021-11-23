@@ -32,7 +32,8 @@ const insertedDefaultValues: Partial<ScheduledStopPoint> = {
 const mutation = `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
-      toBeInserted
+      toBeInserted,
+      ["direction"]
     )}) {
       returning {
         ${Object.keys(sampleScheduledStopPoints[0]).join(",")}

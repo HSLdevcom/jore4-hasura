@@ -41,7 +41,7 @@ const mutation = `
           completeUpdated.scheduled_stop_point_id
         }"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated)}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
         ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
