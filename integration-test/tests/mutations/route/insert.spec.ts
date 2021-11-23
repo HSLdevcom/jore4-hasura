@@ -27,7 +27,9 @@ const insertedDefaultValues: Partial<Route> = {
 
 const mutation = `
   mutation {
-    insert_route_route(objects: ${dataset.toGraphQlObject(toBeInserted)}) {
+    insert_route_route(objects: ${dataset.toGraphQlObject(toBeInserted, [
+      "direction",
+    ])}) {
       returning {
         ${Object.keys(sampleRoutes[0]).join(",")}
       }

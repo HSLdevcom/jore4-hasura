@@ -28,7 +28,7 @@ const mutation = `
       where: {
         route_id: {_eq: "${completeUpdated.route_id}"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated)}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
         ${Object.keys(sampleRoutes[0]).join(",")}
