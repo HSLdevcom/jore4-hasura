@@ -17,6 +17,14 @@ export enum RouteDirection {
   Westbound = "westbound",
 }
 
+export enum VehicleMode {
+  Bus = "bus",
+  Tram = "tram",
+  Train = "train",
+  Metro = "metro",
+  Ferry = "ferry",
+}
+
 export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
@@ -44,6 +52,18 @@ export type Route = {
   ends_at_scheduled_stop_point_id: string;
   label: string;
   direction: RouteDirection;
+  priority: number;
+  validity_start: Date | null;
+  validity_end: Date | null;
+};
+
+export type Line = {
+  line_id: string;
+  name_i18n: string;
+  short_name_i18n: string | null;
+  description_i18n: string | null;
+  primary_vehicle_mode: VehicleMode;
+  label: string;
   priority: number;
   validity_start: Date | null;
   validity_end: Date | null;
