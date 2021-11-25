@@ -3,8 +3,8 @@
 -------------------------------
 
 ALTER TABLE internal_service_pattern.scheduled_stop_point
-ADD COLUMN validity_start TIMESTAMP,
-ADD COLUMN validity_end TIMESTAMP,
+ADD COLUMN validity_start TIMESTAMP WITH TIME ZONE,
+ADD COLUMN validity_end TIMESTAMP WITH TIME ZONE,
 ADD COLUMN priority INT NOT NULL;
 
 CREATE OR REPLACE VIEW service_pattern.scheduled_stop_point AS
@@ -84,8 +84,8 @@ $service_pattern_update_scheduled_stop_point$;
 ----------------
 
 ALTER TABLE internal_route.route
-ADD COLUMN validity_start TIMESTAMP,
-ADD COLUMN validity_end TIMESTAMP,
+ADD COLUMN validity_start TIMESTAMP WITH TIME ZONE,
+ADD COLUMN validity_end TIMESTAMP WITH TIME ZONE,
 ADD COLUMN priority INT NOT NULL;
 
 CREATE OR REPLACE VIEW route.route AS
@@ -178,8 +178,8 @@ $route_update_route$;
 ---------------
 
 ALTER TABLE route.line
-ADD COLUMN validity_start TIMESTAMP,
-ADD COLUMN validity_end TIMESTAMP,
+ADD COLUMN validity_start TIMESTAMP WITH TIME ZONE,
+ADD COLUMN validity_end TIMESTAMP WITH TIME ZONE,
 ADD COLUMN priority INT NOT NULL;
 COMMENT ON COLUMN
   route.line.validity_start IS
