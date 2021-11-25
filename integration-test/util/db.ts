@@ -1,8 +1,5 @@
 import pg, { Pool, QueryResult } from "pg";
 
-// Make pg create a Date object in UTC for TIMESTAMP WITHOUT TIME ZONE
-pg.types.setTypeParser(1114, (stringValue) => new Date(stringValue + "+0000"));
-
 class QueryRunner {
   connectionPool: Pool;
   queries: { query: string; params?: any[] }[] = [];

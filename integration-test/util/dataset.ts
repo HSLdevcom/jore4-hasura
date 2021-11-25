@@ -55,7 +55,10 @@ export const asGraphQlTimestampObject = (obj: {
     const value = obj[prop];
     return {
       ...mapped,
-      // cut off milliseconds and timezone information
-      [prop]: value instanceof Date ? value.toISOString().split(".")[0] : value,
+      // cut off milliseconds and add explicit UTC offset
+      [prop]:
+        value instanceof Date
+          ? value.toISOString().replace(/\.\d+Z$/, "+00:00")
+          : value,
     };
   }, {});
