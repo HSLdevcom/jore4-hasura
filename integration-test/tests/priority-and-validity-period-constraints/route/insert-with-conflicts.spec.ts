@@ -5,8 +5,8 @@ import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { lines } from "@datasets/lines";
 import { routes as sampleRoutes } from "@datasets/routes";
-import { lines as sampleLines } from "@datasets/lines";
 import "@util/matchers";
 import { Route, RouteDirection } from "@datasets/types";
 import { expect } from "@jest/globals";
@@ -37,8 +37,8 @@ describe("Insert route", () => {
       .queryRunner(dbConnectionPool)
       .truncate("infrastructure_network.infrastructure_link")
       .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("internal_route.route")
       .truncate("route.line")
+      .truncate("internal_route.route")
       .insertFromJson(
         "infrastructure_network.infrastructure_link",
         dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
@@ -49,8 +49,8 @@ describe("Insert route", () => {
           "measured_location",
         ])
       )
+      .insertFromJson("route.line", lines)
       .insertFromJson("internal_route.route", sampleRoutes)
-      .insertFromJson("route.line", sampleLines)
       .run();
   });
 
@@ -98,6 +98,7 @@ describe("Insert route", () => {
 
   describe("whose validity period conflicts with open validity start", () => {
     const toBeInserted: Partial<Route> = {
+      on_line_id: lines[1].line_id,
       description_i18n: "route 2",
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
@@ -117,6 +118,7 @@ describe("Insert route", () => {
 
   describe("whose validity period overlaps partially with existing validity period", () => {
     const toBeInserted: Partial<Route> = {
+      on_line_id: lines[1].line_id,
       description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[0].scheduled_stop_point_id,
@@ -124,7 +126,7 @@ describe("Insert route", () => {
         scheduledStopPoints[1].scheduled_stop_point_id,
       label: "route 3",
       direction: RouteDirection.Eastbound,
-      priority: 10,
+      priority: 30,
       validity_start: new Date("2044-08-02 23:11:32Z"),
       validity_end: new Date("2044-10-02 23:11:32Z"),
     };
@@ -136,6 +138,7 @@ describe("Insert route", () => {
 
   describe("whose validity period is entirely contained in other validity period", () => {
     const toBeInserted: Partial<Route> = {
+      on_line_id: lines[1].line_id,
       description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[0].scheduled_stop_point_id,
@@ -143,7 +146,7 @@ describe("Insert route", () => {
         scheduledStopPoints[1].scheduled_stop_point_id,
       label: "route 3",
       direction: RouteDirection.Eastbound,
-      priority: 10,
+      priority: 30,
       validity_start: new Date("2044-02-02 23:11:32Z"),
       validity_end: new Date("2044-08-02 23:11:32Z"),
     };

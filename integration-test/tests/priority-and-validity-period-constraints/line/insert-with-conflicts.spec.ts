@@ -37,8 +37,8 @@ describe("Insert line", () => {
       .queryRunner(dbConnectionPool)
       .truncate("infrastructure_network.infrastructure_link")
       .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("internal_route.route")
       .truncate("route.line")
+      .truncate("internal_route.route")
       .insertFromJson(
         "infrastructure_network.infrastructure_link",
         dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
@@ -49,8 +49,8 @@ describe("Insert line", () => {
           "measured_location",
         ])
       )
-      .insertFromJson("internal_route.route", sampleRoutes)
       .insertFromJson("route.line", sampleLines)
+      .insertFromJson("internal_route.route", sampleRoutes)
       .run();
   });
 

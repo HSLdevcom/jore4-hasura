@@ -47,6 +47,7 @@ export type ScheduledStopPoint = {
 
 export type Route = {
   route_id: string;
+  on_line_id: string;
   description_i18n: string;
   starts_from_scheduled_stop_point_id: string;
   ends_at_scheduled_stop_point_id: string;
