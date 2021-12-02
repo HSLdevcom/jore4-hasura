@@ -35,4 +35,15 @@ export const lines: Line[] = [
     validity_start: null,
     validity_end: new Date("2045-06-01 23:11:32Z"),
   },
+  {
+    line_id: "3578a9df-9e29-430c-a2d8-2058b38beab8",
+    name_i18n: "transport tram line with high priority",
+    short_name_i18n: "line 77",
+    description_i18n: "transport tram line 77 with high priority",
+    primary_vehicle_mode: VehicleMode.Tram,
+    label: "77",
+    priority: 30,
+    validity_start: null,
+    validity_end: new Date("2045-06-01 23:11:32Z"),
+  },
 ];
