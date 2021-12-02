@@ -83,7 +83,7 @@ describe("Update route", () => {
     );
   });
 
-  it("should update correct row into the database", async () => {
+  it("should update correct row in the database", async () => {
     await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
