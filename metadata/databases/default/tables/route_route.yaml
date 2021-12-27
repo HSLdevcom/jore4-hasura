@@ -2,6 +2,15 @@ table:
   name: route
   schema: route
 array_relationships:
+- name: infrastructure_links_along_route
+  using:
+    manual_configuration:
+      column_mapping:
+        route_id: route_id
+      insertion_order: null
+      remote_table:
+        name: infrastructure_link_along_route
+        schema: route
 - name: route_journey_patterns
   using:
     manual_configuration:
