@@ -1,3 +1,13 @@
 table:
   name: scheduled_stop_point
   schema: service_pattern
+array_relationships:
+- name: vehicle_mode_on_scheduled_stop_point
+  using:
+    manual_configuration:
+      column_mapping:
+        scheduled_stop_point_id: scheduled_stop_point_id
+      insertion_order: null
+      remote_table:
+        name: vehicle_mode_on_scheduled_stop_point
+        schema: service_pattern
