@@ -1,4 +1,9 @@
-import { LinkDirection, InfrastructureLink } from "@datasets/types";
+import {
+  InfrastructureLink,
+  LinkDirection,
+  VehicleSubmode,
+  VehicleSubmodeOnInfrastructureLink,
+} from "@datasets/types";
 
 export const infrastructureLinks: InfrastructureLink[] = [
   {
@@ -62,3 +67,27 @@ export const infrastructureLinks: InfrastructureLink[] = [
     external_link_id: "3",
   },
 ];
+
+export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureLink[] =
+  [
+    {
+      infrastructure_link_id: infrastructureLinks[0].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[0].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericTram,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[1].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[1].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.TallElectricBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[2].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+  ];
