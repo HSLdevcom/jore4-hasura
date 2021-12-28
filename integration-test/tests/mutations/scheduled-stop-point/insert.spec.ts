@@ -11,7 +11,7 @@ import "@util/matchers";
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[2].infrastructure_link_id,
-  direction: LinkDirection.BiDirectional,
+  direction: LinkDirection.Backward,
   measured_location: {
     type: "Point",
     coordinates: [12.3, 23.4, 34.5],
