@@ -8,6 +8,7 @@ import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
+import { setupDb } from "@datasets/sampleSetup";
 
 const createMutation = (
   stopPointId: string,
@@ -35,23 +36,7 @@ describe("Update scheduled stop point", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(scheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   describe("whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (

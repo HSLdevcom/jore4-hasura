@@ -1,4 +1,9 @@
-import { LinkDirection, InfrastructureLink } from "@datasets/types";
+import {
+  InfrastructureLink,
+  LinkDirection,
+  VehicleSubmode,
+  VehicleSubmodeOnInfrastructureLink,
+} from "@datasets/types";
 
 export const infrastructureLinks: InfrastructureLink[] = [
   {
@@ -62,3 +67,27 @@ export const infrastructureLinks: InfrastructureLink[] = [
     external_link_id: "3",
   },
 ];
+
+export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureLink[] =
+  [
+    {
+      infrastructure_link_id: "ced51f16-71ad-49c0-8785-0903240e5a78",
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: "ced51f16-71ad-49c0-8785-0903240e5a78",
+      vehicle_submode: VehicleSubmode.GenericTram,
+    },
+    {
+      infrastructure_link_id: "96f5419d-5641-46e8-b61e-660db08a87c4",
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: "96f5419d-5641-46e8-b61e-660db08a87c4",
+      vehicle_submode: VehicleSubmode.TallElectricBus,
+    },
+    {
+      infrastructure_link_id: "d654ff08-a7c3-4799-820c-6d61147dd1ad",
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+  ];

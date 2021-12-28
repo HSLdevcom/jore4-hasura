@@ -5,8 +5,13 @@ import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  VehicleMode,
+} from "@datasets/types";
 import "@util/matchers";
+import { setupDb } from "@datasets/sampleSetup";
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -29,11 +34,20 @@ const insertedDefaultValues: Partial<ScheduledStopPoint> = {
   validity_start: null,
 };
 
+const VEHICLE_MODE = VehicleMode.Bus;
+
 const mutation = `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
-      toBeInserted,
-      ["direction"]
+      {
+        ...toBeInserted,
+        vehicle_mode_on_scheduled_stop_point: {
+          data: {
+            vehicle_mode: VEHICLE_MODE,
+          },
+        },
+      },
+      ["direction", "vehicle_mode"]
     )}) {
       returning {
         ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
@@ -51,23 +65,7 @@ describe("Insert scheduled_stop_point", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(sampleScheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   it("should return correct response", async () => {
     const response = await rp.post({

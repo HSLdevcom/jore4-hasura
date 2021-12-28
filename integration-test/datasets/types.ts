@@ -25,6 +25,15 @@ export enum VehicleMode {
   Ferry = "ferry",
 }
 
+export enum VehicleSubmode {
+  GenericBus = "generic_bus",
+  GenericTram = "generic_tram",
+  GenericTrain = "generic_train",
+  GenericMetro = "generic_metro",
+  GenericFerry = "generic_ferry",
+  TallElectricBus = "tall_electric_bus",
+}
+
 export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
@@ -32,6 +41,11 @@ export type InfrastructureLink = {
   estimated_length_in_metres: number;
   external_link_source: string;
   external_link_id: string;
+};
+
+export type VehicleSubmodeOnInfrastructureLink = {
+  infrastructure_link_id: string;
+  vehicle_submode: VehicleSubmode;
 };
 
 export type ScheduledStopPoint = {
@@ -43,6 +57,11 @@ export type ScheduledStopPoint = {
   priority: number;
   validity_start: Date | null;
   validity_end: Date | null;
+};
+
+export type VehicleModeOnScheduledStopPoint = {
+  scheduled_stop_point_id: string;
+  vehicle_mode: VehicleMode;
 };
 
 export type Route = {

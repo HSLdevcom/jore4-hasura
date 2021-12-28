@@ -5,17 +5,29 @@ import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { routes as sampleRoutes } from "@datasets/routes";
-import { lines as sampleLines } from "@datasets/lines";
 import "@util/matchers";
-import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  VehicleMode,
+} from "@datasets/types";
 import { asDbGeometryObject, asDbGeometryObjectArray } from "@util/dataset";
+import { setupDb } from "@datasets/sampleSetup";
+
+const VEHICLE_MODE = VehicleMode.Bus;
 
 const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
-      toBeInserted,
-      ["direction"]
+      {
+        ...toBeInserted,
+        vehicle_mode_on_scheduled_stop_point: {
+          data: {
+            vehicle_mode: VEHICLE_MODE,
+          },
+        },
+      },
+      ["direction", "vehicle_mode"]
     )}) {
       returning {
         ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
@@ -33,27 +45,7 @@ describe("Insert scheduled stop point", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("route.line")
-      .truncate("internal_route.route")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(sampleScheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .insertFromJson("route.line", sampleLines)
-      .insertFromJson("internal_route.route", sampleRoutes)
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnCorrectResponse = (
     toBeInserted: Partial<ScheduledStopPoint>

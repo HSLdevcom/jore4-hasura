@@ -3,11 +3,11 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { routes as sampleRoutes } from "@datasets/routes";
 import { Route } from "@datasets/types";
 import "@util/matchers";
+import { setupDb } from "@datasets/sampleSetup";
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: "updated route",
@@ -46,25 +46,7 @@ describe("Update route", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("internal_route.route")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(scheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .insertFromJson("internal_route.route", sampleRoutes)
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   it("should return correct response", async () => {
     const response = await rp.post({
