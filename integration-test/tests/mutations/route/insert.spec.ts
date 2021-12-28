@@ -3,12 +3,12 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { lines } from "@datasets/lines";
 import { routes as sampleRoutes } from "@datasets/routes";
 import "@util/matchers";
 import { Route, RouteDirection } from "@datasets/types";
+import { setupDb } from "@datasets/sampleSetup";
 
 const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
@@ -48,27 +48,7 @@ describe("Insert route", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("route.line")
-      .truncate("internal_route.route")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(scheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .insertFromJson("route.line", lines)
-      .insertFromJson("internal_route.route", sampleRoutes)
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   it("should return correct response", async () => {
     const response = await rp.post({

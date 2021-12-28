@@ -3,9 +3,9 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
 import "@util/matchers";
+import { setupDb } from "@datasets/sampleSetup";
 
 const toBeDeleted = sampleScheduledStopPoints[1];
 
@@ -30,23 +30,14 @@ describe("Delete scheduled_stop_point", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(sampleScheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .run();
-  });
+  beforeEach(() =>
+    setupDb(dbConnectionPool, [
+      "infrastructure_network.infrastructure_link",
+      "infrastructure_network.vehicle_submode_on_infrastructure_link",
+      "internal_service_pattern.scheduled_stop_point",
+      "service_pattern.vehicle_mode_on_scheduled_stop_point",
+    ])
+  );
 
   it("should return correct response", async () => {
     const response = await rp.post({

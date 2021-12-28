@@ -1,4 +1,9 @@
-import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  VehicleModeOnScheduledStopPoint,
+  VehicleMode,
+} from "@datasets/types";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
@@ -57,3 +62,23 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     validity_end: new Date("2064-01-03 12:34:56"),
   },
 ];
+
+export const vehicleModeOnScheduledStopPoint: VehicleModeOnScheduledStopPoint[] =
+  [
+    {
+      scheduled_stop_point_id: scheduledStopPoints[0].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[0].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Tram,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[1].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[2].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+  ];

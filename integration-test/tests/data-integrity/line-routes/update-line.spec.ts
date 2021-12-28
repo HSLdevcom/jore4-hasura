@@ -3,12 +3,11 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { lines as sampleLines } from "@datasets/lines";
 import { routes } from "@datasets/routes";
 import "@util/matchers";
 import { Line } from "@datasets/types";
+import { setupDb } from "@datasets/sampleSetup";
 
 const createMutation = (toBeUpdated: Partial<Line>) => `
   mutation {
@@ -39,27 +38,7 @@ describe("Update line", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .truncate("route.line")
-      .truncate("internal_route.route")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(scheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .insertFromJson("route.line", sampleLines)
-      .insertFromJson("internal_route.route", routes)
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnErrorResponse = (toBeUpdated: Partial<Line>) =>
     it("should return error response", async () => {

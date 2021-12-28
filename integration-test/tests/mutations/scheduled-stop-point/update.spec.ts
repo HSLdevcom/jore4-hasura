@@ -8,8 +8,9 @@ import {
   scheduledStopPoints,
   scheduledStopPoints as sampleScheduledStopPoints,
 } from "@datasets/scheduled-stop-points";
-import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
+import { ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
+import { setupDb } from "@datasets/sampleSetup";
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -58,23 +59,7 @@ describe("Update scheduled_stop_point", () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(async () => {
-    await db
-      .queryRunner(dbConnectionPool)
-      .truncate("infrastructure_network.infrastructure_link")
-      .truncate("internal_service_pattern.scheduled_stop_point")
-      .insertFromJson(
-        "infrastructure_network.infrastructure_link",
-        dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-      )
-      .insertFromJson(
-        "internal_service_pattern.scheduled_stop_point",
-        dataset.asDbGeometryObjectArray(sampleScheduledStopPoints, [
-          "measured_location",
-        ])
-      )
-      .run();
-  });
+  beforeEach(() => setupDb(dbConnectionPool));
 
   it("should return correct response", async () => {
     const response = await rp.post({
