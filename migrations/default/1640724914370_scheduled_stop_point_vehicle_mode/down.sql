@@ -1,0 +1,24 @@
+
+DROP TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger
+  ON infrastructure_network.vehicle_submode_on_infrastructure_link;
+
+DROP FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link();
+
+DROP TRIGGER scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger
+  ON service_pattern.vehicle_mode_on_scheduled_stop_point;
+
+DROP FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_vehicle_mode();
+
+DROP TRIGGER scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigger
+  ON internal_service_pattern.scheduled_stop_point;
+
+DROP FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_scheduled_stop_point();
+
+
+DROP TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point
+  ON service_pattern.vehicle_mode_on_scheduled_stop_point;
+
+DROP TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link
+  ON infrastructure_network.vehicle_submode_on_infrastructure_link;
+
+DROP FUNCTION public.prevent_update();
