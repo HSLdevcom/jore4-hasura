@@ -16,6 +16,15 @@ array_relationships:
       table:
         name: infrastructure_link_along_route
         schema: route
+- name: vehicle_submode_on_infrastructure_link
+  using:
+    manual_configuration:
+      column_mapping:
+        infrastructure_link_id: infrastructure_link_id
+      insertion_order: null
+      remote_table:
+        name: vehicle_submode_on_infrastructure_link
+        schema: infrastructure_network
 - name: vehicle_submode_on_infrastructure_links
   using:
     foreign_key_constraint_on:
