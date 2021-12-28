@@ -31,7 +31,7 @@ export type InfrastructureLink = {
   shape: GeometryObject;
   estimated_length_in_metres: number;
   external_link_source: string;
-  external_link_id: number;
+  external_link_id: string;
 };
 
 export type ScheduledStopPoint = {

@@ -19,7 +19,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
     },
     estimated_length_in_metres: 1200,
     external_link_source: "digiroad_r",
-    external_link_id: 1,
+    external_link_id: "1",
   },
   {
     infrastructure_link_id: "96f5419d-5641-46e8-b61e-660db08a87c4",
@@ -39,7 +39,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
     },
     estimated_length_in_metres: 1100,
     external_link_source: "digiroad_r",
-    external_link_id: 2,
+    external_link_id: "2",
   },
   {
     infrastructure_link_id: "d654ff08-a7c3-4799-820c-6d61147dd1ad",
@@ -59,6 +59,6 @@ export const infrastructureLinks: InfrastructureLink[] = [
     },
     estimated_length_in_metres: 1600,
     external_link_source: "digiroad_r",
-    external_link_id: 3,
+    external_link_id: "3",
   },
 ];
