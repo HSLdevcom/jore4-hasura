@@ -53,7 +53,10 @@ export const toGraphQlObject = (
     // strip quotes from all keys
     .replace(/"(\w+)"\s*:/g, "$1:")
     // strip quotes from enum values
-    .replace(new RegExp(`(${enumProps.join("|")}):\\s*"(\\w+)"`), "$1: $2");
+    .replace(
+      new RegExp(`(${enumProps.join("|")}):\\s*"(\\w+)"`, "g"),
+      "$1: $2"
+    );
 
 export const asGraphQlTimestampObject = (obj: {
   [propName: string]: unknown;
