@@ -1,13 +1,13 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { lines as sampleLines } from "@datasets/lines";
+import { lines } from "@datasets/lines";
 import "@util/matchers";
 import { Line, VehicleMode } from "@datasets/types";
 import { expect } from "@jest/globals";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 const createMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -15,7 +15,7 @@ const createMutation = (toBeInserted: Partial<Line>) => `
       "primary_vehicle_mode",
     ])}) {
       returning {
-        ${Object.keys(sampleLines[0]).join(",")}
+        ${Object.keys(lines[0]).join(",")}
       }
     }
   }
@@ -39,18 +39,7 @@ describe("Insert line", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeInserted) },
         })
-        .then((response) => {
-          if (response.statusCode >= 200 && response.statusCode < 300)
-            throw new Error(
-              "Request succeeded even though it was expected to fail"
-            );
-
-          expect(response).toEqual(
-            expect.objectContaining({
-              errors: expect.any(Array),
-            })
-          );
-        });
+        .then(checkErrorResponse);
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<Line>) =>
@@ -60,18 +49,10 @@ describe("Insert line", () => {
         body: { query: createMutation(toBeInserted) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleLines[0])
-            .map((key) => `l.${key}`)
-            .join(",")}
-          FROM route.line l
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.line");
 
-      expect(response.rowCount).toEqual(sampleLines.length);
-      expect(response.rows).toEqual(expect.arrayContaining(sampleLines));
+      expect(response.rowCount).toEqual(lines.length);
+      expect(response.rows).toEqual(expect.arrayContaining(lines));
     });
 
   describe("whose validity period conflicts with open validity start", () => {

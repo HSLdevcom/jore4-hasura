@@ -1,16 +1,12 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
-import {
-  scheduledStopPoints,
-  scheduledStopPoints as sampleScheduledStopPoints,
-} from "@datasets/scheduled-stop-points";
+import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -44,7 +40,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
-        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
+        ${Object.keys(scheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -84,25 +80,19 @@ describe("Update scheduled_stop_point", () => {
       body: { query: mutation },
     });
 
-    const response = await db.singleQuery(
+    const response = await queryTable(
       dbConnectionPool,
-      `
-        SELECT
-          ${Object.keys(sampleScheduledStopPoints[0])
-            .map((key) => `ssp.${key}`)
-            .join(",")}
-        FROM service_pattern.scheduled_stop_point ssp
-      `
+      "service_pattern.scheduled_stop_point"
     );
 
-    expect(response.rowCount).toEqual(sampleScheduledStopPoints.length);
+    expect(response.rowCount).toEqual(scheduledStopPoints.length);
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
         dataset.asDbGeometryObjectArray(
           [
             completeUpdated,
-            ...sampleScheduledStopPoints.filter(
+            ...scheduledStopPoints.filter(
               (scheduledStopPoint) =>
                 scheduledStopPoint.scheduled_stop_point_id !=
                 completeUpdated.scheduled_stop_point_id

@@ -1,14 +1,14 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { lines } from "@datasets/lines";
-import { routes as sampleRoutes } from "@datasets/routes";
+import { routes } from "@datasets/routes";
 import "@util/matchers";
 import { Route, RouteDirection } from "@datasets/types";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 const toBeInserted = (
   on_line_id: string | undefined,
@@ -37,7 +37,7 @@ const createMutation = (on_line_id: string | undefined, priority: number) => `
       ["direction"]
     )}) {
       returning {
-        ${Object.keys(sampleRoutes[0]).join(",")}
+        ${Object.keys(routes[0]).join(",")}
       }
     }
   }
@@ -64,18 +64,7 @@ describe("Insert route", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(on_line_id, priority) },
         })
-        .then((response) => {
-          if (response.statusCode >= 200 && response.statusCode < 300)
-            throw new Error(
-              "Request succeeded even though it was expected to fail"
-            );
-
-          expect(response).toEqual(
-            expect.objectContaining({
-              errors: expect.any(Array),
-            })
-          );
-        });
+        .then(checkErrorResponse);
     });
 
   const shouldNotModifyDatabase = (
@@ -88,18 +77,10 @@ describe("Insert route", () => {
         body: { query: createMutation(on_line_id, priority) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleRoutes[0])
-            .map((key) => `r.${key}`)
-            .join(",")}
-          FROM route.route r
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.route");
 
-      expect(response.rowCount).toEqual(sampleRoutes.length);
-      expect(response.rows).toEqual(expect.arrayContaining(sampleRoutes));
+      expect(response.rowCount).toEqual(routes.length);
+      expect(response.rows).toEqual(expect.arrayContaining(routes));
     });
 
   const shouldReturnCorrectResponse = (
@@ -146,17 +127,9 @@ describe("Insert route", () => {
         body: { query: createMutation(on_line_id, priority) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleRoutes[0])
-            .map((key) => `r.${key}`)
-            .join(",")}
-          FROM route.route r
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.route");
 
-      expect(response.rowCount).toEqual(sampleRoutes.length + 1);
+      expect(response.rowCount).toEqual(routes.length + 1);
 
       expect(response.rows).toEqual(
         expect.arrayContaining([
@@ -165,7 +138,7 @@ describe("Insert route", () => {
             ...insertedDefaultValues,
             route_id: expect.any(String),
           },
-          ...sampleRoutes,
+          ...routes,
         ])
       );
     });

@@ -1,12 +1,11 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
-import { lines as sampleLines } from "@datasets/lines";
+import { lines } from "@datasets/lines";
 import "@util/matchers";
 import { Line, VehicleMode } from "@datasets/types";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
 
 const createMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -14,7 +13,7 @@ const createMutation = (toBeInserted: Partial<Line>) => `
       "primary_vehicle_mode",
     ])}) {
       returning {
-        ${Object.keys(sampleLines[0]).join(",")}
+        ${Object.keys(lines[0]).join(",")}
       }
     }
   }
@@ -66,17 +65,9 @@ describe("Insert line", () => {
         body: { query: createMutation(toBeInserted) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleLines[0])
-            .map((key) => `l.${key}`)
-            .join(",")}
-          FROM route.line l
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.line");
 
-      expect(response.rowCount).toEqual(sampleLines.length + 1);
+      expect(response.rowCount).toEqual(lines.length + 1);
 
       expect(response.rows).toEqual(
         expect.arrayContaining([
@@ -84,7 +75,7 @@ describe("Insert line", () => {
             ...toBeInserted,
             line_id: expect.any(String),
           },
-          ...sampleLines,
+          ...lines,
         ])
       );
     });

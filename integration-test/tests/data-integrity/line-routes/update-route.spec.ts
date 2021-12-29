@@ -1,13 +1,13 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { lines } from "@datasets/lines";
-import { routes, routes as sampleRoutes } from "@datasets/routes";
+import { routes } from "@datasets/routes";
 import "@util/matchers";
 import { Route } from "@datasets/types";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 type PartialRouteWithNullableOnLineID = Partial<
   Omit<Route, "on_line_id"> & { on_line_id: string | null }
@@ -22,7 +22,7 @@ const createMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
-        ${Object.keys(sampleRoutes[0]).join(",")}
+        ${Object.keys(routes[0]).join(",")}
       }
     }
   }
@@ -53,18 +53,7 @@ describe("Update route", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeUpdated) },
         })
-        .then((response) => {
-          if (response.statusCode >= 200 && response.statusCode < 300)
-            throw new Error(
-              "Request succeeded even though it was expected to fail"
-            );
-
-          expect(response).toEqual(
-            expect.objectContaining({
-              errors: expect.any(Array),
-            })
-          );
-        });
+        .then(checkErrorResponse);
     });
 
   const shouldNotModifyDatabase = (
@@ -76,18 +65,10 @@ describe("Update route", () => {
         body: { query: createMutation(toBeUpdated) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleRoutes[0])
-            .map((key) => `r.${key}`)
-            .join(",")}
-          FROM route.route r
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.route");
 
-      expect(response.rowCount).toEqual(sampleRoutes.length);
-      expect(response.rows).toEqual(expect.arrayContaining(sampleRoutes));
+      expect(response.rowCount).toEqual(routes.length);
+      expect(response.rows).toEqual(expect.arrayContaining(routes));
     });
 
   const shouldReturnCorrectResponse = (
@@ -121,23 +102,15 @@ describe("Update route", () => {
         body: { query: createMutation(toBeUpdated) },
       });
 
-      const response = await db.singleQuery(
-        dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleRoutes[0])
-            .map((key) => `r.${key}`)
-            .join(",")}
-          FROM route.route r
-        `
-      );
+      const response = await queryTable(dbConnectionPool, "route.route");
 
       const updated = completeUpdated(toBeUpdated);
 
-      expect(response.rowCount).toEqual(sampleRoutes.length);
+      expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           updated,
-          ...sampleRoutes.filter((route) => route.route_id != updated.route_id),
+          ...routes.filter((route) => route.route_id != updated.route_id),
         ])
       );
     });

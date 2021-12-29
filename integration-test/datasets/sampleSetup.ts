@@ -12,7 +12,9 @@ import {
 import { lines } from "@datasets/lines";
 import { routes } from "@datasets/routes";
 
-export const tables: Record<string, Record<string, unknown>[]> = {
+type TableConfig = Record<string, Record<string, unknown>[]>;
+
+export const setupTables: TableConfig = {
   "infrastructure_network.infrastructure_link": dataset.asDbGeometryObjectArray(
     infrastructureLinks,
     ["shape"]
@@ -27,9 +29,15 @@ export const tables: Record<string, Record<string, unknown>[]> = {
   "internal_route.route": routes,
 };
 
+export const queryTables: TableConfig = {
+  ...setupTables,
+  "service_pattern.scheduled_stop_point": scheduledStopPoints,
+  "route.route": routes,
+};
+
 export const setupDb = (
   dbConnectionPool: pg.Pool,
-  configuration: (keyof typeof tables)[] = Object.keys(tables)
+  configuration: (keyof typeof setupTables)[] = Object.keys(setupTables)
 ) => {
   let queryRunner = db.queryRunner(dbConnectionPool).query("BEGIN");
 
@@ -37,8 +45,20 @@ export const setupDb = (
     queryRunner = queryRunner.truncate(table);
   });
   configuration.forEach((table) => {
-    queryRunner = queryRunner.insertFromJson(table, tables[table]);
+    queryRunner = queryRunner.insertFromJson(table, setupTables[table]);
   });
 
   return queryRunner.query("COMMIT").run();
 };
+
+export const queryTable = (
+  dbConnectionPool: pg.Pool,
+  table: keyof typeof queryTables
+) =>
+  db.singleQuery(
+    dbConnectionPool,
+    `
+          SELECT ${Object.keys(queryTables[table][0]).join(",")}
+          FROM ${table}
+        `
+  );

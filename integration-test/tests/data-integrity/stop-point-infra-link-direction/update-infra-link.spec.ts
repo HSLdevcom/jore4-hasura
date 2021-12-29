@@ -1,13 +1,13 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { InfrastructureLink, LinkDirection } from "@datasets/types";
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 const createMutation = (
   infrastructureLinkId: string,
@@ -48,18 +48,7 @@ describe("Update infrastructure link", () => {
             ...config.hasuraRequestTemplate,
             body: { query: createMutation(infrastructureLinkId, toBeUpdated) },
           })
-          .then((response) => {
-            if (response.statusCode >= 200 && response.statusCode < 300)
-              throw new Error(
-                "Request succeeded even though it was expected to fail"
-              );
-
-            expect(response).toEqual(
-              expect.objectContaining({
-                errors: expect.any(Array),
-              })
-            );
-          });
+          .then(checkErrorResponse);
       });
 
     const shouldNotModifyDatabase = (
@@ -72,14 +61,9 @@ describe("Update infrastructure link", () => {
           body: { query: createMutation(infrastructureLinkId, toBeUpdated) },
         });
 
-        const response = await db.singleQuery(
+        const response = await queryTable(
           dbConnectionPool,
-          `
-            SELECT ${Object.keys(infrastructureLinks[0])
-              .map((key) => `il.${key}`)
-              .join(",")}
-            FROM infrastructure_network.infrastructure_link il
-          `
+          "infrastructure_network.infrastructure_link"
         );
 
         expect(response.rowCount).toEqual(infrastructureLinks.length);
@@ -169,14 +153,9 @@ describe("Update infrastructure link", () => {
             },
           });
 
-          const response = await db.singleQuery(
+          const response = await queryTable(
             dbConnectionPool,
-            `
-              SELECT ${Object.keys(infrastructureLinks[0])
-                .map((key) => `il.${key}`)
-                .join(",")}
-              FROM infrastructure_network.infrastructure_link il
-            `
+            "infrastructure_network.infrastructure_link"
           );
 
           expect(response.rowCount).toEqual(infrastructureLinks.length);
