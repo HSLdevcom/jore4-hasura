@@ -66,6 +66,26 @@ export const infrastructureLinks: InfrastructureLink[] = [
     external_link_source: "digiroad_r",
     external_link_id: "3",
   },
+  {
+    infrastructure_link_id: "9c73bf64-4392-4720-b3f4-6815544451b2",
+    direction: LinkDirection.BiDirectional,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [12.1, 13.2, 0],
+        [4.3, 1.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1400,
+    external_link_source: "digiroad_r",
+    external_link_id: "4",
+  },
 ];
 
 export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureLink[] =
@@ -89,5 +109,9 @@ export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureL
     {
       infrastructure_link_id: infrastructureLinks[2].infrastructure_link_id,
       vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[3].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericFerry,
     },
   ];
