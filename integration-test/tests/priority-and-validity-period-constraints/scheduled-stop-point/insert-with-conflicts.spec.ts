@@ -1,10 +1,9 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import "@util/matchers";
 import {
   LinkDirection,
@@ -13,7 +12,8 @@ import {
 } from "@datasets/types";
 import { expect } from "@jest/globals";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -31,7 +31,7 @@ const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
+        ${Object.keys(scheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -57,18 +57,7 @@ describe("Insert scheduled stop point", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeInserted) },
         })
-        .then((response) => {
-          if (response.statusCode >= 200 && response.statusCode < 300)
-            throw new Error(
-              "Request succeeded even though it was expected to fail"
-            );
-
-          expect(response).toEqual(
-            expect.objectContaining({
-              errors: expect.any(Array),
-            })
-          );
-        });
+        .then(checkErrorResponse);
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<ScheduledStopPoint>) =>
@@ -78,22 +67,15 @@ describe("Insert scheduled stop point", () => {
         body: { query: createMutation(toBeInserted) },
       });
 
-      const response = await db.singleQuery(
+      const response = await queryTable(
         dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleScheduledStopPoints[0])
-            .map((key) => `ssp.${key}`)
-            .join(",")}
-          FROM service_pattern.scheduled_stop_point ssp
-        `
+        "service_pattern.scheduled_stop_point"
       );
 
-      expect(response.rowCount).toEqual(sampleScheduledStopPoints.length);
+      expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          asDbGeometryObjectArray(sampleScheduledStopPoints, [
-            "measured_location",
-          ])
+          asDbGeometryObjectArray(scheduledStopPoints, ["measured_location"])
         )
       );
     });

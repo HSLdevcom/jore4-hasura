@@ -1,4 +1,4 @@
-import pg, { Pool, QueryResult } from "pg";
+import { Pool, QueryResult } from "pg";
 
 class QueryRunner {
   connectionPool: Pool;

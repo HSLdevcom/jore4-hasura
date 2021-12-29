@@ -1,10 +1,9 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import "@util/matchers";
 import {
   LinkDirection,
@@ -12,7 +11,7 @@ import {
   VehicleMode,
 } from "@datasets/types";
 import { asDbGeometryObject, asDbGeometryObjectArray } from "@util/dataset";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -30,7 +29,7 @@ const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
+        ${Object.keys(scheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -87,17 +86,12 @@ describe("Insert scheduled stop point", () => {
         body: { query: createMutation(toBeInserted) },
       });
 
-      const response = await db.singleQuery(
+      const response = await queryTable(
         dbConnectionPool,
-        `
-          SELECT ${Object.keys(sampleScheduledStopPoints[0])
-            .map((key) => `ssp.${key}`)
-            .join(",")}
-          FROM service_pattern.scheduled_stop_point ssp
-        `
+        "service_pattern.scheduled_stop_point"
       );
 
-      expect(response.rowCount).toEqual(sampleScheduledStopPoints.length + 1);
+      expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
 
       expect(response.rows).toEqual(
         expect.arrayContaining([
@@ -105,7 +99,7 @@ describe("Insert scheduled stop point", () => {
             ...asDbGeometryObject(toBeInserted, ["measured_location"]),
             scheduled_stop_point_id: expect.any(String),
           },
-          ...asDbGeometryObjectArray(sampleScheduledStopPoints, [
+          ...asDbGeometryObjectArray(scheduledStopPoints, [
             "measured_location",
           ]),
         ])
