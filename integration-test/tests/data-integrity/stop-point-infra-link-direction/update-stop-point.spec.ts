@@ -1,14 +1,14 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { checkErrorResponse } from "@util/response";
 
 const createMutation = (
   stopPointId: string,
@@ -49,18 +49,7 @@ describe("Update scheduled stop point", () => {
             ...config.hasuraRequestTemplate,
             body: { query: createMutation(stopPointId, toBeUpdated) },
           })
-          .then((response) => {
-            if (response.statusCode >= 200 && response.statusCode < 300)
-              throw new Error(
-                "Request succeeded even though it was expected to fail"
-              );
-
-            expect(response).toEqual(
-              expect.objectContaining({
-                errors: expect.any(Array),
-              })
-            );
-          });
+          .then(checkErrorResponse);
       });
 
     const shouldNotModifyDatabase = (
@@ -73,14 +62,9 @@ describe("Update scheduled stop point", () => {
           body: { query: createMutation(stopPointId, toBeUpdated) },
         });
 
-        const response = await db.singleQuery(
+        const response = await queryTable(
           dbConnectionPool,
-          `
-            SELECT ${Object.keys(scheduledStopPoints[0])
-              .map((key) => `ssp.${key}`)
-              .join(",")}
-            FROM service_pattern.scheduled_stop_point ssp
-          `
+          "service_pattern.scheduled_stop_point"
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -205,14 +189,9 @@ describe("Update scheduled stop point", () => {
             },
           });
 
-          const response = await db.singleQuery(
+          const response = await queryTable(
             dbConnectionPool,
-            `
-              SELECT ${Object.keys(scheduledStopPoints[0])
-                .map((key) => `ssp.${key}`)
-                .join(",")}
-              FROM service_pattern.scheduled_stop_point ssp
-            `
+            "service_pattern.scheduled_stop_point"
           );
 
           expect(response.rowCount).toEqual(scheduledStopPoints.length);

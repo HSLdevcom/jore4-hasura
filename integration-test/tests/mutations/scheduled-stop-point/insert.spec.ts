@@ -1,17 +1,16 @@
 import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
-import * as db from "@util/db";
 import * as dataset from "@util/dataset";
 import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints as sampleScheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import {
   LinkDirection,
   ScheduledStopPoint,
   VehicleMode,
 } from "@datasets/types";
 import "@util/matchers";
-import { setupDb } from "@datasets/sampleSetup";
+import { queryTable, setupDb } from "@datasets/sampleSetup";
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -50,7 +49,7 @@ const mutation = `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(sampleScheduledStopPoints[0]).join(",")}
+        ${Object.keys(scheduledStopPoints[0]).join(",")}
       }
     }
   }
@@ -102,18 +101,12 @@ describe("Insert scheduled_stop_point", () => {
       body: { query: mutation },
     });
 
-    const response = await db.singleQuery(
+    const response = await queryTable(
       dbConnectionPool,
-      `
-        SELECT
-          ${Object.keys(sampleScheduledStopPoints[0])
-            .map((key) => `ssp.${key}`)
-            .join(",")}
-        FROM service_pattern.scheduled_stop_point ssp
-      `
+      "service_pattern.scheduled_stop_point"
     );
 
-    expect(response.rowCount).toEqual(sampleScheduledStopPoints.length + 1);
+    expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
@@ -124,7 +117,7 @@ describe("Insert scheduled_stop_point", () => {
               ...insertedDefaultValues,
               scheduled_stop_point_id: expect.any(String),
             },
-            ...sampleScheduledStopPoints,
+            ...scheduledStopPoints,
           ],
           ["measured_location"]
         )
