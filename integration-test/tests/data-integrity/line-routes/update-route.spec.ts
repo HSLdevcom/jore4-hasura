@@ -93,7 +93,7 @@ describe("Update route", () => {
       );
     });
 
-  const shouldUpdateCorrectRowIntoDatabase = (
+  const shouldUpdateCorrectRowInDatabase = (
     toBeUpdated: PartialRouteWithNullableOnLineID
   ) =>
     it("should update correct row into the database", async () => {
@@ -140,13 +140,13 @@ describe("Update route", () => {
     const toBeUpdated = { priority: lines[1].priority };
 
     shouldReturnCorrectResponse(toBeUpdated);
-    shouldUpdateCorrectRowIntoDatabase(toBeUpdated);
+    shouldUpdateCorrectRowInDatabase(toBeUpdated);
   });
 
   describe("with a priority that is higher to the line's priority", () => {
     const toBeUpdated = { priority: lines[1].priority + 10 };
 
     shouldReturnCorrectResponse(toBeUpdated);
-    shouldUpdateCorrectRowIntoDatabase(toBeUpdated);
+    shouldUpdateCorrectRowInDatabase(toBeUpdated);
   });
 });
