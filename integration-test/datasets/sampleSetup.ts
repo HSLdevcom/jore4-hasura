@@ -10,7 +10,7 @@ import {
   vehicleModeOnScheduledStopPoint,
 } from "@datasets/scheduled-stop-points";
 import { lines } from "@datasets/lines";
-import { routes } from "@datasets/routes";
+import { infrastructureLinkAlongRoute, routes } from "@datasets/routes";
 
 type TableConfig = Record<string, Record<string, unknown>[]>;
 
@@ -27,6 +27,7 @@ export const setupTables: TableConfig = {
     vehicleModeOnScheduledStopPoint,
   "route.line": lines,
   "internal_route.route": routes,
+  "route.infrastructure_link_along_route": infrastructureLinkAlongRoute,
 };
 
 export const queryTables: TableConfig = {

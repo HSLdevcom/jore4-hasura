@@ -86,6 +86,86 @@ export const infrastructureLinks: InfrastructureLink[] = [
     external_link_source: "digiroad_r",
     external_link_id: "4",
   },
+  {
+    infrastructure_link_id: "c922cc35-46e7-4681-b6ef-60673fc25103",
+    direction: LinkDirection.Forward,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [12.1, 11.2, 0],
+        [12.3, 10.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1200,
+    external_link_source: "digiroad_r",
+    external_link_id: "5",
+  },
+  {
+    infrastructure_link_id: "1bc1b232-c264-4472-80da-c48815628314",
+    direction: LinkDirection.BiDirectional,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [13.1, 12.2, 0],
+        [15.3, 14.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1100,
+    external_link_source: "digiroad_r",
+    external_link_id: "6",
+  },
+  {
+    infrastructure_link_id: "122836f0-3408-4f35-b39c-c6f260170fa6",
+    direction: LinkDirection.Backward,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [11.1, 10.2, 0],
+        [9.3, 2.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1600,
+    external_link_source: "digiroad_r",
+    external_link_id: "7",
+  },
+  {
+    infrastructure_link_id: "3280b64e-9a5c-490f-a95b-7fec98f80e27",
+    direction: LinkDirection.BiDirectional,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [12.1, 13.2, 0],
+        [4.3, 1.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1400,
+    external_link_source: "digiroad_r",
+    external_link_id: "8",
+  },
 ];
 
 export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureLink[] =
@@ -113,5 +193,13 @@ export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureL
     {
       infrastructure_link_id: infrastructureLinks[3].infrastructure_link_id,
       vehicle_submode: VehicleSubmode.GenericFerry,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericMetro,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
     },
   ];
