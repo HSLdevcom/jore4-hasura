@@ -83,7 +83,7 @@ describe("Update line", () => {
       );
     });
 
-  const shouldUpdateCorrectRowIntoDatabase = (toBeUpdated: Partial<Line>) =>
+  const shouldUpdateCorrectRowInDatabase = (toBeUpdated: Partial<Line>) =>
     it("should update correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
@@ -114,13 +114,13 @@ describe("Update line", () => {
     const toBeUpdated = { priority: routes[1].priority };
 
     shouldReturnCorrectResponse(toBeUpdated);
-    shouldUpdateCorrectRowIntoDatabase(toBeUpdated);
+    shouldUpdateCorrectRowInDatabase(toBeUpdated);
   });
 
   describe("with a priority lower than the priority of a route belonging to the line", () => {
     const toBeUpdated = { priority: routes[1].priority - 10 };
 
     shouldReturnCorrectResponse(toBeUpdated);
-    shouldUpdateCorrectRowIntoDatabase(toBeUpdated);
+    shouldUpdateCorrectRowInDatabase(toBeUpdated);
   });
 });

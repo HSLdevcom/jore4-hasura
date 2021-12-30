@@ -138,7 +138,7 @@ describe("Update infrastructure link", () => {
           );
         });
 
-      const shouldUpdateCorrectRowIntoDatabase = (
+      const shouldUpdateCorrectRowInDatabase = (
         original: InfrastructureLink,
         toBeUpdated: Partial<InfrastructureLink>
       ) =>
@@ -184,7 +184,7 @@ describe("Update infrastructure link", () => {
 
         shouldReturnCorrectResponse(infrastructureLinks[2], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(infrastructureLinks[2], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(infrastructureLinks[2], toBeUpdated);
       });
 
       describe('infrastructure link direction "bidirectional", stop point direction "forward', () => {
@@ -194,7 +194,7 @@ describe("Update infrastructure link", () => {
 
         shouldReturnCorrectResponse(infrastructureLinks[1], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(infrastructureLinks[1], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(infrastructureLinks[1], toBeUpdated);
       });
     });
   });

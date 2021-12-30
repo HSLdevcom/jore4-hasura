@@ -158,7 +158,7 @@ describe("Insert route", () => {
     shouldInsertCorrectRowIntoDatabase(lines[1].line_id, lines[1].priority);
   });
 
-  describe("whose priority is higher to the line's priority", () => {
+  describe("whose priority is higher than the line's priority", () => {
     shouldReturnCorrectResponse(lines[1].line_id, lines[1].priority + 10);
     shouldInsertCorrectRowIntoDatabase(
       lines[1].line_id,
