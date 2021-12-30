@@ -174,7 +174,7 @@ describe("Update scheduled stop point", () => {
           );
         });
 
-      const shouldUpdateCorrectRowIntoDatabase = (
+      const shouldUpdateCorrectRowInDatabase = (
         original: ScheduledStopPoint,
         toBeUpdated: Partial<ScheduledStopPoint>
       ) =>
@@ -222,7 +222,7 @@ describe("Update scheduled stop point", () => {
 
         shouldReturnCorrectResponse(scheduledStopPoints[1], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(scheduledStopPoints[1], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(scheduledStopPoints[1], toBeUpdated);
       });
 
       describe('infrastructure link direction "backward", stop point direction "backward"', () => {
@@ -234,7 +234,7 @@ describe("Update scheduled stop point", () => {
 
         shouldReturnCorrectResponse(scheduledStopPoints[2], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(scheduledStopPoints[2], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(scheduledStopPoints[2], toBeUpdated);
       });
 
       describe('infrastructure link direction "bidirectional", stop point direction "forward"', () => {
@@ -245,7 +245,7 @@ describe("Update scheduled stop point", () => {
 
         shouldReturnCorrectResponse(scheduledStopPoints[2], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(scheduledStopPoints[2], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(scheduledStopPoints[2], toBeUpdated);
       });
 
       describe('infrastructure link direction "bidirectional", stop point direction "backward"', () => {
@@ -256,7 +256,7 @@ describe("Update scheduled stop point", () => {
 
         shouldReturnCorrectResponse(scheduledStopPoints[1], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(scheduledStopPoints[1], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(scheduledStopPoints[1], toBeUpdated);
       });
 
       describe('infrastructure link direction "bidirectional", stop point direction "bidirectional"', () => {
@@ -266,7 +266,7 @@ describe("Update scheduled stop point", () => {
 
         shouldReturnCorrectResponse(scheduledStopPoints[1], toBeUpdated);
 
-        shouldUpdateCorrectRowIntoDatabase(scheduledStopPoints[1], toBeUpdated);
+        shouldUpdateCorrectRowInDatabase(scheduledStopPoints[1], toBeUpdated);
       });
     });
   });
