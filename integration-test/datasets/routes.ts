@@ -1,6 +1,7 @@
-import { Route, RouteDirection } from "./types";
+import { InfrastructureLinkAlongRoute, Route, RouteDirection } from "./types";
 import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
 import { lines } from "@datasets/lines";
+import { infrastructureLinks } from "@datasets/infrastructure-links";
 
 export const routes: Route[] = [
   {
@@ -58,5 +59,26 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date("2044-01-02 21:11:32Z"),
     validity_end: new Date("2044-09-02 22:11:32Z"),
+  },
+];
+
+export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
+  {
+    route_id: routes[0].route_id,
+    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_sequence: 0,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[0].route_id,
+    infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
+    infrastructure_link_sequence: 2,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[0].route_id,
+    infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+    infrastructure_link_sequence: 3,
+    is_traversal_forwards: false,
   },
 ];

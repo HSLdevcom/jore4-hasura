@@ -77,6 +77,13 @@ export type Route = {
   validity_end: Date | null;
 };
 
+export type InfrastructureLinkAlongRoute = {
+  route_id: string;
+  infrastructure_link_id: string;
+  infrastructure_link_sequence: number;
+  is_traversal_forwards: boolean;
+};
+
 export type Line = {
   line_id: string;
   name_i18n: string;
