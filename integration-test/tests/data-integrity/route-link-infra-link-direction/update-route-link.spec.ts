@@ -102,14 +102,14 @@ describe("Update route link", () => {
       };
 
       shouldReturnErrorResponse(
-        infrastructureLinkAlongRoute[1].route_id,
-        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[2].route_id,
+        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
         toBeUpdated
       );
 
       shouldNotModifyDatabase(
-        infrastructureLinkAlongRoute[1].route_id,
-        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[2].route_id,
+        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
         toBeUpdated
       );
     });
@@ -120,14 +120,14 @@ describe("Update route link", () => {
       };
 
       shouldReturnErrorResponse(
-        infrastructureLinkAlongRoute[0].route_id,
-        infrastructureLinkAlongRoute[0].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[1].route_id,
+        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
         toBeUpdated
       );
 
       shouldNotModifyDatabase(
-        infrastructureLinkAlongRoute[0].route_id,
-        infrastructureLinkAlongRoute[0].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[1].route_id,
+        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
         toBeUpdated
       );
     });
@@ -138,14 +138,14 @@ describe("Update route link", () => {
       };
 
       shouldReturnErrorResponse(
-        infrastructureLinkAlongRoute[2].route_id,
-        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[1].route_id,
+        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
         toBeUpdated
       );
 
       shouldNotModifyDatabase(
-        infrastructureLinkAlongRoute[2].route_id,
-        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[1].route_id,
+        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
         toBeUpdated
       );
     });
@@ -156,14 +156,14 @@ describe("Update route link", () => {
       };
 
       shouldReturnErrorResponse(
-        infrastructureLinkAlongRoute[1].route_id,
-        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[2].route_id,
+        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
         toBeUpdated
       );
 
       shouldNotModifyDatabase(
-        infrastructureLinkAlongRoute[1].route_id,
-        infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
+        infrastructureLinkAlongRoute[2].route_id,
+        infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
         toBeUpdated
       );
     });
@@ -243,10 +243,10 @@ describe("Update route link", () => {
         infrastructure_link_id: infrastructureLinks[0].infrastructure_link_id,
       };
 
-      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[1], toBeUpdated);
+      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[2], toBeUpdated);
 
       shouldUpdateCorrectRowInDatabase(
-        infrastructureLinkAlongRoute[1],
+        infrastructureLinkAlongRoute[2],
         toBeUpdated
       );
     });
@@ -256,23 +256,23 @@ describe("Update route link", () => {
         infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
       };
 
-      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[2], toBeUpdated);
+      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[1], toBeUpdated);
 
       shouldUpdateCorrectRowInDatabase(
-        infrastructureLinkAlongRoute[2],
+        infrastructureLinkAlongRoute[1],
         toBeUpdated
       );
     });
 
     describe('infrastructure link direction "bidirectional", route link direction "backward", with setting new link', () => {
       const toBeUpdated = {
-        infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+        infrastructure_link_id: infrastructureLinks[9].infrastructure_link_id,
       };
 
-      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[0], toBeUpdated);
+      shouldReturnCorrectResponse(infrastructureLinkAlongRoute[1], toBeUpdated);
 
       shouldUpdateCorrectRowInDatabase(
-        infrastructureLinkAlongRoute[0],
+        infrastructureLinkAlongRoute[1],
         toBeUpdated
       );
     });
