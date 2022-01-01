@@ -7,78 +7,107 @@ CREATE FUNCTION journey_pattern.verify_route_journey_pattern_refs(
 AS
 $$
 BEGIN
-  -- Create a map of stop point properties to their respective infra link properties, so that we can check
+  -- Check if it is possible to visit all stops of a journey pattern in such a fashion that all links, on which
+  -- the stops reside, are visited in an order matching the route's link order.
+  --
+  -- This implicitly ensures
   --   - that every stop point in the journey pattern resides on a link that is part of the journey pattern's route
   --   - the stop points' order is the same as the order of the links they reside on
-  --   - the stop points' directions are compatible with the directions, in which the stop points' links are traversed.
-  -- Note that some entities' ids are fetched only for debugging purposes.
-  CREATE TEMP TABLE infra_link_map AS
-  SELECT sspijp.journey_pattern_id,
-         sspijp.scheduled_stop_point_id,
-         sspijp.scheduled_stop_point_sequence,
-         -- the sequence number of the stop point in the journey pattern:
-         row_number()
-         OVER (PARTITION BY sspijp.journey_pattern_id ORDER BY sspijp.scheduled_stop_point_sequence)
-                                     AS journey_pattern_order,
-         -- allowed directions of the stop point:
-         ssp.direction               AS scheduled_stop_point_direction,
-         ilar.route_id,
-         -- route_link_id is NULL if the stop's link is not part of the journey pattern's route:
-         ilar.infrastructure_link_id AS route_link_id,
-         ilar.infrastructure_link_sequence,
-         -- the direction, in which the link of the stop point is traversed:
-         ilar.is_traversal_forwards  AS is_link_traversal_forwards,
-         -- the sequence number of the link in the route:
-         -- NB: order also by scheduled_stop_point_sequence to get a deterministic order also when there are multiple stops on the same infra link
-         row_number()
-         OVER (PARTITION BY sspijp.journey_pattern_id ORDER BY ilar.infrastructure_link_sequence, sspijp.scheduled_stop_point_sequence)
-                                     AS route_order
-  FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
-         LEFT JOIN internal_service_pattern.scheduled_stop_point ssp
-                   ON ssp.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
-         LEFT JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
-         LEFT JOIN route.infrastructure_link_along_route ilar
-                   ON ilar.route_id = jp.on_route_id AND
-                      ilar.infrastructure_link_id = ssp.located_on_infrastructure_link_id
-  WHERE sspijp.journey_pattern_id = filter_journey_pattern_id
-     OR jp.on_route_id = filter_route_id;
-
+  --   - the stop points' directions are match the directions, in which the stop points' links are visited.
+  --
+  -- For debugging purposes, an additional query fragment is provided below.
   IF EXISTS(
     SELECT 1
-    FROM infra_link_map
-    WHERE route_link_id IS NULL
-    )
+    FROM (
+       WITH RECURSIVE
+         -- For all stops in the journey pattern, list all visits of the stop's infra link in a
+         -- direction matching the stop's allowed directions.
+         ssp_ilar_combos AS (
+           SELECT sspijp.journey_pattern_id,
+                  sspijp.scheduled_stop_point_id,
+                  sspijp.scheduled_stop_point_sequence,
+                  sspijp.stop_point_order,
+                  ilar.route_id,
+                  ilar.infrastructure_link_id,
+                  ilar.infrastructure_link_sequence
+           FROM (
+                  SELECT journey_pattern_id,
+                         scheduled_stop_point_id,
+                         scheduled_stop_point_sequence,
+                         -- create a continuous sequence number of the scheduled_stop_point_sequence (which is not
+                         -- required to be continuous, i.e. there can be gaps)
+                         ROW_NUMBER()
+                         OVER (PARTITION BY journey_pattern_id ORDER BY scheduled_stop_point_sequence) AS stop_point_order
+                  FROM journey_pattern.scheduled_stop_point_in_journey_pattern
+                ) AS sspijp
+                  LEFT JOIN internal_service_pattern.scheduled_stop_point ssp
+                            ON ssp.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
+                  LEFT JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
+                  LEFT JOIN route.infrastructure_link_along_route ilar
+                            ON ilar.route_id = jp.on_route_id
+                              AND ilar.infrastructure_link_id = ssp.located_on_infrastructure_link_id
+                              -- visiting the link in a direction not matching the stop's possible directions is
+                              -- filtered out
+                              AND (ssp.direction = 'bidirectional' OR
+                                   ((ssp.direction = 'forward' AND ilar.is_traversal_forwards = true)
+                                     OR (ssp.direction = 'backward' AND ilar.is_traversal_forwards = false)))
+           WHERE jp.journey_pattern_id = filter_journey_pattern_id
+              OR jp.on_route_id = filter_route_id
+         ),
+         -- Recursively try to traverse the journey pattern in its specified order, such that all visited links
+         -- appear in ascending order on the journey pattern's route.
+         -- Note that this CTE will contain more rows than only the ones depicting an actual traversal. To find an
+         -- actual possible traversal, choose the row with min(infrastructure_link_sequence) for every listed stop
+         -- visit. For this, also see the debug query addition below.
+         traversal AS (
+           SELECT *
+           FROM ssp_ilar_combos
+           WHERE stop_point_order = 1
+           UNION ALL
+           SELECT ssp_ilar_combos.*
+           FROM traversal
+                  JOIN ssp_ilar_combos ON ssp_ilar_combos.journey_pattern_id = traversal.journey_pattern_id
+           -- select the next stop
+           WHERE ssp_ilar_combos.stop_point_order = traversal.stop_point_order + 1
+             -- Only allow visiting the route links in ascending route link order. >= is needed to be able
+             -- to allow traversing two stops residing on the same infra link.
+             AND ssp_ilar_combos.infrastructure_link_sequence >= traversal.infrastructure_link_sequence
+         )
+       -- List all stops of the journey pattern and left-join their visits. In case no visit is present
+       -- (infrastructure_link_sequence is null), it was not possible to visit all stops in a way matching
+       -- the route's link order.
+       SELECT t.infrastructure_link_sequence
+       FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
+              LEFT JOIN internal_service_pattern.scheduled_stop_point ssp
+                        ON ssp.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
+              LEFT JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
+              LEFT JOIN traversal t
+                        ON t.journey_pattern_id = sspijp.journey_pattern_id
+                          AND t.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
+                          AND t.scheduled_stop_point_sequence = sspijp.scheduled_stop_point_sequence
+       WHERE sspijp.journey_pattern_id = filter_journey_pattern_id
+          OR jp.on_route_id = filter_route_id
+    ) as infra_link_seq
+    WHERE infra_link_seq.infrastructure_link_sequence IS NULL
+  )
   THEN
-    DROP TABLE infra_link_map;
-    RAISE EXCEPTION 'found stop in journey pattern which is on a link that is not part of the route';
+    RAISE EXCEPTION 'route''s and journey pattern''s traversal paths must match each other';
   END IF;
 
-  IF EXISTS(
-    SELECT 1
-    FROM infra_link_map
-    WHERE journey_pattern_order != route_order
-    )
-  THEN
-    DROP TABLE infra_link_map;
-    RAISE EXCEPTION 'stops in journey pattern are not in the same order as the links they are on in the route';
-  END IF;
+  -- When debugging the above query, you can start by placing the following query to be the main query. It will list
+  -- the actual possible traversal instead of checking the feasibility of a traversal:
+  --   SELECT *
+  --   FROM (
+  --          SELECT journey_pattern_id,
+  --                 scheduled_stop_point_id,
+  --                 scheduled_stop_point_sequence,
+  --                 ROW_NUMBER()
+  --                 OVER (PARTITION BY journey_pattern_id, scheduled_stop_point_id, route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence) AS order_by_min
+  --          FROM traversal
+  --        ) AS ordered_ssp_ilar_combos
+  --   WHERE ordered_ssp_ilar_combos.order_by_min = 1;
 
-  IF EXISTS(
-    SELECT 1
-    FROM infra_link_map
-    WHERE (scheduled_stop_point_direction = 'forward' AND
-           is_link_traversal_forwards = false)
-       OR (scheduled_stop_point_direction = 'backward' AND
-           is_link_traversal_forwards = true)
-    -- bidirectional stop points' links are allowed to be traversed in either direction
-    )
-  THEN
-    DROP TABLE infra_link_map;
-    RAISE EXCEPTION 'found stop in journey pattern, whose infra link is traversed in a direction not compatible with the stop''s directions';
-  END IF;
-
-  DROP TABLE infra_link_map;
-END ;
+END;
 $$;
 
 
