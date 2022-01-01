@@ -166,6 +166,46 @@ export const infrastructureLinks: InfrastructureLink[] = [
     external_link_source: "digiroad_r",
     external_link_id: "8",
   },
+  {
+    infrastructure_link_id: "8acef099-b54a-435a-866b-3f446f002a1d",
+    direction: LinkDirection.BiDirectional,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [12.1, 11.2, 0],
+        [12.3, 10.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1200,
+    external_link_source: "digiroad_r",
+    external_link_id: "9",
+  },
+  {
+    infrastructure_link_id: "e2fd0c71-fc8a-4999-8b5a-4fe3b76ebe40",
+    direction: LinkDirection.BiDirectional,
+    shape: {
+      type: "LineString",
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::4326",
+        },
+      },
+      coordinates: [
+        [13.1, 12.2, 0],
+        [15.3, 14.1, 0],
+      ],
+    },
+    estimated_length_in_metres: 1100,
+    external_link_source: "digiroad_r",
+    external_link_id: "10",
+  },
 ];
 
 export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureLink[] =
@@ -199,7 +239,31 @@ export const vehicleSubmodeOnInfrastructureLink: VehicleSubmodeOnInfrastructureL
       vehicle_submode: VehicleSubmode.GenericMetro,
     },
     {
+      infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
       infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
       vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.TallElectricBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[8].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[8].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericTram,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[9].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.GenericBus,
+    },
+    {
+      infrastructure_link_id: infrastructureLinks[9].infrastructure_link_id,
+      vehicle_submode: VehicleSubmode.TallElectricBus,
     },
   ];
