@@ -61,7 +61,11 @@ describe("Update route link", () => {
               ),
             },
           })
-          .then(checkErrorResponse);
+          .then(
+            checkErrorResponse(
+              "route link direction must be compatible with infrastructure link direction"
+            )
+          );
       });
 
     const shouldNotModifyDatabase = (

@@ -56,7 +56,11 @@ describe("Update scheduled stop point", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeUpdated) },
         })
-        .then(checkErrorResponse);
+        .then(
+          checkErrorResponse(
+            "scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes"
+          )
+        );
     });
 
     it("should not modify the database", async () => {

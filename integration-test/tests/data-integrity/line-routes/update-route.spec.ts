@@ -45,7 +45,8 @@ describe("Update route", () => {
   beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnErrorResponse = (
-    toBeUpdated: PartialRouteWithNullableOnLineID
+    toBeUpdated: PartialRouteWithNullableOnLineID,
+    expectedErrorMessage?: string
   ) =>
     it("should return error response", async () => {
       await rp
@@ -53,7 +54,11 @@ describe("Update route", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeUpdated) },
         })
-        .then(checkErrorResponse);
+        .then(
+          checkErrorResponse(
+            expectedErrorMessage || "route priority must be >= line priority"
+          )
+        );
     });
 
   const shouldNotModifyDatabase = (
@@ -118,7 +123,7 @@ describe("Update route", () => {
   describe("with a NULL line ID", () => {
     const toBeUpdated = { on_line_id: null };
 
-    shouldReturnErrorResponse(toBeUpdated);
+    shouldReturnErrorResponse(toBeUpdated, "Not-NULL violation");
     shouldNotModifyDatabase(toBeUpdated);
   });
 
