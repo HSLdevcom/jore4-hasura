@@ -57,7 +57,11 @@ describe("Update infrastructure link", () => {
             ...config.hasuraRequestTemplate,
             body: { query: createMutation(infrastructureLinkId, toBeUpdated) },
           })
-          .then(checkErrorResponse);
+          .then(
+            checkErrorResponse(
+              "scheduled stop point direction must be compatible with infrastructure link direction"
+            )
+          );
       });
 
     const shouldNotModifyDatabase = (
