@@ -9,9 +9,9 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     description_i18n: "route 1",
     starts_from_scheduled_stop_point_id:
-      scheduledStopPoints[0].scheduled_stop_point_id,
+      scheduledStopPoints[3].scheduled_stop_point_id,
     ends_at_scheduled_stop_point_id:
-      scheduledStopPoints[1].scheduled_stop_point_id,
+      scheduledStopPoints[4].scheduled_stop_point_id,
     label: "route 1",
     direction: RouteDirection.Northbound,
     priority: 10,
@@ -65,20 +65,32 @@ export const routes: Route[] = [
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
   {
     route_id: routes[0].route_id,
-    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_id: infrastructureLinks[8].infrastructure_link_id,
     infrastructure_link_sequence: 0,
     is_traversal_forwards: false,
   },
   {
     route_id: routes[0].route_id,
+    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_sequence: 1,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[0].route_id,
     infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
-    infrastructure_link_sequence: 2,
+    infrastructure_link_sequence: 3,
     is_traversal_forwards: true,
   },
   {
     route_id: routes[0].route_id,
     infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
-    infrastructure_link_sequence: 3,
+    infrastructure_link_sequence: 4,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[0].route_id,
+    infrastructure_link_id: infrastructureLinks[9].infrastructure_link_id,
+    infrastructure_link_sequence: 10,
     is_traversal_forwards: false,
   },
 ];
