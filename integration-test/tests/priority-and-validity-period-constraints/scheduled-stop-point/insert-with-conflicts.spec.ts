@@ -57,7 +57,7 @@ describe("Insert scheduled stop point", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeInserted) },
         })
-        .then(checkErrorResponse);
+        .then(checkErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<ScheduledStopPoint>) =>
