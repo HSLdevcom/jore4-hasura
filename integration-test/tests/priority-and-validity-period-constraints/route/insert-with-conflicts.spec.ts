@@ -41,7 +41,7 @@ describe("Insert route", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeInserted) },
         })
-        .then(checkErrorResponse);
+        .then(checkErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<Route>) =>
