@@ -1,0 +1,21 @@
+
+DROP TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger ON journey_pattern.journey_pattern;
+
+DROP TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON internal_service_pattern.scheduled_stop_point;
+
+DROP TRIGGER verify_infra_link_stop_refs_on_infrastructure_link_along_route_trigger ON route.infrastructure_link_along_route;
+
+DROP TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_in_journey_pattern_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
+
+
+DROP FUNCTION journey_pattern.verify_infra_link_stop_refs_by_new_scheduled_stop_point_id();
+
+DROP FUNCTION journey_pattern.verify_infra_link_stop_refs_by_old_route_id();
+
+DROP FUNCTION journey_pattern.verify_infra_link_stop_refs_by_new_journey_pattern_id();
+
+
+DROP FUNCTION journey_pattern.verify_route_journey_pattern_refs(
+  filter_journey_pattern_id uuid,
+  filter_route_id uuid
+);
