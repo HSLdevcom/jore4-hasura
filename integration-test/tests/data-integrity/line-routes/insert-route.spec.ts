@@ -56,7 +56,8 @@ describe("Insert route", () => {
 
   const shouldReturnErrorResponse = (
     on_line_id: string | undefined,
-    priority: number
+    priority: number,
+    expectedErrorMsg?: string
   ) =>
     it("should return error response", async () => {
       await rp
@@ -64,7 +65,11 @@ describe("Insert route", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(on_line_id, priority) },
         })
-        .then(checkErrorResponse);
+        .then(
+          checkErrorResponse(
+            expectedErrorMsg || "route priority must be >= line priority"
+          )
+        );
     });
 
   const shouldNotModifyDatabase = (
@@ -144,7 +149,7 @@ describe("Insert route", () => {
     });
 
   describe("without line ID", () => {
-    shouldReturnErrorResponse(undefined, 50);
+    shouldReturnErrorResponse(undefined, 50, "Not-NULL violation");
     shouldNotModifyDatabase(undefined, 50);
   });
 
