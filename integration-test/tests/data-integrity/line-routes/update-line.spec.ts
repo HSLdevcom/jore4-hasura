@@ -47,7 +47,7 @@ describe("Update line", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeUpdated) },
         })
-        .then(checkErrorResponse);
+        .then(checkErrorResponse("route priority must be >= line priority"));
     });
 
   const shouldNotModifyDatabase = (toBeUpdated: Partial<Line>) =>

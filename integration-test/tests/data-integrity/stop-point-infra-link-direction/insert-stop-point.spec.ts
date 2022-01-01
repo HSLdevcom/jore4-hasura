@@ -89,7 +89,11 @@ describe("Insert scheduled stop point", () => {
             ...config.hasuraRequestTemplate,
             body: { query: createMutation(toBeInserted) },
           })
-          .then(checkErrorResponse);
+          .then(
+            checkErrorResponse(
+              "scheduled stop point direction must be compatible with infrastructure link direction"
+            )
+          );
       });
 
     const shouldNotModifyDatabase = (

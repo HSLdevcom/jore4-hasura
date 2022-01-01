@@ -40,7 +40,7 @@ describe("Delete infrastructure link", () => {
           ...config.hasuraRequestTemplate,
           body: { query: createMutation(toBeDeleted.infrastructure_link_id) },
         })
-        .then(checkErrorResponse);
+        .then(checkErrorResponse("violates foreign key constraint"));
     });
 
     it("should not modify database", async () => {
