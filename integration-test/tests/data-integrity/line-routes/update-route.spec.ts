@@ -2,11 +2,11 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { lines } from "@datasets/lines";
-import { routes } from "@datasets/routes";
+import { lines } from "@datasets/defaultSetup/lines";
+import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
-import { Route } from "@datasets/types";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { Route, RouteProps } from "@datasets/types";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 type PartialRouteWithNullableOnLineID = Partial<
@@ -22,7 +22,7 @@ const createMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }

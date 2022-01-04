@@ -3,18 +3,19 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
-} from "@datasets/infrastructure-links";
+} from "@datasets/defaultSetup/infrastructure-links";
 import { checkErrorResponse } from "@util/response";
+import { InfrastructureLinkProps } from "@datasets/types";
 
 const createMutation = (infrastructureLinkId: string) => `
   mutation {
     delete_infrastructure_network_infrastructure_link(where: {infrastructure_link_id: {_eq: "${infrastructureLinkId}"}}) {
       returning {
-        ${Object.keys(infrastructureLinks[0]).join(",")}
+        ${getPropNameArray(InfrastructureLinkProps).join(",")}
       }
     }
   }

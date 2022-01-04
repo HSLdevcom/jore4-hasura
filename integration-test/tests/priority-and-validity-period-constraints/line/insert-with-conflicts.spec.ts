@@ -2,11 +2,11 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { lines } from "@datasets/lines";
+import { lines } from "@datasets/defaultSetup/lines";
 import "@util/matchers";
-import { Line, VehicleMode } from "@datasets/types";
+import { Line, LineProps, VehicleMode } from "@datasets/types";
 import { expect } from "@jest/globals";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 const createMutation = (toBeInserted: Partial<Line>) => `
@@ -15,7 +15,7 @@ const createMutation = (toBeInserted: Partial<Line>) => `
       "primary_vehicle_mode",
     ])}) {
       returning {
-        ${Object.keys(lines[0]).join(",")}
+        ${getPropNameArray(LineProps).join(",")}
       }
     }
   }

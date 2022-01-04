@@ -1,4 +1,4 @@
-import { Line, VehicleMode } from "./types";
+import { Line, VehicleMode } from "@datasets/types";
 
 export const lines: Line[] = [
   {
