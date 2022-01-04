@@ -2,9 +2,10 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { routes } from "@datasets/routes";
+import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
+import { RouteProps } from "@datasets/types";
 
 const toBeDeleted = routes[2];
 
@@ -16,7 +17,7 @@ const mutation = `
       },
     ) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }

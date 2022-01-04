@@ -2,13 +2,13 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { lines } from "@datasets/lines";
-import { routes } from "@datasets/routes";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import { lines } from "@datasets/defaultSetup/lines";
+import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
-import { Route, RouteDirection } from "@datasets/types";
+import { Route, RouteDirection, RouteProps } from "@datasets/types";
 import { expect } from "@jest/globals";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 const createMutation = (toBeInserted: Partial<Route>) => `
@@ -17,7 +17,7 @@ const createMutation = (toBeInserted: Partial<Route>) => `
       "direction",
     ])}) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }

@@ -3,18 +3,19 @@ import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 import {
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
-} from "@datasets/scheduled-stop-points";
+} from "@datasets/defaultSetup/scheduled-stop-points";
 import {
   LinkDirection,
   ScheduledStopPoint,
+  ScheduledStopPointProps,
   VehicleMode,
 } from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
@@ -54,7 +55,7 @@ const createMutation = (vehicleMode?: VehicleMode) => `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }

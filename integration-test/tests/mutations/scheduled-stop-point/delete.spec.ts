@@ -2,9 +2,15 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import {
+  getPropNameArray,
+  getTableConfigArray,
+  queryTable,
+  setupDb,
+} from "@datasets/setup";
+import { ScheduledStopPointProps } from "@datasets/types";
 
 const toBeDeleted = scheduledStopPoints[1];
 
@@ -14,7 +20,7 @@ const mutation = `
       toBeDeleted.scheduled_stop_point_id
     }"}}) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }
@@ -30,12 +36,15 @@ describe("Delete scheduled_stop_point", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, [
-      "infrastructure_network.infrastructure_link",
-      "infrastructure_network.vehicle_submode_on_infrastructure_link",
-      "internal_service_pattern.scheduled_stop_point",
-      "service_pattern.vehicle_mode_on_scheduled_stop_point",
-    ])
+    setupDb(
+      dbConnectionPool,
+      getTableConfigArray([
+        "infrastructure_network.infrastructure_link",
+        "infrastructure_network.vehicle_submode_on_infrastructure_link",
+        "internal_service_pattern.scheduled_stop_point",
+        "service_pattern.vehicle_mode_on_scheduled_stop_point",
+      ])
+    )
   );
 
   it("should return correct response", async () => {
