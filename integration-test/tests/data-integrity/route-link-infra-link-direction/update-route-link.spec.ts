@@ -2,12 +2,15 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { InfrastructureLinkAlongRoute } from "@datasets/types";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import {
+  InfrastructureLinkAlongRoute,
+  InfrastructureLinkAlongRouteProps,
+} from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
-import { infrastructureLinkAlongRoute } from "@datasets/routes";
+import { infrastructureLinkAlongRoute } from "@datasets/defaultSetup/routes";
 
 const createMutation = (
   routeId: string,
@@ -26,7 +29,7 @@ const createMutation = (
         "is_traversal_forwards",
       ])}) {
       returning {
-        ${Object.keys(infrastructureLinkAlongRoute[0]).join(",")}
+        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(",")}
       }
     }
   }

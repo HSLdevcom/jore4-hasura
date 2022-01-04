@@ -2,11 +2,20 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { InfrastructureLink, LinkDirection } from "@datasets/types";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import {
+  InfrastructureLink,
+  InfrastructureLinkProps,
+  LinkDirection,
+} from "@datasets/types";
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import {
+  getPropNameArray,
+  getTableConfigArray,
+  queryTable,
+  setupDb,
+} from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 const createMutation = (
@@ -20,7 +29,7 @@ const createMutation = (
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}) {
       returning {
-        ${Object.keys(infrastructureLinks[0]).join(",")}
+        ${getPropNameArray(InfrastructureLinkProps).join(",")}
       }
     }
   }
@@ -36,14 +45,17 @@ describe("Update infrastructure link", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, [
-      "infrastructure_network.infrastructure_link",
-      "infrastructure_network.vehicle_submode_on_infrastructure_link",
-      "internal_service_pattern.scheduled_stop_point",
-      "service_pattern.vehicle_mode_on_scheduled_stop_point",
-      "route.line",
-      "internal_route.route",
-    ])
+    setupDb(
+      dbConnectionPool,
+      getTableConfigArray([
+        "infrastructure_network.infrastructure_link",
+        "infrastructure_network.vehicle_submode_on_infrastructure_link",
+        "internal_service_pattern.scheduled_stop_point",
+        "service_pattern.vehicle_mode_on_scheduled_stop_point",
+        "route.line",
+        "internal_route.route",
+      ])
+    )
   );
 
   describe("whose direction conflicts with a scheduled stop point's direction", () => {

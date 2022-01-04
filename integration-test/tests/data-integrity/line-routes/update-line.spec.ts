@@ -2,11 +2,11 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { lines } from "@datasets/lines";
-import { routes } from "@datasets/routes";
+import { lines } from "@datasets/defaultSetup/lines";
+import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
-import { Line } from "@datasets/types";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { Line, LineProps } from "@datasets/types";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
 const createMutation = (toBeUpdated: Partial<Line>) => `
@@ -18,7 +18,7 @@ const createMutation = (toBeUpdated: Partial<Line>) => `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["primary_vehicle_mode"])}
     ) {
       returning {
-        ${Object.keys(lines[0]).join(",")}
+        ${getPropNameArray(LineProps).join(",")}
       }
     }
   }

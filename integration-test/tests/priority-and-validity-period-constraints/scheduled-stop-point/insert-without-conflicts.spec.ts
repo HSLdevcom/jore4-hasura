@@ -2,16 +2,17 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import "@util/matchers";
 import {
   LinkDirection,
   ScheduledStopPoint,
+  ScheduledStopPointProps,
   VehicleMode,
 } from "@datasets/types";
 import { asDbGeometryObject, asDbGeometryObjectArray } from "@util/dataset";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -29,7 +30,7 @@ const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }
