@@ -2,11 +2,11 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { routes } from "@datasets/routes";
-import { Route } from "@datasets/types";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import { routes } from "@datasets/defaultSetup/routes";
+import { Route, RouteProps } from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: "updated route",
@@ -30,7 +30,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }
