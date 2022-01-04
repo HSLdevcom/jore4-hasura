@@ -1,7 +1,11 @@
-import { InfrastructureLinkAlongRoute, Route, RouteDirection } from "./types";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { lines } from "@datasets/lines";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
+import {
+  InfrastructureLinkAlongRoute,
+  Route,
+  RouteDirection,
+} from "@datasets/types";
+import { scheduledStopPoints } from "./scheduled-stop-points";
+import { lines } from "./lines";
+import { infrastructureLinks } from "./infrastructure-links";
 
 export const routes: Route[] = [
   {

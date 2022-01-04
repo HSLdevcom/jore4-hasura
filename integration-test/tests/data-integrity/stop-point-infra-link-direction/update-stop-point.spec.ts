@@ -2,13 +2,22 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { LinkDirection, ScheduledStopPoint } from "@datasets/types";
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  ScheduledStopPointProps,
+} from "@datasets/types";
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import {
+  getPropNameArray,
+  getTableConfigArray,
+  queryTable,
+  setupDb,
+} from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 
 const createMutation = (
   stopPointId: string,
@@ -21,7 +30,7 @@ const createMutation = (
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }
@@ -37,14 +46,17 @@ describe("Update scheduled stop point", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, [
-      "infrastructure_network.infrastructure_link",
-      "infrastructure_network.vehicle_submode_on_infrastructure_link",
-      "internal_service_pattern.scheduled_stop_point",
-      "service_pattern.vehicle_mode_on_scheduled_stop_point",
-      "route.line",
-      "internal_route.route",
-    ])
+    setupDb(
+      dbConnectionPool,
+      getTableConfigArray([
+        "infrastructure_network.infrastructure_link",
+        "infrastructure_network.vehicle_submode_on_infrastructure_link",
+        "internal_service_pattern.scheduled_stop_point",
+        "service_pattern.vehicle_mode_on_scheduled_stop_point",
+        "route.line",
+        "internal_route.route",
+      ])
+    )
   );
 
   describe("whose direction conflicts with its infrastructure link's direction", () => {
