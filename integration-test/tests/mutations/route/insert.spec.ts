@@ -2,12 +2,12 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { lines } from "@datasets/lines";
-import { routes } from "@datasets/routes";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import { lines } from "@datasets/defaultSetup/lines";
+import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
-import { Route, RouteDirection } from "@datasets/types";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { Route, RouteDirection, RouteProps } from "@datasets/types";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
 const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
@@ -32,7 +32,7 @@ const mutation = `
       "direction",
     ])}) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }

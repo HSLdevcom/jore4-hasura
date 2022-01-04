@@ -2,15 +2,16 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import {
   LinkDirection,
   ScheduledStopPoint,
+  ScheduledStopPointProps,
   VehicleMode,
 } from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -49,7 +50,7 @@ const mutation = `
       ["direction", "vehicle_mode"]
     )}) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }

@@ -2,12 +2,12 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
-import { ScheduledStopPoint } from "@datasets/types";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import { ScheduledStopPoint, ScheduledStopPointProps } from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 
 const createCompleteUpdated = (
   toBeUpdated: Partial<ScheduledStopPoint>
@@ -27,7 +27,7 @@ const createMutation = (toBeUpdated: Partial<ScheduledStopPoint>) => `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
     ) {
       returning {
-        ${Object.keys(scheduledStopPoints[0]).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(",")}
       }
     }
   }

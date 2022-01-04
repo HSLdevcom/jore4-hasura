@@ -2,18 +2,22 @@ import * as rp from "request-promise";
 import * as pg from "pg";
 import * as config from "@config";
 import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/scheduled-stop-points";
+import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import {
   InfrastructureLinkAlongRoute,
   Route,
   RouteDirection,
+  RouteProps,
 } from "@datasets/types";
 import "@util/matchers";
-import { queryTable, setupDb } from "@datasets/sampleSetup";
+import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
-import { lines } from "@datasets/lines";
-import { infrastructureLinkAlongRoute, routes } from "@datasets/routes";
+import { lines } from "@datasets/defaultSetup/lines";
+import {
+  infrastructureLinkAlongRoute,
+  routes,
+} from "@datasets/defaultSetup/routes";
 
 const routeToBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
@@ -67,7 +71,7 @@ const createMutation = (
       ["direction", "is_traversal_forwards"]
     )}) {
       returning {
-        ${Object.keys(routes[0]).join(",")}
+        ${getPropNameArray(RouteProps).join(",")}
       }
     }
   }

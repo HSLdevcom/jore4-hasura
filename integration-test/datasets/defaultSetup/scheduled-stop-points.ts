@@ -4,7 +4,7 @@ import {
   VehicleModeOnScheduledStopPoint,
   VehicleMode,
 } from "@datasets/types";
-import { infrastructureLinks } from "@datasets/infrastructure-links";
+import { infrastructureLinks } from "./infrastructure-links";
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
   {
