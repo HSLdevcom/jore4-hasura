@@ -165,3 +165,27 @@ export const LineProps: PropArray = [
   "validity_start",
   "validity_end",
 ];
+
+export type JourneyPattern = {
+  journey_pattern_id: string;
+  on_route_id: string;
+};
+export const JourneyPatternProps: PropArray = [
+  "journey_pattern_id",
+  "on_route_id",
+];
+
+export type ScheduledStopPointInJourneyPattern = {
+  journey_pattern_id: string;
+  scheduled_stop_point_id: string;
+  scheduled_stop_point_sequence: number;
+  is_timing_point: boolean;
+  is_via_point: boolean;
+};
+export const ScheduledStopPointInJourneyPatternProps: PropArray = [
+  "journey_pattern_id",
+  "scheduled_stop_point_id",
+  "scheduled_stop_point_sequence",
+  "is_timing_point",
+  "is_via_point",
+];
