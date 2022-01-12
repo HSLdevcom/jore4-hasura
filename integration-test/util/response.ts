@@ -1,6 +1,6 @@
 import { Response } from "request";
 
-export const checkErrorResponse =
+export const expectErrorResponse =
   (expectedErrorMsg?: string) => (response: Response) => {
     if (response.statusCode >= 200 && response.statusCode < 300)
       throw new Error("Request succeeded even though it was expected to fail");

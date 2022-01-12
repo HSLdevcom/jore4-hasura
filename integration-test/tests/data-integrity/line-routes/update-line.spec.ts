@@ -7,7 +7,7 @@ import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
 import { Line, LineProps } from "@datasets/types";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const buildMutation = (toBeUpdated: Partial<Line>) => `
   mutation {
@@ -47,7 +47,7 @@ describe("Update line", () => {
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeUpdated) },
         })
-        .then(checkErrorResponse("route priority must be >= line priority"));
+        .then(expectErrorResponse("route priority must be >= line priority"));
     });
 
   const shouldNotModifyDatabase = (toBeUpdated: Partial<Line>) =>
