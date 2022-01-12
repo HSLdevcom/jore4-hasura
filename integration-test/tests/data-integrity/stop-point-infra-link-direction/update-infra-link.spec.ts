@@ -16,7 +16,7 @@ import {
   queryTable,
   setupDb,
 } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const buildMutation = (
   infrastructureLinkId: string,
@@ -70,7 +70,7 @@ describe("Update infrastructure link", () => {
             body: { query: buildMutation(infrastructureLinkId, toBeUpdated) },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "infrastructure link direction must be compatible with the directions of the stop points residing on it"
             )
           );

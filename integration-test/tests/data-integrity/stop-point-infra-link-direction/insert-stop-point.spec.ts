@@ -18,7 +18,7 @@ import {
   queryTable,
   setupDb,
 } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const createToBeInserted = (
   infrastructureLinkId: string,
@@ -99,7 +99,7 @@ describe("Insert scheduled stop point", () => {
             body: { query: buildMutation(toBeInserted) },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "scheduled stop point direction must be compatible with infrastructure link direction"
             )
           );

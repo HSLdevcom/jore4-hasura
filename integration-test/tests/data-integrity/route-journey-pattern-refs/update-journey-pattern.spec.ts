@@ -4,7 +4,7 @@ import * as config from "@config";
 import { JourneyPatternProps } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
 import { routes } from "@datasets/routesAndJourneyPatterns/routes";
 import { journeyPatterns } from "@datasets/routesAndJourneyPatterns/journey-patterns";
@@ -51,7 +51,7 @@ describe("Move journey pattern to other route", () => {
             query: buildMutation(journeyPatternId, newRouteId),
           },
         })
-        .then(checkErrorResponse(expectedErrorMessage));
+        .then(expectErrorResponse(expectedErrorMessage));
     });
 
   const shouldNotModifyDatabase = (

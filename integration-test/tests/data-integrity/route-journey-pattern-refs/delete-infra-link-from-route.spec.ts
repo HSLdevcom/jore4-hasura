@@ -4,7 +4,7 @@ import * as config from "@config";
 import { InfrastructureLinkAlongRouteProps } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
 import { infrastructureLinkAlongRoute } from "@datasets/routesAndJourneyPatterns/routes";
 
@@ -51,7 +51,7 @@ describe("Delete infra link from route", () => {
           },
         })
         .then(
-          checkErrorResponse(
+          expectErrorResponse(
             "found stop in journey pattern which is on a link that is not part of the route"
           )
         );

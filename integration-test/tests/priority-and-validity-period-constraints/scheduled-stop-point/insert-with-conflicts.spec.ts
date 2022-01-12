@@ -14,7 +14,7 @@ import {
 import { expect } from "@jest/globals";
 import { asDbGeometryObjectArray } from "@util/dataset";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -58,7 +58,7 @@ describe("Insert scheduled stop point", () => {
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
         })
-        .then(checkErrorResponse());
+        .then(expectErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<ScheduledStopPoint>) =>

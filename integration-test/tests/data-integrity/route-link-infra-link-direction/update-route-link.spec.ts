@@ -9,7 +9,7 @@ import {
 } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { infrastructureLinkAlongRoute } from "@datasets/defaultSetup/routes";
 
 const buildMutation = (
@@ -65,7 +65,7 @@ describe("Update route link", () => {
             },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "route link direction must be compatible with infrastructure link direction"
             )
           );

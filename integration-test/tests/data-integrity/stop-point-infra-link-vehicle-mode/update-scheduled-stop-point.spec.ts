@@ -6,7 +6,7 @@ import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-point
 import { ScheduledStopPoint, ScheduledStopPointProps } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 
 const createCompleteUpdated = (
@@ -57,7 +57,7 @@ describe("Update scheduled stop point", () => {
           body: { query: buildMutation(toBeUpdated) },
         })
         .then(
-          checkErrorResponse(
+          expectErrorResponse(
             "scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes"
           )
         );
