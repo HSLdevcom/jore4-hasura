@@ -16,7 +16,7 @@ import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
-const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
+const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
       {
@@ -53,7 +53,7 @@ describe("Insert scheduled stop point", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       expect(response).toEqual(
@@ -84,7 +84,7 @@ describe("Insert scheduled stop point", () => {
     it("should insert correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(

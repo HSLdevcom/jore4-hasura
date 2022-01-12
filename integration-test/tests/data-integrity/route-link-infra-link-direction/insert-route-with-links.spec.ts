@@ -57,7 +57,7 @@ const insertedDefaultValues: Partial<Route> = {
   validity_end: null,
 };
 
-const createMutation = (
+const buildMutation = (
   linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[]
 ) => `
   mutation {
@@ -97,7 +97,7 @@ describe("Insert route with links", () => {
           .post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(linksToBeInserted),
+              query: buildMutation(linksToBeInserted),
             },
           })
           .then(
@@ -113,7 +113,7 @@ describe("Insert route with links", () => {
       it("should not modify the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(linksToBeInserted) },
+          body: { query: buildMutation(linksToBeInserted) },
         });
 
         const routeResponse = await queryTable(dbConnectionPool, "route.route");
@@ -164,7 +164,7 @@ describe("Insert route with links", () => {
       it("should return correct response", async () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(linksToBeInserted) },
+          body: { query: buildMutation(linksToBeInserted) },
         });
 
         expect(response).toEqual(
@@ -195,7 +195,7 @@ describe("Insert route with links", () => {
       it("should insert correct row into the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(linksToBeInserted) },
+          body: { query: buildMutation(linksToBeInserted) },
         });
 
         const routeResponse = await queryTable(dbConnectionPool, "route.route");

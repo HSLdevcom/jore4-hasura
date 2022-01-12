@@ -11,7 +11,7 @@ import { infrastructureLinks } from "@datasets/routesAndJourneyPatterns/infrastr
 import { asDbGeometryObjectArray } from "@util/dataset";
 import * as dataset from "@util/dataset";
 
-const createMutation = (
+const buildMutation = (
   scheduledStopPointId: string,
   newInfraLinkId: string
 ) => `
@@ -53,7 +53,7 @@ describe("Move scheduled stop point to other infra link", () => {
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(scheduledStopPointId, newInfraLinkId),
+            query: buildMutation(scheduledStopPointId, newInfraLinkId),
           },
         })
         .then(checkErrorResponse(expectedErrorMsg));
@@ -67,7 +67,7 @@ describe("Move scheduled stop point to other infra link", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(scheduledStopPointId, newInfraLinkId),
+          query: buildMutation(scheduledStopPointId, newInfraLinkId),
         },
       });
 
@@ -136,7 +136,7 @@ describe("Move scheduled stop point to other infra link", () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             toBeMoved.scheduled_stop_point_id,
             newInfraLinkId
           ),
@@ -158,7 +158,7 @@ describe("Move scheduled stop point to other infra link", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             toBeMoved.scheduled_stop_point_id,
             newInfraLinkId
           ),

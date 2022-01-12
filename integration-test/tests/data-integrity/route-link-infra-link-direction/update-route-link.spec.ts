@@ -12,7 +12,7 @@ import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 import { infrastructureLinkAlongRoute } from "@datasets/defaultSetup/routes";
 
-const createMutation = (
+const buildMutation = (
   routeId: string,
   infrastructureLinkSequence: number,
   toBeUpdated: Partial<InfrastructureLinkAlongRoute>
@@ -57,7 +57,7 @@ describe("Update route link", () => {
           .post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(
+              query: buildMutation(
                 routeId,
                 infrastructureLinkSequence,
                 toBeUpdated
@@ -80,7 +80,7 @@ describe("Update route link", () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(
+            query: buildMutation(
               routeId,
               infrastructureLinkSequence,
               toBeUpdated
@@ -181,7 +181,7 @@ describe("Update route link", () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(
+            query: buildMutation(
               original.route_id,
               original.infrastructure_link_sequence,
               toBeUpdated
@@ -213,7 +213,7 @@ describe("Update route link", () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(
+            query: buildMutation(
               original.route_id,
               original.infrastructure_link_sequence,
               toBeUpdated

@@ -30,7 +30,7 @@ const insertedDefaultValues: Partial<Route> = {
   validity_end: null,
 };
 
-const createMutation = (on_line_id: string | undefined, priority: number) => `
+const buildMutation = (on_line_id: string | undefined, priority: number) => `
   mutation {
     insert_route_route(objects: ${dataset.toGraphQlObject(
       toBeInserted(on_line_id, priority),
@@ -63,7 +63,7 @@ describe("Insert route", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(on_line_id, priority) },
+          body: { query: buildMutation(on_line_id, priority) },
         })
         .then(
           checkErrorResponse(
@@ -79,7 +79,7 @@ describe("Insert route", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(on_line_id, priority) },
+        body: { query: buildMutation(on_line_id, priority) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.route");
@@ -95,7 +95,7 @@ describe("Insert route", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(on_line_id, priority) },
+        body: { query: buildMutation(on_line_id, priority) },
       });
 
       expect(response).toEqual(
@@ -129,7 +129,7 @@ describe("Insert route", () => {
     it("should insert correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(on_line_id, priority) },
+        body: { query: buildMutation(on_line_id, priority) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.route");

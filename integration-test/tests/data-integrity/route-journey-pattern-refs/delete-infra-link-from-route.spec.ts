@@ -11,7 +11,7 @@ import { checkErrorResponse } from "@util/response";
 import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
 import { infrastructureLinkAlongRoute } from "@datasets/routesAndJourneyPatterns/routes";
 
-const createMutation = (routeId: string, linkId: string) => `
+const buildMutation = (routeId: string, linkId: string) => `
   mutation {
     delete_route_infrastructure_link_along_route(where: {
       _and: {
@@ -43,7 +43,7 @@ describe("Delete infra link from route", () => {
     rp.post({
       ...config.hasuraRequestTemplate,
       body: {
-        query: createMutation(
+        query: buildMutation(
           toBeRemoved.route_id,
           toBeRemoved.infrastructure_link_id
         ),

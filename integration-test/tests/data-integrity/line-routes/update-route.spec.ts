@@ -13,7 +13,7 @@ type PartialRouteWithNullableOnLineID = Partial<
   Omit<Route, "on_line_id"> & { on_line_id: string | null }
 >;
 
-const createMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
+const buildMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
   mutation {
     update_route_route(
       where: {
@@ -52,7 +52,7 @@ describe("Update route", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeUpdated) },
+          body: { query: buildMutation(toBeUpdated) },
         })
         .then(
           checkErrorResponse(
@@ -67,7 +67,7 @@ describe("Update route", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.route");
@@ -82,7 +82,7 @@ describe("Update route", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       expect(response).toEqual(
@@ -104,7 +104,7 @@ describe("Update route", () => {
     it("should update correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.route");
