@@ -12,7 +12,7 @@ import {
 } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { lines } from "@datasets/defaultSetup/lines";
 import {
   infrastructureLinkAlongRoute,
@@ -101,7 +101,7 @@ describe("Insert route with links", () => {
             },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "route link direction must be compatible with infrastructure link direction"
             )
           );

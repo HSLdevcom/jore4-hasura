@@ -7,7 +7,7 @@ import "@util/matchers";
 import { Line, LineProps, VehicleMode } from "@datasets/types";
 import { expect } from "@jest/globals";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -39,7 +39,7 @@ describe("Insert line", () => {
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
         })
-        .then(checkErrorResponse());
+        .then(expectErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<Line>) =>

@@ -11,7 +11,7 @@ import {
 import "@util/matchers";
 import { asDbGeometryObjectArray } from "@util/dataset";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const buildMutation = (
   infrastructureLinkId: string,
@@ -53,7 +53,7 @@ describe("Update infrastructure link", () => {
             body: { query: buildMutation(infrastructureLinkId, toBeUpdated) },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "route link direction must be compatible with infrastructure link direction"
             )
           );

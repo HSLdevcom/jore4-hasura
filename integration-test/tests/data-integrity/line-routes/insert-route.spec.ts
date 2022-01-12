@@ -8,7 +8,7 @@ import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
 import { Route, RouteDirection, RouteProps } from "@datasets/types";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 const toBeInserted = (
   on_line_id: string | undefined,
@@ -66,7 +66,7 @@ describe("Insert route", () => {
           body: { query: buildMutation(on_line_id, priority) },
         })
         .then(
-          checkErrorResponse(
+          expectErrorResponse(
             expectedErrorMsg || "route priority must be >= line priority"
           )
         );

@@ -8,7 +8,7 @@ import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
 } from "@datasets/defaultSetup/infrastructure-links";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { InfrastructureLinkProps } from "@datasets/types";
 
 const buildMutation = (infrastructureLinkId: string) => `
@@ -41,7 +41,7 @@ describe("Delete infrastructure link", () => {
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
         })
-        .then(checkErrorResponse("violates foreign key constraint"));
+        .then(expectErrorResponse("violates foreign key constraint"));
     });
 
     it("should not modify database", async () => {
