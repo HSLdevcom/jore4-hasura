@@ -15,7 +15,7 @@ import {
   scheduledStopPointInJourneyPattern,
 } from "@datasets/routesAndJourneyPatterns/journey-patterns";
 
-const createMutation = (
+const buildMutation = (
   journeyPatternId: string,
   scheduledStopPointId: string,
   toBeUpdated: Partial<ScheduledStopPointInJourneyPattern>
@@ -60,7 +60,7 @@ describe("Update scheduled stop point in journey pattern", () => {
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(
+            query: buildMutation(
               scheduledStopPoint.journey_pattern_id,
               scheduledStopPoint.scheduled_stop_point_id,
               toBeUpdated
@@ -78,7 +78,7 @@ describe("Update scheduled stop point in journey pattern", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             scheduledStopPoint.journey_pattern_id,
             scheduledStopPoint.scheduled_stop_point_id,
             toBeUpdated
@@ -145,7 +145,7 @@ describe("Update scheduled stop point in journey pattern", () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             original.journey_pattern_id,
             original.scheduled_stop_point_id,
             toBeUpdated
@@ -168,7 +168,7 @@ describe("Update scheduled stop point in journey pattern", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             original.journey_pattern_id,
             original.scheduled_stop_point_id,
             toBeUpdated

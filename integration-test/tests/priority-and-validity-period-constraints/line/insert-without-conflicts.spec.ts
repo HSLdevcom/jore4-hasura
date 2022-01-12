@@ -7,7 +7,7 @@ import "@util/matchers";
 import { Line, LineProps, VehicleMode } from "@datasets/types";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 
-const createMutation = (toBeInserted: Partial<Line>) => `
+const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
     insert_route_line(objects: ${dataset.toGraphQlObject(toBeInserted, [
       "primary_vehicle_mode",
@@ -34,7 +34,7 @@ describe("Insert line", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       expect(response).toEqual(
@@ -62,7 +62,7 @@ describe("Insert line", () => {
     it("should insert correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.line");

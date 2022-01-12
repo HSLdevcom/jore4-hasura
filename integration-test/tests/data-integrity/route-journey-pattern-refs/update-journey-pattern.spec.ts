@@ -9,7 +9,7 @@ import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyP
 import { routes } from "@datasets/routesAndJourneyPatterns/routes";
 import { journeyPatterns } from "@datasets/routesAndJourneyPatterns/journey-patterns";
 
-const createMutation = (journeyPatternId: string, newRouteId: string) => `
+const buildMutation = (journeyPatternId: string, newRouteId: string) => `
   mutation {
     update_journey_pattern_journey_pattern(where: {
         journey_pattern_id: {_eq: "${journeyPatternId}"}
@@ -48,7 +48,7 @@ describe("Move journey pattern to other route", () => {
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(journeyPatternId, newRouteId),
+            query: buildMutation(journeyPatternId, newRouteId),
           },
         })
         .then(checkErrorResponse(expectedErrorMessage));
@@ -62,7 +62,7 @@ describe("Move journey pattern to other route", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(journeyPatternId, newRouteId),
+          query: buildMutation(journeyPatternId, newRouteId),
         },
       });
 
@@ -114,7 +114,7 @@ describe("Move journey pattern to other route", () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(toBeMoved.journey_pattern_id, newRouteId),
+          query: buildMutation(toBeMoved.journey_pattern_id, newRouteId),
         },
       });
 
@@ -133,7 +133,7 @@ describe("Move journey pattern to other route", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(toBeMoved.journey_pattern_id, newRouteId),
+          query: buildMutation(toBeMoved.journey_pattern_id, newRouteId),
         },
       });
 

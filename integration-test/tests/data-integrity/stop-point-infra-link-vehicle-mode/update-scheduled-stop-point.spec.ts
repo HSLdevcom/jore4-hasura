@@ -16,7 +16,7 @@ const createCompleteUpdated = (
   ...toBeUpdated,
 });
 
-const createMutation = (toBeUpdated: Partial<ScheduledStopPoint>) => `
+const buildMutation = (toBeUpdated: Partial<ScheduledStopPoint>) => `
   mutation {
     update_service_pattern_scheduled_stop_point(
       where: {
@@ -54,7 +54,7 @@ describe("Update scheduled stop point", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeUpdated) },
+          body: { query: buildMutation(toBeUpdated) },
         })
         .then(
           checkErrorResponse(
@@ -66,7 +66,7 @@ describe("Update scheduled stop point", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(
@@ -95,7 +95,7 @@ describe("Update scheduled stop point", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       expect(response).toEqual(
@@ -116,7 +116,7 @@ describe("Update scheduled stop point", () => {
     it("should update correct row in the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(
