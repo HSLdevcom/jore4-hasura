@@ -11,7 +11,7 @@ import {
 import { checkErrorResponse } from "@util/response";
 import { InfrastructureLinkProps } from "@datasets/types";
 
-const createMutation = (infrastructureLinkId: string) => `
+const buildMutation = (infrastructureLinkId: string) => `
   mutation {
     delete_infrastructure_network_infrastructure_link(where: {infrastructure_link_id: {_eq: "${infrastructureLinkId}"}}) {
       returning {
@@ -39,7 +39,7 @@ describe("Delete infrastructure link", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeDeleted.infrastructure_link_id) },
+          body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
         })
         .then(checkErrorResponse("violates foreign key constraint"));
     });
@@ -47,7 +47,7 @@ describe("Delete infrastructure link", () => {
     it("should not modify database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeDeleted.infrastructure_link_id) },
+        body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });
 
       const infraLinkResponse = await queryTable(
@@ -82,7 +82,7 @@ describe("Delete infrastructure link", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeDeleted.infrastructure_link_id) },
+        body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });
 
       expect(response).toEqual(
@@ -99,7 +99,7 @@ describe("Delete infrastructure link", () => {
     it("should delete correct rows from the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeDeleted.infrastructure_link_id) },
+        body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });
 
       const infraLinkResponse = await queryTable(

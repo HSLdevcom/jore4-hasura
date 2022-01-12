@@ -11,7 +11,7 @@ import { expect } from "@jest/globals";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
-const createMutation = (toBeInserted: Partial<Route>) => `
+const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {
     insert_route_route(objects: ${dataset.toGraphQlObject(toBeInserted, [
       "direction",
@@ -39,7 +39,7 @@ describe("Insert route", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeInserted) },
+          body: { query: buildMutation(toBeInserted) },
         })
         .then(checkErrorResponse());
     });
@@ -48,7 +48,7 @@ describe("Insert route", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.route");

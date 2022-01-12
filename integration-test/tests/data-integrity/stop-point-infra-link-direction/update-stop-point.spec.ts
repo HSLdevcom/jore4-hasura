@@ -19,7 +19,7 @@ import { checkErrorResponse } from "@util/response";
 import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 
-const createMutation = (
+const buildMutation = (
   stopPointId: string,
   toBeUpdated: Partial<ScheduledStopPoint>
 ) => `
@@ -68,7 +68,7 @@ describe("Update scheduled stop point", () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
-            body: { query: createMutation(stopPointId, toBeUpdated) },
+            body: { query: buildMutation(stopPointId, toBeUpdated) },
           })
           .then(
             checkErrorResponse(
@@ -84,7 +84,7 @@ describe("Update scheduled stop point", () => {
       it("should not modify the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(stopPointId, toBeUpdated) },
+          body: { query: buildMutation(stopPointId, toBeUpdated) },
         });
 
         const response = await queryTable(
@@ -176,7 +176,7 @@ describe("Update scheduled stop point", () => {
           const response = await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(
+              query: buildMutation(
                 original.scheduled_stop_point_id,
                 toBeUpdated
               ),
@@ -207,7 +207,7 @@ describe("Update scheduled stop point", () => {
           await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(
+              query: buildMutation(
                 original.scheduled_stop_point_id,
                 toBeUpdated
               ),

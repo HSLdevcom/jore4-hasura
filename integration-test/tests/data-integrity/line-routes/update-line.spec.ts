@@ -9,7 +9,7 @@ import { Line, LineProps } from "@datasets/types";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
-const createMutation = (toBeUpdated: Partial<Line>) => `
+const buildMutation = (toBeUpdated: Partial<Line>) => `
   mutation {
     update_route_line(
       where: {
@@ -45,7 +45,7 @@ describe("Update line", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeUpdated) },
+          body: { query: buildMutation(toBeUpdated) },
         })
         .then(checkErrorResponse("route priority must be >= line priority"));
     });
@@ -54,7 +54,7 @@ describe("Update line", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.line");
@@ -67,7 +67,7 @@ describe("Update line", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       expect(response).toEqual(
@@ -87,7 +87,7 @@ describe("Update line", () => {
     it("should update correct row into the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeUpdated) },
+        body: { query: buildMutation(toBeUpdated) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.line");

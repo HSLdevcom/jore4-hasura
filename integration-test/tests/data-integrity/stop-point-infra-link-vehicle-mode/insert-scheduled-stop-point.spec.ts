@@ -39,7 +39,7 @@ const insertedDefaultValues: Partial<ScheduledStopPoint> = {
   validity_start: null,
 };
 
-const createMutation = (vehicleMode?: VehicleMode) => `
+const buildMutation = (vehicleMode?: VehicleMode) => `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
       {
@@ -78,7 +78,7 @@ describe("Insert scheduled stop point", () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
-            body: { query: createMutation(vehicleMode) },
+            body: { query: buildMutation(vehicleMode) },
           })
           .then(
             checkErrorResponse(
@@ -91,7 +91,7 @@ describe("Insert scheduled stop point", () => {
       it("should not modify the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(vehicleMode) },
+          body: { query: buildMutation(vehicleMode) },
         });
 
         const stopPointResponse = await queryTable(
@@ -143,7 +143,7 @@ describe("Insert scheduled stop point", () => {
       it("should return correct response", async () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(vehicleMode) },
+          body: { query: buildMutation(vehicleMode) },
         });
 
         expect(response).toEqual(
@@ -173,7 +173,7 @@ describe("Insert scheduled stop point", () => {
       it("should insert correct row into the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(vehicleMode) },
+          body: { query: buildMutation(vehicleMode) },
         });
 
         const stopPointResponse = await queryTable(
