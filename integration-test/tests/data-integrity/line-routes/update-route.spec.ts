@@ -7,7 +7,7 @@ import { routes } from "@datasets/defaultSetup/routes";
 import "@util/matchers";
 import { Route, RouteProps } from "@datasets/types";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 
 type PartialRouteWithNullableOnLineID = Partial<
   Omit<Route, "on_line_id"> & { on_line_id: string | null }
@@ -55,7 +55,7 @@ describe("Update route", () => {
           body: { query: buildMutation(toBeUpdated) },
         })
         .then(
-          checkErrorResponse(
+          expectErrorResponse(
             expectedErrorMessage || "route priority must be >= line priority"
           )
         );

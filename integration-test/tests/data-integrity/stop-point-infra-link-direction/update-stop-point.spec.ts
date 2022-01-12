@@ -15,7 +15,7 @@ import {
   queryTable,
   setupDb,
 } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
 import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
 
@@ -71,7 +71,7 @@ describe("Update scheduled stop point", () => {
             body: { query: buildMutation(stopPointId, toBeUpdated) },
           })
           .then(
-            checkErrorResponse(
+            expectErrorResponse(
               "scheduled stop point direction must be compatible with infrastructure link direction"
             )
           );

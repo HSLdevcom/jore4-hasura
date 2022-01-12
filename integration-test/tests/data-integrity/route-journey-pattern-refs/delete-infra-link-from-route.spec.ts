@@ -7,7 +7,7 @@ import {
 } from "@datasets/types";
 import "@util/matchers";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { checkErrorResponse } from "@util/response";
+import { expectErrorResponse } from "@util/response";
 import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
 import { infrastructureLinkAlongRoute } from "@datasets/routesAndJourneyPatterns/routes";
 
@@ -55,7 +55,7 @@ describe("Delete infra link from route", () => {
 
     it("should return error response", async () => {
       await postHasuraRequest(toBeRemoved).then(
-        checkErrorResponse(
+        expectErrorResponse(
           "route's and journey pattern's traversal paths must match each other"
         )
       );
