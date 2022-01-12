@@ -13,7 +13,7 @@ import { asDbGeometryObjectArray } from "@util/dataset";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
-const createMutation = (
+const buildMutation = (
   infrastructureLinkId: string,
   toBeUpdated: Partial<InfrastructureLink>
 ) => `
@@ -50,7 +50,7 @@ describe("Update infrastructure link", () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
-            body: { query: createMutation(infrastructureLinkId, toBeUpdated) },
+            body: { query: buildMutation(infrastructureLinkId, toBeUpdated) },
           })
           .then(
             checkErrorResponse(
@@ -66,7 +66,7 @@ describe("Update infrastructure link", () => {
       it("should not modify the database", async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(infrastructureLinkId, toBeUpdated) },
+          body: { query: buildMutation(infrastructureLinkId, toBeUpdated) },
         });
 
         const response = await queryTable(
@@ -123,7 +123,7 @@ describe("Update infrastructure link", () => {
           const response = await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(
+              query: buildMutation(
                 original.infrastructure_link_id,
                 toBeUpdated
               ),
@@ -154,7 +154,7 @@ describe("Update infrastructure link", () => {
           await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
-              query: createMutation(
+              query: buildMutation(
                 original.infrastructure_link_id,
                 toBeUpdated
               ),

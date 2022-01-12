@@ -9,7 +9,7 @@ import { expect } from "@jest/globals";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { checkErrorResponse } from "@util/response";
 
-const createMutation = (toBeInserted: Partial<Line>) => `
+const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
     insert_route_line(objects: ${dataset.toGraphQlObject(toBeInserted, [
       "primary_vehicle_mode",
@@ -37,7 +37,7 @@ describe("Insert line", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeInserted) },
+          body: { query: buildMutation(toBeInserted) },
         })
         .then(checkErrorResponse());
     });
@@ -46,7 +46,7 @@ describe("Insert line", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(dbConnectionPool, "route.line");

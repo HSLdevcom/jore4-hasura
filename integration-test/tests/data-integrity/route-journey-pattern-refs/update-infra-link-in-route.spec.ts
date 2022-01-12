@@ -15,7 +15,7 @@ import {
 } from "@datasets/routesAndJourneyPatterns/routes";
 import * as dataset from "@util/dataset";
 
-const createMutation = (
+const buildMutation = (
   routeId: string,
   linkId: string,
   toBeUpdated: Partial<InfrastructureLinkAlongRoute>
@@ -61,7 +61,7 @@ describe("Move infra link to other route", () => {
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: createMutation(
+            query: buildMutation(
               toBeMoved.route_id,
               toBeMoved.infrastructure_link_id,
               toBeUpdated
@@ -79,7 +79,7 @@ describe("Move infra link to other route", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
             toBeUpdated
@@ -115,7 +115,7 @@ describe("Move infra link to other route", () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
             toBeUpdated
@@ -138,7 +138,7 @@ describe("Move infra link to other route", () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: createMutation(
+          query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
             toBeUpdated

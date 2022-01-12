@@ -28,7 +28,7 @@ const createToBeInserted = (
   is_timing_point: false,
 });
 
-const createMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
+const buildMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
   mutation {
     insert_journey_pattern_scheduled_stop_point_in_journey_pattern(objects: ${dataset.toGraphQlObject(
       toBeInserted
@@ -61,7 +61,7 @@ describe("Insert scheduled stop point into journey pattern", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeInserted) },
+          body: { query: buildMutation(toBeInserted) },
         })
         .then(checkErrorResponse(expectedErrorMsg));
     });
@@ -72,7 +72,7 @@ describe("Insert scheduled stop point into journey pattern", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(
@@ -144,7 +144,7 @@ describe("Insert scheduled stop point into journey pattern", () => {
     it("should return correct response", async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       expect(response).toEqual(
@@ -161,7 +161,7 @@ describe("Insert scheduled stop point into journey pattern", () => {
     it("should update the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(

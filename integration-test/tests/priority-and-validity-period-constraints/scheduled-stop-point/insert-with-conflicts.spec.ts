@@ -18,7 +18,7 @@ import { checkErrorResponse } from "@util/response";
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
-const createMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
+const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
   mutation {
     insert_service_pattern_scheduled_stop_point(objects: ${dataset.toGraphQlObject(
       {
@@ -56,7 +56,7 @@ describe("Insert scheduled stop point", () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: createMutation(toBeInserted) },
+          body: { query: buildMutation(toBeInserted) },
         })
         .then(checkErrorResponse());
     });
@@ -65,7 +65,7 @@ describe("Insert scheduled stop point", () => {
     it("should not modify the database", async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: createMutation(toBeInserted) },
+        body: { query: buildMutation(toBeInserted) },
       });
 
       const response = await queryTable(
