@@ -82,6 +82,33 @@ Note: seems like `hasura console` won't update metadata in some cases. If that h
 
 When you are done clicking, commit the metadata changes into git.
 
+### Add/modify seed data
+
+You may need some seed data in your microservice to work with. To enable this, a new Hasura
+docker image version is created that extends the base image with some generic seed data. For
+simplicity, we loading the seed data as migrations so that its packaged simpler together into the
+Hasura docker image. (The built-in `hasura seed` function does not load the data automatically on
+start-up).
+
+To add/modify a new seed migration:
+
+1. create a new migration directory with `up.sql` and `down.sql` in the `seed-data/default` folder
+1. fill it up with `INSERT INTO` commands or similar
+1. to test it:
+   a) set the `migrations_directory` to `seed-data` in your `config.yaml`.
+   a) restart your `testdb` container with `docker restart testdb`. If you are using volumes to
+   persist its data, remember to delete the volume before restarting the testdb container.
+   a) apply the new seed migration with `hasura migrate apply --up 1`
+   a) on success, check if the database does contain the seed data, e.g. through the hasura console
+   data browser
+
+When uploading the changes to git, the ci/cd pipeline will automatically create a docker image that
+also contains the seed data and tag it as `jore4-hasura:seed-***`. This is intended to be used only
+in development and e2e testing.
+
+The regular `jore4-hasura:***` docker base image does not contain this seed data and is intended
+to be used in production.
+
 #### Advice for permissions
 
 The role name for public, unauthenticated use is given to the Hasura server with the environment variable `HASURA_GRAPHQL_UNAUTHORIZED_ROLE`.

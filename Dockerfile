@@ -1,4 +1,4 @@
-FROM hasura/graphql-engine:v2.0.9.cli-migrations-v3
+FROM hasura/graphql-engine:v2.0.9.cli-migrations-v3 AS hasura-base
 EXPOSE 8080
 RUN apt-get update && apt-get install -y \
   curl \
@@ -13,3 +13,7 @@ ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
 CMD ["graphql-engine", "serve"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
   CMD curl --fail http://localhost:8080/healthz || exit 1
+
+# extend the base image to also load some seed data as migrations
+FROM hasura-base AS hasura-seed
+COPY ./seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
