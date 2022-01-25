@@ -41,3 +41,16 @@ VALUES
   ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'2feba2ae-c7af-4034-a299-9e592e67358f'::uuid,1,true),
   ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,2,true)
 ON CONFLICT DO NOTHING;
+
+INSERT INTO journey_pattern.journey_pattern
+  (journey_pattern_id, on_route_id)
+VALUES
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','03d55414-e5cf-4cce-9faf-d86ccb7e5f98')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO journey_pattern.scheduled_stop_point_in_journey_pattern
+  (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point)
+VALUES
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, TRUE),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 1, FALSE, FALSE)
+ON CONFLICT DO NOTHING;
