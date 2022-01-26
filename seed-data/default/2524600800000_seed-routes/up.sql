@@ -16,8 +16,8 @@ BEGIN
   INSERT INTO internal_service_pattern.scheduled_stop_point
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
-    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'forward','pysäkki A','2021-01-01','2023-12-13',10),
-	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'forward','pysäkki B','2021-01-01','2023-12-13',10)
+    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','pysäkki A','2021-01-01','2023-12-13',10),
+	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','pysäkki B','2021-01-01','2023-12-13',10)
   ON CONFLICT DO NOTHING;
 
   INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point
@@ -31,15 +31,15 @@ END $$;
 INSERT INTO internal_route.route
   (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,"label",direction)
 VALUES
-	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,NULL,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65 itään','outbound')
+	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,NULL,'e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65 itään','outbound')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO route.infrastructure_link_along_route
   (route_id,infrastructure_link_id,infrastructure_link_sequence,is_traversal_forwards)
 VALUES
-  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,0,true),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,0,true),
   ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'2feba2ae-c7af-4034-a299-9e592e67358f'::uuid,1,true),
-  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,2,true)
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,2,true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO journey_pattern.journey_pattern
@@ -52,5 +52,5 @@ INSERT INTO journey_pattern.scheduled_stop_point_in_journey_pattern
   (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point)
 VALUES
   ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, TRUE),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 1, FALSE, FALSE)
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 1, TRUE, FALSE)
 ON CONFLICT DO NOTHING;
