@@ -79,13 +79,13 @@ describe("Move journey pattern to other route", () => {
   describe("when new route does not contain all links on which the stops reside", () => {
     shouldReturnErrorMessage(
       journeyPatterns[0].journey_pattern_id,
-      routes[1].route_id,
+      routes[3].route_id,
       "route's and journey pattern's traversal paths must match each other"
     );
 
     shouldNotModifyDatabase(
       journeyPatterns[0].journey_pattern_id,
-      routes[1].route_id
+      routes[3].route_id
     );
   });
 

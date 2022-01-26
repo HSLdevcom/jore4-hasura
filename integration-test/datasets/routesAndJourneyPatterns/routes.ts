@@ -78,6 +78,20 @@ export const routes: Route[] = [
     validity_start: new Date("2044-05-02 23:11:32Z"),
     validity_end: null,
   },
+  {
+    route_id: "833f3ba2-3b3e-4db8-adee-430773b6c4f6",
+    on_line_id: lines[0].line_id,
+    description_i18n: "route 5",
+    starts_from_scheduled_stop_point_id:
+      scheduledStopPoints[0].scheduled_stop_point_id,
+    ends_at_scheduled_stop_point_id:
+      scheduledStopPoints[2].scheduled_stop_point_id,
+    label: "route 5",
+    direction: RouteDirection.Northbound,
+    priority: 10,
+    validity_start: new Date("2044-05-02 23:11:32Z"),
+    validity_end: null,
+  },
 ];
 
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
@@ -170,5 +184,41 @@ export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
     infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
     infrastructure_link_sequence: 20,
     is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[0].infrastructure_link_id,
+    infrastructure_link_sequence: 10,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[1].infrastructure_link_id,
+    infrastructure_link_sequence: 20,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
+    infrastructure_link_sequence: 25,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+    infrastructure_link_sequence: 30,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_sequence: 35,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[2].infrastructure_link_id,
+    infrastructure_link_sequence: 40,
+    is_traversal_forwards: false,
   },
 ];

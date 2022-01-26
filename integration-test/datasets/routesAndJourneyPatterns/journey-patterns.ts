@@ -16,7 +16,7 @@ export const journeyPatterns: JourneyPattern[] = [
   },
   {
     journey_pattern_id: "fa11a09a-23c8-4bb0-b319-847f56aec05a",
-    on_route_id: routes[0].route_id,
+    on_route_id: routes[5].route_id,
   },
 ];
 
