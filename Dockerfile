@@ -1,4 +1,4 @@
-FROM hasura/graphql-engine:v2.0.9.cli-migrations-v3 AS hasura-base
+FROM hasura/graphql-engine:v2.1.1.cli-migrations-v3 AS hasura-base
 EXPOSE 8080
 RUN apt-get update && apt-get install -y \
   curl \
