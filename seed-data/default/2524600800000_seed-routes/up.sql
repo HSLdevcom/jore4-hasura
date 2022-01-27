@@ -16,8 +16,8 @@ BEGIN
   INSERT INTO internal_service_pattern.scheduled_stop_point
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
-    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','pysäkki A','2021-01-01','2023-12-13',10),
-	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','pysäkki B','2021-01-01','2023-12-13',10)
+    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','H1911','2021-01-01','2023-12-13',10),
+	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','H1941','2021-01-01','2023-12-13',10)
   ON CONFLICT DO NOTHING;
 
   INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point
