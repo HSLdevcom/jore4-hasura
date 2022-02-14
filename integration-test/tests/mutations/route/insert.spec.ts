@@ -19,11 +19,8 @@ const toBeInserted: Partial<Route> = {
   label: "new route label",
   direction: RouteDirection.Clockwise,
   priority: 40,
-  validity_start: new Date("2043-02-01 14:20:54Z"),
-};
-
-const insertedDefaultValues: Partial<Route> = {
-  validity_end: null,
+  validity_start: new Date("2044-05-01 23:11:32Z"),
+  validity_end: new Date("2045-05-01 23:11:32Z"),
 };
 
 const mutation = `
@@ -62,7 +59,6 @@ describe("Insert route", () => {
             returning: [
               {
                 ...dataset.asGraphQlTimestampObject(toBeInserted),
-                ...insertedDefaultValues,
                 route_id: expect.any(String),
               },
             ],
@@ -91,7 +87,6 @@ describe("Insert route", () => {
       expect.arrayContaining([
         {
           ...toBeInserted,
-          ...insertedDefaultValues,
           route_id: expect.any(String),
         },
         ...routes,
