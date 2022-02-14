@@ -13,7 +13,7 @@ const toBeUpdated: Partial<Route> = {
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
   priority: 50,
-  validity_end: new Date("2079-09-22 23:44:11"),
+  validity_end: new Date("2045-04-01 12:11:32Z"),
 };
 
 const completeUpdated: Route = {

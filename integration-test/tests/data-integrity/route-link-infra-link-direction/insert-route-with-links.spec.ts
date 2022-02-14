@@ -29,7 +29,8 @@ const routeToBeInserted: Partial<Route> = {
   label: "new route label",
   direction: RouteDirection.Clockwise,
   priority: lines[1].priority + 10,
-  validity_start: new Date("2043-02-01 14:20:54Z"),
+  validity_start: new Date("2044-05-01 23:11:32Z"),
+  validity_end: new Date("2045-05-01 23:11:32Z"),
 };
 
 const createLinksToBeInserted = (
@@ -52,10 +53,6 @@ const createLinksToBeInserted = (
     is_traversal_forwards: isTraversalForwards,
   },
 ];
-
-const insertedDefaultValues: Partial<Route> = {
-  validity_end: null,
-};
 
 const buildMutation = (
   linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[]
@@ -174,7 +171,6 @@ describe("Insert route with links", () => {
                 returning: [
                   {
                     ...dataset.asGraphQlTimestampObject(routeToBeInserted),
-                    ...insertedDefaultValues,
                     route_id: expect.any(String),
                   },
                 ],
@@ -205,7 +201,6 @@ describe("Insert route with links", () => {
           expect.arrayContaining([
             {
               ...routeToBeInserted,
-              ...insertedDefaultValues,
               route_id: expect.any(String),
             },
             ...routes,
