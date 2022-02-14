@@ -46,4 +46,15 @@ export const lines: Line[] = [
     validity_start: null,
     validity_end: new Date("2045-06-01 23:11:32Z"),
   },
+  {
+    line_id: "4ea04912-f09a-4993-b63d-4f4317cbe015",
+    name_i18n: "transport bus line 89",
+    short_name_i18n: "line 89",
+    description_i18n: "transport bus line from Someplace to Anotherplace 2",
+    primary_vehicle_mode: VehicleMode.Bus,
+    label: "89",
+    priority: 10,
+    validity_start: null,
+    validity_end: null,
+  },
 ];

@@ -33,8 +33,8 @@ export const routes: Route[] = [
     label: "route 2",
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: null,
-    validity_end: new Date("2044-02-02 23:11:32Z"),
+    validity_start: new Date("2044-06-02 23:11:32Z"),
+    validity_end: new Date("2045-04-02 23:11:32Z"),
   },
   {
     route_id: "0dac4416-1f84-4951-86b7-149f643594de",
@@ -47,7 +47,7 @@ export const routes: Route[] = [
     label: "route 3",
     direction: RouteDirection.Eastbound,
     priority: 30,
-    validity_start: new Date("2044-01-02 23:11:32Z"),
+    validity_start: null,
     validity_end: new Date("2044-09-02 23:11:32Z"),
   },
   {

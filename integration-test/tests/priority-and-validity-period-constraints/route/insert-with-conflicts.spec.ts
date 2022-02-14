@@ -59,17 +59,17 @@ describe("Insert route", () => {
 
   describe("whose validity period conflicts with open validity start", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 2",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
+        scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
-      label: "route 2",
-      direction: RouteDirection.Southbound,
-      priority: 20,
-      validity_start: new Date("2042-02-02 23:11:32Z"),
-      validity_end: new Date("2043-02-02 23:11:32Z"),
+        scheduledStopPoints[1].scheduled_stop_point_id,
+      label: "route 3",
+      direction: RouteDirection.Eastbound,
+      priority: 30,
+      validity_start: new Date("2024-09-02 23:11:32Z"),
+      validity_end: new Date("2034-09-02 23:11:32Z"),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -100,16 +100,16 @@ describe("Insert route", () => {
   describe("whose validity period is entirely contained in other validity period", () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[1].line_id,
-      description_i18n: "route 3",
+      description_i18n: "route 2",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
-      label: "route 3",
-      direction: RouteDirection.Eastbound,
-      priority: 30,
-      validity_start: new Date("2044-02-02 23:11:32Z"),
-      validity_end: new Date("2044-08-02 23:11:32Z"),
+      ends_at_scheduled_stop_point_id:
+        scheduledStopPoints[2].scheduled_stop_point_id,
+      label: "route 2",
+      direction: RouteDirection.Southbound,
+      priority: 20,
+      validity_start: new Date("2044-09-02 23:11:32Z"),
+      validity_end: new Date("2045-02-02 23:11:32Z"),
     };
 
     shouldReturnErrorResponse(toBeInserted);

@@ -84,17 +84,17 @@ describe("Insert route", () => {
 
   describe("whose validity period conflicts with open validity start but has different priority", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 2",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
+        scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
-      label: "route 2",
-      direction: RouteDirection.Southbound,
-      priority: 10,
-      validity_start: new Date("2042-02-02 23:11:32Z"),
-      validity_end: new Date("2043-02-02 23:11:32Z"),
+        scheduledStopPoints[1].scheduled_stop_point_id,
+      label: "route 3",
+      direction: RouteDirection.Eastbound,
+      priority: 20,
+      validity_start: new Date("2024-09-02 23:11:32Z"),
+      validity_end: new Date("2034-09-02 23:11:32Z"),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -104,17 +104,17 @@ describe("Insert route", () => {
 
   describe("whose validity period conflicts with open validity start but has different label", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 2",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
+        scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
-      label: "route 2X",
-      direction: RouteDirection.Southbound,
-      priority: 20,
-      validity_start: new Date("2042-02-02 23:11:32Z"),
-      validity_end: new Date("2043-02-02 23:11:32Z"),
+        scheduledStopPoints[1].scheduled_stop_point_id,
+      label: "route 3X",
+      direction: RouteDirection.Eastbound,
+      priority: 30,
+      validity_start: new Date("2024-09-02 23:11:32Z"),
+      validity_end: new Date("2034-09-02 23:11:32Z"),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -124,17 +124,17 @@ describe("Insert route", () => {
 
   describe("whose validity period does not conflict with open validity start", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 2",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 3",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
+        scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
-      label: "route 2",
-      direction: RouteDirection.Southbound,
-      priority: 20,
-      validity_start: new Date("2044-02-02 23:11:32Z"),
-      validity_end: new Date("2045-02-02 23:11:32Z"),
+        scheduledStopPoints[1].scheduled_stop_point_id,
+      label: "route 3",
+      direction: RouteDirection.Eastbound,
+      priority: 30,
+      validity_start: new Date("2044-09-02 23:11:32Z"),
+      validity_end: new Date("2045-06-01 23:11:32Z"),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -144,17 +144,17 @@ describe("Insert route", () => {
 
   describe("whose validity period overlaps partially with existing validity period but has different direction", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 3",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 4",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
-      label: "route 3",
-      direction: RouteDirection.Westbound,
-      priority: 30,
-      validity_start: new Date("2044-08-02 23:11:32Z"),
-      validity_end: new Date("2044-10-02 23:11:32Z"),
+      ends_at_scheduled_stop_point_id:
+        scheduledStopPoints[2].scheduled_stop_point_id,
+      label: "route 4",
+      direction: RouteDirection.Eastbound,
+      priority: 20,
+      validity_start: new Date("2044-06-02 21:11:32Z"),
+      validity_end: new Date("2045-06-01 23:11:32Z"),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -164,17 +164,17 @@ describe("Insert route", () => {
 
   describe("whose validity period is entirely contained in other validity period but has different direction", () => {
     const toBeInserted: Partial<Route> = {
-      on_line_id: lines[1].line_id,
-      description_i18n: "route 3",
+      on_line_id: lines[2].line_id,
+      description_i18n: "route 4",
       starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
-      label: "route 3",
-      direction: RouteDirection.Clockwise,
-      priority: 30,
-      validity_start: new Date("2044-02-02 23:11:32Z"),
-      validity_end: new Date("2044-08-02 23:11:32Z"),
+      ends_at_scheduled_stop_point_id:
+        scheduledStopPoints[2].scheduled_stop_point_id,
+      label: "route 4",
+      direction: RouteDirection.Eastbound,
+      priority: 20,
+      validity_start: new Date("2044-04-02 21:11:32Z"),
+      validity_end: new Date("2044-08-02 22:11:32Z"),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
