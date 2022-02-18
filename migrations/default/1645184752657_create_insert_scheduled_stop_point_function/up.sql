@@ -1,4 +1,4 @@
-CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point(    
+CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point(
     scheduled_stop_point_id uuid,
     measured_location geography(PointZ,4326),
     located_on_infrastructure_link_id uuid,
@@ -9,7 +9,6 @@ CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point(
     priority integer,
     supported_vehicle_mode text
 ) RETURNS void AS $$
-    DECLARE
     BEGIN
         INSERT INTO internal_service_pattern.scheduled_stop_point (
             scheduled_stop_point_id,
