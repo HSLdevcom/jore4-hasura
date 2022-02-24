@@ -17,13 +17,15 @@ BEGIN
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
     ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','pysäkki A','2021-01-01','2023-12-13',10),
-	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','pysäkki B','2021-01-01','2023-12-13',10)
+    ('4d294d62-df17-46ff-9248-23f66f17fa87'::uuid,'SRID=4326;POINT Z(24.930490150380855 60.164635254660325 0)'::geography,'2feba2ae-c7af-4034-a299-9e592e67358f'::uuid,'bidirectional','pysäkki B','2021-01-01','2023-12-13',10),
+	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','pysäkki C','2021-01-01','2023-12-13',10)
   ON CONFLICT DO NOTHING;
 
   INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point
     (scheduled_stop_point_id,vehicle_mode)
   VALUES
     ('e3528755-711f-4e4f-9461-7931a2c4bc6d','bus'),
+    ('4d294d62-df17-46ff-9248-23f66f17fa87','bus'),
     ('f8eace87-7901-4438-bfee-bb6f24f1c4c4','bus')
   ON CONFLICT DO NOTHING;
 END $$;
@@ -51,6 +53,7 @@ ON CONFLICT DO NOTHING;
 INSERT INTO journey_pattern.scheduled_stop_point_in_journey_pattern
   (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point)
 VALUES
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, TRUE),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 1, TRUE, FALSE)
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, FALSE),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','4d294d62-df17-46ff-9248-23f66f17fa87', 1, TRUE, TRUE),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 2, FALSE, FALSE)
 ON CONFLICT DO NOTHING;
