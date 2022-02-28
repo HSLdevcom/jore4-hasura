@@ -147,7 +147,6 @@ export type Line = {
   line_id: string;
   name_i18n: string;
   short_name_i18n: string | null;
-  description_i18n: string | null;
   primary_vehicle_mode: VehicleMode;
   label: string;
   priority: number;
@@ -158,7 +157,6 @@ export const LineProps: PropArray = [
   "line_id",
   "name_i18n",
   "short_name_i18n",
-  "description_i18n",
   "primary_vehicle_mode",
   "label",
   "priority",

@@ -84,8 +84,6 @@ describe("Insert line", () => {
     const toBeInserted: Partial<Line> = {
       name_i18n: "conflicting transport tram line 34",
       short_name_i18n: "conflicting line 34",
-      description_i18n:
-        "conflicting transport tram line from Sometramplace to Anothertramplace",
       primary_vehicle_mode: VehicleMode.Tram,
       label: "34",
       priority: 30,
@@ -102,8 +100,6 @@ describe("Insert line", () => {
     const toBeInserted: Partial<Line> = {
       name_i18n: "conflicting transport tram line 34",
       short_name_i18n: "conflicting line 34",
-      description_i18n:
-        "conflicting transport tram line from Sometramplace to Anothertramplace",
       primary_vehicle_mode: VehicleMode.Tram,
       label: "35",
       priority: 20,
@@ -120,8 +116,6 @@ describe("Insert line", () => {
     const toBeInserted: Partial<Line> = {
       name_i18n: "conflicting transport tram line 34",
       short_name_i18n: "conflicting line 34",
-      description_i18n:
-        "conflicting transport tram line from Sometramplace to Anothertramplace",
       primary_vehicle_mode: VehicleMode.Tram,
       label: "34",
       priority: 20,
@@ -138,7 +132,6 @@ describe("Insert line", () => {
     const toBeInserted: Partial<Line> = {
       name_i18n: "transport bus line 2",
       short_name_i18n: "line 2",
-      description_i18n: "transport bus line from SomeplaceX to AnotherplaceY",
       primary_vehicle_mode: VehicleMode.Bus,
       label: "2",
       priority: 10,
@@ -155,7 +148,6 @@ describe("Insert line", () => {
     const toBeInserted: Partial<Line> = {
       name_i18n: "transport bus line 2",
       short_name_i18n: "line 2",
-      description_i18n: "transport bus line from SomeplaceX to AnotherplaceY",
       primary_vehicle_mode: VehicleMode.Bus,
       label: "2",
       priority: 30,
