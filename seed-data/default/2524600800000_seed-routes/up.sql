@@ -16,9 +16,9 @@ BEGIN
   INSERT INTO internal_service_pattern.scheduled_stop_point
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
-    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','pysäkki A','2021-01-01','2023-12-13',10),
-    ('4d294d62-df17-46ff-9248-23f66f17fa87'::uuid,'SRID=4326;POINT Z(24.930490150380855 60.164635254660325 0)'::geography,'2feba2ae-c7af-4034-a299-9e592e67358f'::uuid,'bidirectional','pysäkki B','2021-01-01','2023-12-13',10),
-	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','pysäkki C','2021-01-01','2023-12-13',10)
+    ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','H1234','2021-01-01','2023-12-13',10),
+    ('4d294d62-df17-46ff-9248-23f66f17fa87'::uuid,'SRID=4326;POINT Z(24.930490150380855 60.164635254660325 0)'::geography,'2feba2ae-c7af-4034-a299-9e592e67358f'::uuid,'bidirectional','H1235','2021-01-01','2023-12-13',10),
+	  ('f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'SRID=4326;POINT Z(24.933251767757206 60.16565505738068 0)'::geography,'d3ed9fcf-d1fa-419a-a279-7ad3ffe47714'::uuid,'bidirectional','H1236','2021-01-01','2023-12-13',10)
   ON CONFLICT DO NOTHING;
 
   INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point
@@ -31,9 +31,9 @@ BEGIN
 END $$;
 
 INSERT INTO internal_route.route
-  (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,"label",direction)
+  (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,label,direction)
 VALUES
-	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,NULL,'e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65 itään','outbound')
+	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'Reitti A - B','e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65x','outbound')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO route.infrastructure_link_along_route
