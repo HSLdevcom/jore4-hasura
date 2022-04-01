@@ -1,4 +1,4 @@
-import { Line, VehicleMode } from "@datasets/types";
+import { Line, TypeOfLine, VehicleMode } from "@datasets/types";
 
 export const lines: Line[] = [
   {
@@ -7,6 +7,7 @@ export const lines: Line[] = [
     short_name_i18n: "line 1",
     primary_vehicle_mode: VehicleMode.Bus,
     label: "1",
+    type_of_line: TypeOfLine.RegionalBusService,
     priority: 10,
     validity_start: new Date("2044-05-02 23:11:32Z"),
     validity_end: null,
@@ -17,6 +18,7 @@ export const lines: Line[] = [
     short_name_i18n: "line 2",
     primary_vehicle_mode: VehicleMode.Bus,
     label: "2",
+    type_of_line: TypeOfLine.RegionalBusService,
     priority: 10,
     validity_start: new Date("2044-05-01 23:11:32Z"),
     validity_end: new Date("2045-05-01 23:11:32Z"),
@@ -27,6 +29,7 @@ export const lines: Line[] = [
     short_name_i18n: "line 34",
     primary_vehicle_mode: VehicleMode.Tram,
     label: "34",
+    type_of_line: TypeOfLine.CityTramService,
     priority: 20,
     validity_start: null,
     validity_end: new Date("2045-06-01 23:11:32Z"),
@@ -37,6 +40,7 @@ export const lines: Line[] = [
     short_name_i18n: "line 77",
     primary_vehicle_mode: VehicleMode.Tram,
     label: "77",
+    type_of_line: TypeOfLine.CityTramService,
     priority: 30,
     validity_start: null,
     validity_end: new Date("2045-06-01 23:11:32Z"),
@@ -47,6 +51,7 @@ export const lines: Line[] = [
     short_name_i18n: "line 89",
     primary_vehicle_mode: VehicleMode.Bus,
     label: "89",
+    type_of_line: TypeOfLine.RegionalBusService,
     priority: 10,
     validity_start: null,
     validity_end: null,

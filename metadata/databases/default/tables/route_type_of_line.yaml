@@ -1,0 +1,16 @@
+table:
+  name: type_of_line
+  schema: route
+is_enum: true
+object_relationships:
+- name: vehicle_mode
+  using:
+    foreign_key_constraint_on: belonging_to_vehicle_mode
+array_relationships:
+- name: lines
+  using:
+    foreign_key_constraint_on:
+      column: type_of_line
+      table:
+        name: line
+        schema: route

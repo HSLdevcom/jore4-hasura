@@ -4,7 +4,7 @@ import * as config from "@config";
 import * as dataset from "@util/dataset";
 import { lines } from "@datasets/defaultSetup/lines";
 import "@util/matchers";
-import { Line, LineProps, VehicleMode } from "@datasets/types";
+import { Line, LineProps, TypeOfLine, VehicleMode } from "@datasets/types";
 import { expect } from "@jest/globals";
 import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
 import { expectErrorResponse } from "@util/response";
@@ -13,6 +13,7 @@ const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
     insert_route_line(objects: ${dataset.toGraphQlObject(toBeInserted, [
       "primary_vehicle_mode",
+      "type_of_line",
     ])}) {
       returning {
         ${getPropNameArray(LineProps).join(",")}
@@ -61,6 +62,7 @@ describe("Insert line", () => {
       short_name_i18n: "conflicting line 34",
       primary_vehicle_mode: VehicleMode.Tram,
       label: "34",
+      type_of_line: TypeOfLine.CityTramService,
       priority: 20,
       validity_start: new Date("2041-06-01 23:11:32Z"),
       validity_end: new Date("2042-06-01 23:11:32Z"),
@@ -77,6 +79,7 @@ describe("Insert line", () => {
       short_name_i18n: "line 2",
       primary_vehicle_mode: VehicleMode.Bus,
       label: "2",
+      type_of_line: TypeOfLine.RegionalBusService,
       priority: 10,
       validity_start: new Date("2045-04-01 23:11:32Z"),
       validity_end: new Date("2046-05-01 23:11:32Z"),
@@ -93,6 +96,7 @@ describe("Insert line", () => {
       short_name_i18n: "line 2",
       primary_vehicle_mode: VehicleMode.Bus,
       label: "2",
+      type_of_line: TypeOfLine.RegionalBusService,
       priority: 10,
       validity_start: new Date("2044-06-01 23:11:32Z"),
       validity_end: new Date("2045-04-01 23:11:32Z"),

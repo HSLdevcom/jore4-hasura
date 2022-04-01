@@ -1,4 +1,4 @@
-import { Line, VehicleMode } from "@datasets/types";
+import { Line, TypeOfLine, VehicleMode } from "@datasets/types";
 
 export const lines: Line[] = [
   {
@@ -7,6 +7,7 @@ export const lines: Line[] = [
     short_name_i18n: null,
     primary_vehicle_mode: VehicleMode.Bus,
     label: "116",
+    type_of_line: TypeOfLine.RegionalBusService,
     priority: 10,
     validity_start: null,
     validity_end: null,
