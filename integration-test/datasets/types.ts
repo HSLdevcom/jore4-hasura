@@ -49,6 +49,20 @@ export enum VehicleSubmode {
   TallElectricBus = "tall_electric_bus",
 }
 
+export enum TypeOfLine {
+  RegionalRailService = "regional_rail_service",
+  SuburbanRailway = "suburban_railway",
+  MetroService = "metro_service",
+  RegionalBusService = "regional_bus_service",
+  ExpressBusService = "express_bus_service",
+  StoppingBusService = "stopping_bus_service",
+  SpecialNeedsBus = "special_needs_bus",
+  DemandAndResponseBusService = "demand_and_response_bus_service",
+  CityTramService = "city_tram_service",
+  RegionalTramService = "regional_tram_service",
+  FerryService = "ferry_service",
+}
+
 export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
@@ -149,6 +163,7 @@ export type Line = {
   short_name_i18n: string | null;
   primary_vehicle_mode: VehicleMode;
   label: string;
+  type_of_line: TypeOfLine;
   priority: number;
   validity_start: Date | null;
   validity_end: Date | null;
@@ -159,6 +174,7 @@ export const LineProps: PropArray = [
   "short_name_i18n",
   "primary_vehicle_mode",
   "label",
+  "type_of_line",
   "priority",
   "validity_start",
   "validity_end",

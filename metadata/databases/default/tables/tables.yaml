@@ -10,5 +10,6 @@
 - "!include route_infrastructure_link_along_route.yaml"
 - "!include route_line.yaml"
 - "!include route_route.yaml"
+- "!include route_type_of_line.yaml"
 - "!include service_pattern_scheduled_stop_point.yaml"
 - "!include service_pattern_vehicle_mode_on_scheduled_stop_point.yaml"

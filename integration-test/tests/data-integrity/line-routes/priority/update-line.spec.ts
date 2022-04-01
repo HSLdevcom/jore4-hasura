@@ -15,7 +15,10 @@ const buildMutation = (toBeUpdated: Partial<Line>) => `
       where: {
         line_id: {_eq: "${lines[1].line_id}"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated, ["primary_vehicle_mode"])}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, [
+        "primary_vehicle_mode",
+        "type_of_line",
+      ])}
     ) {
       returning {
         ${getPropNameArray(LineProps).join(",")}
