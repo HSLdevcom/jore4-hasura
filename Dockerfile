@@ -14,6 +14,22 @@ CMD ["graphql-engine", "serve"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
   CMD curl --fail http://localhost:8080/healthz || exit 1
 
-# extend the base image to also load some seed data as migrations
-FROM hasura-base AS hasura-seed
+
+# extend the base image to also load hsl specific migrations and metadata
+FROM hasura-base AS hasura-hsl
+# install yq
+RUN apt-get update && apt-get install -y gnupg2 software-properties-common
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+RUN add-apt-repository ppa:rmescandon/yq
+RUN apt-get update
+RUN apt-get install yq -y
+
+COPY ./migrations/hsl/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
+COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}"
+WORKDIR /
+RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}
+
+
+# extend the hasura-hsl image to also load some seed data as migrations
+FROM hasura-hsl AS hasura-seed
 COPY ./migrations/seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
