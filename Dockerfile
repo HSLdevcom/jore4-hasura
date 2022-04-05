@@ -1,4 +1,4 @@
-FROM hasura/graphql-engine:v2.1.1.cli-migrations-v3 AS hasura-base
+FROM hasura/graphql-engine:v2.1.1.cli-migrations-v3 AS hasura-generic
 EXPOSE 8080
 RUN apt-get update && apt-get install -y \
   curl \
@@ -14,6 +14,23 @@ CMD ["graphql-engine", "serve"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
   CMD curl --fail http://localhost:8080/healthz || exit 1
 
-# extend the base image to also load some seed data as migrations
-FROM hasura-base AS hasura-seed
-COPY ./migrations/seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
+
+# extend the base image to also load hsl specific migrations and metadata
+FROM hasura-generic AS hasura-hsl
+# install yq
+RUN apt-get update && apt-get install -y gnupg2 software-properties-common && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64 && \
+    add-apt-repository ppa:rmescandon/yq && \
+    apt-get update && \
+    apt-get install -y yq
+
+COPY ./migrations/hsl "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
+COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}"
+WORKDIR /
+RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}
+WORKDIR /app
+
+
+# extend the hasura-hsl image to also load some seed data as migrations
+FROM hasura-hsl AS hasura-seed
+COPY ./migrations/seed-data "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
