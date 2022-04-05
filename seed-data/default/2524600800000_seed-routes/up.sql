@@ -10,6 +10,15 @@ VALUES
   ('db748c5c-42e3-429f-baa0-e0db227dc2c8','Erottaja - Arkkadiankatu','Erottaja - Arkkadiankatu','bus','1234','regional_bus_service',10,'2021-01-01','2023-12-13')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO route.line_transport_target
+  (line_id,transport_target)
+VALUES
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e','helsinki_internal_traffic'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb','helsinki_internal_traffic'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2','helsinki_internal_traffic'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8','helsinki_internal_traffic')
+ON CONFLICT DO NOTHING;
+
 -- to avoid constraint conflicts, inserting scheduled_stop_points and their allowed vehicle modes at the same time, within a transaction
 DO $$
 BEGIN

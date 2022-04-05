@@ -4,7 +4,10 @@
 !/LICENSE
 !/scripts/docker-entrypoint.sh
 !/scripts/replace-placeholders-in-sql-schema-migrations.sh
+!/scripts/merge-metadata.sh
 
 !/metadata/**
 !/migrations/**
 !/seed-data/**
+!/migrations-hsl/**
+!/metadata-hsl/**

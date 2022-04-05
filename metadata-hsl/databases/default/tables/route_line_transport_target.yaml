@@ -1,0 +1,10 @@
+table:
+  name: line_transport_target
+  schema: route
+object_relationships:
+- name: line
+  using:
+    foreign_key_constraint_on: line_id
+- name: transportTargetByTransportTarget
+  using:
+    foreign_key_constraint_on: transport_target

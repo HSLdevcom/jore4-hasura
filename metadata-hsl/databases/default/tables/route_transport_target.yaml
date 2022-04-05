@@ -1,0 +1,12 @@
+table:
+  name: transport_target
+  schema: route
+is_enum: true
+array_relationships:
+- name: line_transport_targets
+  using:
+    foreign_key_constraint_on:
+      column: transport_target
+      table:
+        name: line_transport_target
+        schema: route
