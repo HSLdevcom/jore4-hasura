@@ -20,15 +20,22 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: Pull previous image to support caching
-        run: docker pull $IMAGE_NAME:latest || >&2 echo "Previous image not found"
+        run: docker pull $IMAGE_NAME:generic || >&2 echo "Previous image not found"
 
       - name: build and tag docker images
         run: |
           docker build \
-            --target hasura-base \
-            --cache-from=$IMAGE_NAME:latest \
+            --target hasura-generic \
+            --cache-from=$IMAGE_NAME:generic \
+            -t $IMAGE_NAME:generic \
+            -t $IMAGE_NAME:generic-$COMMIT_ID \
+            .
+
+          docker build \
+            --target hasura-hsl \
+            --cache-from=$IMAGE_NAME:generic \
             -t $IMAGE_NAME:latest \
-            -t $IMAGE_NAME:$COMMIT_ID \
+            -t $IMAGE_NAME:hsl-$COMMIT_ID \
             .
 
           docker build \
@@ -45,12 +52,15 @@ jobs:
 
       - name: Push dev builds to Docker Hub
         run: |
-          docker push $IMAGE_NAME:$COMMIT_ID
+          docker push $IMAGE_NAME:generic-$COMMIT_ID
+          docker push $IMAGE_NAME:hsl-$COMMIT_ID
           docker push $IMAGE_NAME:seed-$COMMIT_ID
 
       - name: Push :latest tag to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: docker push $IMAGE_NAME:latest
+        run: |
+          docker push $IMAGE_NAME:generic
+          docker push $IMAGE_NAME:latest
 
   run_e2e_tests:
     needs: push_to_registry

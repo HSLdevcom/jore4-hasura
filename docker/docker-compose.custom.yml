@@ -6,7 +6,7 @@ services:
     # build and the docker image from the local repo
     build:
       context: ..
-      target: hasura-base
+      target: hasura-generic
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
