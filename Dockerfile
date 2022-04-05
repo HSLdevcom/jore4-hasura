@@ -14,6 +14,10 @@ CMD ["graphql-engine", "serve"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
   CMD curl --fail http://localhost:8080/healthz || exit 1
 
-# extend the base image to also load some seed data as migrations
-FROM hasura-base AS hasura-seed
+# extend the base image to also load hsl specific migrations
+FROM hasura-base AS hasura-hsl
+COPY ./migrations-hsl/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
+
+# extend the hasura-hsl image to also load some seed data as migrations
+FROM hasura-hsl AS hasura-seed
 COPY ./seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"

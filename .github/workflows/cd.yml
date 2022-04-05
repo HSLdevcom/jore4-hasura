@@ -32,8 +32,14 @@ jobs:
             .
 
           docker build \
-            --target hasura-seed \
+            --target hasura-hsl \
             --cache-from=$IMAGE_NAME:latest \
+            -t $IMAGE_NAME:hsl-$COMMIT_ID \
+            .
+
+          docker build \
+            --target hasura-seed \
+            --cache-from=$IMAGE_NAME:hsl:latest \
             -t $IMAGE_NAME:seed-$COMMIT_ID \
             .
 
@@ -46,6 +52,7 @@ jobs:
       - name: Push dev builds to Docker Hub
         run: |
           docker push $IMAGE_NAME:$COMMIT_ID
+          docker push $IMAGE_NAME:hsl-$COMMIT_ID
           docker push $IMAGE_NAME:seed-$COMMIT_ID
 
       - name: Push :latest tag to Docker Hub
