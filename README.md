@@ -92,10 +92,10 @@ start-up).
 
 To add/modify a new seed migration:
 
-1. create a new migration directory with `up.sql` and `down.sql` in the `seed-data/default` folder
+1. create a new migration directory with `up.sql` and `down.sql` in the `migrations/seed-data/default` folder
 1. fill it up with `INSERT INTO` commands or similar
 1. to test it:
-   a) set the `migrations_directory` to `seed-data` in your `config.yaml`.
+   a) set the `migrations_directory` to `migrations/seed-data` in your `config.yaml`.
    a) restart your `testdb` container with `docker restart testdb`. If you are using volumes to
    persist its data, remember to delete the volume before restarting the testdb container.
    a) apply the new seed migration with `hasura migrate apply --up 1`
