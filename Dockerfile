@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 ENV HASURA_GRAPHQL_MIGRATIONS_DIR="/hasura-migrations"
 ENV HASURA_GRAPHQL_METADATA_DIR="/hasura-metadata"
-COPY ./migrations "${HASURA_GRAPHQL_MIGRATIONS_DIR}"
-COPY ./metadata "${HASURA_GRAPHQL_METADATA_DIR}"
+COPY ./migrations/generic "${HASURA_GRAPHQL_MIGRATIONS_DIR}"
+COPY ./metadata/generic "${HASURA_GRAPHQL_METADATA_DIR}"
 WORKDIR /app
 COPY ./scripts ./scripts
 ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
@@ -16,4 +16,4 @@ HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
 
 # extend the base image to also load some seed data as migrations
 FROM hasura-base AS hasura-seed
-COPY ./seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
+COPY ./migrations/seed-data/default "${HASURA_GRAPHQL_MIGRATIONS_DIR}/default/"
