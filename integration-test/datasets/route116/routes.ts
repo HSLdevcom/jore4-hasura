@@ -16,6 +16,10 @@ export const routes: Route[] = [
     priority: 10,
     validity_start: null,
     validity_end: null,
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
 ];
 

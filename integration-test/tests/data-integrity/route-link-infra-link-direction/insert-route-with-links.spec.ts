@@ -31,6 +31,10 @@ const routeToBeInserted: Partial<Route> = {
   priority: lines[1].priority + 10,
   validity_start: new Date('2044-05-01 23:11:32Z'),
   validity_end: new Date('2045-05-01 23:11:32Z'),
+  origin_name: 'Elielinaukio',
+  origin_name_short: 'Elieli.',
+  destination_name: 'Kannelmäki',
+  destination_name_short: 'Kannelm.',
 };
 
 const createLinksToBeInserted = (

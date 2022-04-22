@@ -26,6 +26,10 @@ const toBeInserted = (
   priority: 30,
   validity_start,
   validity_end,
+  origin_name: 'Elielinaukio',
+  origin_name_short: 'Elieli.',
+  destination_name: 'Kannelmäki',
+  destination_name_short: 'Kannelm.',
 });
 
 const buildMutation = (

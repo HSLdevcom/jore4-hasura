@@ -21,6 +21,10 @@ export const routes: Route[] = [
     priority: 10,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: null,
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '91994146-0569-44be-b2f1-da3c073d416c',
@@ -35,6 +39,10 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date('2044-06-02 23:11:32Z'),
     validity_end: new Date('2045-04-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '0dac4416-1f84-4951-86b7-149f643594de',
@@ -49,6 +57,10 @@ export const routes: Route[] = [
     priority: 30,
     validity_start: null,
     validity_end: new Date('2044-09-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: 'a77b98e5-cfaf-4c65-bfc5-169d00bcd8d9',
@@ -63,6 +75,10 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date('2044-01-02 21:11:32Z'),
     validity_end: new Date('2044-09-02 22:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
 ];
 

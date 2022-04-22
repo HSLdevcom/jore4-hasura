@@ -21,6 +21,10 @@ export const routes: Route[] = [
     priority: 10,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: null,
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '91994146-0569-44be-b2f1-da3c073d416c',
@@ -35,6 +39,10 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-02-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '4b8f3830-d827-412c-bcf5-5e76e178bf87',
@@ -49,6 +57,10 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-04-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '77f43d0d-ce64-419d-99b9-8990969678d3',
@@ -63,6 +75,10 @@ export const routes: Route[] = [
     priority: 20,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-06-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '127de975-8e1b-4ef5-b782-dd54971f3e1c',
@@ -77,6 +93,10 @@ export const routes: Route[] = [
     priority: 10,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-08-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
   {
     route_id: '833f3ba2-3b3e-4db8-adee-430773b6c4f6',
@@ -91,6 +111,10 @@ export const routes: Route[] = [
     priority: 10,
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-10-02 23:11:32Z'),
+    origin_name: 'Elielinaukio',
+    origin_name_short: 'Elieli.',
+    destination_name: 'Kannelmäki',
+    destination_name_short: 'Kannelm.',
   },
 ];
 

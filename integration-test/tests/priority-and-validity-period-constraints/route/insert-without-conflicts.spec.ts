@@ -95,6 +95,10 @@ describe('Insert route', () => {
       priority: 20,
       validity_start: new Date('2024-09-02 23:11:32Z'),
       validity_end: new Date('2034-09-02 23:11:32Z'),
+      origin_name: 'Elielinaukio',
+      origin_name_short: 'Elieli.',
+      destination_name: 'Kannelmäki',
+      destination_name_short: 'Kannelm.',
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -115,6 +119,10 @@ describe('Insert route', () => {
       priority: 30,
       validity_start: new Date('2024-09-02 23:11:32Z'),
       validity_end: new Date('2034-09-02 23:11:32Z'),
+      origin_name: 'Elielinaukio',
+      origin_name_short: 'Elieli.',
+      destination_name: 'Kannelmäki',
+      destination_name_short: 'Kannelm.',
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -135,6 +143,10 @@ describe('Insert route', () => {
       priority: 30,
       validity_start: new Date('2044-09-02 23:11:32Z'),
       validity_end: new Date('2045-06-01 23:11:32Z'),
+      origin_name: 'Elielinaukio',
+      origin_name_short: 'Elieli.',
+      destination_name: 'Kannelmäki',
+      destination_name_short: 'Kannelm.',
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -155,6 +167,10 @@ describe('Insert route', () => {
       priority: 20,
       validity_start: new Date('2044-06-02 21:11:32Z'),
       validity_end: new Date('2045-06-01 23:11:32Z'),
+      origin_name: 'Elielinaukio',
+      origin_name_short: 'Elieli.',
+      destination_name: 'Kannelmäki',
+      destination_name_short: 'Kannelm.',
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -175,6 +191,10 @@ describe('Insert route', () => {
       priority: 20,
       validity_start: new Date('2044-04-02 21:11:32Z'),
       validity_end: new Date('2044-08-02 22:11:32Z'),
+      origin_name: 'Elielinaukio',
+      origin_name_short: 'Elieli.',
+      destination_name: 'Kannelmäki',
+      destination_name_short: 'Kannelm.',
     };
 
     shouldReturnCorrectResponse(toBeInserted);

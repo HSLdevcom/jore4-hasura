@@ -130,6 +130,10 @@ export type Route = {
   priority: number;
   validity_start: Date | null;
   validity_end: Date | null;
+  origin_name: string | null;
+  origin_name_short: string | null;
+  destination_name: string | null;
+  destination_name_short: string | null;
 };
 export const RouteProps: PropArray = [
   'route_id',
@@ -142,6 +146,10 @@ export const RouteProps: PropArray = [
   'priority',
   'validity_start',
   'validity_end',
+  'origin_name',
+  'origin_name_short',
+  'destination_name',
+  'destination_name_short',
 ];
 
 export type InfrastructureLinkAlongRoute = {
