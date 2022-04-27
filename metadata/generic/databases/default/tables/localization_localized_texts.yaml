@@ -1,0 +1,10 @@
+table:
+  schema: localization
+  name: localized_texts
+object_relationships:
+  - name: codeset
+    using:
+      foreign_key_constraint_on: codeset_id
+  - name: language
+    using:
+      foreign_key_constraint_on: language_code
