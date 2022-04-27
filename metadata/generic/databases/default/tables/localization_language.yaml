@@ -1,0 +1,12 @@
+table:
+  schema: localization
+  name: language
+is_enum: true
+array_relationships:
+  - name: localized_texts
+    using:
+      foreign_key_constraint_on:
+        column: language_code
+        table:
+          schema: localization
+          name: localized_text
