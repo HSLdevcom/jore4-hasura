@@ -9,12 +9,21 @@ object_relationships:
   using:
     foreign_key_constraint_on: primary_vehicle_mode
 array_relationships:
-- name: line_routes
-  using:
-    manual_configuration:
-      column_mapping:
-        line_id: on_line_id
-      insertion_order: null
-      remote_table:
-        name: route
-        schema: route
+  - name: line_routes
+    using:
+      manual_configuration:
+        remote_table:
+          schema: route
+          name: route
+        insertion_order: null
+        column_mapping:
+          line_id: on_line_id
+  - name: localized_texts
+    using:
+      manual_configuration:
+        remote_table:
+          schema: localization
+          name: localized_texts
+        insertion_order: null
+        column_mapping:
+          line_id: entity_id
