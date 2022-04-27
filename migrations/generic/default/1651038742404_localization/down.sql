@@ -1,0 +1,8 @@
+DROP TRIGGER route_after_delete_line_trigger ON route.line;
+DROP FUNCTION route.delete_line_related_localizations;
+DROP TRIGGER internal_route_after_delete_route_trigger ON internal_route.route;
+DROP FUNCTION internal_route.delete_route_related_localizations;
+DROP TABLE localization.localized_texts;
+DROP TABLE localization.codesets;
+DROP TABLE localization.languages;
+DROP SCHEMA localization;
