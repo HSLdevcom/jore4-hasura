@@ -33,18 +33,27 @@ array_relationships:
   - name: infrastructure_links_along_route
     using:
       manual_configuration:
+        remote_table:
+          schema: route
+          name: infrastructure_link_along_route
+        insertion_order: null
         column_mapping:
           route_id: route_id
-        insertion_order: null
+  - name: localized_texts
+    using:
+      manual_configuration:
         remote_table:
-          name: infrastructure_link_along_route
-          schema: route
+          schema: localization
+          name: localized_texts
+        insertion_order: null
+        column_mapping:
+          route_id: entity_id
   - name: route_journey_patterns
     using:
       manual_configuration:
+        remote_table:
+          schema: journey_pattern
+          name: journey_pattern
+        insertion_order: null
         column_mapping:
           route_id: on_route_id
-        insertion_order: null
-        remote_table:
-          name: journey_pattern
-          schema: journey_pattern

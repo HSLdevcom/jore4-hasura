@@ -1,0 +1,11 @@
+table:
+  schema: localization
+  name: codesets
+array_relationships:
+  - name: localized_texts
+    using:
+      foreign_key_constraint_on:
+        column: codeset_id
+        table:
+          schema: localization
+          name: localized_texts
