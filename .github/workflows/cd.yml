@@ -70,8 +70,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - imagePrefix: "" # production image
+          # note: cannot run e2e tests for generic image as the UI needs the hsl-specific migrations
+          - imagePrefix: "generic-" # generic image
+            runE2ETests: false
           - imagePrefix: "seed-" # image with seed data
+            runE2ETests: true
+          - imagePrefix: "hsl-" # production image
+            runE2ETests: true
 
     steps:
       - name: Extract metadata to env variables
@@ -84,6 +89,7 @@ jobs:
 
       - name: run e2e smoke tests
         id: tests
+        if: ${{ matrix.runE2ETests }}
         uses: HSLdevcom/jore4-robot/github-actions/run-rf-tests@actions-v1
         with:
           included_tag: smoke
@@ -91,5 +97,5 @@ jobs:
           e2e_password: ${{ secrets.ROBOT_HSLID_PASSWORD }}
 
       - name: upload test results
-        if: always()
+        if: ${{ always() && matrix.runE2ETests }}
         uses: HSLdevcom/jore4-robot/github-actions/upload-results@actions-v1
