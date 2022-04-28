@@ -1,42 +1,42 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
-} from "@datasets/types";
-import "@util/matchers";
-import { asDbGeometryObjectArray } from "@util/dataset";
+} from '@datasets/types';
+import '@util/matchers';
+import { asDbGeometryObjectArray } from '@util/dataset';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
-} from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
+} from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
 
 const createToBeInserted = (
   infrastructureLinkId: string,
-  direction: LinkDirection
+  direction: LinkDirection,
 ): Partial<ScheduledStopPoint> => ({
   located_on_infrastructure_link_id: infrastructureLinkId,
   direction,
   measured_location: {
-    type: "Point",
+    type: 'Point',
     coordinates: [12.3, 23.4, 34.5],
     crs: {
-      properties: { name: "urn:ogc:def:crs:EPSG::4326" },
-      type: "name",
+      properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+      type: 'name',
     },
   } as dataset.GeometryObject,
-  label: "inserted stop point",
+  label: 'inserted stop point',
   priority: 50,
-  validity_end: new Date("2060-11-04 15:30:40Z"),
+  validity_end: new Date('2060-11-04 15:30:40Z'),
 });
 
 const insertedDefaultValues: Partial<ScheduledStopPoint> = {
@@ -56,16 +56,16 @@ const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
           },
         },
       },
-      ["direction", "vehicle_mode"]
+      ['direction', 'vehicle_mode'],
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
       }
     }
   }
 `;
 
-describe("Insert scheduled stop point", () => {
+describe('Insert scheduled stop point', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -78,21 +78,21 @@ describe("Insert scheduled stop point", () => {
     setupDb(
       dbConnectionPool,
       getTableConfigArray([
-        "infrastructure_network.infrastructure_link",
-        "infrastructure_network.vehicle_submode_on_infrastructure_link",
-        "internal_service_pattern.scheduled_stop_point",
-        "service_pattern.vehicle_mode_on_scheduled_stop_point",
-        "route.line",
-        "internal_route.route",
-      ])
-    )
+        'infrastructure_network.infrastructure_link',
+        'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        'internal_service_pattern.scheduled_stop_point',
+        'service_pattern.vehicle_mode_on_scheduled_stop_point',
+        'route.line',
+        'internal_route.route',
+      ]),
+    ),
   );
 
   describe("whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (
-      toBeInserted: Partial<ScheduledStopPoint>
+      toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
-      it("should return error response", async () => {
+      it('should return error response', async () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
@@ -100,15 +100,15 @@ describe("Insert scheduled stop point", () => {
           })
           .then(
             expectErrorResponse(
-              "scheduled stop point direction must be compatible with infrastructure link direction"
-            )
+              'scheduled stop point direction must be compatible with infrastructure link direction',
+            ),
           );
       });
 
     const shouldNotModifyDatabase = (
-      toBeInserted: Partial<ScheduledStopPoint>
+      toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
-      it("should not modify the database", async () => {
+      it('should not modify the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
@@ -116,21 +116,21 @@ describe("Insert scheduled stop point", () => {
 
         const response = await queryTable(
           dbConnectionPool,
-          "service_pattern.scheduled_stop_point"
+          'service_pattern.scheduled_stop_point',
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
         expect(response.rows).toEqual(
           expect.arrayContaining(
-            asDbGeometryObjectArray(scheduledStopPoints, ["measured_location"])
-          )
+            asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
+          ),
         );
       });
 
     describe('infrastructure link direction "forward", stop point direction "backward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[0].infrastructure_link_id,
-        LinkDirection.Backward
+        LinkDirection.Backward,
       );
 
       shouldReturnErrorResponse(toBeInserted);
@@ -141,7 +141,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "backward", stop point direction "forward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[2].infrastructure_link_id,
-        LinkDirection.Forward
+        LinkDirection.Forward,
       );
 
       shouldReturnErrorResponse(toBeInserted);
@@ -152,7 +152,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "forward", stop point direction "bidirectional"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[0].infrastructure_link_id,
-        LinkDirection.BiDirectional
+        LinkDirection.BiDirectional,
       );
 
       shouldReturnErrorResponse(toBeInserted);
@@ -163,7 +163,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "backward", stop point direction "bidirectional', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[2].infrastructure_link_id,
-        LinkDirection.BiDirectional
+        LinkDirection.BiDirectional,
       );
 
       shouldReturnErrorResponse(toBeInserted);
@@ -174,9 +174,9 @@ describe("Insert scheduled stop point", () => {
 
   describe("whose direction does NOT conflict with its infrastructure link's direction", () => {
     const shouldReturnCorrectResponse = (
-      toBeInserted: Partial<ScheduledStopPoint>
+      toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
-      it("should return correct response", async () => {
+      it('should return correct response', async () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
@@ -195,20 +195,20 @@ describe("Insert scheduled stop point", () => {
                 ],
               },
             },
-          })
+          }),
         );
 
         // check the new ID is a valid UUID
         expect(
           response.data.insert_service_pattern_scheduled_stop_point.returning[0]
-            .scheduled_stop_point_id
+            .scheduled_stop_point_id,
         ).toBeValidUuid();
       });
 
     const shouldInsertCorrectRowIntoDatabase = (
-      toBeInserted: Partial<ScheduledStopPoint>
+      toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
-      it("should insert correct row into the database", async () => {
+      it('should insert correct row into the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
@@ -216,7 +216,7 @@ describe("Insert scheduled stop point", () => {
 
         const response = await queryTable(
           dbConnectionPool,
-          "service_pattern.scheduled_stop_point"
+          'service_pattern.scheduled_stop_point',
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -232,16 +232,16 @@ describe("Insert scheduled stop point", () => {
                 },
                 ...scheduledStopPoints,
               ],
-              ["measured_location"]
-            )
-          )
+              ['measured_location'],
+            ),
+          ),
         );
       });
 
     describe('infrastructure link direction "forward", stop point direction "forward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[0].infrastructure_link_id,
-        LinkDirection.Forward
+        LinkDirection.Forward,
       );
 
       shouldReturnCorrectResponse(toBeInserted);
@@ -252,7 +252,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "backward", stop point direction "backward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[2].infrastructure_link_id,
-        LinkDirection.Backward
+        LinkDirection.Backward,
       );
 
       shouldReturnCorrectResponse(toBeInserted);
@@ -263,7 +263,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "bidirectional", stop point direction "forward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[1].infrastructure_link_id,
-        LinkDirection.Forward
+        LinkDirection.Forward,
       );
 
       shouldReturnCorrectResponse(toBeInserted);
@@ -274,7 +274,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "bidirectional", stop point direction "backward"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[1].infrastructure_link_id,
-        LinkDirection.Backward
+        LinkDirection.Backward,
       );
 
       shouldReturnCorrectResponse(toBeInserted);
@@ -285,7 +285,7 @@ describe("Insert scheduled stop point", () => {
     describe('infrastructure link direction "bidirectional", stop point direction "bidirectional"', () => {
       const toBeInserted = createToBeInserted(
         infrastructureLinks[1].infrastructure_link_id,
-        LinkDirection.BiDirectional
+        LinkDirection.BiDirectional,
       );
 
       shouldReturnCorrectResponse(toBeInserted);

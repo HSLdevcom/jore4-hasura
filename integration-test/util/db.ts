@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from "pg";
+import { Pool, QueryResult } from 'pg';
 
 class QueryRunner {
   connectionPool: Pool;
@@ -20,7 +20,7 @@ class QueryRunner {
       `INSERT INTO ${table} ` +
         `SELECT *
        FROM jsonb_populate_recordset(NULL::${table}, $1::jsonb)`,
-      [JSON.stringify(jsonObjects)]
+      [JSON.stringify(jsonObjects)],
     );
 
   run = () =>
@@ -31,11 +31,11 @@ class QueryRunner {
           .reduce(
             (promise: Promise<void | QueryResult>, nextQuery) =>
               promise.then(() =>
-                client.query(nextQuery.query, nextQuery.params)
+                client.query(nextQuery.query, nextQuery.params),
               ),
-            Promise.resolve()
+            Promise.resolve(),
           )
-          .finally(() => client.release())
+          .finally(() => client.release()),
       );
 }
 

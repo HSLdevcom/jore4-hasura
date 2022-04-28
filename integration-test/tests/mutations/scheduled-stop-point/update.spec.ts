@@ -1,27 +1,27 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
-import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
-import { ScheduledStopPoint, ScheduledStopPointProps } from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[0].infrastructure_link_id,
   measured_location: {
-    type: "Point",
+    type: 'Point',
     coordinates: [20.1, 19.2, 10],
     crs: {
-      properties: { name: "urn:ogc:def:crs:EPSG::4326" },
-      type: "name",
+      properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+      type: 'name',
     },
   } as dataset.GeometryObject,
   priority: 30,
-  validity_start: new Date("2077-10-22 23:44:11"),
-  validity_end: new Date("2079-10-22 23:44:11"),
+  validity_start: new Date('2077-10-22 23:44:11'),
+  validity_end: new Date('2079-10-22 23:44:11'),
 };
 
 const completeUpdated: ScheduledStopPoint = {
@@ -37,16 +37,16 @@ const mutation = `
           completeUpdated.scheduled_stop_point_id
         }"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
       }
     }
   }
 `;
 
-describe("Update scheduled_stop_point", () => {
+describe('Update scheduled_stop_point', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -57,7 +57,7 @@ describe("Update scheduled_stop_point", () => {
 
   beforeEach(() => setupDb(dbConnectionPool));
 
-  it("should return correct response", async () => {
+  it('should return correct response', async () => {
     const response = await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
@@ -70,11 +70,11 @@ describe("Update scheduled_stop_point", () => {
             returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
           },
         },
-      })
+      }),
     );
   });
 
-  it("should update correct row in the database", async () => {
+  it('should update correct row in the database', async () => {
     await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
@@ -82,7 +82,7 @@ describe("Update scheduled_stop_point", () => {
 
     const response = await queryTable(
       dbConnectionPool,
-      "service_pattern.scheduled_stop_point"
+      'service_pattern.scheduled_stop_point',
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -95,12 +95,12 @@ describe("Update scheduled_stop_point", () => {
             ...scheduledStopPoints.filter(
               (scheduledStopPoint) =>
                 scheduledStopPoint.scheduled_stop_point_id !=
-                completeUpdated.scheduled_stop_point_id
+                completeUpdated.scheduled_stop_point_id,
             ),
           ],
-          ["measured_location"]
-        )
-      )
+          ['measured_location'],
+        ),
+      ),
     );
   });
 });

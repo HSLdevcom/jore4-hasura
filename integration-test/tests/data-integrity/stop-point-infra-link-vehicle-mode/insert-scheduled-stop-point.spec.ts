@@ -1,38 +1,38 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { asDbGeometryObjectArray } from "@util/dataset";
-import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import {
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
-} from "@datasets/defaultSetup/scheduled-stop-points";
+} from '@datasets/defaultSetup/scheduled-stop-points';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
-} from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
+} from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
     infrastructureLinks[0].infrastructure_link_id,
   direction: LinkDirection.Forward,
   measured_location: {
-    type: "Point",
+    type: 'Point',
     coordinates: [12.3, 23.4, 34.5],
     crs: {
-      properties: { name: "urn:ogc:def:crs:EPSG::4326" },
-      type: "name",
+      properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+      type: 'name',
     },
   } as dataset.GeometryObject,
-  label: "inserted stop point",
+  label: 'inserted stop point',
   priority: 50,
-  validity_end: new Date("2060-11-04 15:30:40Z"),
+  validity_end: new Date('2060-11-04 15:30:40Z'),
 };
 
 const insertedDefaultValues: Partial<ScheduledStopPoint> = {
@@ -52,16 +52,16 @@ const buildMutation = (vehicleMode?: VehicleMode) => `
           },
         }),
       },
-      ["direction", "vehicle_mode"]
+      ['direction', 'vehicle_mode'],
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
       }
     }
   }
 `;
 
-describe("Insert scheduled stop point", () => {
+describe('Insert scheduled stop point', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -74,7 +74,7 @@ describe("Insert scheduled stop point", () => {
 
   describe("whose vehicle mode conflicts with its infrastructure link's vehicle sub mode", () => {
     const shouldReturnErrorResponse = (vehicleMode?: VehicleMode) =>
-      it("should return error response", async () => {
+      it('should return error response', async () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
@@ -82,13 +82,13 @@ describe("Insert scheduled stop point", () => {
           })
           .then(
             expectErrorResponse(
-              "scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes"
-            )
+              'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes',
+            ),
           );
       });
 
     const shouldNotModifyDatabase = (vehicleMode?: VehicleMode) =>
-      it("should not modify the database", async () => {
+      it('should not modify the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
@@ -96,26 +96,26 @@ describe("Insert scheduled stop point", () => {
 
         const stopPointResponse = await queryTable(
           dbConnectionPool,
-          "service_pattern.scheduled_stop_point"
+          'service_pattern.scheduled_stop_point',
         );
 
         expect(stopPointResponse.rowCount).toEqual(scheduledStopPoints.length);
         expect(stopPointResponse.rows).toEqual(
           expect.arrayContaining(
-            asDbGeometryObjectArray(scheduledStopPoints, ["measured_location"])
-          )
+            asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
+          ),
         );
 
         const vehicleModeResponse = await queryTable(
           dbConnectionPool,
-          "service_pattern.vehicle_mode_on_scheduled_stop_point"
+          'service_pattern.vehicle_mode_on_scheduled_stop_point',
         );
 
         expect(vehicleModeResponse.rowCount).toEqual(
-          vehicleModeOnScheduledStopPoint.length
+          vehicleModeOnScheduledStopPoint.length,
         );
         expect(vehicleModeResponse.rows).toEqual(
-          expect.arrayContaining(vehicleModeOnScheduledStopPoint)
+          expect.arrayContaining(vehicleModeOnScheduledStopPoint),
         );
       });
 
@@ -140,7 +140,7 @@ describe("Insert scheduled stop point", () => {
 
   describe("whose mode does NOT conflict with its infrastructure link's sub modes", () => {
     const shouldReturnCorrectResponse = (vehicleMode: VehicleMode) =>
-      it("should return correct response", async () => {
+      it('should return correct response', async () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
@@ -159,18 +159,18 @@ describe("Insert scheduled stop point", () => {
                 ],
               },
             },
-          })
+          }),
         );
 
         // check the new ID is a valid UUID
         expect(
           response.data.insert_service_pattern_scheduled_stop_point.returning[0]
-            .scheduled_stop_point_id
+            .scheduled_stop_point_id,
         ).toBeValidUuid();
       });
 
     const shouldInsertCorrectRowIntoDatabase = (vehicleMode: VehicleMode) =>
-      it("should insert correct row into the database", async () => {
+      it('should insert correct row into the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
@@ -178,11 +178,11 @@ describe("Insert scheduled stop point", () => {
 
         const stopPointResponse = await queryTable(
           dbConnectionPool,
-          "service_pattern.scheduled_stop_point"
+          'service_pattern.scheduled_stop_point',
         );
 
         expect(stopPointResponse.rowCount).toEqual(
-          scheduledStopPoints.length + 1
+          scheduledStopPoints.length + 1,
         );
 
         expect(stopPointResponse.rows).toEqual(
@@ -196,18 +196,18 @@ describe("Insert scheduled stop point", () => {
                 },
                 ...scheduledStopPoints,
               ],
-              ["measured_location"]
-            )
-          )
+              ['measured_location'],
+            ),
+          ),
         );
 
         const vehicleModeResponse = await queryTable(
           dbConnectionPool,
-          "service_pattern.vehicle_mode_on_scheduled_stop_point"
+          'service_pattern.vehicle_mode_on_scheduled_stop_point',
         );
 
         expect(vehicleModeResponse.rowCount).toEqual(
-          vehicleModeOnScheduledStopPoint.length + 1
+          vehicleModeOnScheduledStopPoint.length + 1,
         );
 
         expect(vehicleModeResponse.rows).toEqual(
@@ -217,7 +217,7 @@ describe("Insert scheduled stop point", () => {
               vehicle_mode: vehicleMode,
             },
             ...vehicleModeOnScheduledStopPoint,
-          ])
+          ]),
         );
       });
 

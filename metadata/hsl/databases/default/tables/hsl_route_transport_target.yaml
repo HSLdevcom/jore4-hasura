@@ -3,10 +3,10 @@ table:
   schema: hsl_route
 is_enum: true
 array_relationships:
-- name: lines
-  using:
-    foreign_key_constraint_on:
-      column: transport_target
-      table:
-        name: line
-        schema: route
+  - name: lines
+    using:
+      foreign_key_constraint_on:
+        column: transport_target
+        table:
+          name: line
+          schema: route

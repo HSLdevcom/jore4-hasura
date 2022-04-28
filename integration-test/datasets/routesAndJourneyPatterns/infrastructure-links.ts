@@ -3,18 +3,18 @@ import {
   LinkDirection,
   VehicleSubmode,
   VehicleSubmodeOnInfrastructureLink,
-} from "@datasets/types";
+} from '@datasets/types';
 
 export const infrastructureLinks: InfrastructureLink[] = [
   {
-    infrastructure_link_id: "ced51f16-71ad-49c0-8785-0903240e5a78",
+    infrastructure_link_id: 'ced51f16-71ad-49c0-8785-0903240e5a78',
     direction: LinkDirection.Forward,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -23,18 +23,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: "digiroad_r",
-    external_link_id: "1",
+    external_link_source: 'digiroad_r',
+    external_link_id: '1',
   },
   {
-    infrastructure_link_id: "96f5419d-5641-46e8-b61e-660db08a87c4",
+    infrastructure_link_id: '96f5419d-5641-46e8-b61e-660db08a87c4',
     direction: LinkDirection.BiDirectional,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -43,18 +43,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1100,
-    external_link_source: "digiroad_r",
-    external_link_id: "2",
+    external_link_source: 'digiroad_r',
+    external_link_id: '2',
   },
   {
-    infrastructure_link_id: "d654ff08-a7c3-4799-820c-6d61147dd1ad",
+    infrastructure_link_id: 'd654ff08-a7c3-4799-820c-6d61147dd1ad',
     direction: LinkDirection.Backward,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -63,18 +63,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1600,
-    external_link_source: "digiroad_r",
-    external_link_id: "3",
+    external_link_source: 'digiroad_r',
+    external_link_id: '3',
   },
   {
-    infrastructure_link_id: "9c73bf64-4392-4720-b3f4-6815544451b2",
+    infrastructure_link_id: '9c73bf64-4392-4720-b3f4-6815544451b2',
     direction: LinkDirection.BiDirectional,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -83,18 +83,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1400,
-    external_link_source: "digiroad_r",
-    external_link_id: "4",
+    external_link_source: 'digiroad_r',
+    external_link_id: '4',
   },
   {
-    infrastructure_link_id: "c922cc35-46e7-4681-b6ef-60673fc25103",
+    infrastructure_link_id: 'c922cc35-46e7-4681-b6ef-60673fc25103',
     direction: LinkDirection.Forward,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -103,18 +103,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: "digiroad_r",
-    external_link_id: "5",
+    external_link_source: 'digiroad_r',
+    external_link_id: '5',
   },
   {
-    infrastructure_link_id: "2efa8900-da39-45f1-b47b-b575c56e91d7",
+    infrastructure_link_id: '2efa8900-da39-45f1-b47b-b575c56e91d7',
     direction: LinkDirection.BiDirectional,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -123,18 +123,18 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: "digiroad_r",
-    external_link_id: "6",
+    external_link_source: 'digiroad_r',
+    external_link_id: '6',
   },
   {
-    infrastructure_link_id: "5fc1c57b-adc2-4cc1-9f53-68aef9e64916",
+    infrastructure_link_id: '5fc1c57b-adc2-4cc1-9f53-68aef9e64916',
     direction: LinkDirection.BiDirectional,
     shape: {
-      type: "LineString",
+      type: 'LineString',
       crs: {
-        type: "name",
+        type: 'name',
         properties: {
-          name: "urn:ogc:def:crs:EPSG::4326",
+          name: 'urn:ogc:def:crs:EPSG::4326',
         },
       },
       coordinates: [
@@ -143,8 +143,8 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: "digiroad_r",
-    external_link_id: "7",
+    external_link_source: 'digiroad_r',
+    external_link_id: '7',
   },
 ];
 

@@ -1,19 +1,19 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
-import { routes } from "@datasets/defaultSetup/routes";
-import { Route, RouteProps } from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { routes } from '@datasets/defaultSetup/routes';
+import { Route, RouteProps } from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 
 const toBeUpdated: Partial<Route> = {
-  description_i18n: "updated route",
+  description_i18n: 'updated route',
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
   priority: 50,
-  validity_end: new Date("2045-04-01 12:11:32Z"),
+  validity_end: new Date('2045-04-01 12:11:32Z'),
 };
 
 const completeUpdated: Route = {
@@ -27,16 +27,16 @@ const mutation = `
       where: {
         route_id: {_eq: "${completeUpdated.route_id}"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(",")}
+        ${getPropNameArray(RouteProps).join(',')}
       }
     }
   }
 `;
 
-describe("Update route", () => {
+describe('Update route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -47,7 +47,7 @@ describe("Update route", () => {
 
   beforeEach(() => setupDb(dbConnectionPool));
 
-  it("should return correct response", async () => {
+  it('should return correct response', async () => {
     const response = await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
@@ -60,17 +60,17 @@ describe("Update route", () => {
             returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
           },
         },
-      })
+      }),
     );
   });
 
-  it("should update correct row in the database", async () => {
+  it('should update correct row in the database', async () => {
     await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnectionPool, "route.route");
+    const response = await queryTable(dbConnectionPool, 'route.route');
 
     expect(response.rowCount).toEqual(routes.length);
 
@@ -78,7 +78,7 @@ describe("Update route", () => {
       expect.arrayContaining([
         completeUpdated,
         ...routes.filter((route) => route.route_id != completeUpdated.route_id),
-      ])
+      ]),
     );
   });
 });
