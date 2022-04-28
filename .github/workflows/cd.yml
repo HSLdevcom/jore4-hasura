@@ -70,8 +70,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - imagePrefix: "" # production image
+          # note: cannot run e2e tests for generic image as the UI needs the hsl-specific migrations
           - imagePrefix: "seed-" # image with seed data
+          - imagePrefix: "hsl-" # production image
 
     steps:
       - name: Extract metadata to env variables
