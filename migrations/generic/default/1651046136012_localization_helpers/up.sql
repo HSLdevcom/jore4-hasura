@@ -1,15 +1,14 @@
--- create helper view for seeing all translations in a single row for an entity
-CREATE VIEW localization.localized_texts_inline AS
+-- create helper view for seeing all translations in a single row for an entity as a json object
+CREATE VIEW localization.localized_texts_json AS
 SELECT
   lt.entity_id,
   lt.codeset_id,
   cs.codeset_name,
-  MAX(CASE WHEN lt.language_code = 'en_US' THEN lt.localized_text ELSE NULL END) as localized_text_en,
-  MAX(CASE WHEN lt.language_code = 'fi_FI' THEN lt.localized_text ELSE NULL END) as localized_text_fi,
-  MAX(CASE WHEN lt.language_code = 'sv_SV' THEN lt.localized_text ELSE NULL END) as localized_text_sv
+  jsonb_object_agg(lt.language_code, lt.localized_text) as localized_text_json
 FROM localization.localized_texts lt
 INNER JOIN localization.codesets cs ON cs.codeset_id = lt.codeset_id
 GROUP BY lt.entity_id, lt.codeset_id, cs.codeset_name;
+
 
 -- create helper function for upserting a localized text
 CREATE FUNCTION localization.upsert_localized_text (

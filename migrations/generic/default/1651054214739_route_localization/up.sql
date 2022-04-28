@@ -10,8 +10,7 @@ CREATE VIEW route.route AS
 SELECT
   r.route_id,
   r.description_i18n,
-  lti.localized_text_fi AS description_fi,
-  lti.localized_text_sv AS description_sv,
+  ltj.localized_text_json AS description_json,
   r.starts_from_scheduled_stop_point_id,
   r.ends_at_scheduled_stop_point_id,
   -- FIXME: clamp with start and end stops: join on scheduled stop point view, ST_LineSubstring, consider direction
@@ -38,10 +37,10 @@ FROM
     ) ON (r.route_id = ilar.route_id)
     LEFT JOIN (
       SELECT *
-      FROM localization.localized_texts_inline
+      FROM localization.localized_texts_json
       WHERE codeset_name = 'route_description'
-    ) lti ON (lti.entity_id = r.route_id)
-GROUP BY r.route_id, lti.localized_text_fi, lti.localized_text_sv;
+    ) ltj ON (ltj.entity_id = r.route_id)
+GROUP BY r.route_id, ltj.localized_text_json;
 COMMENT ON VIEW
   route.route IS
   'The routes from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:483';
@@ -52,11 +51,8 @@ COMMENT ON COLUMN
   route.route.description_i18n IS
   'Deprecated. The description of the route in the form of starting location - destination. Placeholder for multilingual strings.';
 COMMENT ON COLUMN
-  route.route.description_fi IS
+  route.route.description_json IS
   'The Finnish description of the route in the form of starting location - destination.';
-COMMENT ON COLUMN
-  route.route.description_sv IS
-  'The Swedish description of the route in the form of starting location - destination.';
 COMMENT ON COLUMN
   route.route.starts_from_scheduled_stop_point_id IS
   'The scheduled stop point where the route starts from.';
