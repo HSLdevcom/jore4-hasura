@@ -1,13 +1,13 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import { JourneyPatternProps } from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
-import { routes } from "@datasets/routesAndJourneyPatterns/routes";
-import { journeyPatterns } from "@datasets/routesAndJourneyPatterns/journey-patterns";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import { JourneyPatternProps } from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { routes } from '@datasets/routesAndJourneyPatterns/routes';
+import { journeyPatterns } from '@datasets/routesAndJourneyPatterns/journey-patterns';
 
 const buildMutation = (journeyPatternId: string, newRouteId: string) => `
   mutation {
@@ -19,13 +19,13 @@ const buildMutation = (journeyPatternId: string, newRouteId: string) => `
       }
     ) {
       returning {
-        ${getPropNameArray(JourneyPatternProps).join(",")}
+        ${getPropNameArray(JourneyPatternProps).join(',')}
       }
     }
   }
 `;
 
-describe("Move journey pattern to other route", () => {
+describe('Move journey pattern to other route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -35,15 +35,15 @@ describe("Move journey pattern to other route", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig)
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
   );
 
   const shouldReturnErrorMessage = (
     journeyPatternId: string,
     newRouteId: string,
-    expectedErrorMessage: string
+    expectedErrorMessage: string,
   ) =>
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -56,9 +56,9 @@ describe("Move journey pattern to other route", () => {
 
   const shouldNotModifyDatabase = (
     journeyPatternId: string,
-    newRouteId: string
+    newRouteId: string,
   ) =>
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
@@ -68,41 +68,41 @@ describe("Move journey pattern to other route", () => {
 
       const response = await queryTable(
         dbConnectionPool,
-        "journey_pattern.journey_pattern",
-        routesAndJourneyPatternsTableConfig
+        'journey_pattern.journey_pattern',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);
       expect(response.rows).toEqual(expect.arrayContaining(journeyPatterns));
     });
 
-  describe("when new route does not contain all links on which the stops reside", () => {
+  describe('when new route does not contain all links on which the stops reside', () => {
     shouldReturnErrorMessage(
       journeyPatterns[0].journey_pattern_id,
       routes[3].route_id,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(
       journeyPatterns[0].journey_pattern_id,
-      routes[3].route_id
+      routes[3].route_id,
     );
   });
 
-  describe("when new route traverses a link of a stop in the wrong direction", () => {
+  describe('when new route traverses a link of a stop in the wrong direction', () => {
     shouldReturnErrorMessage(
       journeyPatterns[1].journey_pattern_id,
       routes[4].route_id,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(
       journeyPatterns[1].journey_pattern_id,
-      routes[4].route_id
+      routes[4].route_id,
     );
   });
 
-  describe("without conflict", () => {
+  describe('without conflict', () => {
     const toBeMoved = journeyPatterns[1];
     const newRouteId = routes[3].route_id;
     const completeUpdated = {
@@ -110,7 +110,7 @@ describe("Move journey pattern to other route", () => {
       on_route_id: newRouteId,
     };
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
@@ -125,11 +125,11 @@ describe("Move journey pattern to other route", () => {
               returning: [completeUpdated],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should update the database", async () => {
+    it('should update the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
@@ -139,8 +139,8 @@ describe("Move journey pattern to other route", () => {
 
       const response = await queryTable(
         dbConnectionPool,
-        "journey_pattern.journey_pattern",
-        routesAndJourneyPatternsTableConfig
+        'journey_pattern.journey_pattern',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);
@@ -148,10 +148,11 @@ describe("Move journey pattern to other route", () => {
         expect.arrayContaining([
           ...journeyPatterns.filter(
             (journeyPattern) =>
-              journeyPattern.journey_pattern_id !== toBeMoved.journey_pattern_id
+              journeyPattern.journey_pattern_id !==
+              toBeMoved.journey_pattern_id,
           ),
           completeUpdated,
-        ])
+        ]),
       );
     });
   });

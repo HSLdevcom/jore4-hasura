@@ -2,42 +2,42 @@ table:
   name: infrastructure_link
   schema: infrastructure_network
 object_relationships:
-- name: directionByDirection
-  using:
-    foreign_key_constraint_on: direction
-- name: external_source
-  using:
-    foreign_key_constraint_on: external_link_source
+  - name: directionByDirection
+    using:
+      foreign_key_constraint_on: direction
+  - name: external_source
+    using:
+      foreign_key_constraint_on: external_link_source
 array_relationships:
-- name: infrastructure_link_along_routes
-  using:
-    foreign_key_constraint_on:
-      column: infrastructure_link_id
-      table:
-        name: infrastructure_link_along_route
-        schema: route
-- name: scheduled_stop_point_located_on_infrastructure_link
-  using:
-    manual_configuration:
-      column_mapping:
-        infrastructure_link_id: located_on_infrastructure_link_id
-      insertion_order: null
-      remote_table:
-        name: scheduled_stop_point
-        schema: service_pattern
-- name: vehicle_submode_on_infrastructure_link
-  using:
-    manual_configuration:
-      column_mapping:
-        infrastructure_link_id: infrastructure_link_id
-      insertion_order: null
-      remote_table:
-        name: vehicle_submode_on_infrastructure_link
-        schema: infrastructure_network
-- name: vehicle_submode_on_infrastructure_links
-  using:
-    foreign_key_constraint_on:
-      column: infrastructure_link_id
-      table:
-        name: vehicle_submode_on_infrastructure_link
-        schema: infrastructure_network
+  - name: infrastructure_link_along_routes
+    using:
+      foreign_key_constraint_on:
+        column: infrastructure_link_id
+        table:
+          name: infrastructure_link_along_route
+          schema: route
+  - name: scheduled_stop_point_located_on_infrastructure_link
+    using:
+      manual_configuration:
+        column_mapping:
+          infrastructure_link_id: located_on_infrastructure_link_id
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point
+          schema: service_pattern
+  - name: vehicle_submode_on_infrastructure_link
+    using:
+      manual_configuration:
+        column_mapping:
+          infrastructure_link_id: infrastructure_link_id
+        insertion_order: null
+        remote_table:
+          name: vehicle_submode_on_infrastructure_link
+          schema: infrastructure_network
+  - name: vehicle_submode_on_infrastructure_links
+    using:
+      foreign_key_constraint_on:
+        column: infrastructure_link_id
+        table:
+          name: vehicle_submode_on_infrastructure_link
+          schema: infrastructure_network

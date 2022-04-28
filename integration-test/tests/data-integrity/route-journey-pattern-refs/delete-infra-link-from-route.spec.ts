@@ -1,15 +1,15 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
-} from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
-import { infrastructureLinkAlongRoute } from "@datasets/routesAndJourneyPatterns/routes";
+} from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { infrastructureLinkAlongRoute } from '@datasets/routesAndJourneyPatterns/routes';
 
 const buildMutation = (routeId: string, linkId: string) => `
   mutation {
@@ -20,13 +20,13 @@ const buildMutation = (routeId: string, linkId: string) => `
       }
     }) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(",")}
+        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }
 `;
 
-describe("Delete infra link from route", () => {
+describe('Delete infra link from route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -36,7 +36,7 @@ describe("Delete infra link from route", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig)
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
   );
 
   const postHasuraRequest = (toBeRemoved: InfrastructureLinkAlongRoute) =>
@@ -45,42 +45,42 @@ describe("Delete infra link from route", () => {
       body: {
         query: buildMutation(
           toBeRemoved.route_id,
-          toBeRemoved.infrastructure_link_id
+          toBeRemoved.infrastructure_link_id,
         ),
       },
     });
 
-  describe("when there is a stop on the link", () => {
+  describe('when there is a stop on the link', () => {
     const toBeRemoved = infrastructureLinkAlongRoute[1];
 
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await postHasuraRequest(toBeRemoved).then(
         expectErrorResponse(
-          "route's and journey pattern's traversal paths must match each other"
-        )
+          "route's and journey pattern's traversal paths must match each other",
+        ),
       );
     });
 
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await postHasuraRequest(toBeRemoved);
 
       const response = await queryTable(
         dbConnectionPool,
-        "route.infrastructure_link_along_route",
-        routesAndJourneyPatternsTableConfig
+        'route.infrastructure_link_along_route',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
       expect(response.rows).toEqual(
-        expect.arrayContaining(infrastructureLinkAlongRoute)
+        expect.arrayContaining(infrastructureLinkAlongRoute),
       );
     });
   });
 
-  describe("without conflict", () => {
+  describe('without conflict', () => {
     const toBeRemoved = infrastructureLinkAlongRoute[4];
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await postHasuraRequest(toBeRemoved);
 
       expect(response).toEqual(
@@ -90,30 +90,31 @@ describe("Delete infra link from route", () => {
               returning: [toBeRemoved],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should update the database", async () => {
+    it('should update the database', async () => {
       await postHasuraRequest(toBeRemoved);
 
       const response = await queryTable(
         dbConnectionPool,
-        "route.infrastructure_link_along_route",
-        routesAndJourneyPatternsTableConfig
+        'route.infrastructure_link_along_route',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(
-        infrastructureLinkAlongRoute.length - 1
+        infrastructureLinkAlongRoute.length - 1,
       );
       expect(response.rows).toEqual(
         expect.arrayContaining(
           infrastructureLinkAlongRoute.filter(
             (link) =>
               link.route_id !== toBeRemoved.route_id ||
-              link.infrastructure_link_id !== toBeRemoved.infrastructure_link_id
-          )
-        )
+              link.infrastructure_link_id !==
+                toBeRemoved.infrastructure_link_id,
+          ),
+        ),
       );
     });
   });

@@ -3,10 +3,10 @@ table:
   schema: infrastructure_network
 is_enum: true
 array_relationships:
-- name: infrastructure_links
-  using:
-    foreign_key_constraint_on:
-      column: direction
-      table:
-        name: infrastructure_link
-        schema: infrastructure_network
+  - name: infrastructure_links
+    using:
+      foreign_key_constraint_on:
+        column: direction
+        table:
+          name: infrastructure_link
+          schema: infrastructure_network

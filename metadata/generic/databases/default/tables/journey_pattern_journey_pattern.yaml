@@ -2,20 +2,20 @@ table:
   name: journey_pattern
   schema: journey_pattern
 object_relationships:
-- name: journey_pattern_route
-  using:
-    manual_configuration:
-      column_mapping:
-        on_route_id: route_id
-      insertion_order: null
-      remote_table:
-        name: route
-        schema: route
+  - name: journey_pattern_route
+    using:
+      manual_configuration:
+        column_mapping:
+          on_route_id: route_id
+        insertion_order: null
+        remote_table:
+          name: route
+          schema: route
 array_relationships:
-- name: scheduled_stop_point_in_journey_patterns
-  using:
-    foreign_key_constraint_on:
-      column: journey_pattern_id
-      table:
-        name: scheduled_stop_point_in_journey_pattern
-        schema: journey_pattern
+  - name: scheduled_stop_point_in_journey_patterns
+    using:
+      foreign_key_constraint_on:
+        column: journey_pattern_id
+        table:
+          name: scheduled_stop_point_in_journey_pattern
+          schema: journey_pattern
