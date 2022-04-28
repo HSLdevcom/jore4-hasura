@@ -70,8 +70,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - imagePrefix: "" # production image
-          - imagePrefix: "seed-" # image with seed data
+          - imagePrefix: '' # production image
+          - imagePrefix: 'seed-' # image with seed data
 
     steps:
       - name: Extract metadata to env variables
@@ -80,7 +80,7 @@ jobs:
       - name: start e2e env
         uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
         with:
-          hasura_version: "${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}"
+          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
       - name: run e2e smoke tests
         id: tests

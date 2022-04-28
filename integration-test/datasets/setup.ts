@@ -1,10 +1,10 @@
-import * as pg from "pg";
-import * as db from "@util/db";
-import { hasGeoPropSpec, PropArray } from "@datasets/types";
-import { asDbGeometryObjectArray } from "@util/dataset";
-import { defaultTableConfig } from "@datasets/defaultSetup";
-import { throwError } from "@util/helpers";
-import { readFileSync } from "fs";
+import * as pg from 'pg';
+import * as db from '@util/db';
+import { hasGeoPropSpec, PropArray } from '@datasets/types';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import { defaultTableConfig } from '@datasets/defaultSetup';
+import { throwError } from '@util/helpers';
+import { readFileSync } from 'fs';
 
 export type TableLikeConfigCommonProps = {
   name: string;
@@ -24,16 +24,16 @@ export type ViewConfig = TableLikeConfigCommonProps & {
 export type TableLikeConfig = TableConfig | ViewConfig;
 
 export function isTableConfig<ObjType extends TableLikeConfig>(
-  obj: TableLikeConfig
+  obj: TableLikeConfig,
 ): obj is TableConfig {
-  return obj.hasOwnProperty("data");
+  return obj.hasOwnProperty('data');
 }
 
 export const setupDb = (
   dbConnectionPool: pg.Pool,
-  configuration: TableLikeConfig[] = defaultTableConfig
+  configuration: TableLikeConfig[] = defaultTableConfig,
 ) => {
-  let queryRunner = db.queryRunner(dbConnectionPool).query("BEGIN");
+  let queryRunner = db.queryRunner(dbConnectionPool).query('BEGIN');
   const tables = configuration.filter(isTableConfig);
 
   tables.forEach((table) => {
@@ -42,9 +42,9 @@ export const setupDb = (
   tables.forEach((table) => {
     const { data, props } = table;
 
-    if (typeof data === "string") {
+    if (typeof data === 'string') {
       // data contains the file name from which to load SQL statements
-      const fileContent = readFileSync(data, "utf-8");
+      const fileContent = readFileSync(data, 'utf-8');
       queryRunner = queryRunner.query(fileContent);
     } else {
       // data directly contains the table content array
@@ -53,29 +53,29 @@ export const setupDb = (
           hasGeoPropSpec(prop) && prop.isGeoProp
             ? [...prev, prop.propName]
             : prev,
-        [] as string[]
+        [] as string[],
       );
 
       queryRunner = queryRunner.insertFromJson(
         table.name,
-        asDbGeometryObjectArray(data, geoProps)
+        asDbGeometryObjectArray(data, geoProps),
       );
     }
   });
 
-  return queryRunner.query("COMMIT").run();
+  return queryRunner.query('COMMIT').run();
 };
 
 export const getTableConfig = (
   tableName: string,
-  configuration: TableLikeConfig[] = defaultTableConfig
+  configuration: TableLikeConfig[] = defaultTableConfig,
 ) =>
   configuration.find((table) => table.name === tableName) ??
   throwError(`no configuration found for table ${tableName}`);
 
 export const getTableConfigArray = (
   tableNames: string[],
-  configuration: TableLikeConfig[] = defaultTableConfig
+  configuration: TableLikeConfig[] = defaultTableConfig,
 ) => tableNames.map((tableName) => getTableConfig(tableName, configuration));
 
 export const getPropNameArray = (props: PropArray) =>
@@ -84,14 +84,14 @@ export const getPropNameArray = (props: PropArray) =>
 export const queryTable = (
   dbConnectionPool: pg.Pool,
   tableName: string,
-  configuration: TableLikeConfig[] = defaultTableConfig
+  configuration: TableLikeConfig[] = defaultTableConfig,
 ) =>
   db.singleQuery(
     dbConnectionPool,
     `
       SELECT ${getPropNameArray(
-        getTableConfig(tableName, configuration).props
-      ).join(",")}
+        getTableConfig(tableName, configuration).props,
+      ).join(',')}
       FROM ${tableName}
-    `
+    `,
   );

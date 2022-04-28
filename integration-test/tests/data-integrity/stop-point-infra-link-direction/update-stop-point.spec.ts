@@ -1,42 +1,42 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
-} from "@datasets/types";
-import "@util/matchers";
-import { asDbGeometryObjectArray } from "@util/dataset";
+} from '@datasets/types';
+import '@util/matchers';
+import { asDbGeometryObjectArray } from '@util/dataset';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
-} from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { scheduledStopPoints } from "@datasets/defaultSetup/scheduled-stop-points";
-import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+} from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 
 const buildMutation = (
   stopPointId: string,
-  toBeUpdated: Partial<ScheduledStopPoint>
+  toBeUpdated: Partial<ScheduledStopPoint>,
 ) => `
   mutation {
     update_service_pattern_scheduled_stop_point(
       where: {
         scheduled_stop_point_id: {_eq: "${stopPointId}"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}) {
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
       }
     }
   }
 `;
 
-describe("Update scheduled stop point", () => {
+describe('Update scheduled stop point', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -49,22 +49,22 @@ describe("Update scheduled stop point", () => {
     setupDb(
       dbConnectionPool,
       getTableConfigArray([
-        "infrastructure_network.infrastructure_link",
-        "infrastructure_network.vehicle_submode_on_infrastructure_link",
-        "internal_service_pattern.scheduled_stop_point",
-        "service_pattern.vehicle_mode_on_scheduled_stop_point",
-        "route.line",
-        "internal_route.route",
-      ])
-    )
+        'infrastructure_network.infrastructure_link',
+        'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        'internal_service_pattern.scheduled_stop_point',
+        'service_pattern.vehicle_mode_on_scheduled_stop_point',
+        'route.line',
+        'internal_route.route',
+      ]),
+    ),
   );
 
   describe("whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (
       stopPointId: string,
-      toBeUpdated: Partial<ScheduledStopPoint>
+      toBeUpdated: Partial<ScheduledStopPoint>,
     ) =>
-      it("should return error response", async () => {
+      it('should return error response', async () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
@@ -72,16 +72,16 @@ describe("Update scheduled stop point", () => {
           })
           .then(
             expectErrorResponse(
-              "scheduled stop point direction must be compatible with infrastructure link direction"
-            )
+              'scheduled stop point direction must be compatible with infrastructure link direction',
+            ),
           );
       });
 
     const shouldNotModifyDatabase = (
       stopPointId: string,
-      toBeUpdated: Partial<ScheduledStopPoint>
+      toBeUpdated: Partial<ScheduledStopPoint>,
     ) =>
-      it("should not modify the database", async () => {
+      it('should not modify the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(stopPointId, toBeUpdated) },
@@ -89,14 +89,14 @@ describe("Update scheduled stop point", () => {
 
         const response = await queryTable(
           dbConnectionPool,
-          "service_pattern.scheduled_stop_point"
+          'service_pattern.scheduled_stop_point',
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
         expect(response.rows).toEqual(
           expect.arrayContaining(
-            asDbGeometryObjectArray(scheduledStopPoints, ["measured_location"])
-          )
+            asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
+          ),
         );
       });
 
@@ -107,12 +107,12 @@ describe("Update scheduled stop point", () => {
 
       shouldReturnErrorResponse(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -124,12 +124,12 @@ describe("Update scheduled stop point", () => {
 
       shouldReturnErrorResponse(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -140,12 +140,12 @@ describe("Update scheduled stop point", () => {
 
       shouldReturnErrorResponse(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -158,27 +158,27 @@ describe("Update scheduled stop point", () => {
 
       shouldReturnErrorResponse(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         scheduledStopPoints[0].scheduled_stop_point_id,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
     describe("whose direction does NOT conflict with its infrastructure link's direction", () => {
       const shouldReturnCorrectResponse = (
         original: ScheduledStopPoint,
-        toBeUpdated: Partial<ScheduledStopPoint>
+        toBeUpdated: Partial<ScheduledStopPoint>,
       ) =>
-        it("should return correct response", async () => {
+        it('should return correct response', async () => {
           const response = await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
               query: buildMutation(
                 original.scheduled_stop_point_id,
-                toBeUpdated
+                toBeUpdated,
               ),
             },
           });
@@ -195,28 +195,28 @@ describe("Update scheduled stop point", () => {
                   ],
                 },
               },
-            })
+            }),
           );
         });
 
       const shouldUpdateCorrectRowInDatabase = (
         original: ScheduledStopPoint,
-        toBeUpdated: Partial<ScheduledStopPoint>
+        toBeUpdated: Partial<ScheduledStopPoint>,
       ) =>
-        it("should update correct row in the database", async () => {
+        it('should update correct row in the database', async () => {
           await rp.post({
             ...config.hasuraRequestTemplate,
             body: {
               query: buildMutation(
                 original.scheduled_stop_point_id,
-                toBeUpdated
+                toBeUpdated,
               ),
             },
           });
 
           const response = await queryTable(
             dbConnectionPool,
-            "service_pattern.scheduled_stop_point"
+            'service_pattern.scheduled_stop_point',
           );
 
           expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -229,12 +229,12 @@ describe("Update scheduled stop point", () => {
                   ...scheduledStopPoints.filter(
                     (scheduledStopPoint) =>
                       scheduledStopPoint.scheduled_stop_point_id !=
-                      original.scheduled_stop_point_id
+                      original.scheduled_stop_point_id,
                   ),
                 ],
-                ["measured_location"]
-              )
-            )
+                ['measured_location'],
+              ),
+            ),
           );
         });
 

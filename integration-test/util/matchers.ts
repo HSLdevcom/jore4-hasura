@@ -1,4 +1,4 @@
-import validate from "uuid-validate";
+import validate from 'uuid-validate';
 
 expect.extend({
   toBeValidUuid(value: string): jest.CustomMatcherResult {

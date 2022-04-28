@@ -111,14 +111,14 @@ to be used in production.
 
 ### Add/modify HSL specific schema
 
-You can add HSL specific schema changes by updating files in `migrations/hsl` and `metadata/hsl` directories. 
-The folder structure follows the same structure as the original ones. Generic (Transmodel compatible) 
-migrations are located in `migrations/generic` and `metadata/generic` respectively. 
+You can add HSL specific schema changes by updating files in `migrations/hsl` and `metadata/hsl` directories.
+The folder structure follows the same structure as the original ones. Generic (Transmodel compatible)
+migrations are located in `migrations/generic` and `metadata/generic` respectively.
 
 When adding new metadata files, they can be added in the `metadata/hsl` directory in the correct location.
-However, when adding content to existing metadata files, a new file should be created in the 
-directory of patched file, inside `/patch` directory located in the directory where the original metadata file is 
-(`/metadata/hsl/databases/detault/tables/patch`). The patch file's name should match the name of the file to 
+However, when adding content to existing metadata files, a new file should be created in the
+directory of patched file, inside `/patch` directory located in the directory where the original metadata file is
+(`/metadata/hsl/databases/detault/tables/patch`). The patch file's name should match the name of the file to
 be patched. The added file should only contain the new lines to be added.
 
 For example, to add a new HSL specific relationship to `route_line` table, a new file should be created. The original

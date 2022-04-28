@@ -1,14 +1,14 @@
-import { Response } from "request";
+import { Response } from 'request';
 
 export const expectErrorResponse =
   (expectedErrorMsg?: string) => (response: Response) => {
     if (response.statusCode >= 200 && response.statusCode < 300)
-      throw new Error("Request succeeded even though it was expected to fail");
+      throw new Error('Request succeeded even though it was expected to fail');
 
     expect(response).toEqual(
       expect.objectContaining({
         errors: expect.any(Array),
-      })
+      }),
     );
 
     if (expectedErrorMsg) {
