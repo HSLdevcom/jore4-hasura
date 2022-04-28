@@ -35,7 +35,7 @@ jobs:
       - name: Verify that hasura is up and running
         uses: HSLdevcom/jore4-tools/github-actions/healthcheck@healthcheck-v1
         with:
-          command: "curl --fail http://localhost:3201/healthz --output /dev/null --silent"
+          command: 'curl --fail http://localhost:3201/healthz --output /dev/null --silent'
 
       - name: Run integration tests
         run: |

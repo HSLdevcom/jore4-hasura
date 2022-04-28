@@ -1,0 +1,19 @@
+name: Check if sources have been prettified
+
+on:
+  pull_request:
+
+jobs:
+  check_prettify:
+    name: Check if sources have been prettified
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Prettify sources
+        run: ./scripts/prettify.sh
+
+      - name: Verify that prettify command made no changes
+        run: '[ -z "$(git status --porcelain)" ]'

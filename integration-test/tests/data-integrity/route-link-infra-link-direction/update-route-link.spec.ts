@@ -1,21 +1,21 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { infrastructureLinks } from "@datasets/defaultSetup/infrastructure-links";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
-} from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { infrastructureLinkAlongRoute } from "@datasets/defaultSetup/routes";
+} from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { infrastructureLinkAlongRoute } from '@datasets/defaultSetup/routes';
 
 const buildMutation = (
   routeId: string,
   infrastructureLinkSequence: number,
-  toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+  toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
 ) => `
   mutation {
     update_route_infrastructure_link_along_route(
@@ -26,16 +26,16 @@ const buildMutation = (
         }
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated, [
-        "is_traversal_forwards",
+        'is_traversal_forwards',
       ])}) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(",")}
+        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }
 `;
 
-describe("Update route link", () => {
+describe('Update route link', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -50,9 +50,9 @@ describe("Update route link", () => {
     const shouldReturnErrorResponse = (
       routeId: string,
       infrastructureLinkSequence: number,
-      toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+      toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
-      it("should return error response", async () => {
+      it('should return error response', async () => {
         await rp
           .post({
             ...config.hasuraRequestTemplate,
@@ -60,42 +60,42 @@ describe("Update route link", () => {
               query: buildMutation(
                 routeId,
                 infrastructureLinkSequence,
-                toBeUpdated
+                toBeUpdated,
               ),
             },
           })
           .then(
             expectErrorResponse(
-              "route link direction must be compatible with infrastructure link direction"
-            )
+              'route link direction must be compatible with infrastructure link direction',
+            ),
           );
       });
 
     const shouldNotModifyDatabase = (
       routeId: string,
       infrastructureLinkSequence: number,
-      toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+      toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
-      it("should not modify the database", async () => {
+      it('should not modify the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(
               routeId,
               infrastructureLinkSequence,
-              toBeUpdated
+              toBeUpdated,
             ),
           },
         });
 
         const response = await queryTable(
           dbConnectionPool,
-          "route.infrastructure_link_along_route"
+          'route.infrastructure_link_along_route',
         );
 
         expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
         expect(response.rows).toEqual(
-          expect.arrayContaining(infrastructureLinkAlongRoute)
+          expect.arrayContaining(infrastructureLinkAlongRoute),
         );
       });
 
@@ -107,13 +107,13 @@ describe("Update route link", () => {
       shouldReturnErrorResponse(
         infrastructureLinkAlongRoute[2].route_id,
         infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         infrastructureLinkAlongRoute[2].route_id,
         infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -125,13 +125,13 @@ describe("Update route link", () => {
       shouldReturnErrorResponse(
         infrastructureLinkAlongRoute[1].route_id,
         infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         infrastructureLinkAlongRoute[1].route_id,
         infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -143,13 +143,13 @@ describe("Update route link", () => {
       shouldReturnErrorResponse(
         infrastructureLinkAlongRoute[1].route_id,
         infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         infrastructureLinkAlongRoute[1].route_id,
         infrastructureLinkAlongRoute[1].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -161,13 +161,13 @@ describe("Update route link", () => {
       shouldReturnErrorResponse(
         infrastructureLinkAlongRoute[2].route_id,
         infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
 
       shouldNotModifyDatabase(
         infrastructureLinkAlongRoute[2].route_id,
         infrastructureLinkAlongRoute[2].infrastructure_link_sequence,
-        toBeUpdated
+        toBeUpdated,
       );
     });
   });
@@ -175,16 +175,16 @@ describe("Update route link", () => {
   describe("whose direction does NOT conflict with its infrastructure link's direction", () => {
     const shouldReturnCorrectResponse = (
       original: InfrastructureLinkAlongRoute,
-      toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+      toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
-      it("should return correct response", async () => {
+      it('should return correct response', async () => {
         const response = await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(
               original.route_id,
               original.infrastructure_link_sequence,
-              toBeUpdated
+              toBeUpdated,
             ),
           },
         });
@@ -201,29 +201,29 @@ describe("Update route link", () => {
                 ],
               },
             },
-          })
+          }),
         );
       });
 
     const shouldUpdateCorrectRowInDatabase = (
       original: InfrastructureLinkAlongRoute,
-      toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+      toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
-      it("should update correct row in the database", async () => {
+      it('should update correct row in the database', async () => {
         await rp.post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(
               original.route_id,
               original.infrastructure_link_sequence,
-              toBeUpdated
+              toBeUpdated,
             ),
           },
         });
 
         const response = await queryTable(
           dbConnectionPool,
-          "route.infrastructure_link_along_route"
+          'route.infrastructure_link_along_route',
         );
 
         expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
@@ -235,9 +235,9 @@ describe("Update route link", () => {
               (infraLinkAlongRoute) =>
                 infraLinkAlongRoute.route_id != original.route_id ||
                 infraLinkAlongRoute.infrastructure_link_sequence !=
-                  original.infrastructure_link_sequence
+                  original.infrastructure_link_sequence,
             ),
-          ])
+          ]),
         );
       });
 
@@ -250,7 +250,7 @@ describe("Update route link", () => {
 
       shouldUpdateCorrectRowInDatabase(
         infrastructureLinkAlongRoute[2],
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -263,7 +263,7 @@ describe("Update route link", () => {
 
       shouldUpdateCorrectRowInDatabase(
         infrastructureLinkAlongRoute[1],
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -276,7 +276,7 @@ describe("Update route link", () => {
 
       shouldUpdateCorrectRowInDatabase(
         infrastructureLinkAlongRoute[1],
-        toBeUpdated
+        toBeUpdated,
       );
     });
 
@@ -289,7 +289,7 @@ describe("Update route link", () => {
 
       shouldUpdateCorrectRowInDatabase(
         infrastructureLinkAlongRoute[1],
-        toBeUpdated
+        toBeUpdated,
       );
     });
   });

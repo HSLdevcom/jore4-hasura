@@ -1,16 +1,16 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { lines } from "@datasets/defaultSetup/lines";
-import { routes } from "@datasets/defaultSetup/routes";
-import "@util/matchers";
-import { Route, RouteProps } from "@datasets/types";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { lines } from '@datasets/defaultSetup/lines';
+import { routes } from '@datasets/defaultSetup/routes';
+import '@util/matchers';
+import { Route, RouteProps } from '@datasets/types';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
 
 type PartialRouteWithNullableOnLineID = Partial<
-  Omit<Route, "on_line_id"> & { on_line_id: string | null }
+  Omit<Route, 'on_line_id'> & { on_line_id: string | null }
 >;
 
 const buildMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
@@ -19,10 +19,10 @@ const buildMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
       where: {
         route_id: {_eq: "${routes[1].route_id}"}
       },
-      _set: ${dataset.toGraphQlObject(toBeUpdated, ["direction"])}
+      _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(",")}
+        ${getPropNameArray(RouteProps).join(',')}
       }
     }
   }
@@ -33,7 +33,7 @@ const completeUpdated = (toBeUpdated: PartialRouteWithNullableOnLineID) => ({
   ...toBeUpdated,
 });
 
-describe("Update route", () => {
+describe('Update route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -46,9 +46,9 @@ describe("Update route", () => {
 
   const shouldReturnErrorResponse = (
     toBeUpdated: PartialRouteWithNullableOnLineID,
-    expectedErrorMessage?: string
+    expectedErrorMessage?: string,
   ) =>
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -56,30 +56,30 @@ describe("Update route", () => {
         })
         .then(
           expectErrorResponse(
-            expectedErrorMessage || "route priority must be >= line priority"
-          )
+            expectedErrorMessage || 'route priority must be >= line priority',
+          ),
         );
     });
 
   const shouldNotModifyDatabase = (
-    toBeUpdated: PartialRouteWithNullableOnLineID
+    toBeUpdated: PartialRouteWithNullableOnLineID,
   ) =>
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, "route.route");
+      const response = await queryTable(dbConnectionPool, 'route.route');
 
       expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(expect.arrayContaining(routes));
     });
 
   const shouldReturnCorrectResponse = (
-    toBeUpdated: PartialRouteWithNullableOnLineID
+    toBeUpdated: PartialRouteWithNullableOnLineID,
   ) =>
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
@@ -94,20 +94,20 @@ describe("Update route", () => {
               ],
             },
           },
-        })
+        }),
       );
     });
 
   const shouldUpdateCorrectRowInDatabase = (
-    toBeUpdated: PartialRouteWithNullableOnLineID
+    toBeUpdated: PartialRouteWithNullableOnLineID,
   ) =>
-    it("should update correct row into the database", async () => {
+    it('should update correct row into the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, "route.route");
+      const response = await queryTable(dbConnectionPool, 'route.route');
 
       const updated = completeUpdated(toBeUpdated);
 
@@ -116,18 +116,18 @@ describe("Update route", () => {
         expect.arrayContaining([
           updated,
           ...routes.filter((route) => route.route_id != updated.route_id),
-        ])
+        ]),
       );
     });
 
-  describe("with a NULL line ID", () => {
+  describe('with a NULL line ID', () => {
     const toBeUpdated = { on_line_id: null };
 
-    shouldReturnErrorResponse(toBeUpdated, "Not-NULL violation");
+    shouldReturnErrorResponse(toBeUpdated, 'Not-NULL violation');
     shouldNotModifyDatabase(toBeUpdated);
   });
 
-  describe("with a line ID whose line has higher priority than the route", () => {
+  describe('with a line ID whose line has higher priority than the route', () => {
     const toBeUpdated = { on_line_id: lines[3].line_id };
 
     shouldReturnErrorResponse(toBeUpdated);

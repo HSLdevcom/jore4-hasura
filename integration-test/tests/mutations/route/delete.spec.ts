@@ -1,11 +1,11 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { routes } from "@datasets/defaultSetup/routes";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { RouteProps } from "@datasets/types";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { routes } from '@datasets/defaultSetup/routes';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { RouteProps } from '@datasets/types';
 
 const toBeDeleted = routes[2];
 
@@ -17,13 +17,13 @@ const mutation = `
       },
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(",")}
+        ${getPropNameArray(RouteProps).join(',')}
       }
     }
   }
 `;
 
-describe("Delete route", () => {
+describe('Delete route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -34,7 +34,7 @@ describe("Delete route", () => {
 
   beforeEach(() => setupDb(dbConnectionPool));
 
-  it("should return correct response", async () => {
+  it('should return correct response', async () => {
     const response = await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
@@ -47,24 +47,24 @@ describe("Delete route", () => {
             returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
           },
         },
-      })
+      }),
     );
   });
 
-  it("should delete correct row from the database", async () => {
+  it('should delete correct row from the database', async () => {
     await rp.post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnectionPool, "route.route");
+    const response = await queryTable(dbConnectionPool, 'route.route');
 
     expect(response.rowCount).toEqual(routes.length - 1);
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
-        routes.filter((route) => route.route_id != toBeDeleted.route_id)
-      )
+        routes.filter((route) => route.route_id != toBeDeleted.route_id),
+      ),
     );
   });
 });

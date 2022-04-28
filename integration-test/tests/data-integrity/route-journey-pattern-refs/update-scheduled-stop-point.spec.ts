@@ -1,19 +1,19 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import { ScheduledStopPointProps } from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
-import { scheduledStopPoints } from "@datasets/routesAndJourneyPatterns/scheduled-stop-points";
-import { infrastructureLinks } from "@datasets/routesAndJourneyPatterns/infrastructure-links";
-import { asDbGeometryObjectArray } from "@util/dataset";
-import * as dataset from "@util/dataset";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import { ScheduledStopPointProps } from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
+import { infrastructureLinks } from '@datasets/routesAndJourneyPatterns/infrastructure-links';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import * as dataset from '@util/dataset';
 
 const buildMutation = (
   scheduledStopPointId: string,
-  newInfraLinkId: string
+  newInfraLinkId: string,
 ) => `
   mutation {
     update_service_pattern_scheduled_stop_point(where: {
@@ -24,13 +24,13 @@ const buildMutation = (
       }
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
       }
     }
   }
 `;
 
-describe("Move scheduled stop point to other infra link", () => {
+describe('Move scheduled stop point to other infra link', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -40,15 +40,15 @@ describe("Move scheduled stop point to other infra link", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig)
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
   );
 
   const shouldReturnErrorResponse = (
     scheduledStopPointId: string,
     newInfraLinkId: string,
-    expectedErrorMsg: string
+    expectedErrorMsg: string,
   ) =>
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -61,9 +61,9 @@ describe("Move scheduled stop point to other infra link", () => {
 
   const shouldNotModifyDatabase = (
     scheduledStopPointId: string,
-    newInfraLinkId: string
+    newInfraLinkId: string,
   ) =>
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
@@ -73,15 +73,15 @@ describe("Move scheduled stop point to other infra link", () => {
 
       const response = await queryTable(
         dbConnectionPool,
-        "service_pattern.scheduled_stop_point",
-        routesAndJourneyPatternsTableConfig
+        'service_pattern.scheduled_stop_point',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ["measured_location"])
-        )
+          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
+        ),
       );
     });
 
@@ -89,12 +89,12 @@ describe("Move scheduled stop point to other infra link", () => {
     shouldReturnErrorResponse(
       scheduledStopPoints[1].scheduled_stop_point_id,
       infrastructureLinks[3].infrastructure_link_id,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(
       scheduledStopPoints[1].scheduled_stop_point_id,
-      infrastructureLinks[3].infrastructure_link_id
+      infrastructureLinks[3].infrastructure_link_id,
     );
   });
 
@@ -102,12 +102,12 @@ describe("Move scheduled stop point to other infra link", () => {
     shouldReturnErrorResponse(
       scheduledStopPoints[6].scheduled_stop_point_id,
       infrastructureLinks[6].infrastructure_link_id,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(
       scheduledStopPoints[6].scheduled_stop_point_id,
-      infrastructureLinks[6].infrastructure_link_id
+      infrastructureLinks[6].infrastructure_link_id,
     );
   });
 
@@ -115,16 +115,16 @@ describe("Move scheduled stop point to other infra link", () => {
     shouldReturnErrorResponse(
       scheduledStopPoints[0].scheduled_stop_point_id,
       infrastructureLinks[1].infrastructure_link_id,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(
       scheduledStopPoints[0].scheduled_stop_point_id,
-      infrastructureLinks[1].infrastructure_link_id
+      infrastructureLinks[1].infrastructure_link_id,
     );
   });
 
-  describe("without conflict", () => {
+  describe('without conflict', () => {
     const toBeMoved = scheduledStopPoints[1];
     const newInfraLinkId = infrastructureLinks[6].infrastructure_link_id;
     const completeUpdated = {
@@ -132,13 +132,13 @@ describe("Move scheduled stop point to other infra link", () => {
       located_on_infrastructure_link_id: newInfraLinkId,
     };
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
             toBeMoved.scheduled_stop_point_id,
-            newInfraLinkId
+            newInfraLinkId,
           ),
         },
       });
@@ -150,25 +150,25 @@ describe("Move scheduled stop point to other infra link", () => {
               returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should update the database", async () => {
+    it('should update the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
             toBeMoved.scheduled_stop_point_id,
-            newInfraLinkId
+            newInfraLinkId,
           ),
         },
       });
 
       const response = await queryTable(
         dbConnectionPool,
-        "service_pattern.scheduled_stop_point",
-        routesAndJourneyPatternsTableConfig
+        'service_pattern.scheduled_stop_point',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -179,13 +179,13 @@ describe("Move scheduled stop point to other infra link", () => {
               ...scheduledStopPoints.filter(
                 (stopPoint) =>
                   stopPoint.scheduled_stop_point_id !==
-                  toBeMoved.scheduled_stop_point_id
+                  toBeMoved.scheduled_stop_point_id,
               ),
               completeUpdated,
             ],
-            ["measured_location"]
-          )
-        )
+            ['measured_location'],
+          ),
+        ),
       );
     });
   });

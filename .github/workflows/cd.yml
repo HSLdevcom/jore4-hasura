@@ -71,11 +71,11 @@ jobs:
       matrix:
         include:
           # note: cannot run e2e tests for generic image as the UI needs the hsl-specific migrations
-          - imagePrefix: "generic-" # generic image
+          - imagePrefix: 'generic-' # generic image
             runE2ETests: false
-          - imagePrefix: "seed-" # image with seed data
+          - imagePrefix: 'seed-' # image with seed data
             runE2ETests: true
-          - imagePrefix: "hsl-" # production image
+          - imagePrefix: 'hsl-' # production image
             runE2ETests: true
 
     steps:
@@ -85,7 +85,7 @@ jobs:
       - name: start e2e env
         uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
         with:
-          hasura_version: "${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}"
+          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
       - name: run e2e smoke tests
         id: tests

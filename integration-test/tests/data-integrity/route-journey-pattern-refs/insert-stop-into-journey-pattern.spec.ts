@@ -1,25 +1,25 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
 import {
   ScheduledStopPointInJourneyPattern,
   ScheduledStopPointInJourneyPatternProps,
-} from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
+} from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
-} from "@datasets/routesAndJourneyPatterns/journey-patterns";
-import { scheduledStopPoints } from "@datasets/routesAndJourneyPatterns/scheduled-stop-points";
+} from '@datasets/routesAndJourneyPatterns/journey-patterns';
+import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
 
 const createToBeInserted = (
   journeyPatternId: string,
   scheduledStopPointId: string,
-  scheduledStopPointSequence: number
+  scheduledStopPointSequence: number,
 ): ScheduledStopPointInJourneyPattern => ({
   journey_pattern_id: journeyPatternId,
   scheduled_stop_point_id: scheduledStopPointId,
@@ -31,16 +31,16 @@ const createToBeInserted = (
 const buildMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
   mutation {
     insert_journey_pattern_scheduled_stop_point_in_journey_pattern(objects: ${dataset.toGraphQlObject(
-      toBeInserted
+      toBeInserted,
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointInJourneyPatternProps).join(",")}
+        ${getPropNameArray(ScheduledStopPointInJourneyPatternProps).join(',')}
       }
     }
   }
 `;
 
-describe("Insert scheduled stop point into journey pattern", () => {
+describe('Insert scheduled stop point into journey pattern', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -50,14 +50,14 @@ describe("Insert scheduled stop point into journey pattern", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig)
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
   );
 
   const shouldReturnErrorResponse = (
     toBeInserted: ScheduledStopPointInJourneyPattern,
-    expectedErrorMsg: string
+    expectedErrorMsg: string,
   ) =>
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -67,9 +67,9 @@ describe("Insert scheduled stop point into journey pattern", () => {
     });
 
   const shouldNotModifyDatabase = (
-    toBeInserted: ScheduledStopPointInJourneyPattern
+    toBeInserted: ScheduledStopPointInJourneyPattern,
   ) =>
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
@@ -77,28 +77,28 @@ describe("Insert scheduled stop point into journey pattern", () => {
 
       const response = await queryTable(
         dbConnectionPool,
-        "journey_pattern.scheduled_stop_point_in_journey_pattern",
-        routesAndJourneyPatternsTableConfig
+        'journey_pattern.scheduled_stop_point_in_journey_pattern',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(
-        scheduledStopPointInJourneyPattern.length
+        scheduledStopPointInJourneyPattern.length,
       );
       expect(response.rows).toEqual(
-        expect.arrayContaining(scheduledStopPointInJourneyPattern)
+        expect.arrayContaining(scheduledStopPointInJourneyPattern),
       );
     });
 
-  describe("when stop is on a link not included in the route", () => {
+  describe('when stop is on a link not included in the route', () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
       scheduledStopPoints[3].scheduled_stop_point_id,
-      150
+      150,
     );
 
     shouldReturnErrorResponse(
       toBeInserted,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(toBeInserted);
@@ -108,12 +108,12 @@ describe("Insert scheduled stop point into journey pattern", () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
       scheduledStopPoints[1].scheduled_stop_point_id,
-      50
+      50,
     );
 
     shouldReturnErrorResponse(
       toBeInserted,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(toBeInserted);
@@ -123,25 +123,25 @@ describe("Insert scheduled stop point into journey pattern", () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
       scheduledStopPoints[5].scheduled_stop_point_id,
-      250
+      250,
     );
 
     shouldReturnErrorResponse(
       toBeInserted,
-      "route's and journey pattern's traversal paths must match each other"
+      "route's and journey pattern's traversal paths must match each other",
     );
 
     shouldNotModifyDatabase(toBeInserted);
   });
 
-  describe("without conflict", () => {
+  describe('without conflict', () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
       scheduledStopPoints[1].scheduled_stop_point_id,
-      250
+      250,
     );
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
@@ -154,11 +154,11 @@ describe("Insert scheduled stop point into journey pattern", () => {
               returning: [toBeInserted],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should update the database", async () => {
+    it('should update the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
@@ -166,18 +166,18 @@ describe("Insert scheduled stop point into journey pattern", () => {
 
       const response = await queryTable(
         dbConnectionPool,
-        "journey_pattern.scheduled_stop_point_in_journey_pattern",
-        routesAndJourneyPatternsTableConfig
+        'journey_pattern.scheduled_stop_point_in_journey_pattern',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(
-        scheduledStopPointInJourneyPattern.length + 1
+        scheduledStopPointInJourneyPattern.length + 1,
       );
       expect(response.rows).toEqual(
         expect.arrayContaining([
           ...scheduledStopPointInJourneyPattern,
           toBeInserted,
-        ])
+        ]),
       );
     });
   });

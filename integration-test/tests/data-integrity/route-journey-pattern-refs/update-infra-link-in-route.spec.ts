@@ -1,24 +1,24 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
-} from "@datasets/types";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
-import { routesAndJourneyPatternsTableConfig } from "@datasets/routesAndJourneyPatterns";
+} from '@datasets/types';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
 import {
   infrastructureLinkAlongRoute,
   routes,
-} from "@datasets/routesAndJourneyPatterns/routes";
-import * as dataset from "@util/dataset";
+} from '@datasets/routesAndJourneyPatterns/routes';
+import * as dataset from '@util/dataset';
 
 const buildMutation = (
   routeId: string,
   linkId: string,
-  toBeUpdated: Partial<InfrastructureLinkAlongRoute>
+  toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
 ) => `
   mutation {
     update_route_infrastructure_link_along_route(where: {
@@ -30,13 +30,13 @@ const buildMutation = (
     _set: ${dataset.toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(",")}
+        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }
 `;
 
-describe("Move infra link to other route", () => {
+describe('Move infra link to other route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -46,17 +46,17 @@ describe("Move infra link to other route", () => {
   afterAll(() => dbConnectionPool.end());
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig)
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
   );
 
-  describe("when there is a stop on the link", () => {
+  describe('when there is a stop on the link', () => {
     const toBeMoved = infrastructureLinkAlongRoute[0];
     const toBeUpdated = {
       route_id: routes[2].route_id,
       infrastructure_link_sequence: 15,
     };
 
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -64,43 +64,43 @@ describe("Move infra link to other route", () => {
             query: buildMutation(
               toBeMoved.route_id,
               toBeMoved.infrastructure_link_id,
-              toBeUpdated
+              toBeUpdated,
             ),
           },
         })
         .then(
           expectErrorResponse(
-            "route's and journey pattern's traversal paths must match each other"
-          )
+            "route's and journey pattern's traversal paths must match each other",
+          ),
         );
     });
 
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
-            toBeUpdated
+            toBeUpdated,
           ),
         },
       });
 
       const response = await queryTable(
         dbConnectionPool,
-        "route.infrastructure_link_along_route",
-        routesAndJourneyPatternsTableConfig
+        'route.infrastructure_link_along_route',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
       expect(response.rows).toEqual(
-        expect.arrayContaining(infrastructureLinkAlongRoute)
+        expect.arrayContaining(infrastructureLinkAlongRoute),
       );
     });
   });
 
-  describe("without conflict", () => {
+  describe('without conflict', () => {
     const toBeMoved = infrastructureLinkAlongRoute[4];
     const toBeUpdated = {
       route_id: routes[2].route_id,
@@ -111,14 +111,14 @@ describe("Move infra link to other route", () => {
       ...toBeUpdated,
     };
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
-            toBeUpdated
+            toBeUpdated,
           ),
         },
       });
@@ -130,26 +130,26 @@ describe("Move infra link to other route", () => {
               returning: [completeUpdated],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should update the database", async () => {
+    it('should update the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
             toBeMoved.route_id,
             toBeMoved.infrastructure_link_id,
-            toBeUpdated
+            toBeUpdated,
           ),
         },
       });
 
       const response = await queryTable(
         dbConnectionPool,
-        "route.infrastructure_link_along_route",
-        routesAndJourneyPatternsTableConfig
+        'route.infrastructure_link_along_route',
+        routesAndJourneyPatternsTableConfig,
       );
 
       expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
@@ -158,10 +158,10 @@ describe("Move infra link to other route", () => {
           ...infrastructureLinkAlongRoute.filter(
             (link) =>
               link.route_id !== toBeMoved.route_id ||
-              link.infrastructure_link_id !== toBeMoved.infrastructure_link_id
+              link.infrastructure_link_id !== toBeMoved.infrastructure_link_id,
           ),
           completeUpdated,
-        ])
+        ]),
       );
     });
   });
