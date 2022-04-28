@@ -16,5 +16,5 @@ actions:
   kind: synchronous
   handler_webhook_baseurl: http://localhost:3000
   codegen:
-    framework: ""
-    output_dir: ""
+    framework: ''
+    output_dir: ''

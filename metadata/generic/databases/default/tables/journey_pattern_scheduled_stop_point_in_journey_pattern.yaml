@@ -2,15 +2,15 @@ table:
   name: scheduled_stop_point_in_journey_pattern
   schema: journey_pattern
 object_relationships:
-- name: journey_pattern
-  using:
-    foreign_key_constraint_on: journey_pattern_id
-- name: scheduled_stop_point
-  using:
-    manual_configuration:
-      column_mapping:
-        scheduled_stop_point_id: scheduled_stop_point_id
-      insertion_order: null
-      remote_table:
-        name: scheduled_stop_point
-        schema: service_pattern
+  - name: journey_pattern
+    using:
+      foreign_key_constraint_on: journey_pattern_id
+  - name: scheduled_stop_point
+    using:
+      manual_configuration:
+        column_mapping:
+          scheduled_stop_point_id: scheduled_stop_point_id
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point
+          schema: service_pattern

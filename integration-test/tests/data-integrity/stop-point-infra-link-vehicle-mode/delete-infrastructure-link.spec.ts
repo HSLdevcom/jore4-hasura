@@ -1,27 +1,27 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import "@util/matchers";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
-} from "@datasets/defaultSetup/infrastructure-links";
-import { expectErrorResponse } from "@util/response";
-import { InfrastructureLinkProps } from "@datasets/types";
+} from '@datasets/defaultSetup/infrastructure-links';
+import { expectErrorResponse } from '@util/response';
+import { InfrastructureLinkProps } from '@datasets/types';
 
 const buildMutation = (infrastructureLinkId: string) => `
   mutation {
     delete_infrastructure_network_infrastructure_link(where: {infrastructure_link_id: {_eq: "${infrastructureLinkId}"}}) {
       returning {
-        ${getPropNameArray(InfrastructureLinkProps).join(",")}
+        ${getPropNameArray(InfrastructureLinkProps).join(',')}
       }
     }
   }
 `;
 
-describe("Delete infrastructure link", () => {
+describe('Delete infrastructure link', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -32,19 +32,19 @@ describe("Delete infrastructure link", () => {
 
   beforeEach(() => setupDb(dbConnectionPool));
 
-  describe("which is referenced by a scheduled stop point", () => {
+  describe('which is referenced by a scheduled stop point', () => {
     const toBeDeleted = infrastructureLinks[0];
 
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
         })
-        .then(expectErrorResponse("violates foreign key constraint"));
+        .then(expectErrorResponse('violates foreign key constraint'));
     });
 
-    it("should not modify database", async () => {
+    it('should not modify database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
@@ -52,34 +52,34 @@ describe("Delete infrastructure link", () => {
 
       const infraLinkResponse = await queryTable(
         dbConnectionPool,
-        "infrastructure_network.infrastructure_link"
+        'infrastructure_network.infrastructure_link',
       );
 
       expect(infraLinkResponse.rowCount).toEqual(infrastructureLinks.length);
       expect(infraLinkResponse.rows).toEqual(
         expect.arrayContaining(
-          dataset.asDbGeometryObjectArray(infrastructureLinks, ["shape"])
-        )
+          dataset.asDbGeometryObjectArray(infrastructureLinks, ['shape']),
+        ),
       );
 
       const vehicleSubModeResponse = await queryTable(
         dbConnectionPool,
-        "infrastructure_network.vehicle_submode_on_infrastructure_link"
+        'infrastructure_network.vehicle_submode_on_infrastructure_link',
       );
 
       expect(vehicleSubModeResponse.rowCount).toEqual(
-        vehicleSubmodeOnInfrastructureLink.length
+        vehicleSubmodeOnInfrastructureLink.length,
       );
       expect(vehicleSubModeResponse.rows).toEqual(
-        expect.arrayContaining(vehicleSubmodeOnInfrastructureLink)
+        expect.arrayContaining(vehicleSubmodeOnInfrastructureLink),
       );
     });
   });
 
-  describe("which is NOT referenced by a scheduled stop point", () => {
+  describe('which is NOT referenced by a scheduled stop point', () => {
     const toBeDeleted = infrastructureLinks[2];
 
-    it("should return correct response", async () => {
+    it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
@@ -92,11 +92,11 @@ describe("Delete infrastructure link", () => {
               returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
             },
           },
-        })
+        }),
       );
     });
 
-    it("should delete correct rows from the database", async () => {
+    it('should delete correct rows from the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
@@ -104,11 +104,11 @@ describe("Delete infrastructure link", () => {
 
       const infraLinkResponse = await queryTable(
         dbConnectionPool,
-        "infrastructure_network.infrastructure_link"
+        'infrastructure_network.infrastructure_link',
       );
 
       expect(infraLinkResponse.rowCount).toEqual(
-        infrastructureLinks.length - 1
+        infrastructureLinks.length - 1,
       );
 
       expect(infraLinkResponse.rows).toEqual(
@@ -117,29 +117,29 @@ describe("Delete infrastructure link", () => {
             infrastructureLinks.filter(
               (infrastructureLink) =>
                 infrastructureLink.infrastructure_link_id !=
-                toBeDeleted.infrastructure_link_id
+                toBeDeleted.infrastructure_link_id,
             ),
-            ["shape"]
-          )
-        )
+            ['shape'],
+          ),
+        ),
       );
 
       const vehicleSubModeResponse = await queryTable(
         dbConnectionPool,
-        "infrastructure_network.vehicle_submode_on_infrastructure_link"
+        'infrastructure_network.vehicle_submode_on_infrastructure_link',
       );
 
       expect(vehicleSubModeResponse.rowCount).toEqual(
-        vehicleSubmodeOnInfrastructureLink.length - 1
+        vehicleSubmodeOnInfrastructureLink.length - 1,
       );
       expect(vehicleSubModeResponse.rows).toEqual(
         expect.arrayContaining(
           vehicleSubmodeOnInfrastructureLink.filter(
             (vehicleSubMode) =>
               vehicleSubMode.infrastructure_link_id !=
-              toBeDeleted.infrastructure_link_id
-          )
-        )
+              toBeDeleted.infrastructure_link_id,
+          ),
+        ),
       );
     });
   });

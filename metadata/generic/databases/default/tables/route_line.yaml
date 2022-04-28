@@ -2,19 +2,19 @@ table:
   name: line
   schema: route
 object_relationships:
-- name: typeOfLineByTypeOfLine
-  using:
-    foreign_key_constraint_on: type_of_line
-- name: vehicle_mode
-  using:
-    foreign_key_constraint_on: primary_vehicle_mode
+  - name: typeOfLineByTypeOfLine
+    using:
+      foreign_key_constraint_on: type_of_line
+  - name: vehicle_mode
+    using:
+      foreign_key_constraint_on: primary_vehicle_mode
 array_relationships:
-- name: line_routes
-  using:
-    manual_configuration:
-      column_mapping:
-        line_id: on_line_id
-      insertion_order: null
-      remote_table:
-        name: route
-        schema: route
+  - name: line_routes
+    using:
+      manual_configuration:
+        column_mapping:
+          line_id: on_line_id
+        insertion_order: null
+        remote_table:
+          name: route
+          schema: route

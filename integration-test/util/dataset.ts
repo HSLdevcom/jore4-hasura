@@ -1,6 +1,6 @@
-import { Geometry } from "wkx";
+import { Geometry } from 'wkx';
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
-import * as geojson from "geojson";
+import * as geojson from 'geojson';
 
 export type GeometryObject = geojson.GeometryObject;
 
@@ -10,16 +10,16 @@ type ObjectWithGeometryProps<T> = GeometryObject extends T[keyof T]
   : never;
 
 function isGeometryObject(object: any): object is GeometryObject {
-  return "coordinates" in object && "type" in object;
+  return 'coordinates' in object && 'type' in object;
 }
 
 export const asEwkb = (geoJson: GeometryObject) =>
   // postgresql uses upper case characters in its hex format
-  Geometry.parseGeoJSON(geoJson).toEwkb().toString("hex").toUpperCase();
+  Geometry.parseGeoJSON(geoJson).toEwkb().toString('hex').toUpperCase();
 
 export function asDbGeometryObject<T extends ObjectWithGeometryProps<T>>(
   obj: T,
-  geographyProps: string[]
+  geographyProps: string[],
 ): Record<string, unknown> {
   const mappedProps: { [propName: string]: string } = geographyProps.reduce(
     (mapped, prop) => {
@@ -29,14 +29,14 @@ export function asDbGeometryObject<T extends ObjectWithGeometryProps<T>>(
       }
       return { ...mapped, [prop]: asEwkb(value) };
     },
-    {}
+    {},
   );
   return Object.assign({}, obj, mappedProps);
 }
 
 export function asDbGeometryObjectArray<T extends ObjectWithGeometryProps<T>>(
   objectArray: T[],
-  geographyProps?: string[]
+  geographyProps?: string[],
 ) {
   // Map the values of the specified geographyProps properties to EWKB in order
   // to be able to use the returned JSON as jsonb in postgresql.
@@ -47,15 +47,15 @@ export function asDbGeometryObjectArray<T extends ObjectWithGeometryProps<T>>(
 
 export const toGraphQlObject = (
   obj: { [propName: string]: unknown },
-  enumProps: string[] = []
+  enumProps: string[] = [],
 ) =>
   JSON.stringify(obj)
     // strip quotes from all keys
-    .replace(/"(\w+)"\s*:/g, "$1:")
+    .replace(/"(\w+)"\s*:/g, '$1:')
     // strip quotes from enum values
     .replace(
-      new RegExp(`(${enumProps.join("|")}):\\s*"(\\w+)"`, "g"),
-      "$1: $2"
+      new RegExp(`(${enumProps.join('|')}):\\s*"(\\w+)"`, 'g'),
+      '$1: $2',
     );
 
 export const asGraphQlTimestampObject = (obj: {
@@ -68,7 +68,7 @@ export const asGraphQlTimestampObject = (obj: {
       // cut off milliseconds and add explicit UTC offset
       [prop]:
         value instanceof Date
-          ? value.toISOString().replace(/\.\d+Z$/, "+00:00")
+          ? value.toISOString().replace(/\.\d+Z$/, '+00:00')
           : value,
     };
   }, {});

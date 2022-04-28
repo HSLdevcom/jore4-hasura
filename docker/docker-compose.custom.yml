@@ -1,5 +1,5 @@
 ---
-version: "3.8"
+version: '3.8'
 
 services:
   jore4-hasura:
@@ -9,4 +9,4 @@ services:
       target: hasura-generic
     environment:
       # enabling the hasura console locally to ease development
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'

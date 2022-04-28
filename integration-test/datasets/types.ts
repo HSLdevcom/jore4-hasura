@@ -1,4 +1,4 @@
-import { GeometryObject } from "@util/dataset";
+import { GeometryObject } from '@util/dataset';
 
 export type PropArray = (
   | string
@@ -10,57 +10,57 @@ export type PropArray = (
 
 export function hasGeoPropSpec<
   ObjType extends PropArray[number],
-  PropType extends PropertyKey
+  PropType extends PropertyKey,
 >(obj: ObjType): obj is ObjType & Record<PropType, unknown> {
-  return obj.hasOwnProperty("isGeoProp");
+  return obj.hasOwnProperty('isGeoProp');
 }
 
 export enum LinkDirection {
-  Forward = "forward",
-  Backward = "backward",
-  BiDirectional = "bidirectional",
+  Forward = 'forward',
+  Backward = 'backward',
+  BiDirectional = 'bidirectional',
 }
 
 export enum RouteDirection {
-  Inbound = "inbound",
-  Outbound = "outbound",
-  Clockwise = "clockwise",
-  Anticlockwise = "anticlockwise",
-  Northbound = "northbound",
-  Southbound = "southbound",
-  Eastbound = "eastbound",
-  Westbound = "westbound",
+  Inbound = 'inbound',
+  Outbound = 'outbound',
+  Clockwise = 'clockwise',
+  Anticlockwise = 'anticlockwise',
+  Northbound = 'northbound',
+  Southbound = 'southbound',
+  Eastbound = 'eastbound',
+  Westbound = 'westbound',
 }
 
 export enum VehicleMode {
-  Bus = "bus",
-  Tram = "tram",
-  Train = "train",
-  Metro = "metro",
-  Ferry = "ferry",
+  Bus = 'bus',
+  Tram = 'tram',
+  Train = 'train',
+  Metro = 'metro',
+  Ferry = 'ferry',
 }
 
 export enum VehicleSubmode {
-  GenericBus = "generic_bus",
-  GenericTram = "generic_tram",
-  GenericTrain = "generic_train",
-  GenericMetro = "generic_metro",
-  GenericFerry = "generic_ferry",
-  TallElectricBus = "tall_electric_bus",
+  GenericBus = 'generic_bus',
+  GenericTram = 'generic_tram',
+  GenericTrain = 'generic_train',
+  GenericMetro = 'generic_metro',
+  GenericFerry = 'generic_ferry',
+  TallElectricBus = 'tall_electric_bus',
 }
 
 export enum TypeOfLine {
-  RegionalRailService = "regional_rail_service",
-  SuburbanRailway = "suburban_railway",
-  MetroService = "metro_service",
-  RegionalBusService = "regional_bus_service",
-  ExpressBusService = "express_bus_service",
-  StoppingBusService = "stopping_bus_service",
-  SpecialNeedsBus = "special_needs_bus",
-  DemandAndResponseBusService = "demand_and_response_bus_service",
-  CityTramService = "city_tram_service",
-  RegionalTramService = "regional_tram_service",
-  FerryService = "ferry_service",
+  RegionalRailService = 'regional_rail_service',
+  SuburbanRailway = 'suburban_railway',
+  MetroService = 'metro_service',
+  RegionalBusService = 'regional_bus_service',
+  ExpressBusService = 'express_bus_service',
+  StoppingBusService = 'stopping_bus_service',
+  SpecialNeedsBus = 'special_needs_bus',
+  DemandAndResponseBusService = 'demand_and_response_bus_service',
+  CityTramService = 'city_tram_service',
+  RegionalTramService = 'regional_tram_service',
+  FerryService = 'ferry_service',
 }
 
 export type InfrastructureLink = {
@@ -72,12 +72,12 @@ export type InfrastructureLink = {
   external_link_id: string;
 };
 export const InfrastructureLinkProps: PropArray = [
-  "infrastructure_link_id",
-  "direction",
-  { propName: "shape", isGeoProp: true },
-  "estimated_length_in_metres",
-  "external_link_source",
-  "external_link_id",
+  'infrastructure_link_id',
+  'direction',
+  { propName: 'shape', isGeoProp: true },
+  'estimated_length_in_metres',
+  'external_link_source',
+  'external_link_id',
 ];
 
 export type VehicleSubmodeOnInfrastructureLink = {
@@ -85,8 +85,8 @@ export type VehicleSubmodeOnInfrastructureLink = {
   vehicle_submode: VehicleSubmode;
 };
 export const VehicleSubmodeOnInfrastructureLinkProps: PropArray = [
-  "infrastructure_link_id",
-  "vehicle_submode",
+  'infrastructure_link_id',
+  'vehicle_submode',
 ];
 
 export type ScheduledStopPoint = {
@@ -100,14 +100,14 @@ export type ScheduledStopPoint = {
   validity_end: Date | null;
 };
 export const ScheduledStopPointProps: PropArray = [
-  "scheduled_stop_point_id",
-  "located_on_infrastructure_link_id",
-  "direction",
-  { propName: "measured_location", isGeoProp: true },
-  "label",
-  "priority",
-  "validity_start",
-  "validity_end",
+  'scheduled_stop_point_id',
+  'located_on_infrastructure_link_id',
+  'direction',
+  { propName: 'measured_location', isGeoProp: true },
+  'label',
+  'priority',
+  'validity_start',
+  'validity_end',
 ];
 
 export type VehicleModeOnScheduledStopPoint = {
@@ -115,8 +115,8 @@ export type VehicleModeOnScheduledStopPoint = {
   vehicle_mode: VehicleMode;
 };
 export const VehicleModeOnScheduledStopPointProps: PropArray = [
-  "scheduled_stop_point_id",
-  "vehicle_mode",
+  'scheduled_stop_point_id',
+  'vehicle_mode',
 ];
 
 export type Route = {
@@ -132,16 +132,16 @@ export type Route = {
   validity_end: Date | null;
 };
 export const RouteProps: PropArray = [
-  "route_id",
-  "on_line_id",
-  "description_i18n",
-  "starts_from_scheduled_stop_point_id",
-  "ends_at_scheduled_stop_point_id",
-  "label",
-  "direction",
-  "priority",
-  "validity_start",
-  "validity_end",
+  'route_id',
+  'on_line_id',
+  'description_i18n',
+  'starts_from_scheduled_stop_point_id',
+  'ends_at_scheduled_stop_point_id',
+  'label',
+  'direction',
+  'priority',
+  'validity_start',
+  'validity_end',
 ];
 
 export type InfrastructureLinkAlongRoute = {
@@ -151,10 +151,10 @@ export type InfrastructureLinkAlongRoute = {
   is_traversal_forwards: boolean;
 };
 export const InfrastructureLinkAlongRouteProps: PropArray = [
-  "route_id",
-  "infrastructure_link_id",
-  "infrastructure_link_sequence",
-  "is_traversal_forwards",
+  'route_id',
+  'infrastructure_link_id',
+  'infrastructure_link_sequence',
+  'is_traversal_forwards',
 ];
 
 export type Line = {
@@ -169,15 +169,15 @@ export type Line = {
   validity_end: Date | null;
 };
 export const LineProps: PropArray = [
-  "line_id",
-  "name_i18n",
-  "short_name_i18n",
-  "primary_vehicle_mode",
-  "label",
-  "type_of_line",
-  "priority",
-  "validity_start",
-  "validity_end",
+  'line_id',
+  'name_i18n',
+  'short_name_i18n',
+  'primary_vehicle_mode',
+  'label',
+  'type_of_line',
+  'priority',
+  'validity_start',
+  'validity_end',
 ];
 
 export type JourneyPattern = {
@@ -185,8 +185,8 @@ export type JourneyPattern = {
   on_route_id: string;
 };
 export const JourneyPatternProps: PropArray = [
-  "journey_pattern_id",
-  "on_route_id",
+  'journey_pattern_id',
+  'on_route_id',
 ];
 
 export type ScheduledStopPointInJourneyPattern = {
@@ -197,9 +197,9 @@ export type ScheduledStopPointInJourneyPattern = {
   is_via_point: boolean;
 };
 export const ScheduledStopPointInJourneyPatternProps: PropArray = [
-  "journey_pattern_id",
-  "scheduled_stop_point_id",
-  "scheduled_stop_point_sequence",
-  "is_timing_point",
-  "is_via_point",
+  'journey_pattern_id',
+  'scheduled_stop_point_id',
+  'scheduled_stop_point_sequence',
+  'is_timing_point',
+  'is_via_point',
 ];

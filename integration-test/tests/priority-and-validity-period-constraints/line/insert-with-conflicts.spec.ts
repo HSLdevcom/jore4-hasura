@@ -1,28 +1,28 @@
-import * as rp from "request-promise";
-import * as pg from "pg";
-import * as config from "@config";
-import * as dataset from "@util/dataset";
-import { lines } from "@datasets/defaultSetup/lines";
-import "@util/matchers";
-import { Line, LineProps, TypeOfLine, VehicleMode } from "@datasets/types";
-import { expect } from "@jest/globals";
-import { getPropNameArray, queryTable, setupDb } from "@datasets/setup";
-import { expectErrorResponse } from "@util/response";
+import * as rp from 'request-promise';
+import * as pg from 'pg';
+import * as config from '@config';
+import * as dataset from '@util/dataset';
+import { lines } from '@datasets/defaultSetup/lines';
+import '@util/matchers';
+import { Line, LineProps, TypeOfLine, VehicleMode } from '@datasets/types';
+import { expect } from '@jest/globals';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { expectErrorResponse } from '@util/response';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
     insert_route_line(objects: ${dataset.toGraphQlObject(toBeInserted, [
-      "primary_vehicle_mode",
-      "type_of_line",
+      'primary_vehicle_mode',
+      'type_of_line',
     ])}) {
       returning {
-        ${getPropNameArray(LineProps).join(",")}
+        ${getPropNameArray(LineProps).join(',')}
       }
     }
   }
 `;
 
-describe("Insert line", () => {
+describe('Insert line', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
@@ -34,7 +34,7 @@ describe("Insert line", () => {
   beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnErrorResponse = (toBeInserted: Partial<Line>) =>
-    it("should return error response", async () => {
+    it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
@@ -44,28 +44,28 @@ describe("Insert line", () => {
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<Line>) =>
-    it("should not modify the database", async () => {
+    it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnectionPool, "route.line");
+      const response = await queryTable(dbConnectionPool, 'route.line');
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));
     });
 
-  describe("whose validity period conflicts with open validity start", () => {
+  describe('whose validity period conflicts with open validity start', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: "conflicting transport tram line 34",
-      short_name_i18n: "conflicting line 34",
+      name_i18n: 'conflicting transport tram line 34',
+      short_name_i18n: 'conflicting line 34',
       primary_vehicle_mode: VehicleMode.Tram,
-      label: "34",
+      label: '34',
       type_of_line: TypeOfLine.CityTramService,
       priority: 20,
-      validity_start: new Date("2041-06-01 23:11:32Z"),
-      validity_end: new Date("2042-06-01 23:11:32Z"),
+      validity_start: new Date('2041-06-01 23:11:32Z'),
+      validity_end: new Date('2042-06-01 23:11:32Z'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -73,16 +73,16 @@ describe("Insert line", () => {
     shouldNotModifyDatabase(toBeInserted);
   });
 
-  describe("whose validity period overlaps partially with existing validity period", () => {
+  describe('whose validity period overlaps partially with existing validity period', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: "transport bus line 2",
-      short_name_i18n: "line 2",
+      name_i18n: 'transport bus line 2',
+      short_name_i18n: 'line 2',
       primary_vehicle_mode: VehicleMode.Bus,
-      label: "2",
+      label: '2',
       type_of_line: TypeOfLine.RegionalBusService,
       priority: 10,
-      validity_start: new Date("2045-04-01 23:11:32Z"),
-      validity_end: new Date("2046-05-01 23:11:32Z"),
+      validity_start: new Date('2045-04-01 23:11:32Z'),
+      validity_end: new Date('2046-05-01 23:11:32Z'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -90,16 +90,16 @@ describe("Insert line", () => {
     shouldNotModifyDatabase(toBeInserted);
   });
 
-  describe("whose validity period is entirely contained in other validity period", () => {
+  describe('whose validity period is entirely contained in other validity period', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: "transport bus line 2",
-      short_name_i18n: "line 2",
+      name_i18n: 'transport bus line 2',
+      short_name_i18n: 'line 2',
       primary_vehicle_mode: VehicleMode.Bus,
-      label: "2",
+      label: '2',
       type_of_line: TypeOfLine.RegionalBusService,
       priority: 10,
-      validity_start: new Date("2044-06-01 23:11:32Z"),
-      validity_end: new Date("2045-04-01 23:11:32Z"),
+      validity_start: new Date('2044-06-01 23:11:32Z'),
+      validity_end: new Date('2045-04-01 23:11:32Z'),
     };
 
     shouldReturnErrorResponse(toBeInserted);

@@ -3,10 +3,10 @@ table:
   schema: reusable_components
 is_enum: true
 array_relationships:
-- name: vehicle_submodes
-  using:
-    foreign_key_constraint_on:
-      column: belonging_to_vehicle_mode
-      table:
-        name: vehicle_submode
-        schema: reusable_components
+  - name: vehicle_submodes
+    using:
+      foreign_key_constraint_on:
+        column: belonging_to_vehicle_mode
+        table:
+          name: vehicle_submode
+          schema: reusable_components
