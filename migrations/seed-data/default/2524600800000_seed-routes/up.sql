@@ -1,6 +1,14 @@
 -- seed data for developing the UI
 -- warning: this data does not actually make any sense, should update it when we get real data from jore3
 
+INSERT INTO localization.codesets
+  (codeset_id, codeset_name)
+VALUES
+  ('66e048c3-0a78-4f6b-9d23-a8789a900d07', 'line_name'),
+  ('1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'line_short_name'),
+  ('d365821e-d2cd-449a-a79e-e0ea0b3f422f', 'route_description')
+ON CONFLICT DO NOTHING;
+
 INSERT INTO route.line
   (line_id,name_i18n,short_name_i18n,primary_vehicle_mode,label,type_of_line,transport_target,priority,validity_start,validity_end)
 VALUES
@@ -8,6 +16,27 @@ VALUES
   ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb','Rautatientori - Malmi as.','Rautatientori - Malmi as.','bus','71','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
   ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2','Rautatientori - Nikkilä','Rautatientori - Nikkilä','bus','785K','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
   ('db748c5c-42e3-429f-baa0-e0db227dc2c8','Erottaja - Arkkadiankatu','Erottaja - Arkkadiankatu','bus','1234','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO localization.localized_texts
+  (entity_id, codeset_id, language_code, localized_text)
+VALUES
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'fi_FI', 'Rautatientori - Veräjälaakso FI'),
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'sv_SV', 'Rautatientori - Veräjälaakso SV'),
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'fi_FI', 'Rautatientori - Veräjälaakso short FI'),
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'sv_SV', 'Rautatientori - Veräjälaakso short SV'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'fi_FI', 'Rautatientori - Malmi as. FI'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'sv_SV', 'Rautatientori - Malmi as. SV'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'fi_FI', 'Rautatientori - Malmi as. short FI'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'sv_SV', 'Rautatientori - Malmi as. short SV'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'fi_FI', 'Rautatientori - Nikkilä FI'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'sv_SV', 'Rautatientori - Nikkilä SV'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'fi_FI', 'Rautatientori - Nikkilä short FI'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'sv_SV', 'Rautatientori - Nikkilä short SV'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'fi_FI', 'Erottaja - Arkkadiankatu FI'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '66e048c3-0a78-4f6b-9d23-a8789a900d07', 'sv_SV', 'Erottaja - Arkkadiankatu SV'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'fi_FI', 'Erottaja - Arkkadiankatu short FI'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '1ce1abf1-e7f1-4e68-b88e-ca410a30d71b', 'sv_SV', 'Erottaja - Arkkadiankatu short SV')
 ON CONFLICT DO NOTHING;
 
 -- to avoid constraint conflicts, inserting scheduled_stop_points and their allowed vehicle modes at the same time, within a transaction
@@ -34,6 +63,13 @@ INSERT INTO internal_route.route
   (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,label,direction)
 VALUES
 	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'Reitti A - B','e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65x','outbound')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO localization.localized_texts
+  (entity_id, codeset_id, language_code, localized_text)
+VALUES
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', 'd365821e-d2cd-449a-a79e-e0ea0b3f422f', 'fi_FI', 'Reitti A - B FI'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', 'd365821e-d2cd-449a-a79e-e0ea0b3f422f', 'sv_SV', 'Reitti A - B SV')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO route.infrastructure_link_along_route
