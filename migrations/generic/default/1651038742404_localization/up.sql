@@ -22,6 +22,12 @@ COMMENT ON TABLE localization.codesets IS
 COMMENT ON COLUMN localization.codesets.codeset_name IS
   'List of names which are used as localization keys. Should be namespaced (e.g. "route_name")';
 
+INSERT INTO localization.codesets
+  (codeset_id, codeset_name) VALUES
+  ('288610d7-1d27-4660-8a7a-794d9a361a96', 'route_description'),
+  ('02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'line_name'),
+  ('1925718b-03a2-4321-b880-c56bbf8cd0ce', 'line_short_name');
+
 CREATE TABLE localization.localized_texts (
   entity_id uuid NOT NULL,
   codeset_id uuid NOT NULL REFERENCES localization.codesets (codeset_id),
@@ -42,3 +48,19 @@ COMMENT ON COLUMN localization.localized_texts.language_code IS
   'Language of the localized text';
 COMMENT ON COLUMN localization.localized_texts.localized_text IS
   'The localized text itself, in UTF-8 format';
+
+-- delete related localizations when route are deleted
+CREATE FUNCTION internal_route.delete_related_localizations ()
+  RETURNS TRIGGER
+  LANGUAGE plpgsql
+AS $delete_related_localizations$
+BEGIN
+  DELETE FROM localization.localized_texts
+    WHERE entity_id = OLD.route_id;
+  RETURN OLD;
+END;
+$delete_related_localizations$;
+
+CREATE TRIGGER internal_route_after_delete_trigger
+  AFTER DELETE ON internal_route.route FOR EACH ROW
+  EXECUTE PROCEDURE internal_route.delete_related_localizations();
