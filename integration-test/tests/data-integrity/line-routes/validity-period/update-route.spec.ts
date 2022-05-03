@@ -7,6 +7,7 @@ import '@util/matchers';
 import { Route, RouteProps } from '@datasets/types';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
+import { lines } from '@datasets/defaultSetup/lines';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
   mutation {
@@ -143,5 +144,23 @@ describe('Update route', () => {
 
     shouldReturnCorrectResponse(routes[3], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(routes[3], toBeUpdated);
+  });
+
+  describe('with a fixed validity start time of 1 ms prior to the validity time of the line', () => {
+    const toBeUpdated = {
+      validity_start: new Date(lines[1].validity_start!.getTime() - 1),
+    };
+
+    shouldReturnErrorResponse(routes[1], toBeUpdated);
+    shouldNotModifyDatabase(routes[1], toBeUpdated);
+  });
+
+  describe('with a fixed validity start time equal to the validity time of the line', () => {
+    const toBeUpdated = {
+      validity_start: lines[1].validity_start,
+    };
+
+    shouldReturnCorrectResponse(routes[1], toBeUpdated);
+    shouldUpdateCorrectRowInDatabase(routes[1], toBeUpdated);
   });
 });
