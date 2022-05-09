@@ -66,7 +66,15 @@ INSERT INTO localization.localized_text
   (entity_id, attribute_id, language_code, localized_text)
 VALUES
   ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '288610d7-1d27-4660-8a7a-794d9a361a96', 'fi_FI', 'Reitti A - B FI'),
-  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '288610d7-1d27-4660-8a7a-794d9a361a96', 'sv_FI', 'Reitti A - B SV')
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '288610d7-1d27-4660-8a7a-794d9a361a96', 'sv_FI', 'Reitti A - B SV'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '85b04a00-45c3-4e38-ad6f-fce41e709745', 'fi_FI', 'Rautatientori FI'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '1052a4f7-f1b7-4440-862c-e24ec2baf69a', 'fi_FI', 'Raut. FI'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '7bdb04cc-f858-42b5-9c0b-252e29d9dc40', 'fi_FI', 'Veräjälaakso FI'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '0df0ba17-2ffc-4919-9b47-5706e36a4e36', 'fi_FI', 'Ver. FI'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '85b04a00-45c3-4e38-ad6f-fce41e709745', 'sv_FI', 'Rautatientori SV'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '1052a4f7-f1b7-4440-862c-e24ec2baf69a', 'sv_FI', 'Raut. SV'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '7bdb04cc-f858-42b5-9c0b-252e29d9dc40', 'sv_FI', 'Veräjälaakso SV'),
+  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '0df0ba17-2ffc-4919-9b47-5706e36a4e36', 'sv_FI', 'Ver. SV')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO route.infrastructure_link_along_route
