@@ -1,13 +1,14 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { lines } from '@datasets/defaultSetup/lines';
-import '@util/matchers';
-import { Line, LineProps, TypeOfLine, VehicleMode } from '@datasets/types';
-import { expect } from '@jest/globals';
+import { buildLine, buildLocalizedString } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Line, LineProps, VehicleMode } from '@datasets/types';
+import { expect } from '@jest/globals';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -58,11 +59,9 @@ describe('Insert line', () => {
 
   describe('whose validity period conflicts with open validity start', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: 'conflicting transport tram line 34',
-      short_name_i18n: 'conflicting line 34',
-      primary_vehicle_mode: VehicleMode.Tram,
-      label: '34',
-      type_of_line: TypeOfLine.CityTramService,
+      ...buildLine('34', VehicleMode.Tram),
+      name_i18n: buildLocalizedString('conflicting transport tram line 34'),
+      short_name_i18n: buildLocalizedString('conflicting line 34'),
       priority: 20,
       validity_start: new Date('2041-06-01 23:11:32Z'),
       validity_end: new Date('2042-06-01 23:11:32Z'),
@@ -75,11 +74,7 @@ describe('Insert line', () => {
 
   describe('whose validity period overlaps partially with existing validity period', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: 'transport bus line 2',
-      short_name_i18n: 'line 2',
-      primary_vehicle_mode: VehicleMode.Bus,
-      label: '2',
-      type_of_line: TypeOfLine.RegionalBusService,
+      ...buildLine('2', VehicleMode.Bus),
       priority: 10,
       validity_start: new Date('2045-04-01 23:11:32Z'),
       validity_end: new Date('2046-05-01 23:11:32Z'),
@@ -92,11 +87,7 @@ describe('Insert line', () => {
 
   describe('whose validity period is entirely contained in other validity period', () => {
     const toBeInserted: Partial<Line> = {
-      name_i18n: 'transport bus line 2',
-      short_name_i18n: 'line 2',
-      primary_vehicle_mode: VehicleMode.Bus,
-      label: '2',
-      type_of_line: TypeOfLine.RegionalBusService,
+      ...buildLine('2', VehicleMode.Bus),
       priority: 10,
       validity_start: new Date('2044-06-01 23:11:32Z'),
       validity_end: new Date('2045-04-01 23:11:32Z'),

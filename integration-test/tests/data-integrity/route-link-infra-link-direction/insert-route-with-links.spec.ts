@@ -1,32 +1,32 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { lines } from '@datasets/defaultSetup/lines';
+import {
+  infrastructureLinkAlongRoute,
+  routes,
+} from '@datasets/defaultSetup/routes';
 import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { buildRoute } from '@datasets/factories';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRoute,
   Route,
   RouteDirection,
   RouteProps,
 } from '@datasets/types';
+import * as dataset from '@util/dataset';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
-import { lines } from '@datasets/defaultSetup/lines';
-import {
-  infrastructureLinkAlongRoute,
-  routes,
-} from '@datasets/defaultSetup/routes';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const routeToBeInserted: Partial<Route> = {
+  ...buildRoute('new route'),
   on_line_id: lines[1].line_id,
-  description_i18n: 'new route',
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[5].scheduled_stop_point_id,
   ends_at_scheduled_stop_point_id:
     scheduledStopPoints[6].scheduled_stop_point_id,
-  label: 'new route label',
   direction: RouteDirection.Clockwise,
   priority: lines[1].priority + 10,
   validity_start: new Date('2044-05-01 23:11:32Z'),
