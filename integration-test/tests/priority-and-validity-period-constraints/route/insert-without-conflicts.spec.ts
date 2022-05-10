@@ -1,13 +1,14 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
-import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {
@@ -84,13 +85,12 @@ describe('Insert route', () => {
 
   describe('whose validity period conflicts with open validity start but has different priority', () => {
     const toBeInserted: Partial<Route> = {
+      ...buildRoute('3'),
       on_line_id: lines[2].line_id,
-      description_i18n: 'route 3',
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
-      label: 'route 3',
       direction: RouteDirection.Eastbound,
       priority: 20,
       validity_start: new Date('2024-09-02 23:11:32Z'),
@@ -104,8 +104,8 @@ describe('Insert route', () => {
 
   describe('whose validity period conflicts with open validity start but has different label', () => {
     const toBeInserted: Partial<Route> = {
+      ...buildRoute('3'),
       on_line_id: lines[2].line_id,
-      description_i18n: 'route 3',
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
@@ -124,13 +124,12 @@ describe('Insert route', () => {
 
   describe('whose validity period does not conflict with open validity start', () => {
     const toBeInserted: Partial<Route> = {
+      ...buildRoute('3'),
       on_line_id: lines[2].line_id,
-      description_i18n: 'route 3',
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[0].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
-      label: 'route 3',
       direction: RouteDirection.Eastbound,
       priority: 30,
       validity_start: new Date('2044-09-02 23:11:32Z'),
@@ -144,13 +143,12 @@ describe('Insert route', () => {
 
   describe('whose validity period overlaps partially with existing validity period but has different direction', () => {
     const toBeInserted: Partial<Route> = {
+      ...buildRoute('4'),
       on_line_id: lines[2].line_id,
-      description_i18n: 'route 4',
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
         scheduledStopPoints[2].scheduled_stop_point_id,
-      label: 'route 4',
       direction: RouteDirection.Eastbound,
       priority: 20,
       validity_start: new Date('2044-06-02 21:11:32Z'),
@@ -164,13 +162,12 @@ describe('Insert route', () => {
 
   describe('whose validity period is entirely contained in other validity period but has different direction', () => {
     const toBeInserted: Partial<Route> = {
+      ...buildRoute('4'),
       on_line_id: lines[2].line_id,
-      description_i18n: 'route 4',
       starts_from_scheduled_stop_point_id:
         scheduledStopPoints[1].scheduled_stop_point_id,
       ends_at_scheduled_stop_point_id:
         scheduledStopPoints[2].scheduled_stop_point_id,
-      label: 'route 4',
       direction: RouteDirection.Eastbound,
       priority: 20,
       validity_start: new Date('2044-04-02 21:11:32Z'),

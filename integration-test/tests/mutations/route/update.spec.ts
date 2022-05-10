@@ -1,15 +1,16 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { routes } from '@datasets/defaultSetup/routes';
-import { Route, RouteProps } from '@datasets/types';
-import '@util/matchers';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { buildLocalizedString } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Route, RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeUpdated: Partial<Route> = {
-  description_i18n: 'updated route',
+  description_i18n: buildLocalizedString('updated route'),
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
   priority: 50,
