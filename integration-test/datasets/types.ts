@@ -119,10 +119,21 @@ export const VehicleModeOnScheduledStopPointProps: PropArray = [
   'vehicle_mode',
 ];
 
+export type Languages = 'fi_FI' | 'sv_FI';
+
+export type LocalizedString = {
+  [index in Languages]: string;
+};
+
 export type Route = {
   route_id: string;
   on_line_id: string;
-  description_i18n: string | null;
+  name_i18n: LocalizedString;
+  description_i18n: LocalizedString | null;
+  origin_name_i18n: LocalizedString;
+  origin_short_name_i18n: LocalizedString;
+  destination_name_i18n: LocalizedString;
+  destination_short_name_i18n: LocalizedString;
   starts_from_scheduled_stop_point_id: string;
   ends_at_scheduled_stop_point_id: string;
   label: string;
@@ -134,7 +145,12 @@ export type Route = {
 export const RouteProps: PropArray = [
   'route_id',
   'on_line_id',
+  'name_i18n',
   'description_i18n',
+  'origin_name_i18n',
+  'origin_short_name_i18n',
+  'destination_name_i18n',
+  'destination_short_name_i18n',
   'starts_from_scheduled_stop_point_id',
   'ends_at_scheduled_stop_point_id',
   'label',
@@ -159,8 +175,8 @@ export const InfrastructureLinkAlongRouteProps: PropArray = [
 
 export type Line = {
   line_id: string;
-  name_i18n: string;
-  short_name_i18n: string | null;
+  name_i18n: LocalizedString;
+  short_name_i18n: LocalizedString;
   primary_vehicle_mode: VehicleMode;
   label: string;
   type_of_line: TypeOfLine;

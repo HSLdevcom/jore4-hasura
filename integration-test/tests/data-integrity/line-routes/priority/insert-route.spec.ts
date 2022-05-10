@@ -1,26 +1,26 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
-import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeInserted = (
   on_line_id: string | undefined,
   priority: number,
 ): Partial<Route> => ({
+  ...buildRoute('new route'),
   on_line_id,
-  description_i18n: 'new route',
   starts_from_scheduled_stop_point_id:
     scheduledStopPoints[0].scheduled_stop_point_id,
   ends_at_scheduled_stop_point_id:
     scheduledStopPoints[2].scheduled_stop_point_id,
-  label: 'new route label',
   direction: RouteDirection.Clockwise,
   priority,
   validity_start: new Date('2044-05-01 23:11:32Z'),

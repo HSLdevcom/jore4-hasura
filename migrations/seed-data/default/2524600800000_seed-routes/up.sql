@@ -4,10 +4,10 @@
 INSERT INTO route.line
   (line_id,name_i18n,short_name_i18n,primary_vehicle_mode,label,type_of_line,transport_target,priority,validity_start,validity_end)
 VALUES
-  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e','Rautatientori - Veräjälaakso','Rautatientori - Veräjälaakso','bus','65','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
-  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb','Rautatientori - Malmi as.','Rautatientori - Malmi as.','bus','71','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
-  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2','Rautatientori - Nikkilä','Rautatientori - Nikkilä','bus','785K','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
-  ('db748c5c-42e3-429f-baa0-e0db227dc2c8','Erottaja - Arkkadiankatu','Erottaja - Arkkadiankatu','bus','1234','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13')
+  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e','{"fi_FI":"Rautatientori - Veräjälaakso FI","sv_FI":"Rautatientori - Veräjälaakso SV"}','{"fi_FI":"Rautatientori - Veräjälaakso short FI","sv_FI":"Rautatientori - Veräjälaakso short SV"}','bus','65','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
+  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb','{"fi_FI":"Rautatientori - Malmi as. FI","sv_FI":"Rautatientori - Malmi as. SV"}','{"fi_FI":"Rautatientori - Malmi as. short FI","sv_FI":"Rautatientori - Malmi as. short SV"}','bus','71','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
+  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2','{"fi_FI":"Rautatientori - Nikkilä FI","sv_FI":"Rautatientori - Nikkilä SV"}','{"fi_FI":"Rautatientori - Nikkilä short FI","sv_FI":"Rautatientori - Nikkilä short SV"}','bus','785K','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13'),
+  ('db748c5c-42e3-429f-baa0-e0db227dc2c8','{"fi_FI":"Erottaja - Arkkadiankatu FI","sv_FI":"Erottaja - Arkkadiankatu SV"}','{"fi_FI":"Erottaja - Arkkadiankatu short FI","sv_FI":"Erottaja - Arkkadiankatu short SV"}','bus','1234','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13')
 ON CONFLICT DO NOTHING;
 
 -- built-in attributes:
@@ -54,10 +54,40 @@ BEGIN
   ON CONFLICT DO NOTHING;
 END $$;
 
-INSERT INTO route.route
-  (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,label,direction)
-VALUES
-	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'Reitti A - B','e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65x','outbound')
+INSERT INTO route.route (
+  route_id,
+  name_i18n,
+  description_i18n,
+  origin_name_i18n,
+  origin_short_name_i18n,
+  destination_name_i18n,
+  destination_short_name_i18n,
+  starts_from_scheduled_stop_point_id,
+  ends_at_scheduled_stop_point_id,
+  on_line_id,
+  validity_start,
+  validity_end,
+  priority,
+  label,
+  direction
+)
+VALUES (
+  '03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,
+  '{"fi_FI":"Reitti A - B FI","sv_FI":"Reitti A - B SV"}',
+  '{"fi_FI":"Reitti A - B desc FI","sv_FI":"Reitti A - B desc SV"}',
+  '{"fi_FI":"A FI","sv_FI":"A SV"}',
+  '{"fi_FI":"A short FI","sv_FI":"A short SV"}',
+  '{"fi_FI":"B FI","sv_FI":"B SV"}',
+  '{"fi_FI":"B short FI","sv_FI":"B short SV"}',
+  'e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,
+  'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,
+  '101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,
+  '2021-01-01',
+  '2023-12-13',
+  10,
+  '65x',
+  'outbound'
+)
 ON CONFLICT DO NOTHING;
 
 -- built-in attributes:
