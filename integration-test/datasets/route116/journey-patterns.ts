@@ -1,3 +1,4 @@
+import { scheduledStopPoints } from '@datasets/route116/scheduled-stop-points';
 import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
@@ -27,12 +28,19 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     '5c135b2b-1c85-4b57-abec-4a793336ca29',
     '3c451d12-f912-4f21-a331-573e20410344',
     '231f6797-21f5-404c-8934-e5e180e9d152',
-  ].map((stopId, index) => ({
-    journey_pattern_id: journeyPatterns[0].journey_pattern_id,
-    scheduled_stop_point_id: stopId,
-    scheduled_stop_point_sequence: index,
-    is_timing_point: true,
-    is_via_point: false,
-    via_point_name_i18n: null,
-    via_point_short_name_i18n: null,
-  }));
+  ].map((stopId, index) => {
+    const label = scheduledStopPoints.find(
+      (scheduledStopPoint) =>
+        scheduledStopPoint.scheduled_stop_point_id === stopId,
+    )!.label;
+
+    return {
+      journey_pattern_id: journeyPatterns[0].journey_pattern_id,
+      scheduled_stop_point_label: label,
+      scheduled_stop_point_sequence: index,
+      is_timing_point: true,
+      is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
+    };
+  });

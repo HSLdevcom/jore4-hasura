@@ -17,7 +17,7 @@ import {
 
 const buildMutation = (
   journeyPatternId: string,
-  scheduledStopPointId: string,
+  scheduledStopPointLabel: string,
   toBeUpdated: Partial<ScheduledStopPointInJourneyPattern>,
 ) => `
   mutation {
@@ -25,7 +25,7 @@ const buildMutation = (
       where: {
         _and: {
           journey_pattern_id: {_eq: "${journeyPatternId}"},
-          scheduled_stop_point_id: {_eq: "${scheduledStopPointId}"}
+          scheduled_stop_point_label: {_eq: "${scheduledStopPointLabel}"}
         }
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated)}
@@ -62,7 +62,7 @@ describe('Update scheduled stop point in journey pattern', () => {
           body: {
             query: buildMutation(
               scheduledStopPoint.journey_pattern_id,
-              scheduledStopPoint.scheduled_stop_point_id,
+              scheduledStopPoint.scheduled_stop_point_label,
               toBeUpdated,
             ),
           },
@@ -80,7 +80,7 @@ describe('Update scheduled stop point in journey pattern', () => {
         body: {
           query: buildMutation(
             scheduledStopPoint.journey_pattern_id,
-            scheduledStopPoint.scheduled_stop_point_id,
+            scheduledStopPoint.scheduled_stop_point_label,
             toBeUpdated,
           ),
         },
@@ -147,7 +147,7 @@ describe('Update scheduled stop point in journey pattern', () => {
         body: {
           query: buildMutation(
             original.journey_pattern_id,
-            original.scheduled_stop_point_id,
+            original.scheduled_stop_point_label,
             toBeUpdated,
           ),
         },
@@ -170,7 +170,7 @@ describe('Update scheduled stop point in journey pattern', () => {
         body: {
           query: buildMutation(
             original.journey_pattern_id,
-            original.scheduled_stop_point_id,
+            original.scheduled_stop_point_label,
             toBeUpdated,
           ),
         },
@@ -191,8 +191,8 @@ describe('Update scheduled stop point in journey pattern', () => {
             (scheduledStopPoint) =>
               scheduledStopPoint.journey_pattern_id !==
                 original.journey_pattern_id ||
-              scheduledStopPoint.scheduled_stop_point_id !==
-                original.scheduled_stop_point_id,
+              scheduledStopPoint.scheduled_stop_point_label !==
+                original.scheduled_stop_point_label,
           ),
           completeUpdated,
         ]),

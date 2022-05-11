@@ -1,4 +1,5 @@
 import {
+  scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from './scheduled-stop-points';
@@ -12,6 +13,7 @@ import {
   LineProps,
   RouteProps,
   ScheduledStopPointInJourneyPatternProps,
+  ScheduledStopPointInvariantProps,
   ScheduledStopPointProps,
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
@@ -39,6 +41,11 @@ export const route116TableConfig: TableLikeConfig[] = [
     name: 'infrastructure_network.vehicle_submode_on_infrastructure_link',
     data: 'datasets/route116/vehicle-submode-on-infrastructure-links.sql',
     props: VehicleSubmodeOnInfrastructureLinkProps,
+  },
+  {
+    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    data: scheduledStopPointInvariants,
+    props: ScheduledStopPointInvariantProps,
   },
   {
     name: 'internal_service_pattern.scheduled_stop_point',

@@ -3,8 +3,10 @@ import {
   ScheduledStopPoint,
   VehicleModeOnScheduledStopPoint,
   VehicleMode,
+  ScheduledStopPointInvariant,
 } from '@datasets/types';
 import { infrastructureLinks } from './infrastructure-links';
+import { uniqBy } from 'lodash';
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
   {
@@ -76,7 +78,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopX',
     priority: 10,
-    validity_start: new Date('2065-01-01 12:34:56'),
+    validity_start: new Date('2035-01-01 12:34:56'),
     validity_end: new Date('2065-02-01 12:34:56'),
   },
   {
@@ -94,7 +96,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopY',
     priority: 10,
-    validity_start: new Date('2065-02-03 12:34:56'),
+    validity_start: new Date('2035-02-03 12:34:56'),
     validity_end: null,
   },
   {
@@ -112,7 +114,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopZ',
     priority: 10,
-    validity_start: new Date('2065-01-01 12:34:56'),
+    validity_start: new Date('2035-01-01 12:34:56'),
     validity_end: new Date('2065-02-01 12:34:56'),
   },
   {
@@ -134,6 +136,11 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     validity_end: new Date('2064-01-03 12:34:56'),
   },
 ];
+
+export const scheduledStopPointInvariants: ScheduledStopPointInvariant[] =
+  uniqBy(scheduledStopPoints, 'label').map((scheduledStopPoint) => ({
+    label: scheduledStopPoint.label,
+  }));
 
 export const vehicleModeOnScheduledStopPoint: VehicleModeOnScheduledStopPoint[] =
   [
