@@ -123,7 +123,10 @@ describe('Update route', () => {
   describe('with a NULL line ID', () => {
     const toBeUpdated = { on_line_id: null };
 
-    shouldReturnErrorResponse(toBeUpdated, 'Not-NULL violation');
+    shouldReturnErrorResponse(
+      toBeUpdated,
+      'unexpected null value for type \\"uuid\\"',
+    );
     shouldNotModifyDatabase(toBeUpdated);
   });
 

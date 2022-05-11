@@ -51,7 +51,7 @@ export const defaultTableConfig: TableLikeConfig[] = [
     props: VehicleModeOnScheduledStopPointProps,
   },
   { name: 'route.line', data: lines, props: LineProps },
-  { name: 'internal_route.route', data: routes, props: RouteProps },
+  { name: 'route.route', data: routes, props: RouteProps },
   {
     name: 'route.infrastructure_link_along_route',
     data: infrastructureLinkAlongRoute,
