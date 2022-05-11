@@ -57,3 +57,9 @@ array_relationships:
         insertion_order: null
         column_mapping:
           route_id: on_route_id
+computed_fields:
+  - name: route_shape
+    definition:
+      function:
+        schema: route
+        name: route_shape

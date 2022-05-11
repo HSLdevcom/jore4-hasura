@@ -54,7 +54,7 @@ BEGIN
   ON CONFLICT DO NOTHING;
 END $$;
 
-INSERT INTO internal_route.route
+INSERT INTO route.route
   (route_id,description_i18n,starts_from_scheduled_stop_point_id,ends_at_scheduled_stop_point_id,on_line_id,validity_start,validity_end,priority,label,direction)
 VALUES
 	('03d55414-e5cf-4cce-9faf-d86ccb7e5f98'::uuid,'Reitti A - B','e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'f8eace87-7901-4438-bfee-bb6f24f1c4c4'::uuid,'101f800c-39ed-4d85-8ece-187cd9fe1c5e'::uuid,'2021-01-01','2023-12-13',10,'65x','outbound')

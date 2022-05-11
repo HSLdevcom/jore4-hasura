@@ -54,7 +54,7 @@ describe('Update scheduled stop point', () => {
         'internal_service_pattern.scheduled_stop_point',
         'service_pattern.vehicle_mode_on_scheduled_stop_point',
         'route.line',
-        'internal_route.route',
+        'route.route',
       ]),
     ),
   );
