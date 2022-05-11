@@ -3,6 +3,7 @@ import {
   vehicleSubmodeOnInfrastructureLink,
 } from './infrastructure-links';
 import {
+  scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from './scheduled-stop-points';
@@ -14,6 +15,7 @@ import {
   InfrastructureLinkProps,
   LineProps,
   RouteProps,
+  ScheduledStopPointInvariantProps,
   ScheduledStopPointProps,
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
@@ -39,6 +41,11 @@ export const defaultTableConfig: TableLikeConfig[] = [
     name: 'infrastructure_network.vehicle_submode_on_infrastructure_link',
     data: vehicleSubmodeOnInfrastructureLink,
     props: VehicleSubmodeOnInfrastructureLinkProps,
+  },
+  {
+    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    data: scheduledStopPointInvariants,
+    props: ScheduledStopPointInvariantProps,
   },
   {
     name: 'internal_service_pattern.scheduled_stop_point',
