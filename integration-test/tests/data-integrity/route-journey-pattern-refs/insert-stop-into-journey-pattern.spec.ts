@@ -18,11 +18,11 @@ import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/schedule
 
 const createToBeInserted = (
   journeyPatternId: string,
-  scheduledStopPointId: string,
+  scheduledStopPointLabel: string,
   scheduledStopPointSequence: number,
 ): ScheduledStopPointInJourneyPattern => ({
   journey_pattern_id: journeyPatternId,
-  scheduled_stop_point_id: scheduledStopPointId,
+  scheduled_stop_point_label: scheduledStopPointLabel,
   scheduled_stop_point_sequence: scheduledStopPointSequence,
   is_via_point: false,
   is_timing_point: false,
@@ -92,7 +92,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
   describe('when stop is on a link not included in the route', () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[3].scheduled_stop_point_id,
+      scheduledStopPoints[3].label,
       150,
     );
 
@@ -107,7 +107,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
   describe("when stop is inserted at a position which does not correspond to the stop's link's position in the route", () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[1].scheduled_stop_point_id,
+      scheduledStopPoints[1].label,
       50,
     );
 
@@ -122,7 +122,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
   describe("when stop's link is traversed in a direction not matching the stop's direction", () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[5].scheduled_stop_point_id,
+      scheduledStopPoints[5].label,
       250,
     );
 
@@ -137,7 +137,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
   describe('without conflict', () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[1].scheduled_stop_point_id,
+      scheduledStopPoints[1].label,
       250,
     );
 
