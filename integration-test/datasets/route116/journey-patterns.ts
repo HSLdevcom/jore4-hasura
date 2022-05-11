@@ -2,6 +2,7 @@ import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
 } from '@datasets/types';
+import { scheduledStopPoints } from '@datasets/route116/scheduled-stop-points';
 
 export const journeyPatterns: JourneyPattern[] = [
   {
@@ -29,7 +30,10 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     '231f6797-21f5-404c-8934-e5e180e9d152',
   ].map((stopId, index) => ({
     journey_pattern_id: journeyPatterns[0].journey_pattern_id,
-    scheduled_stop_point_id: stopId,
+    scheduled_stop_point_label: scheduledStopPoints.find(
+      (scheduledStopPoint) =>
+        scheduledStopPoint.scheduled_stop_point_id === stopId,
+    )!.label,
     scheduled_stop_point_sequence: index,
     is_timing_point: true,
     is_via_point: false,
