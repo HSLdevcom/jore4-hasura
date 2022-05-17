@@ -86,10 +86,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[2].line_id,
       description_i18n: 'route 3',
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
       label: 'route 3',
       direction: RouteDirection.Eastbound,
       priority: 20,
@@ -106,10 +102,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[2].line_id,
       description_i18n: 'route 3',
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
       label: 'route 3X',
       direction: RouteDirection.Eastbound,
       priority: 30,
@@ -126,10 +118,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[2].line_id,
       description_i18n: 'route 3',
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
       label: 'route 3',
       direction: RouteDirection.Eastbound,
       priority: 30,
@@ -146,10 +134,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[2].line_id,
       description_i18n: 'route 4',
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
       label: 'route 4',
       direction: RouteDirection.Eastbound,
       priority: 20,
@@ -166,10 +150,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       on_line_id: lines[2].line_id,
       description_i18n: 'route 4',
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
       label: 'route 4',
       direction: RouteDirection.Eastbound,
       priority: 20,

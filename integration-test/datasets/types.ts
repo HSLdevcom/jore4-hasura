@@ -128,8 +128,6 @@ export type Route = {
   route_id: string;
   on_line_id: string;
   description_i18n: string | null;
-  starts_from_scheduled_stop_point_id: string;
-  ends_at_scheduled_stop_point_id: string;
   label: string;
   direction: RouteDirection;
   priority: number;
@@ -140,8 +138,6 @@ export const RouteProps: PropArray = [
   'route_id',
   'on_line_id',
   'description_i18n',
-  'starts_from_scheduled_stop_point_id',
-  'ends_at_scheduled_stop_point_id',
   'label',
   'direction',
   'priority',

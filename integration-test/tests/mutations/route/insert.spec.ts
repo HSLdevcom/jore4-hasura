@@ -12,10 +12,6 @@ import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
   description_i18n: 'new route',
-  starts_from_scheduled_stop_point_id:
-    scheduledStopPoints[0].scheduled_stop_point_id,
-  ends_at_scheduled_stop_point_id:
-    scheduledStopPoints[2].scheduled_stop_point_id,
   label: 'new route label',
   direction: RouteDirection.Clockwise,
   priority: 40,

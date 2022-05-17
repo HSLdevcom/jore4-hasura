@@ -10,8 +10,6 @@ import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: 'updated route',
-  starts_from_scheduled_stop_point_id:
-    scheduledStopPoints[0].scheduled_stop_point_id,
   priority: 50,
   validity_end: new Date('2045-04-01 12:11:32Z'),
 };

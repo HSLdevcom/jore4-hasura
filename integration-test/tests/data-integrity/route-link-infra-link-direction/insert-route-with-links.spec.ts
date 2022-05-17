@@ -22,10 +22,6 @@ import {
 const routeToBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
   description_i18n: 'new route',
-  starts_from_scheduled_stop_point_id:
-    scheduledStopPoints[5].scheduled_stop_point_id,
-  ends_at_scheduled_stop_point_id:
-    scheduledStopPoints[6].scheduled_stop_point_id,
   label: 'new route label',
   direction: RouteDirection.Clockwise,
   priority: lines[1].priority + 10,
