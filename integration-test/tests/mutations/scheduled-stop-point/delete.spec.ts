@@ -2,7 +2,10 @@ import * as rp from 'request-promise';
 import * as pg from 'pg';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+} from '@datasets/defaultSetup/scheduled-stop-points';
 import '@util/matchers';
 import {
   getPropNameArray,
@@ -87,6 +90,22 @@ describe('Delete scheduled_stop_point', () => {
               toBeDeleted.scheduled_stop_point_id,
           ),
           ['measured_location'],
+        ),
+      ),
+    );
+
+    const stopPointInvariantResponse = await queryTable(
+      dbConnectionPool,
+      'internal_service_pattern.scheduled_stop_point_invariant',
+    );
+
+    expect(stopPointInvariantResponse.rowCount).toEqual(
+      scheduledStopPointInvariants.length - 1,
+    );
+    expect(stopPointInvariantResponse.rows).toEqual(
+      expect.arrayContaining(
+        scheduledStopPointInvariants.filter(
+          (invariant) => invariant.label !== toBeDeleted.label,
         ),
       ),
     );
