@@ -14,8 +14,8 @@ export const routes: Route[] = [
     label: '116 inbound',
     direction: RouteDirection.Inbound,
     priority: 10,
-    validity_start: null,
-    validity_end: null,
+    validity_start: new Date('2054-05-01 23:11:32Z'),
+    validity_end: new Date('2074-05-01 23:11:32Z'),
   },
 ];
 
