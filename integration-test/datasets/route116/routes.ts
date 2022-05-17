@@ -11,8 +11,6 @@ export const routes: Route[] = [
     route_id: '02300151-bab5-4dea-b767-73367885923e',
     on_line_id: 'eb12d002-b4ad-4071-b2eb-2291692d37d2',
     description_i18n: null,
-    starts_from_scheduled_stop_point_id: '405cf0dd-89de-4a49-b9b3-fd93061cf144',
-    ends_at_scheduled_stop_point_id: '231f6797-21f5-404c-8934-e5e180e9d152',
     direction: RouteDirection.Inbound,
     priority: 10,
     validity_start: new Date('2054-05-01 23:11:32Z'),

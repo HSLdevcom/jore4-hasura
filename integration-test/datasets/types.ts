@@ -139,8 +139,6 @@ export type Route = {
   origin_short_name_i18n: LocalizedString;
   destination_name_i18n: LocalizedString;
   destination_short_name_i18n: LocalizedString;
-  starts_from_scheduled_stop_point_id: string;
-  ends_at_scheduled_stop_point_id: string;
   label: string;
   direction: RouteDirection;
   priority: number;
@@ -156,8 +154,6 @@ export const RouteProps: PropArray = [
   'origin_short_name_i18n',
   'destination_name_i18n',
   'destination_short_name_i18n',
-  'starts_from_scheduled_stop_point_id',
-  'ends_at_scheduled_stop_point_id',
   'label',
   'direction',
   'priority',
