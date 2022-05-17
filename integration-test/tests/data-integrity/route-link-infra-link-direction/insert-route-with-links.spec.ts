@@ -23,10 +23,6 @@ import * as rp from 'request-promise';
 const routeToBeInserted: Partial<Route> = {
   ...buildRoute('new route'),
   on_line_id: lines[1].line_id,
-  starts_from_scheduled_stop_point_id:
-    scheduledStopPoints[5].scheduled_stop_point_id,
-  ends_at_scheduled_stop_point_id:
-    scheduledStopPoints[6].scheduled_stop_point_id,
   direction: RouteDirection.Clockwise,
   priority: lines[1].priority + 10,
   validity_start: new Date('2044-05-01 23:11:32Z'),
