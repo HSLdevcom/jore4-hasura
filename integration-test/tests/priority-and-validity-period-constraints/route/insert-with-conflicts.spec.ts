@@ -62,10 +62,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       ...buildRoute('3'),
       on_line_id: lines[2].line_id,
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
       direction: RouteDirection.Eastbound,
       priority: 30,
       validity_start: new Date('2024-09-02 23:11:32Z'),
@@ -81,10 +77,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       ...buildRoute('3'),
       on_line_id: lines[1].line_id,
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[0].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
       direction: RouteDirection.Eastbound,
       priority: 30,
       validity_start: new Date('2044-08-02 23:11:32Z'),
@@ -100,10 +92,6 @@ describe('Insert route', () => {
     const toBeInserted: Partial<Route> = {
       ...buildRoute('2'),
       on_line_id: lines[1].line_id,
-      starts_from_scheduled_stop_point_id:
-        scheduledStopPoints[1].scheduled_stop_point_id,
-      ends_at_scheduled_stop_point_id:
-        scheduledStopPoints[2].scheduled_stop_point_id,
       direction: RouteDirection.Southbound,
       priority: 20,
       validity_start: new Date('2044-09-02 23:11:32Z'),
