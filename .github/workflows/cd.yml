@@ -69,14 +69,21 @@ jobs:
 
     strategy:
       matrix:
+        # see how the matrix combinations are generated based on this config:
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategymatrixinclude
+        imagePrefix:
+          - 'generic-' # generic image
+          - 'seed-' # image with seed data
+          - 'hsl-' # image with HSL-specific extensions
+        testSuiteVersion:
+          - 'latest' # run the latest test suite of the e2e tests
+          - 'branch' # run the e2e tests from the branch with the same name
+        runE2ETests: [true]
         include:
           # note: cannot run e2e tests for generic image as the UI needs the hsl-specific migrations
+          # for this image, we are only checking if the docker image can come online
           - imagePrefix: 'generic-' # generic image
             runE2ETests: false
-          - imagePrefix: 'seed-' # image with seed data
-            runE2ETests: true
-          - imagePrefix: 'hsl-' # production image
-            runE2ETests: true
 
     steps:
       - name: Extract metadata to env variables
@@ -87,9 +94,20 @@ jobs:
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
+      - name: check if branch exists in e2e test repo
+        if: ${{ matrix.runE2ETests && matrix.testSuiteVersion != 'latest'}}
+        run: |
+          export BRANCH_EXISTS=$(git ls-remote --exit-code --heads https://github.com/HSLdevcom/jore4-robot.git ${{ env.BRANCH_NAME }})
+          if [ -n "$BRANCH_EXISTS" ]; then
+            echo "Branch found in E2E test repository!"
+          else
+            echo "Branch not found in E2E test repository!"
+          fi
+          echo "BRANCH_EXISTS=${BRANCH_EXISTS}" >> "${GITHUB_ENV}"
+
       - name: run e2e smoke tests
         id: tests
-        if: ${{ matrix.runE2ETests }}
+        if: ${{ matrix.runE2ETests && (env.BRANCH_EXISTS || matrix.testSuiteVersion == 'latest') }}
         uses: HSLdevcom/jore4-robot/github-actions/run-rf-tests@actions-v1
         with:
           included_tag: smoke
@@ -97,5 +115,5 @@ jobs:
           e2e_password: ${{ secrets.ROBOT_HSLID_PASSWORD }}
 
       - name: upload test results
-        if: ${{ always() && matrix.runE2ETests }}
+        if: ${{ always() && matrix.runE2ETests && (env.BRANCH_EXISTS || matrix.testSuiteVersion == 'latest')}}
         uses: HSLdevcom/jore4-robot/github-actions/upload-results@actions-v1
