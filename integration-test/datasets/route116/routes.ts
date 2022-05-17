@@ -15,8 +15,8 @@ export const routes: Route[] = [
     ends_at_scheduled_stop_point_id: '231f6797-21f5-404c-8934-e5e180e9d152',
     direction: RouteDirection.Inbound,
     priority: 10,
-    validity_start: null,
-    validity_end: null,
+    validity_start: new Date('2054-05-01 23:11:32Z'),
+    validity_end: new Date('2074-05-01 23:11:32Z'),
   },
 ];
 

@@ -5,6 +5,7 @@ import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import {
+  scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets/defaultSetup/scheduled-stop-points';
@@ -117,6 +118,18 @@ describe('Insert scheduled stop point', () => {
         expect(vehicleModeResponse.rows).toEqual(
           expect.arrayContaining(vehicleModeOnScheduledStopPoint),
         );
+
+        const stopPointInvariantResponse = await queryTable(
+          dbConnectionPool,
+          'internal_service_pattern.scheduled_stop_point_invariant',
+        );
+
+        expect(stopPointInvariantResponse.rowCount).toEqual(
+          scheduledStopPointInvariants.length,
+        );
+        expect(stopPointInvariantResponse.rows).toEqual(
+          expect.arrayContaining(scheduledStopPointInvariants),
+        );
       });
 
     describe('infrastructure link sub modes "generic_bus", "generic_tram", stop point mode "metro"', () => {
@@ -217,6 +230,21 @@ describe('Insert scheduled stop point', () => {
               vehicle_mode: vehicleMode,
             },
             ...vehicleModeOnScheduledStopPoint,
+          ]),
+        );
+
+        const stopPointInvariantResponse = await queryTable(
+          dbConnectionPool,
+          'internal_service_pattern.scheduled_stop_point_invariant',
+        );
+
+        expect(stopPointInvariantResponse.rowCount).toEqual(
+          scheduledStopPointInvariants.length + 1,
+        );
+        expect(stopPointInvariantResponse.rows).toEqual(
+          expect.arrayContaining([
+            { label: toBeInserted.label },
+            ...scheduledStopPointInvariants,
           ]),
         );
       });

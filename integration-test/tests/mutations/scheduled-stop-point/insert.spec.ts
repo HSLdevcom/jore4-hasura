@@ -3,7 +3,10 @@ import * as pg from 'pg';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+} from '@datasets/defaultSetup/scheduled-stop-points';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -123,6 +126,21 @@ describe('Insert scheduled_stop_point', () => {
           ['measured_location'],
         ),
       ),
+    );
+
+    const stopPointInvariantResponse = await queryTable(
+      dbConnectionPool,
+      'internal_service_pattern.scheduled_stop_point_invariant',
+    );
+
+    expect(stopPointInvariantResponse.rowCount).toEqual(
+      scheduledStopPointInvariants.length + 1,
+    );
+    expect(stopPointInvariantResponse.rows).toEqual(
+      expect.arrayContaining([
+        { label: toBeInserted.label },
+        ...scheduledStopPointInvariants,
+      ]),
     );
   });
 });
