@@ -39,15 +39,6 @@ array_relationships:
         insertion_order: null
         column_mapping:
           route_id: route_id
-  - name: localized_texts
-    using:
-      manual_configuration:
-        remote_table:
-          schema: localization
-          name: localized_text
-        insertion_order: null
-        column_mapping:
-          route_id: entity_id
   - name: route_journey_patterns
     using:
       manual_configuration:

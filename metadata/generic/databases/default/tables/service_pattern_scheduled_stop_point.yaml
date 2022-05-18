@@ -2,15 +2,6 @@ table:
   name: scheduled_stop_point
   schema: service_pattern
 array_relationships:
-  - name: localized_texts
-    using:
-      manual_configuration:
-        remote_table:
-          schema: localization
-          name: localized_text
-        insertion_order: null
-        column_mapping:
-          scheduled_stop_point_id: entity_id
   - name: scheduled_stop_point_in_journey_patterns
     using:
       manual_configuration:
