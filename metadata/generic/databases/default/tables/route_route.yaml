@@ -2,15 +2,6 @@ table:
   name: route
   schema: route
 object_relationships:
-  - name: ends_at_scheduled_stop_point
-    using:
-      manual_configuration:
-        column_mapping:
-          ends_at_scheduled_stop_point_id: scheduled_stop_point_id
-        insertion_order: null
-        remote_table:
-          name: scheduled_stop_point
-          schema: service_pattern
   - name: route_line
     using:
       manual_configuration:
@@ -20,15 +11,6 @@ object_relationships:
         remote_table:
           name: line
           schema: route
-  - name: starts_from_scheduled_stop_point
-    using:
-      manual_configuration:
-        column_mapping:
-          starts_from_scheduled_stop_point_id: scheduled_stop_point_id
-        insertion_order: null
-        remote_table:
-          name: scheduled_stop_point
-          schema: service_pattern
 array_relationships:
   - name: infrastructure_links_along_route
     using:
