@@ -10,3 +10,14 @@ services:
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+
+  # Automatically restart unhealthy docker containers: https://hub.docker.com/r/willfarrell/autoheal
+  # Speeds up the startup as we need don't need to wait for hasura restart so long
+  autoheal:
+    restart: 'unless-stopped'
+    container_name: autoheal
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
