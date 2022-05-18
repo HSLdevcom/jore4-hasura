@@ -10,7 +10,7 @@ array_relationships:
           name: scheduled_stop_point_in_journey_pattern
         insertion_order: null
         column_mapping:
-          scheduled_stop_point_id: scheduled_stop_point_id
+          label: scheduled_stop_point_label
   - name: vehicle_mode_on_scheduled_stop_point
     using:
       manual_configuration:
