@@ -19,6 +19,14 @@ ON CONFLICT DO NOTHING;
 -- to avoid constraint conflicts, inserting scheduled_stop_points and their allowed vehicle modes at the same time, within a transaction
 DO $$
 BEGIN
+  INSERT INTO internal_service_pattern.scheduled_stop_point_invariant
+    (label)
+  VALUES
+    ('H1234'),
+    ('H1235'),
+    ('H1236')
+  ON CONFLICT DO NOTHING;
+
   INSERT INTO internal_service_pattern.scheduled_stop_point
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
@@ -87,9 +95,9 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO journey_pattern.scheduled_stop_point_in_journey_pattern
-  (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point, via_point_name_i18n, via_point_short_name_i18n)
+  (journey_pattern_id, scheduled_stop_point_label, scheduled_stop_point_sequence, is_timing_point, is_via_point, via_point_name_i18n, via_point_short_name_i18n)
 VALUES
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, FALSE, NULL, NULL),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','4d294d62-df17-46ff-9248-23f66f17fa87', 1, TRUE, TRUE, '{"fi_FI":"Paikka","sv_FI":"Plats"}', '{"fi_FI":"Pai.","sv_FI":"Pla."}'),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 2, FALSE, FALSE, NULL, NULL)
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','H1234', 0, FALSE, FALSE, NULL, NULL),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','H1235', 1, TRUE, TRUE, '{"fi_FI":"Paikka","sv_FI":"Plats"}', '{"fi_FI":"Pai.","sv_FI":"Pla."}'),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','H1236', 2, FALSE, FALSE, NULL, NULL)
 ON CONFLICT DO NOTHING;
