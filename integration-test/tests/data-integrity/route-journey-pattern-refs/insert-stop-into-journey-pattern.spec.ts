@@ -26,6 +26,8 @@ const createToBeInserted = (
   scheduled_stop_point_sequence: scheduledStopPointSequence,
   is_via_point: false,
   is_timing_point: false,
+  via_point_name_i18n: null,
+  via_point_short_name_i18n: null,
 });
 
 const buildMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
