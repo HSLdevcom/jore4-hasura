@@ -33,4 +33,6 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     scheduled_stop_point_sequence: index,
     is_timing_point: true,
     is_via_point: false,
+    via_point_name_i18n: null,
+    via_point_short_name_i18n: null,
   }));
