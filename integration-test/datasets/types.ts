@@ -211,6 +211,8 @@ export type ScheduledStopPointInJourneyPattern = {
   scheduled_stop_point_sequence: number;
   is_timing_point: boolean;
   is_via_point: boolean;
+  via_point_name_i18n?: LocalizedString | null;
+  via_point_short_name_i18n?: LocalizedString | null;
 };
 export const ScheduledStopPointInJourneyPatternProps: PropArray = [
   'journey_pattern_id',
@@ -218,4 +220,6 @@ export const ScheduledStopPointInJourneyPatternProps: PropArray = [
   'scheduled_stop_point_sequence',
   'is_timing_point',
   'is_via_point',
+  'via_point_name_i18n',
+  'via_point_short_name_i18n',
 ];
