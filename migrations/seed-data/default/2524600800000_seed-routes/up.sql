@@ -87,9 +87,9 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO journey_pattern.scheduled_stop_point_in_journey_pattern
-  (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point)
+  (journey_pattern_id, scheduled_stop_point_id, scheduled_stop_point_sequence, is_timing_point, is_via_point, via_point_name_i18n, via_point_short_name_i18n)
 VALUES
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, FALSE),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','4d294d62-df17-46ff-9248-23f66f17fa87', 1, TRUE, TRUE),
-  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 2, FALSE, FALSE)
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','e3528755-711f-4e4f-9461-7931a2c4bc6d', 0, FALSE, FALSE, NULL, NULL),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','4d294d62-df17-46ff-9248-23f66f17fa87', 1, TRUE, TRUE, '{"fi_FI":"Paikka","sv_FI":"Plats"}', '{"fi_FI":"Pai.","sv_FI":"Pla."}'),
+  ('43e1985d-4643-4415-8367-c4a37fbc0a87','f8eace87-7901-4438-bfee-bb6f24f1c4c4', 2, FALSE, FALSE, NULL, NULL)
 ON CONFLICT DO NOTHING;

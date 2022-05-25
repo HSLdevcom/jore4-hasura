@@ -28,6 +28,8 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 100,
       is_timing_point: true,
       is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[0].journey_pattern_id,
@@ -35,6 +37,11 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 200,
       is_timing_point: false,
       is_via_point: true,
+      via_point_name_i18n: { fi_FI: 'via FI', sv_FI: 'via SV' },
+      via_point_short_name_i18n: {
+        fi_FI: 'via short FI',
+        sv_FI: 'via short SV',
+      },
     },
     {
       journey_pattern_id: journeyPatterns[0].journey_pattern_id,
@@ -42,6 +49,8 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 300,
       is_timing_point: true,
       is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[1].journey_pattern_id,
@@ -49,6 +58,8 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 100,
       is_timing_point: true,
       is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[1].journey_pattern_id,
@@ -56,6 +67,8 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 200,
       is_timing_point: true,
       is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
@@ -63,19 +76,28 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
       scheduled_stop_point_sequence: 100,
       is_timing_point: true,
       is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
       scheduled_stop_point_id: scheduledStopPoints[7].scheduled_stop_point_id,
       scheduled_stop_point_sequence: 200,
       is_timing_point: false,
-      is_via_point: true,
+      is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
     },
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
       scheduled_stop_point_id: scheduledStopPoints[8].scheduled_stop_point_id,
       scheduled_stop_point_sequence: 300,
       is_timing_point: true,
-      is_via_point: false,
+      is_via_point: true,
+      via_point_name_i18n: { fi_FI: 'via another FI', sv_FI: 'via another SV' },
+      via_point_short_name_i18n: {
+        fi_FI: 'via another short FI',
+        sv_FI: 'via another short SV',
+      },
     },
   ];
