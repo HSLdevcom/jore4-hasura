@@ -10,30 +10,6 @@ VALUES
   ('db748c5c-42e3-429f-baa0-e0db227dc2c8','{"fi_FI":"Erottaja - Arkkadiankatu FI","sv_FI":"Erottaja - Arkkadiankatu SV"}','{"fi_FI":"Erottaja - Arkkadiankatu short FI","sv_FI":"Erottaja - Arkkadiankatu short SV"}','bus','1234','regional_bus_service','helsinki_internal_traffic',10,'2021-01-01','2023-12-13')
 ON CONFLICT DO NOTHING;
 
--- built-in attributes:
--- line_name: 02b5427a-98d0-4a15-9ba8-f7694b286c5a
--- line_short_name: 1925718b-03a2-4321-b880-c56bbf8cd0ce
-INSERT INTO localization.localized_text
-  (entity_id, attribute_id, language_code, localized_text)
-VALUES
-  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'fi_FI', 'Rautatientori - Veräjälaakso FI'),
-  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'sv_FI', 'Rautatientori - Veräjälaakso SV'),
-  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'fi_FI', 'Rautatientori - Veräjälaakso short FI'),
-  ('101f800c-39ed-4d85-8ece-187cd9fe1c5e', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'sv_FI', 'Rautatientori - Veräjälaakso short SV'),
-  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'fi_FI', 'Rautatientori - Malmi as. FI'),
-  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'sv_FI', 'Rautatientori - Malmi as. SV'),
-  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'fi_FI', 'Rautatientori - Malmi as. short FI'),
-  ('9058c328-efdd-412c-9b2b-37b0f6a2c6fb', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'sv_FI', 'Rautatientori - Malmi as. short SV'),
-  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'fi_FI', 'Rautatientori - Nikkilä FI'),
-  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'sv_FI', 'Rautatientori - Nikkilä SV'),
-  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'fi_FI', 'Rautatientori - Nikkilä short FI'),
-  ('bbd1cb29-74c3-4fa1-ac86-918d7fa96fe2', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'sv_FI', 'Rautatientori - Nikkilä short SV'),
-  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'fi_FI', 'Erottaja - Arkkadiankatu FI'),
-  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '02b5427a-98d0-4a15-9ba8-f7694b286c5a', 'sv_FI', 'Erottaja - Arkkadiankatu SV'),
-  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'fi_FI', 'Erottaja - Arkkadiankatu short FI'),
-  ('db748c5c-42e3-429f-baa0-e0db227dc2c8', '1925718b-03a2-4321-b880-c56bbf8cd0ce', 'sv_FI', 'Erottaja - Arkkadiankatu short SV')
-ON CONFLICT DO NOTHING;
-
 -- to avoid constraint conflicts, inserting scheduled_stop_points and their allowed vehicle modes at the same time, within a transaction
 DO $$
 BEGIN
@@ -88,15 +64,6 @@ VALUES (
   '65x',
   'outbound'
 )
-ON CONFLICT DO NOTHING;
-
--- built-in attributes:
--- route_description: 288610d7-1d27-4660-8a7a-794d9a361a96
-INSERT INTO localization.localized_text
-  (entity_id, attribute_id, language_code, localized_text)
-VALUES
-  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '288610d7-1d27-4660-8a7a-794d9a361a96', 'fi_FI', 'Reitti A - B FI'),
-  ('03d55414-e5cf-4cce-9faf-d86ccb7e5f98', '288610d7-1d27-4660-8a7a-794d9a361a96', 'sv_FI', 'Reitti A - B SV')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO route.infrastructure_link_along_route
