@@ -175,6 +175,21 @@ In order to run the integration tests, follow the following steps:
 1. Run the tests in the `integration-test`-directory:
    `yarn test`
 
+## Migration tests
+
+To make sure all the up and down migrations work as intended, we are running a CI job to execute these
+migrations on an empty databases and on databases with data.
+
+To run the tests yourself, on an empty database:
+
+1. Start up hasura in docker-compose with `./scripts/start_dependencies.sh`
+1. After it's up and running, run `./scripts/test-migrations.sh`. This will run the last few down and
+   up migrations within the hasura docker container.
+
+To run the migration tests on a database with data, you can use the seed version. Just set the hasura
+image target in `./docker/docker-compose.custom.yml` to `target: hasura-seed`. The same
+`test-migrations.sh` should work.
+
 ## Deployment
 
 Secrets should be passed as files to Docker images in production environments.

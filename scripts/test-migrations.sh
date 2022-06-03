@@ -1,0 +1,2 @@
+docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --down 10" && echo down migrations success || echo down migrations failure
+docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --up 10" && echo up migrations success || echo up migrations failure
