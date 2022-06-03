@@ -1,6 +1,12 @@
 -- seed data for developing the UI
 -- warning: this data does not actually make any sense, should update it when we get real data from jore3
 
+-- For testing purposes when checking the migrations' data compatibility, we do not want delete the
+-- seed data in the "down" migrations... Which results in having some data in the database when
+-- testing the migrations.
+-- However when running the complementing "up" migrations again, these inserts get in conflict with
+-- the existing data, so we need to skip these errors using "ON CONFLICT DO NOTHING";
+
 INSERT INTO route.line
   (line_id,name_i18n,short_name_i18n,primary_vehicle_mode,label,type_of_line,transport_target,priority,validity_start,validity_end)
 VALUES
