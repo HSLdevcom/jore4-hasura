@@ -30,5 +30,10 @@ INSERT INTO hsl_route.transport_target
   ON CONFLICT (transport_target) DO NOTHING;
 
 
+-- create the transport_target column with constraints and fill it up with some default data
 ALTER TABLE route.line
-  ADD COLUMN transport_target text NOT NULL REFERENCES hsl_route.transport_target (transport_target);
+  ADD COLUMN transport_target text NOT NULL REFERENCES hsl_route.transport_target (transport_target) DEFAULT 'helsinki_internal_traffic';
+
+-- drop the default clause from transport_target to make it mandatory to fill it in
+ALTER TABLE route.line
+  ALTER COLUMN transport_target DROP DEFAULT;
