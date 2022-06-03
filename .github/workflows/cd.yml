@@ -99,3 +99,36 @@ jobs:
       - name: upload test results
         if: ${{ always() && matrix.runE2ETests }}
         uses: HSLdevcom/jore4-robot/github-actions/upload-results@actions-v1
+
+  run_migration_tests:
+    needs: push_to_registry
+    name: Run migration tests
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        include:
+          - imagePrefix: 'generic-' # generic image
+          - imagePrefix: 'seed-' # image with seed data
+          - imagePrefix: 'hsl-' # production image
+
+    steps:
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
+
+      # Running the last 10 migrations down and up to make sure that all the hsl-specific and seed
+      # data migrations are within the set.
+      # When these migrations are run on generic/hsl images, we verify that they work in an empty db
+      # When these migrations are run on seed data images, we verify that they work in a db with data
+      - name: Run the last few down migrations
+        run: |
+          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --down 10"
+
+      - name: Run the last few up migrations
+        run: |
+          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --up 10"
