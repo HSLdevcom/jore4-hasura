@@ -17,7 +17,8 @@ DROP VIEW deleted.route_1637329168554;
 -- change route.route localized fields from text to jsonb
 -- add some more localized fields that will be used in the future
 ALTER TABLE route.route
-    ADD COLUMN name_i18n JSONB NOT NULL,
+    -- filling up NOT NULLable column with some initial value to work with existing data
+    ADD COLUMN name_i18n JSONB NOT NULL DEFAULT '{}',
     ALTER COLUMN description_i18n SET DATA TYPE JSONB
       USING to_jsonb('{"fi_FI": "' || description_i18n || '"}'),
     ADD COLUMN origin_name_i18n JSONB NULL,
@@ -29,3 +30,7 @@ CREATE INDEX idx_route_origin_name_i18n ON route.route USING gin (origin_name_i1
 CREATE INDEX idx_route_origin_short_name_i18n ON route.route USING gin (origin_short_name_i18n);
 CREATE INDEX idx_route_destination_name_i18n ON route.route USING gin (destination_name_i18n);
 CREATE INDEX idx_route_destination_short_name_i18n ON route.route USING gin (destination_short_name_i18n);
+
+-- don't allow using a default value for name_i18n anymore
+ALTER TABLE route.route
+    ALTER COLUMN name_i18n DROP DEFAULT;
