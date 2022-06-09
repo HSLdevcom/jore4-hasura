@@ -101,6 +101,17 @@ BEGIN
     SELECT 1
     FROM (
            WITH RECURSIVE
+             ssp_with_new AS (
+               SELECT * FROM internal_service_pattern.get_scheduled_stop_points_with_new(
+                 replace_scheduled_stop_point_id,
+                 new_scheduled_stop_point_id,
+                 new_located_on_infrastructure_link_id,
+                 new_measured_location,
+                 new_direction,
+                 new_label,
+                 new_validity_start,
+                 new_validity_end)
+             ),
              -- For all stops in the journey pattern, list all visits of the stop's infra link. (But only include
              -- visits happening in a direction matching the stop's allowed directions - if the direction is wrong,
              -- we cannot approach the stop point on that particular link visit. Similarly, include only those stop
@@ -125,15 +136,7 @@ BEGIN
                              OVER (PARTITION BY journey_pattern_id ORDER BY scheduled_stop_point_sequence) AS stop_point_order
                       FROM journey_pattern.scheduled_stop_point_in_journey_pattern
                     ) AS sspijp
-                      LEFT JOIN internal_service_pattern.get_scheduled_stop_points_with_new(
-                                   replace_scheduled_stop_point_id,
-                                   new_scheduled_stop_point_id,
-                                   new_located_on_infrastructure_link_id,
-                                   new_measured_location,
-                                   new_direction,
-                                   new_label,
-                                   new_validity_start,
-                                   new_validity_end) ssp
+                      LEFT JOIN ssp_with_new ssp
                                 ON ssp.label = sspijp.scheduled_stop_point_label
                       LEFT JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
                       LEFT JOIN route.route r
@@ -206,15 +209,7 @@ BEGIN
                          OVER (PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence)
                            AS order_by_min
                   FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
-                         JOIN internal_service_pattern.get_scheduled_stop_points_with_new(
-                                replace_scheduled_stop_point_id,
-                                new_scheduled_stop_point_id,
-                                new_located_on_infrastructure_link_id,
-                                new_measured_location,
-                                new_direction,
-                                new_label,
-                                new_validity_start,
-                                new_validity_end) ssp
+                         JOIN ssp_with_new ssp
                               ON ssp.label = sspijp.scheduled_stop_point_label
                          JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
                          JOIN route.route r
