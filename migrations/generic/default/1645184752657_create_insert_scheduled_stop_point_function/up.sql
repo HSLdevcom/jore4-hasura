@@ -41,6 +41,3 @@ CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point(
         );
     END;
 $$ LANGUAGE plpgsql;
-
-ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point
-    OWNER TO dbhasura;
