@@ -54,6 +54,66 @@ hasura migrate apply --goto "${TIMESTAMP}"
 
 Once you are convinced your SQL schema migration is correct, commit the new SQL files into git.
 
+#### Optimizations
+
+PostgreSQL by default does not create indexes for foreign key columns. In some cases, it's useful
+to create the index. E.g. when joining larger tables.
+
+Source: https://www.cybertec-postgresql.com/en/index-your-foreign-key/
+
+Query to find "missing" foreign key indexes:
+
+```sql
+SELECT c.conrelid::regclass AS "table",
+       /* list of key column names in order */
+       string_agg(a.attname, ',' ORDER BY x.n) AS columns,
+       pg_catalog.pg_size_pretty(
+          pg_catalog.pg_relation_size(c.conrelid)
+       ) AS size,
+       c.conname AS constraint,
+       c.confrelid::regclass AS referenced_table
+FROM pg_catalog.pg_constraint c
+   /* enumerated key column numbers per foreign key */
+   CROSS JOIN LATERAL
+      unnest(c.conkey) WITH ORDINALITY AS x(attnum, n)
+   /* name for each key column */
+   JOIN pg_catalog.pg_attribute a
+      ON a.attnum = x.attnum
+         AND a.attrelid = c.conrelid
+WHERE NOT EXISTS
+        /* is there a matching index for the constraint? */
+        (SELECT 1 FROM pg_catalog.pg_index i
+         WHERE i.indrelid = c.conrelid
+           /* the first index columns must be the same as the
+              key columns, but order doesn't matter */
+           AND (i.indkey::smallint[])[0:cardinality(c.conkey)-1]
+               @> c.conkey)
+  AND c.contype = 'f'
+GROUP BY c.conrelid, c.conname, c.confrelid
+ORDER BY pg_catalog.pg_relation_size(c.conrelid) DESC;
+```
+
+Every now and then, it's good to check which indexes are unused and drop them to speed up data
+writes to these tables. The following query shows how many times each index has been used:
+
+```sql
+SELECT s.schemaname,
+       s.relname AS tablename,
+       s.indexrelname AS indexname,
+       pg_relation_size(s.indexrelid) AS index_size,
+       s.idx_scan,
+       s.idx_tup_read,
+       s.idx_tup_fetch
+FROM pg_catalog.pg_stat_user_indexes s
+   JOIN pg_catalog.pg_index i ON s.indexrelid = i.indexrelid
+ORDER BY idx_scan ASC;
+```
+
+Note: after adding/removing indexes, it's important to reset the index usage statistics as the queries
+will start using different indexes and the previous numbers become obsolete.
+
+Reset your stats with `SELECT pg_stat_reset();`
+
 ### Change the Hasura API
 
 To change what to expose, to whom and how in the API served by Hasura, you need to modify the metadata of Hasura.
