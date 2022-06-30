@@ -8,10 +8,10 @@ ADD CONSTRAINT unique_validity_period EXCLUDE USING GIST (
   TSTZRANGE(validity_start, validity_end) WITH &&
 );
 
-ALTER TABLE internal_route.route
+ALTER TABLE route.route
 DROP CONSTRAINT route_unique_validity_period;
 
-ALTER TABLE internal_route.route
+ALTER TABLE route.route
 ADD CONSTRAINT route_unique_validity_period EXCLUDE USING GIST (
   label WITH =,
   direction WITH =,

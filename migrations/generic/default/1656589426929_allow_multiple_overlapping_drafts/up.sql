@@ -1,3 +1,5 @@
+
+
 ALTER TABLE internal_service_pattern.scheduled_stop_point
 DROP CONSTRAINT unique_validity_period;
 
@@ -9,10 +11,10 @@ ADD CONSTRAINT unique_validity_period EXCLUDE USING GIST (
 )
 WHERE (priority < 30);
 
-ALTER TABLE internal_route.route
+ALTER TABLE route.route
 DROP CONSTRAINT route_unique_validity_period;
 
-ALTER TABLE internal_route.route
+ALTER TABLE route.route
 ADD CONSTRAINT route_unique_validity_period EXCLUDE USING GIST (
   label WITH =,
   direction WITH =,
