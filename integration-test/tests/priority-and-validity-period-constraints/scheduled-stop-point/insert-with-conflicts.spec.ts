@@ -95,7 +95,7 @@ describe('Insert scheduled stop point', () => {
         },
       },
       label: 'stop2',
-      priority: 30,
+      priority: 20,
       validity_start: new Date('2062-01-03 12:34:56'),
       validity_end: new Date('2063-01-03 12:34:56'),
     };

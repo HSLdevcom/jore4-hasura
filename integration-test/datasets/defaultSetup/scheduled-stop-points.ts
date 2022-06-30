@@ -59,7 +59,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
       },
     },
     label: 'stop2',
-    priority: 30,
+    priority: 20,
     validity_start: null,
     validity_end: new Date('2064-01-03 12:34:56'),
   },

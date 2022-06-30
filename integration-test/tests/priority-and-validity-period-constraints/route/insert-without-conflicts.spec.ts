@@ -100,11 +100,11 @@ describe('Insert route', () => {
 
   describe('whose validity period conflicts with open validity start but has different label', () => {
     const toBeInserted: Partial<Route> = {
-      ...buildRoute('3'),
-      on_line_id: lines[2].line_id,
+      ...buildRoute('5'),
+      on_line_id: lines[4].line_id,
       label: 'route 3X',
       direction: RouteDirection.Eastbound,
-      priority: 30,
+      priority: 20,
       validity_start: new Date('2024-09-02 23:11:32Z'),
       validity_end: new Date('2034-09-02 23:11:32Z'),
     };
@@ -116,10 +116,10 @@ describe('Insert route', () => {
 
   describe('whose validity period does not conflict with open validity start', () => {
     const toBeInserted: Partial<Route> = {
-      ...buildRoute('3'),
-      on_line_id: lines[2].line_id,
+      ...buildRoute('5'),
+      on_line_id: lines[4].line_id,
       direction: RouteDirection.Eastbound,
-      priority: 30,
+      priority: 20,
       validity_start: new Date('2044-09-02 23:11:32Z'),
       validity_end: new Date('2045-06-01 23:11:32Z'),
     };
@@ -152,6 +152,21 @@ describe('Insert route', () => {
       priority: 20,
       validity_start: new Date('2044-04-02 21:11:32Z'),
       validity_end: new Date('2044-08-02 22:11:32Z'),
+    };
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldInsertCorrectRowIntoDatabase(toBeInserted);
+  });
+
+  describe('whose validity period overlaps with existing validity but both have draft priority', () => {
+    const toBeInserted: Partial<Route> = {
+      ...buildRoute('3'),
+      on_line_id: lines[2].line_id,
+      direction: RouteDirection.Eastbound,
+      priority: 30,
+      validity_start: new Date('2042-09-02 23:11:32Z'),
+      validity_end: new Date('2043-09-02 23:11:32Z'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
