@@ -121,7 +121,7 @@ describe('Insert scheduled stop point', () => {
         },
       },
       label: 'stop2',
-      priority: 20,
+      priority: 10,
       validity_start: new Date('2062-01-03 12:34:56'),
       validity_end: new Date('2063-01-03 12:34:56'),
     };
@@ -220,6 +220,30 @@ describe('Insert scheduled stop point', () => {
       priority: 20,
       validity_start: new Date('2065-01-05 12:34:56'),
       validity_end: new Date('2065-01-08 12:34:56'),
+    };
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldInsertCorrectRowIntoDatabase(toBeInserted);
+  });
+
+  describe('whose validity period is entirely contained in other validity period but both have draft priority', () => {
+    const toBeInserted: Partial<ScheduledStopPoint> = {
+      located_on_infrastructure_link_id:
+        infrastructureLinks[5].infrastructure_link_id,
+      direction: LinkDirection.Forward,
+      measured_location: {
+        type: 'Point',
+        coordinates: [12.1, 11.2, 0],
+        crs: {
+          properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+          type: 'name',
+        },
+      },
+      label: 'stopZ2',
+      priority: 30,
+      validity_start: new Date('2063-01-05 12:34:56'),
+      validity_end: new Date('2064-01-08 12:34:56'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
