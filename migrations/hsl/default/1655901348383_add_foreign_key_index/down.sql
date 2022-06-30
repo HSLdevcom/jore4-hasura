@@ -1,0 +1,1 @@
+drop index route.idx_line_transport_target;
