@@ -87,7 +87,7 @@ describe('Insert line', () => {
       ...buildLine('34', VehicleMode.Tram),
       name_i18n: buildLocalizedString('conflicting transport tram line 34'),
       short_name_i18n: buildLocalizedString('conflicting line 34'),
-      priority: 30,
+      priority: 10,
       validity_start: new Date('2041-06-01 23:11:32Z'),
       validity_end: new Date('2042-06-01 23:11:32Z'),
     };
@@ -144,9 +144,22 @@ describe('Insert line', () => {
   describe('whose validity period is entirely contained in other validity period but has different priority', () => {
     const toBeInserted: Partial<Line> = {
       ...buildLine('2', VehicleMode.Bus),
-      priority: 30,
+      priority: 20,
       validity_start: new Date('2044-06-01 23:11:32Z'),
       validity_end: new Date('2045-04-01 23:11:32Z'),
+    };
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldInsertCorrectRowIntoDatabase(toBeInserted);
+  });
+
+  describe('whose validity period is entirely contained in other validity period but both have draft priority', () => {
+    const toBeInserted: Partial<Line> = {
+      ...buildLine('77', VehicleMode.Tram),
+      priority: 30,
+      validity_start: new Date('2043-06-01 23:11:32Z'),
+      validity_end: new Date('2044-04-01 23:11:32Z'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);

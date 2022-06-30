@@ -60,10 +60,10 @@ describe('Insert route', () => {
 
   describe('whose validity period conflicts with open validity start', () => {
     const toBeInserted: Partial<Route> = {
-      ...buildRoute('3'),
-      on_line_id: lines[2].line_id,
+      ...buildRoute('5'),
+      on_line_id: lines[4].line_id,
       direction: RouteDirection.Eastbound,
-      priority: 30,
+      priority: 20,
       validity_start: new Date('2024-09-02 23:11:32Z'),
       validity_end: new Date('2034-09-02 23:11:32Z'),
     };
@@ -75,11 +75,11 @@ describe('Insert route', () => {
 
   describe('whose validity period overlaps partially with existing validity period', () => {
     const toBeInserted: Partial<Route> = {
-      ...buildRoute('3'),
+      ...buildRoute('2'),
       on_line_id: lines[1].line_id,
       direction: RouteDirection.Eastbound,
-      priority: 30,
-      validity_start: new Date('2044-08-02 23:11:32Z'),
+      priority: 20,
+      validity_start: new Date('2044-04-02 23:11:32Z'),
       validity_end: new Date('2044-10-02 23:11:32Z'),
     };
 
