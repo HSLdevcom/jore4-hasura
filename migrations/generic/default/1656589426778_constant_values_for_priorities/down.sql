@@ -1,0 +1,5 @@
+DROP FUNCTION internal_utils.const_priority_standard;
+
+DROP FUNCTION internal_utils.const_priority_temporary;
+
+DROP FUNCTION internal_utils.const_priority_draft;
