@@ -11,6 +11,7 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopAfterPrevStop,
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
+  scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets/route116/scheduled-stop-points';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
@@ -121,6 +122,16 @@ describe('Checking inserting a stop point with a label in use in a journey patte
   describe('with different priority, the same label and on the link previous to the link of another stop', () => {
     shouldReturnExpectedResponse(scheduledStopPointWithSameLabelOnPrevLink, []);
     shouldNotModifyDatabase(scheduledStopPointWithSameLabelOnPrevLink);
+  });
+
+  describe('with different priority, the same label, on the same link as this and the next stop, after the next stop', () => {
+    shouldReturnExpectedResponse(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+      [journeyPatterns[0].journey_pattern_id],
+    );
+    shouldNotModifyDatabase(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+    );
   });
 
   describe('with different priority, the same label and on a link after the link of the next stop with non-overlapping validity time', () => {

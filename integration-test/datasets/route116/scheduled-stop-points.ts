@@ -42,6 +42,21 @@ export const scheduledStopPointWithSameLabelOnPrevLink: ScheduledStopPoint = {
   priority: 20,
 };
 
+export const scheduledStopPointWithSameLabelOnSameLinkAfterNextStop: ScheduledStopPoint =
+  {
+    ...scheduledStopPointPohjantie,
+    scheduled_stop_point_id: '298d6b80-72c8-4e9c-a939-8d858a7e0017',
+    measured_location: {
+      type: 'Point',
+      coordinates: [24.80068762, 60.17483319, 0],
+      crs: {
+        properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+        type: 'name',
+      },
+    },
+    priority: 20,
+  };
+
 export const scheduledStopPointWithSameLabelOnLinkAfterNextStop: ScheduledStopPoint =
   {
     ...scheduledStopPointPohjantie,

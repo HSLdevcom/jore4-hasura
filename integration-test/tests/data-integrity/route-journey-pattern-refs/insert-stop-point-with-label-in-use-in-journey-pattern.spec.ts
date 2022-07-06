@@ -11,6 +11,7 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopAfterPrevStop,
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
+  scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets/route116/scheduled-stop-points';
 import {
   ScheduledStopPoint,
@@ -163,6 +164,15 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
     shouldReturnCorrectResponse(scheduledStopPointWithSameLabelOnPrevLink);
     shouldInsertCorrectRowIntoDatabase(
       scheduledStopPointWithSameLabelOnPrevLink,
+    );
+  });
+
+  describe('with different priority, the same label, on the same link as this and the next stop, after the next stop', () => {
+    shouldReturnErrorResponse(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+    );
+    shouldNotModifyDatabase(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
     );
   });
 
