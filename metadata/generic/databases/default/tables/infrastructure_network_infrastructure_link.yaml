@@ -16,7 +16,7 @@ array_relationships:
         table:
           name: infrastructure_link_along_route
           schema: route
-  - name: scheduled_stop_point_located_on_infrastructure_link
+  - name: scheduled_stop_points_located_on_infrastructure_link
     using:
       manual_configuration:
         column_mapping:
