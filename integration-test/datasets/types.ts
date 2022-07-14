@@ -233,4 +233,5 @@ export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   new_label: string;
   new_validity_start: Date | null;
   new_validity_end: Date | null;
+  new_priority: number;
 };

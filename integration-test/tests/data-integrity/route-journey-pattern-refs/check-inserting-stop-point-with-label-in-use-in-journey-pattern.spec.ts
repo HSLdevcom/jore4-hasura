@@ -34,6 +34,7 @@ const buildQuery = (toBeInserted: Partial<ScheduledStopPoint>) => {
       new_label: toBeInserted.label!,
       new_validity_start: toBeInserted.validity_start!,
       new_validity_end: toBeInserted.validity_end!,
+      new_priority: toBeInserted.priority!,
     };
 
   return `
