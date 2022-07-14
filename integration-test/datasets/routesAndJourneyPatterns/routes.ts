@@ -63,6 +63,15 @@ export const routes: Route[] = [
     validity_start: new Date('2044-05-02 23:11:32Z'),
     validity_end: new Date('2064-10-02 23:11:32Z'),
   },
+  {
+    ...buildRoute('6'),
+    route_id: '77aac57e-7d56-41d9-8984-1d18e9567d39',
+    on_line_id: lines[0].line_id,
+    direction: RouteDirection.Northbound,
+    priority: 30,
+    validity_start: new Date('2044-05-02 23:11:32Z'),
+    validity_end: null,
+  },
 ];
 
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
@@ -188,6 +197,42 @@ export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
   },
   {
     route_id: routes[5].route_id,
+    infrastructure_link_id: infrastructureLinks[2].infrastructure_link_id,
+    infrastructure_link_sequence: 40,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[6].route_id,
+    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_sequence: 10,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[6].route_id,
+    infrastructure_link_id: infrastructureLinks[1].infrastructure_link_id,
+    infrastructure_link_sequence: 20,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[6].route_id,
+    infrastructure_link_id: infrastructureLinks[4].infrastructure_link_id,
+    infrastructure_link_sequence: 25,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[6].route_id,
+    infrastructure_link_id: infrastructureLinks[5].infrastructure_link_id,
+    infrastructure_link_sequence: 30,
+    is_traversal_forwards: true,
+  },
+  {
+    route_id: routes[6].route_id,
+    infrastructure_link_id: infrastructureLinks[6].infrastructure_link_id,
+    infrastructure_link_sequence: 35,
+    is_traversal_forwards: false,
+  },
+  {
+    route_id: routes[6].route_id,
     infrastructure_link_id: infrastructureLinks[2].infrastructure_link_id,
     infrastructure_link_sequence: 40,
     is_traversal_forwards: false,

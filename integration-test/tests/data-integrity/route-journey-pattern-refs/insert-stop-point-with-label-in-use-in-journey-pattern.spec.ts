@@ -176,6 +176,21 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
     );
   });
 
+  describe('with different priority, the same label, on the same link as this and the next stop, after the next stop with draft priority', () => {
+    const scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+        priority: 30,
+      };
+
+    shouldReturnCorrectResponse(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority,
+    );
+    shouldInsertCorrectRowIntoDatabase(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority,
+    );
+  });
+
   describe('with different priority, the same label and on a link after the link of the next stop with non-overlapping validity time', () => {
     shouldReturnCorrectResponse(
       scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappingValidityTime,
@@ -190,6 +205,21 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
       scheduledStopPointWithSameLabelOnLinkAfterNextStop,
     );
     shouldNotModifyDatabase(scheduledStopPointWithSameLabelOnLinkAfterNextStop);
+  });
+
+  describe('with different priority, the same label and on a link after the link of the next stop with overlapping validity time with draft priority', () => {
+    const scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnLinkAfterNextStop,
+        priority: 30,
+      };
+
+    shouldReturnCorrectResponse(
+      scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority,
+    );
+    shouldInsertCorrectRowIntoDatabase(
+      scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority,
+    );
   });
 
   describe('with different priority, the same label, on the same link as the previous stop, after the previous stop', () => {
@@ -207,6 +237,21 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
     );
     shouldNotModifyDatabase(
       scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
+    );
+  });
+
+  describe('with different priority, the same label, on the same link as the previous stop, before the previous stop with draft priority', () => {
+    const scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
+        priority: 30,
+      };
+
+    shouldReturnCorrectResponse(
+      scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority,
+    );
+    shouldInsertCorrectRowIntoDatabase(
+      scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority,
     );
   });
 });
