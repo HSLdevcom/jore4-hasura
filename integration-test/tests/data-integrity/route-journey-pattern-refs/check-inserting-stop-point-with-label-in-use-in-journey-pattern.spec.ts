@@ -135,6 +135,22 @@ describe('Checking inserting a stop point with a label in use in a journey patte
     );
   });
 
+  describe('with draft priority, the same label, on the same link as this and the next stop, after the next stop', () => {
+    const scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+        priority: 30,
+      };
+
+    shouldReturnExpectedResponse(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority,
+      [],
+    );
+    shouldNotModifyDatabase(
+      scheduledStopPointWithSameLabelOnSameLinkAfterNextStopWithDraftPriority,
+    );
+  });
+
   describe('with different priority, the same label and on a link after the link of the next stop with non-overlapping validity time', () => {
     shouldReturnExpectedResponse(
       scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappingValidityTime,
@@ -153,6 +169,22 @@ describe('Checking inserting a stop point with a label in use in a journey patte
     shouldNotModifyDatabase(scheduledStopPointWithSameLabelOnLinkAfterNextStop);
   });
 
+  describe('with draft priority, the same label and on a link after the link of the next stop with overlapping validity time', () => {
+    const scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnLinkAfterNextStop,
+        priority: 30,
+      };
+
+    shouldReturnExpectedResponse(
+      scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority,
+      [],
+    );
+    shouldNotModifyDatabase(
+      scheduledStopPointWithSameLabelOnLinkAfterNextStopWithDraftPriority,
+    );
+  });
+
   describe('with different priority, the same label, on the same link as the previous stop, after the previous stop', () => {
     shouldReturnExpectedResponse(
       scheduledStopPointWithSameLabelOnLinkOfPrevStopAfterPrevStop,
@@ -168,6 +200,22 @@ describe('Checking inserting a stop point with a label in use in a journey patte
     );
     shouldNotModifyDatabase(
       scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
+    );
+  });
+
+  describe('with draft priority, the same label, on the same link as the previous stop, before the previous stop', () => {
+    const scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority =
+      {
+        ...scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
+        priority: 30,
+      };
+
+    shouldReturnExpectedResponse(
+      scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority,
+      [],
+    );
+    shouldNotModifyDatabase(
+      scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStopWithDraftPriority,
     );
   });
 });

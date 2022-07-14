@@ -91,58 +91,9 @@ describe('Insert scheduled stop point into journey pattern', () => {
       );
     });
 
-  describe('when stop is on a link not included in the route', () => {
-    const toBeInserted = createToBeInserted(
-      journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[3].label,
-      150,
-    );
-
-    shouldReturnErrorResponse(
-      toBeInserted,
-      "route's and journey pattern's traversal paths must match each other",
-    );
-
-    shouldNotModifyDatabase(toBeInserted);
-  });
-
-  describe("when stop is inserted at a position which does not correspond to the stop's link's position in the route", () => {
-    const toBeInserted = createToBeInserted(
-      journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[1].label,
-      50,
-    );
-
-    shouldReturnErrorResponse(
-      toBeInserted,
-      "route's and journey pattern's traversal paths must match each other",
-    );
-
-    shouldNotModifyDatabase(toBeInserted);
-  });
-
-  describe("when stop's link is traversed in a direction not matching the stop's direction", () => {
-    const toBeInserted = createToBeInserted(
-      journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[5].label,
-      250,
-    );
-
-    shouldReturnErrorResponse(
-      toBeInserted,
-      "route's and journey pattern's traversal paths must match each other",
-    );
-
-    shouldNotModifyDatabase(toBeInserted);
-  });
-
-  describe('without conflict', () => {
-    const toBeInserted = createToBeInserted(
-      journeyPatterns[0].journey_pattern_id,
-      scheduledStopPoints[1].label,
-      250,
-    );
-
+  const shouldReturnCorrectResponse = (
+    toBeInserted: ScheduledStopPointInJourneyPattern,
+  ) =>
     it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
@@ -160,6 +111,9 @@ describe('Insert scheduled stop point into journey pattern', () => {
       );
     });
 
+  const shouldUpdateTheDatabase = (
+    toBeInserted: ScheduledStopPointInJourneyPattern,
+  ) =>
     it('should update the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
@@ -182,5 +136,97 @@ describe('Insert scheduled stop point into journey pattern', () => {
         ]),
       );
     });
+
+  describe('when stop is on a link not included in the route', () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[3].label,
+      150,
+    );
+
+    shouldReturnErrorResponse(
+      toBeInserted,
+      "route's and journey pattern's traversal paths must match each other",
+    );
+
+    shouldNotModifyDatabase(toBeInserted);
+  });
+
+  describe('when stop is on a link not included in a draft route', () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[3].journey_pattern_id,
+      scheduledStopPoints[3].label,
+      150,
+    );
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldUpdateTheDatabase(toBeInserted);
+  });
+
+  describe("when stop is inserted at a position which does not correspond to the stop's link's position in the route", () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[1].label,
+      50,
+    );
+
+    shouldReturnErrorResponse(
+      toBeInserted,
+      "route's and journey pattern's traversal paths must match each other",
+    );
+
+    shouldNotModifyDatabase(toBeInserted);
+  });
+
+  describe("when stop is inserted at a position which does not correspond to the stop's link's position in a draft route", () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[3].journey_pattern_id,
+      scheduledStopPoints[1].label,
+      50,
+    );
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldUpdateTheDatabase(toBeInserted);
+  });
+
+  describe("when stop's link is traversed in a direction not matching the stop's direction", () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[5].label,
+      250,
+    );
+
+    shouldReturnErrorResponse(
+      toBeInserted,
+      "route's and journey pattern's traversal paths must match each other",
+    );
+
+    shouldNotModifyDatabase(toBeInserted);
+  });
+
+  describe("when stop's link is traversed on a draft route in a direction not matching the stop's direction", () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[3].journey_pattern_id,
+      scheduledStopPoints[5].label,
+      250,
+    );
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldUpdateTheDatabase(toBeInserted);
+  });
+
+  describe('without conflict', () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[1].label,
+      250,
+    );
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldUpdateTheDatabase(toBeInserted);
   });
 });
