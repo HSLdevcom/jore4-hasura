@@ -227,11 +227,11 @@ export const ScheduledStopPointInJourneyPatternProps: PropArray = [
 
 export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   replace_scheduled_stop_point_id: string | null;
-  new_located_on_infrastructure_link_id: string;
-  new_measured_location: GeometryObject;
-  new_direction: LinkDirection;
-  new_label: string;
+  new_located_on_infrastructure_link_id: string | null;
+  new_measured_location: GeometryObject | null;
+  new_direction: LinkDirection | null;
+  new_label: string | null;
   new_validity_start: Date | null;
   new_validity_end: Date | null;
-  new_priority: number;
+  new_priority: number | null;
 };
