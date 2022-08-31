@@ -27,16 +27,6 @@ import {
 } from './journey-patterns';
 import { scheduledStopPointInvariants } from './scheduled-stop-points';
 
-export const routesAndJourneyPatternsDatasets = {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-  lines,
-  routes,
-  infrastructureLinkAlongRoute,
-};
-
 export const routesAndJourneyPatternsTableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',

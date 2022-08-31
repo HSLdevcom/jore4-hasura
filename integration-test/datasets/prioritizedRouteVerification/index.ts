@@ -27,16 +27,6 @@ import {
   scheduledStopPointInJourneyPattern,
 } from '@datasets/prioritizedRouteVerification/journey-patterns';
 
-export const prioritizedRouteVerificationDatasets = {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-  lines,
-  routes,
-  infrastructureLinkAlongRoute,
-};
-
 export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',
