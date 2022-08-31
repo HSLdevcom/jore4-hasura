@@ -23,14 +23,6 @@ import {
   scheduledStopPointInJourneyPattern,
 } from './journey-patterns';
 
-export const route116Datasets = {
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-  lines,
-  routes,
-  infrastructureLinkAlongRoute,
-};
-
 export const route116TableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',

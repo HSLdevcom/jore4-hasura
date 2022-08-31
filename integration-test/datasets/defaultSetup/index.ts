@@ -21,16 +21,6 @@ import {
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
 
-export const defaultDatasets = {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-  lines,
-  routes,
-  infrastructureLinkAlongRoute,
-};
-
 export const defaultTableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',
