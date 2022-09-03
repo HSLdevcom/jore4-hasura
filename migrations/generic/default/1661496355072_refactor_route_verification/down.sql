@@ -45,12 +45,6 @@ DROP TRIGGER queue_verify_infra_link_stop_refs_on_route_delete_trigger
 
 
 
-DROP FUNCTION internal_utils.tstz_min(ts1 TIMESTAMP WITH TIME ZONE, ts2 TIMESTAMP WITH TIME ZONE);
-
-DROP FUNCTION internal_utils.tstz_max(ts1 TIMESTAMP WITH TIME ZONE, ts2 TIMESTAMP WITH TIME ZONE);
-
-
-
 DROP FUNCTION journey_pattern.maximum_priority_validity_spans(
   entity_type TEXT,
   filter_route_labels TEXT[],
@@ -70,9 +64,7 @@ DROP FUNCTION journey_pattern.maximum_priority_validity_spans(
 
 
 DROP FUNCTION journey_pattern.get_broken_route_journey_patterns(
-  filter_route_labels TEXT[],
-  filter_validity_start TIMESTAMP WITH TIME ZONE,
-  filter_validity_end TIMESTAMP WITH TIME ZONE,
+  filter_route_ids UUID[],
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
   new_measured_location geography(PointZ, 4326),
