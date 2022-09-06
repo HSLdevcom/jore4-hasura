@@ -206,6 +206,21 @@ describe('Insert scheduled stop point into journey pattern', () => {
     shouldNotModifyDatabase(toBeInserted);
   });
 
+  describe("when stop's validity time does not overlap with route's validity time", () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[9].label,
+      250,
+    );
+
+    shouldReturnErrorResponse(
+      toBeInserted,
+      "route's and journey pattern's traversal paths must match each other",
+    );
+
+    shouldNotModifyDatabase(toBeInserted);
+  });
+
   describe("when stop's link is traversed on a draft route in a direction not matching the stop's direction", () => {
     const toBeInserted = createToBeInserted(
       journeyPatterns[3].journey_pattern_id,
