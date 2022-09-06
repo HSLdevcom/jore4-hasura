@@ -171,6 +171,24 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     validity_start: null,
     validity_end: new Date('2064-01-03 12:34:56'),
   },
+  {
+    scheduled_stop_point_id: '431ab46f-3271-40bb-ab14-e217813a6a7f',
+    located_on_infrastructure_link_id:
+      infrastructureLinks[1].infrastructure_link_id,
+    direction: LinkDirection.Backward,
+    measured_location: {
+      type: 'Point',
+      coordinates: [8.1, 7.2, 0],
+      crs: {
+        properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+        type: 'name',
+      },
+    },
+    label: 'stop4X',
+    priority: 10,
+    validity_start: new Date('2030-02-03 12:34:56'),
+    validity_end: new Date('2032-02-03 12:34:56'),
+  },
 ];
 
 export const scheduledStopPointInvariants: ScheduledStopPointInvariant[] =
@@ -222,6 +240,10 @@ export const vehicleModeOnScheduledStopPoint: VehicleModeOnScheduledStopPoint[] 
     },
     {
       scheduled_stop_point_id: scheduledStopPoints[8].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[9].scheduled_stop_point_id,
       vehicle_mode: VehicleMode.Bus,
     },
   ];
