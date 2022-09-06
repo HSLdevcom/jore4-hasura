@@ -2,7 +2,7 @@ import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
 } from '@datasets/types';
-import { basicRoute } from './routes';
+import { basicRoute, tempRouteWithOtherLinks } from './routes';
 import { scheduledStopPointsOfBasicJourneyPattern } from './scheduled-stop-points';
 
 export const basicJourneyPattern: JourneyPattern = {
@@ -10,7 +10,16 @@ export const basicJourneyPattern: JourneyPattern = {
   on_route_id: basicRoute.route_id,
 };
 
+export const journeyPatternOnTempRoute: JourneyPattern = {
+  journey_pattern_id: 'a7865270-b2bd-4fa6-b639-b4bad6dcec8d',
+  on_route_id: tempRouteWithOtherLinks.route_id,
+};
+
 export const journeyPatterns: JourneyPattern[] = [basicJourneyPattern];
+export const journeyPatternsWithTempRoute: JourneyPattern[] = [
+  basicJourneyPattern,
+  journeyPatternOnTempRoute,
+];
 
 export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourneyPattern[] =
   [
@@ -90,3 +99,32 @@ export const scheduledStopPointInTempJourneyPatternWithSameStops: Partial<Schedu
 
 export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPattern[] =
   scheduledStopPointInBasicJourneyPattern;
+export const scheduledStopPointInJourneyPatternWithTempRoute: ScheduledStopPointInJourneyPattern[] =
+  [
+    ...scheduledStopPointInBasicJourneyPattern,
+    ...scheduledStopPointInTempJourneyPatternWithSameStops.map(
+      (scheduledStopPointInJourneyPattern) => {
+        if (
+          scheduledStopPointInJourneyPattern.scheduled_stop_point_label ===
+            undefined ||
+          scheduledStopPointInJourneyPattern.scheduled_stop_point_sequence ===
+            undefined ||
+          scheduledStopPointInJourneyPattern.is_timing_point === undefined ||
+          scheduledStopPointInJourneyPattern.is_via_point === undefined
+        ) {
+          throw new TypeError(
+            'Invalid entry in scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop',
+          );
+        }
+        return Object.assign({}, scheduledStopPointInJourneyPattern, {
+          journey_pattern_id: journeyPatternOnTempRoute.journey_pattern_id,
+          scheduled_stop_point_label:
+            scheduledStopPointInJourneyPattern.scheduled_stop_point_label,
+          scheduled_stop_point_sequence:
+            scheduledStopPointInJourneyPattern.scheduled_stop_point_sequence,
+          is_timing_point: scheduledStopPointInJourneyPattern.is_timing_point,
+          is_via_point: scheduledStopPointInJourneyPattern.is_via_point,
+        });
+      },
+    ),
+  ];

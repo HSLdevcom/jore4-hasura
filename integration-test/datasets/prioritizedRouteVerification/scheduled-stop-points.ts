@@ -103,6 +103,21 @@ export const tempScheduledStopPointWithConflictingInfraLinkOrder: ScheduledStopP
     validity_end: new Date('2064-05-02 23:11:32Z'),
   };
 
+export const tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
+  {
+    ...tempScheduledStopPointWithConflictingInfraLinkOrder,
+    validity_start: new Date('2065-05-02 23:11:32Z'),
+    validity_end: new Date('2073-05-02 23:11:32Z'),
+  };
+
+export const tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
+  {
+    ...tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
+    located_on_infrastructure_link_id:
+      basicRouteInfraLinks[2].infrastructure_link_id,
+    direction: LinkDirection.Backward,
+  };
+
 export const tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute: ScheduledStopPoint =
   {
     scheduled_stop_point_id: '92cff986-e7dc-44ae-87ee-dd31b263a456',
@@ -123,6 +138,13 @@ export const tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute: ScheduledS
   };
 
 export const scheduledStopPoints = scheduledStopPointsOfBasicJourneyPattern;
+export const scheduledStopPointsWithTempRoute = [
+  ...scheduledStopPointsOfBasicJourneyPattern.map((scheduledStopPoint) => ({
+    ...scheduledStopPoint,
+    validity_end: new Date('2062-05-02 23:11:32Z'),
+  })),
+  tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
+];
 
 export const scheduledStopPointInvariants: ScheduledStopPointInvariant[] =
   uniqBy(scheduledStopPointsOfBasicJourneyPattern, 'label').map(
@@ -133,6 +155,11 @@ export const scheduledStopPointInvariants: ScheduledStopPointInvariant[] =
 
 export const vehicleModeOnScheduledStopPoint: VehicleModeOnScheduledStopPoint[] =
   scheduledStopPoints.map((scheduledStopPoint) => ({
+    scheduled_stop_point_id: scheduledStopPoint.scheduled_stop_point_id,
+    vehicle_mode: VehicleMode.Bus,
+  }));
+export const vehicleModeOnScheduledStopPointWithTempRoute: VehicleModeOnScheduledStopPoint[] =
+  scheduledStopPointsWithTempRoute.map((scheduledStopPoint) => ({
     scheduled_stop_point_id: scheduledStopPoint.scheduled_stop_point_id,
     vehicle_mode: VehicleMode.Bus,
   }));

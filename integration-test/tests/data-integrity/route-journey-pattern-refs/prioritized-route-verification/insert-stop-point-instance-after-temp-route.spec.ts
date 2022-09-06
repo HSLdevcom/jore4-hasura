@@ -15,7 +15,7 @@ import {
 } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
 
-describe('Insert scheduled stop point valid after temp route', () => {
+describe('Insert scheduled stop point after temp route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {

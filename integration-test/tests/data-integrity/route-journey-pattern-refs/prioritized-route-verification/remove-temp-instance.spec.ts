@@ -64,7 +64,7 @@ describe('Removing a temporary...', () => {
       ),
     );
 
-    // include the stop label (whose temp instance is conflicting with the basic route) into the temp route's journet
+    // include the stop label (whose temp instance is conflicting with the basic route) into the temp route's journey
     // pattern (for convenience reasons this is done by deleting the journey pattern and inserting a new one)
     await replaceJourneyPattern(
       tempRouteWithOtherLinks,

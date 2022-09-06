@@ -5,10 +5,17 @@ import {
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
+  scheduledStopPointsWithTempRoute,
   vehicleModeOnScheduledStopPoint,
+  vehicleModeOnScheduledStopPointWithTempRoute,
 } from './scheduled-stop-points';
 import { lines } from './lines';
-import { infrastructureLinkAlongRoute, routes } from './routes';
+import {
+  infrastructureLinkAlongRoute,
+  infrastructureLinkAlongRouteWithTempRoute,
+  routes,
+  routesWithTempRoute,
+} from './routes';
 import { TableLikeConfig } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRouteProps,
@@ -24,7 +31,9 @@ import {
 } from '@datasets/types';
 import {
   journeyPatterns,
+  journeyPatternsWithTempRoute,
   scheduledStopPointInJourneyPattern,
+  scheduledStopPointInJourneyPatternWithTempRoute,
 } from '@datasets/prioritizedRouteVerification/journey-patterns';
 
 export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
@@ -79,3 +88,36 @@ export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
   },
   { name: 'route.route', props: RouteProps, isView: true },
 ];
+
+export const prioritizedRouteVerificationWithTempRouteTableConfig: TableLikeConfig[] =
+  prioritizedRouteVerificationTableConfig.map((tableLikeConfig) => {
+    if (!tableLikeConfig.data) {
+      return tableLikeConfig; // no data defined
+    }
+
+    const newData = (() => {
+      switch (tableLikeConfig.name) {
+        case 'internal_service_pattern.scheduled_stop_point':
+          return scheduledStopPointsWithTempRoute;
+        case 'service_pattern.vehicle_mode_on_scheduled_stop_point':
+          return vehicleModeOnScheduledStopPointWithTempRoute;
+        case 'route.route':
+          return routesWithTempRoute;
+        case 'route.infrastructure_link_along_route':
+          return infrastructureLinkAlongRouteWithTempRoute;
+        case 'journey_pattern.journey_pattern':
+          return journeyPatternsWithTempRoute;
+        case 'journey_pattern.scheduled_stop_point_in_journey_pattern':
+          return scheduledStopPointInJourneyPatternWithTempRoute;
+      }
+    })();
+
+    if (newData) {
+      return {
+        ...tableLikeConfig,
+        data: newData,
+      };
+    } else {
+      return tableLikeConfig; // use same data as prioritizedRouteVerification data set
+    }
+  });

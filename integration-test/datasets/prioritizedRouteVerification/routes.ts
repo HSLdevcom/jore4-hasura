@@ -39,6 +39,10 @@ export const tempRouteWithOtherLinks: Route = {
 };
 
 export const routes: Route[] = [basicRoute];
+export const routesWithTempRoute: Route[] = [
+  basicRoute,
+  tempRouteWithOtherLinks,
+];
 
 export const infrastructureLinkAlongBasicRoute: InfrastructureLinkAlongRoute[] =
   basicRouteInfraLinks.map((infraLink, index) => ({
@@ -71,3 +75,27 @@ export const infrastructureLinkAlongTempRouteWithOtherLinks: Partial<Infrastruct
 
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] =
   infrastructureLinkAlongBasicRoute;
+export const infrastructureLinkAlongRouteWithTempRoute: InfrastructureLinkAlongRoute[] =
+  [
+    ...infrastructureLinkAlongBasicRoute,
+    ...infrastructureLinkAlongTempRouteWithOtherLinks.map(
+      (infraLinkAlongRoute) => {
+        if (
+          infraLinkAlongRoute.infrastructure_link_id === undefined ||
+          infraLinkAlongRoute.infrastructure_link_sequence === undefined ||
+          infraLinkAlongRoute.is_traversal_forwards === undefined
+        ) {
+          throw new TypeError(
+            'Invalid entry in infrastructureLinkAlongTempRouteWithOtherLinks',
+          );
+        }
+        return Object.assign({}, infraLinkAlongRoute, {
+          route_id: tempRouteWithOtherLinks.route_id,
+          infrastructure_link_id: infraLinkAlongRoute.infrastructure_link_id,
+          infrastructure_link_sequence:
+            infraLinkAlongRoute.infrastructure_link_sequence,
+          is_traversal_forwards: infraLinkAlongRoute.is_traversal_forwards,
+        });
+      },
+    ),
+  ];

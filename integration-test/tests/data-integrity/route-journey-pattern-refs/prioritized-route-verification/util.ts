@@ -1,17 +1,13 @@
 import * as pg from 'pg';
 import * as config from '@config';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { getPropNameArray, queryTable } from '@datasets/setup';
 import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import {
-  scheduledStopPoints,
-  tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
-} from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { scheduledStopPoints } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
   JourneyPatternProps,
-  LinkDirection,
   Route,
   RouteProps,
   ScheduledStopPoint,
@@ -21,11 +17,7 @@ import {
 } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import * as rp from 'request-promise';
-import {
-  asDbGeometryObject,
-  asDbGeometryObjectArray,
-  GeometryObject,
-} from '@util/dataset';
+import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
 import { expectErrorResponse } from '@util/response';
 import { Response } from 'request';
 
