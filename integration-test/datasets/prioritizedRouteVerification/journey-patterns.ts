@@ -2,7 +2,7 @@ import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
 } from '@datasets/types';
-import { basicRoute } from './routes';
+import { basicRoute, tempRouteWithOtherLinks } from './routes';
 import { scheduledStopPointsOfBasicJourneyPattern } from './scheduled-stop-points';
 
 export const basicJourneyPattern: JourneyPattern = {
@@ -10,7 +10,16 @@ export const basicJourneyPattern: JourneyPattern = {
   on_route_id: basicRoute.route_id,
 };
 
+export const journeyPatternOnTempRoute: JourneyPattern = {
+  journey_pattern_id: 'a7865270-b2bd-4fa6-b639-b4bad6dcec8d',
+  on_route_id: tempRouteWithOtherLinks.route_id,
+};
+
 export const journeyPatterns: JourneyPattern[] = [basicJourneyPattern];
+export const journeyPatternsWithTempRoute: JourneyPattern[] = [
+  basicJourneyPattern,
+  journeyPatternOnTempRoute,
+];
 
 export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourneyPattern[] =
   [
@@ -90,3 +99,17 @@ export const scheduledStopPointInTempJourneyPatternWithSameStops: Partial<Schedu
 
 export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPattern[] =
   scheduledStopPointInBasicJourneyPattern;
+export const scheduledStopPointInJourneyPatternWithTempRoute: ScheduledStopPointInJourneyPattern[] =
+  [
+    ...scheduledStopPointInBasicJourneyPattern,
+    ...scheduledStopPointInTempJourneyPatternWithSameStops.map(
+      (scheduledStopPointInJourneyPattern) => {
+        // Create clone the scheduledStopPointInJourneyPattern object and set our custom properties on the clone.
+        // Note that we need Object.assign({}, ...) to leave the original object untouched. (If we would
+        // modify it, other tests would fail because of that.)
+        return Object.assign({}, scheduledStopPointInJourneyPattern, {
+          journey_pattern_id: journeyPatternOnTempRoute.journey_pattern_id,
+        }) as ScheduledStopPointInJourneyPattern;
+      },
+    ),
+  ];
