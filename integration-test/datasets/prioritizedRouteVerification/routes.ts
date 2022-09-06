@@ -39,6 +39,10 @@ export const tempRouteWithOtherLinks: Route = {
 };
 
 export const routes: Route[] = [basicRoute];
+export const routesWithTempRoute: Route[] = [
+  basicRoute,
+  tempRouteWithOtherLinks,
+];
 
 export const infrastructureLinkAlongBasicRoute: InfrastructureLinkAlongRoute[] =
   basicRouteInfraLinks.map((infraLink, index) => ({
@@ -71,3 +75,17 @@ export const infrastructureLinkAlongTempRouteWithOtherLinks: Partial<Infrastruct
 
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] =
   infrastructureLinkAlongBasicRoute;
+export const infrastructureLinkAlongRouteWithTempRoute: InfrastructureLinkAlongRoute[] =
+  [
+    ...infrastructureLinkAlongBasicRoute,
+    ...infrastructureLinkAlongTempRouteWithOtherLinks.map(
+      (infraLinkAlongRoute) => {
+        // Create clone the infraLinkAlongRoute object and set our custom properties on the clone.
+        // Note that we need Object.assign({}, ...) to leave the original object untouched. (If we would
+        // modify it, other tests would fail because of that.)
+        return Object.assign({}, infraLinkAlongRoute, {
+          route_id: tempRouteWithOtherLinks.route_id,
+        }) as InfrastructureLinkAlongRoute;
+      },
+    ),
+  ];
