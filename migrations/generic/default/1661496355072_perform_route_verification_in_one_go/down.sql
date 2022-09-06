@@ -45,6 +45,10 @@ DROP TRIGGER queue_verify_infra_link_stop_refs_on_route_delete_trigger
 
 
 
+DROP FUNCTION journey_pattern.get_broken_route_check_filters(filter_route_ids UUID[]);
+
+
+
 DROP FUNCTION journey_pattern.maximum_priority_validity_spans(
   entity_type TEXT,
   filter_route_labels TEXT[],

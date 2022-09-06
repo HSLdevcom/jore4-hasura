@@ -1,3 +1,10 @@
+-- The previous version of the route verification triggered individual runs of the route verification
+-- function for every route to be checked, which was - despite all optimizations done up until that point -
+-- quite slow. This version checks all routes in one go and additionally also checks that there are no
+-- so-called "ghost stop points", whose validity span does not overlap with the route's validity span at all
+-- (which causes the stop points from appearing on the journey pattern).
+
+
 --------------------------------------------------------
 -- tear down previous version of functions and triggers
 --------------------------------------------------------
@@ -191,6 +198,50 @@ ALTER FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_other_r_ids_
 -- create the new functions
 --------------------------------------------------------
 
+CREATE FUNCTION journey_pattern.get_broken_route_check_filters(filter_route_ids UUID[])
+  RETURNS TABLE
+          (
+            labels         TEXT[],
+            validity_start TIMESTAMP WITH TIME ZONE,
+            validity_end   TIMESTAMP WITH TIME ZONE
+          )
+  STABLE
+  PARALLEL SAFE
+  LANGUAGE SQL
+AS
+$$
+WITH RECURSIVE
+  route_param AS (
+    SELECT label,
+           TSTZRANGE(r.validity_start, r.validity_end)   AS validity_range,
+           ROW_NUMBER() OVER (ORDER BY r.validity_start) AS ord
+    FROM route.route r
+    WHERE r.route_id = ANY (filter_route_ids)
+  ),
+  -- Merge the route ranges to be checked into one. In common use cases, there should not be any (significant)
+  -- gaps between the ranges, but with future versions of postgresql it will be possible and might be good to change
+  -- this to use tstzmultirange instead of merging the ranges.
+  merged_route_range AS (
+    SELECT validity_range, ord
+    FROM route_param
+    WHERE ord = 1
+    UNION ALL
+    SELECT range_merge(prev.validity_range, cur.validity_range), cur.ord
+    FROM merged_route_range prev
+           JOIN route_param cur ON cur.ord = prev.ord + 1
+  )
+  -- gather the array of route labels to check and the merged route validity range
+SELECT (SELECT array_agg(DISTINCT label) FROM route_param) AS labels,
+       LOWER(validity_range)                               AS validity_start,
+       UPPER(validity_range)                               AS validity_end
+FROM merged_route_range
+WHERE ord = (SELECT max(ord) FROM merged_route_range);
+$$;
+COMMENT ON FUNCTION journey_pattern.get_broken_route_check_filters(filter_route_ids UUID[])
+IS 'Gather the filter parameters (route labels and validity range to check) for the broken route check.';
+
+
+
 CREATE FUNCTION journey_pattern.maximum_priority_validity_spans(
   entity_type TEXT,
   filter_route_labels TEXT[],
@@ -247,15 +298,15 @@ WITH RECURSIVE
     WHERE entity_type = 'scheduled_stop_point'
       AND TSTZRANGE(ssp.validity_start, ssp.validity_end) && TSTZRANGE(filter_validity_start, filter_validity_end)
       AND (ssp.priority < upper_priority_limit OR upper_priority_limit IS NULL)
-      AND EXISTS(
-      SELECT 1
-      FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
-             JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
-             JOIN route.route r
-                  ON r.route_id = jp.on_route_id
-                    AND (r.label = ANY (filter_route_labels) OR filter_route_labels IS NULL)
-      WHERE sspijp.scheduled_stop_point_label = ssp.LABEL
-      )
+      AND (EXISTS(
+             SELECT 1
+             FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
+                    JOIN journey_pattern.journey_pattern jp ON jp.journey_pattern_id = sspijp.journey_pattern_id
+                    JOIN route.route r
+                         ON r.route_id = jp.on_route_id
+                           AND r.label = ANY (filter_route_labels)
+             WHERE sspijp.scheduled_stop_point_label = ssp.LABEL
+             ) OR filter_route_labels IS NULL)
   ),
   -- form the list of potential validity span boundaries
   boundary AS (
@@ -331,7 +382,6 @@ WITH RECURSIVE
     WHERE rb.has_next
   )
 -- choose the instance with the highest priority for each validity span and
--- cut off the excess (limit to the range within filter_validity_start, filter_validity_end)
 SELECT id, validity_start, validity_end
 FROM (SELECT id,
              validity_start,
@@ -340,7 +390,6 @@ FROM (SELECT id,
              max(priority) OVER (PARTITION BY key1, key2, validity_start) AS max_priority
       FROM boundary_with_entities) bwe
 WHERE priority = max_priority
-  AND (validity_start < validity_end OR validity_start IS NULL OR validity_end IS NULL);
 $$;
 COMMENT ON FUNCTION journey_pattern.maximum_priority_validity_spans(
   entity_type TEXT,
@@ -398,31 +447,9 @@ WITH RECURSIVE
     SELECT CASE WHEN new_located_on_infrastructure_link_id IS NOT NULL THEN gen_random_uuid() END
              AS new_scheduled_stop_point_id
   ),
-  route_data AS (
-    SELECT label,
-           TSTZRANGE(r.validity_start, r.validity_end)   AS validity_range,
-           ROW_NUMBER() OVER (ORDER BY r.validity_start) AS ord
-    FROM route.route r
-    WHERE r.route_id = ANY (filter_route_ids)
-  ),
-  -- Merge the route ranges to be checked into one. In common use cases, there should not be any (significant)
-  -- gaps between the ranges, but with future versions of postgresql it will be possible and might be good to change
-  -- this to use tstzmultirange instead of merging the ranges.
-  merged_route_range AS (
-    SELECT validity_range, ord
-    FROM route_data
-    WHERE ord = 1
-    UNION ALL
-    SELECT range_merge(prev.validity_range, cur.validity_range), cur.ord
-    FROM merged_route_range prev
-           JOIN route_data cur ON cur.ord = prev.ord + 1
-  ),
   filter_route AS (
-    SELECT (SELECT array_agg(DISTINCT label) FROM route_data) AS labels,
-           LOWER(validity_range)                              AS validity_start,
-           UPPER(validity_range)                              AS validity_end
-    FROM merged_route_range
-    WHERE ord = (SELECT max(ord) FROM merged_route_range)
+    SELECT labels, validity_start, validity_end
+    FROM journey_pattern.get_broken_route_check_filters(filter_route_ids)
   ),
   -- fetch the route entities with their prioritized validity times
   prioritized_route AS (
@@ -593,7 +620,8 @@ WITH RECURSIVE
                  ELSE -relative_distance_from_infrastructure_link_start END,
                stop_point_order,
                scheduled_stop_point_id)
-             AS infra_link_order
+             AS infra_link_order,
+           is_ghost_ssp
     FROM (
            SELECT t.journey_pattern_id,
                   t.stop_point_order,
@@ -603,46 +631,37 @@ WITH RECURSIVE
                   t.scheduled_stop_point_id,
                   ROW_NUMBER()
                   OVER (PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence)
-                    AS order_by_min,
-                  r.route_id
+                                                          AS order_by_min,
+                  r.route_id,
+                  ssp.scheduled_stop_point_id IS NOT NULL AS ssp_match,
+                  -- if there is no matching stop point within the validity span in question, check if there is a
+                  -- matching ssp at all on the entire route
+                  (ssp.scheduled_stop_point_id IS NULL
+                    AND NOT EXISTS(
+                      SELECT 1
+                      FROM route.route full_route
+                             JOIN ssp_with_new any_ssp ON any_ssp.label = sspijp.scheduled_stop_point_label
+                      WHERE full_route.route_id = jp.on_route_id
+                        AND TSTZRANGE(full_route.validity_start, full_route.validity_end) &&
+                            TSTZRANGE(any_ssp.validity_start, any_ssp.validity_end)
+                      )
+                    )                                     AS is_ghost_ssp
            FROM prioritized_route r
                   JOIN journey_pattern.journey_pattern jp ON jp.on_route_id = r.route_id
                   JOIN journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
                        ON sspijp.journey_pattern_id = jp.journey_pattern_id
-                  JOIN prioritized_ssp_with_new ssp
-                       ON ssp.label = sspijp.scheduled_stop_point_label
-                         AND TSTZRANGE(ssp.validity_start, ssp.validity_end) &&
-                             TSTZRANGE(r.validity_start, r.validity_end)
+                  LEFT JOIN prioritized_ssp_with_new ssp  -- left join to be able to find the ghost ssp
+                            ON ssp.label = sspijp.scheduled_stop_point_label
+                              AND TSTZRANGE(ssp.validity_start, ssp.validity_end) &&
+                                  TSTZRANGE(r.validity_start, r.validity_end)
                   LEFT JOIN traversal t
                             ON t.journey_pattern_id = sspijp.journey_pattern_id
                               AND t.scheduled_stop_point_id = ssp.scheduled_stop_point_id
                               AND t.scheduled_stop_point_sequence = sspijp.scheduled_stop_point_sequence
            WHERE r.route_id = ANY (filter_route_ids)
          ) AS ordered_sspijp_ilar_combos
-    WHERE ordered_sspijp_ilar_combos.order_by_min = 1
-  ),
-  jp_with_ghost_ssp AS (
-    SELECT jp.journey_pattern_id
-    FROM journey_pattern.journey_pattern jp
-    WHERE EXISTS(
-            SELECT 1
-            FROM journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
-                   LEFT JOIN ssp_with_new ssp ON ssp.label = sspijp.scheduled_stop_point_label
-            WHERE sspijp.journey_pattern_id = jp.journey_pattern_id
-              AND NOT EXISTS(
-              SELECT 1
-              FROM infra_link_seq ils
-              WHERE ils.route_id = jp.on_route_id
-                AND ils.scheduled_stop_point_id = ssp.scheduled_stop_point_id
-              )
-              AND NOT EXISTS(
-              SELECT 1
-              FROM route.route full_route
-              WHERE full_route.route_id = jp.on_route_id
-                AND TSTZRANGE(full_route.validity_start, full_route.validity_end) &&
-                    TSTZRANGE(ssp.validity_start, ssp.validity_end)
-              )
-            )
+    WHERE (ordered_sspijp_ilar_combos.order_by_min = 1 AND ssp_match)
+       OR is_ghost_ssp -- by keeping the ghost ssp lines, we will trigger an exception if any are present
   )
   -- Perform the final route integrity check:
   -- 1. In case no visit is present for any row (infrastructure_link_sequence is null), it was not possible to
@@ -654,17 +673,12 @@ WITH RECURSIVE
 SELECT jp.*
 FROM journey_pattern.journey_pattern jp
 WHERE EXISTS(
-  SELECT 1
-  FROM infra_link_seq ils
-  WHERE ils.route_id = jp.on_route_id
-    AND (ils.infrastructure_link_sequence IS NULL OR
-         ils.stop_point_order != ils.infra_link_order)
-  )
-   OR EXISTS(
-  SELECT 1
-  FROM jp_with_ghost_ssp ssp
-  WHERE ssp.journey_pattern_id = jp.journey_pattern_id
-  );
+        SELECT 1
+        FROM infra_link_seq ils
+        WHERE ils.route_id = jp.on_route_id
+          AND (ils.infrastructure_link_sequence IS NULL -- this is also true for any ghost ssp occurrence
+          OR ils.stop_point_order != ils.infra_link_order)
+        );
 $$;
 COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(
   filter_route_ids UUID[],
@@ -679,11 +693,10 @@ COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(
   )
   IS
     'Check if it is possible to visit all stops of journey patterns in such a fashion that all links, on which
-     the stops reside, are visited in an order matching the corresponding routes'' link order.
-
-     If filter_route_labels is not null, only the links / stops on the routes with those labels are taken into
-     account. Similarly, the routes to be checked can be limited by validity time using the filter_validity_xxx
-     arguments.
+     the stops reside, are visited in an order matching the corresponding routes'' link order. Additionally it is
+     checked that there are no stop points on the route''s journey pattern, whose validity span does not overlap with
+     the route''s validity span at all. Only the links / stops on the routes with the specified filter_route_ids are
+     taken into account for the checks.
 
      If replace_scheduled_stop_point_id is not null, the stop with that id is left out of the check.
      If the new_xxx arguments are specified, the check is also performed for an imaginary stop defined by those
@@ -747,9 +760,8 @@ COMMENT ON FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_schedule
   new_priority INT)
   IS
     'Check whether the journey pattern''s / route''s links and stop points still correspond to each other
-     if a new stop point would be inserted (defined by arguments new_xxx). If
-     replace_scheduled_stop_point_id is specified, the new stop point is thought to replace the stop point
-     with that ID.
+     if a new stop point would be inserted (defined by arguments new_xxx). If replace_scheduled_stop_point_id
+     is specified, the new stop point is thought to replace the stop point with that ID.
      This function returns a list of journey pattern and route ids, in which the links
      and stop points would conflict with each other.';
 
@@ -780,7 +792,7 @@ BEGIN
   --RAISE NOTICE 'journey_pattern.verify_infra_link_stop_refs()';
 
   IF EXISTS(
-    WITH RECURSIVE filter_route_ids AS (
+    WITH filter_route_ids AS (
       SELECT array_agg(DISTINCT ur.route_id) AS arr
       FROM updated_route ur
     )

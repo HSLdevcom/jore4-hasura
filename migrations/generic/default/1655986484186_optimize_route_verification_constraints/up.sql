@@ -1,4 +1,3 @@
-
 -- Previously, the route<->journey pattern consistency check was run separately for every significant changed row in
 -- any of the related tables:
 --   - journey_pattern.scheduled_stop_point_in_journey_pattern
@@ -67,12 +66,12 @@ $$
   CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_routes
   (
     journey_pattern_id UUID UNIQUE,
-    route_id UUID UNIQUE
+    route_id           UUID UNIQUE
   )
     ON COMMIT DELETE ROWS;
-$$;
+  $$;
 COMMENT ON FUNCTION journey_pattern.create_verify_infra_link_stop_refs_queue_temp_table()
-IS '''Create the temp table used to enqueue verification of the changed journey patterns and routes from
+  IS '''Create the temp table used to enqueue verification of the changed journey patterns and routes from
   statement-level triggers''';
 
 
@@ -91,8 +90,8 @@ BEGIN
   INSERT INTO updated_journey_pattern_routes (journey_pattern_id)
   SELECT sspijp.journey_pattern_id
   FROM new_table
-  JOIN journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
-    ON sspijp.scheduled_stop_point_label = new_table.label
+         JOIN journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
+              ON sspijp.scheduled_stop_point_label = new_table.label
   ON CONFLICT DO NOTHING;
 
   RETURN NULL;
@@ -110,7 +109,8 @@ BEGIN
   PERFORM journey_pattern.create_verify_infra_link_stop_refs_queue_temp_table();
 
   INSERT INTO updated_journey_pattern_routes (route_id)
-  SELECT route_id FROM old_table
+  SELECT route_id
+  FROM old_table
   ON CONFLICT DO NOTHING;
 
   RETURN NULL;
@@ -144,7 +144,7 @@ CREATE FUNCTION journey_pattern.verify_infra_link_stop_refs()
 $$
 DECLARE
   journey_pattern_id UUID;
-  route_id UUID;
+  route_id           UUID;
 BEGIN
   --RAISE NOTICE 'journey_pattern.verify_infra_link_stop_refs()';
 
@@ -158,7 +158,7 @@ BEGIN
 END;
 $$;
 COMMENT ON FUNCTION journey_pattern.verify_infra_link_stop_refs()
-IS '''Perform verification of all queued journey pattern / route entries. The queued entries are cleared after a
+  IS '''Perform verification of all queued journey pattern / route entries. The queued entries are cleared after a
   successful run to prevent from double checks in subsequent function calls within the same transaction.''';
 
 -- create function to truncate the scheduled_stop_point_in_journey_pattern if it contains any rows
@@ -179,7 +179,7 @@ BEGIN
 END;
 $$;
 COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern()
-IS '''Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
+  IS '''Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
   does not contain data to prevent errors if it was truncated ("touched") within the same transaction.''';
 
 
@@ -244,14 +244,15 @@ EXECUTE PROCEDURE journey_pattern.truncate_scheduled_stop_point_in_journey_patte
 -- create the constraint triggers to perform the verification of the queued changed journey patterns / routes
 
 CREATE FUNCTION journey_pattern.infra_link_stop_refs_already_verified()
-RETURNS BOOLEAN
+  RETURNS BOOLEAN
   LANGUAGE plpgsql
   VOLATILE AS
 $$
 DECLARE
   infra_link_stop_refs_already_verified BOOLEAN;
 BEGIN
-  infra_link_stop_refs_already_verified := NULLIF(current_setting('journey_pattern_vars.infra_link_stop_refs_already_verified', TRUE), '');
+  infra_link_stop_refs_already_verified :=
+    NULLIF(current_setting('journey_pattern_vars.infra_link_stop_refs_already_verified', TRUE), '');
   IF infra_link_stop_refs_already_verified IS TRUE THEN
     RETURN TRUE;
   ELSE
@@ -261,7 +262,7 @@ BEGIN
 END
 $$;
 COMMENT ON FUNCTION journey_pattern.infra_link_stop_refs_already_verified()
-IS 'Keep track of whether the infra link <-> stop ref verification has already been performed in this transaction';
+  IS 'Keep track of whether the infra link <-> stop ref verification has already been performed in this transaction';
 
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_sspijp_trigger
   AFTER INSERT OR UPDATE
