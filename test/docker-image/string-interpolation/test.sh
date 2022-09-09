@@ -12,7 +12,7 @@ secrets_dir='./secrets'
 migrations_dir='./migrations'
 
 script_name='replace-placeholders-in-sql-schema-migrations.sh'
-script_path="../../../scripts/${script_name}"
+script_path="../../../../scripts/${script_name}"
 
 secrets_dir_in_docker='/run/secrets'
 migrations_dir_in_docker='/migrations'
@@ -20,7 +20,7 @@ script_dir_in_docker='/script'
 
 docker_tag='hsldevcom/jore4-hasura:hasura-for-testing-string-interpolation'
 # Use our Dockerfile to get the expected shell.
-dockerfile_path='../..'
+dockerfile_path='../../..'
 entrypoint='/bin/sh'
 
 cleanup() {

@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_tests:
-    name: Run tests
+    name: Run docker image tests
     runs-on: ubuntu-20.04
 
     steps:
@@ -18,10 +18,10 @@ jobs:
 
       - name: Run tests
         run: |
-          ./test/string-interpolation/test.sh
+          ./test/docker-image/string-interpolation/test.sh
 
   run_integration_tests:
-    name: Run integration tests
+    name: Run hasura tests
     runs-on: ubuntu-20.04
 
     steps:
@@ -37,8 +37,8 @@ jobs:
         with:
           command: 'curl --fail http://localhost:3201/healthz --output /dev/null --silent'
 
-      - name: Run integration tests
+      - name: Run tests
         run: |
-          cd integration-test
+          cd test/hasura
           yarn --frozen-lockfile
           yarn test
