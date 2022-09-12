@@ -32,8 +32,15 @@ export function isTableConfig<ObjType extends TableLikeConfig>(
 export const setupDb = (
   dbConnectionPool: pg.Pool,
   configuration: TableLikeConfig[] = defaultTableConfig,
+  disableTriggers: boolean = false,
 ) => {
-  let queryRunner = db.queryRunner(dbConnectionPool).query('BEGIN');
+  let queryRunner = db.queryRunner(dbConnectionPool);
+
+  if (disableTriggers) {
+    queryRunner = queryRunner.disableTriggers(true);
+  }
+
+  queryRunner = queryRunner.query('BEGIN');
   const tables = configuration.filter(isTableConfig);
 
   tables.forEach((table) => {
@@ -63,7 +70,14 @@ export const setupDb = (
     }
   });
 
-  return queryRunner.query('COMMIT').run();
+  queryRunner = queryRunner.query('COMMIT');
+
+  if (disableTriggers) {
+    // re-enable triggers in case we disabled them above
+    queryRunner = queryRunner.disableTriggers(false);
+  }
+
+  return queryRunner.run();
 };
 
 export const getTableConfig = (

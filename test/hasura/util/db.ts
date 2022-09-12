@@ -23,6 +23,11 @@ class QueryRunner {
       [JSON.stringify(jsonObjects)],
     );
 
+  disableTriggers = (disable: boolean) =>
+    this.query(
+      `SET session_replication_role = ${disable ? 'replica' : 'DEFAULT'}`,
+    );
+
   run = () =>
     this.connectionPool
       .connect()
