@@ -41,6 +41,7 @@ jobs:
           docker build \
             --target hasura-seed \
             --cache-from=$IMAGE_NAME:latest \
+            -t $IMAGE_NAME:seed-data \
             -t $IMAGE_NAME:seed-$COMMIT_ID \
             .
 
@@ -60,6 +61,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           docker push $IMAGE_NAME:generic
+          docker push $IMAGE_NAME:seed-data
           docker push $IMAGE_NAME:latest
 
   run_e2e_tests:
