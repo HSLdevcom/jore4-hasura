@@ -1,0 +1,15 @@
+table:
+  name: block
+  schema: vehicle_service
+object_relationships:
+  - name: vehicle_service
+    using:
+      foreign_key_constraint_on: vehicle_service_id
+array_relationships:
+  - name: vehicle_journeys
+    using:
+      foreign_key_constraint_on:
+        column: block_id
+        table:
+          name: vehicle_journey
+          schema: vehicle_journey
