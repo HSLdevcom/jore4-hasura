@@ -265,6 +265,7 @@ Our Docker image expects the following secrets to be bound to the container:
 | hasura-admin-secret       | Password with which admins can access the console and other features    |
 | db-hostname               | Hostname/IP address for the default database                            |
 | db-name                   | Name of the database instance to connect to within the default database |
+| db-timetables-name        | Name of the logical database for timetables                             |
 | db-username               | Username for the default database                                       |
 | db-password               | Password for the default database                                       |
 | db-auth-username          | Name of the sql user that is used by the auth backend service           |
