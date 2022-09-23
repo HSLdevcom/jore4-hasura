@@ -1,0 +1,18 @@
+table:
+  name: vehicle_service
+  schema: vehicle_service
+object_relationships:
+  - name: day_type
+    using:
+      foreign_key_constraint_on: day_type_id
+  - name: vehicle_schedule_frame
+    using:
+      foreign_key_constraint_on: vehicle_schedule_frame_id
+array_relationships:
+  - name: blocks
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_service_id
+        table:
+          name: block
+          schema: vehicle_service
