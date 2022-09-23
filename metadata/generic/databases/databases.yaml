@@ -13,3 +13,24 @@
       use_prepared_statements: true
   tables: "!include default/tables/tables.yaml"
   functions: "!include default/functions/functions.yaml"
+- name: timetables
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_TIMETABLES_DATABASE_URL
+      isolation_level: serializable
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  customization:
+    naming_convention: hasura-default
+    root_fields:
+      namespace: timetables
+      prefix: timetables_
+    type_names:
+      prefix: timetables_
+  tables: "!include timetables/tables/tables.yaml"

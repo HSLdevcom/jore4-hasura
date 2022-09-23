@@ -1,0 +1,18 @@
+table:
+  name: vehicle_journey
+  schema: vehicle_journey
+object_relationships:
+  - name: block
+    using:
+      foreign_key_constraint_on: block_id
+  - name: journey_pattern_ref
+    using:
+      foreign_key_constraint_on: journey_pattern_ref_id
+array_relationships:
+  - name: timetabled_passing_times
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_journey_id
+        table:
+          name: timetabled_passing_time
+          schema: passing_times

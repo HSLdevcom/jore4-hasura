@@ -109,10 +109,12 @@ jobs:
 
     strategy:
       matrix:
+        imagePrefix: ['generic-', 'seed-', 'hsl-']
         include:
-          - imagePrefix: 'generic-' # generic image
-          - imagePrefix: 'seed-' # image with seed data
-          - imagePrefix: 'hsl-' # production image
+          - databaseName: default
+            numberOfMigrations: 10
+          - databaseName: timetables
+            numberOfMigrations: 1 # timetables database doesn't have 10 migrations yet. When it has more, this number should be increased
 
     steps:
       - name: Extract metadata to env variables
@@ -123,14 +125,14 @@ jobs:
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
-      # Running the last 10 migrations down and up to make sure that all the hsl-specific and seed
+      # Running the last X migrations down and up to make sure that all the hsl-specific and seed
       # data migrations are within the set.
       # When these migrations are run on generic/hsl images, we verify that they work in an empty db
       # When these migrations are run on seed data images, we verify that they work in a db with data
       - name: Run the last few down migrations
         run: |
-          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --down 10"
+          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --database-name ${{ matrix.databaseName }} --admin-secret hasura --down ${{ matrix.numberOfMigrations }}"
 
       - name: Run the last few up migrations
         run: |
-          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --admin-secret hasura --up 10"
+          docker exec hasura bash -c "cd /tmp/hasura-project && /bin/hasura-cli migrate apply --endpoint http://localhost:8080 --database-name ${{ matrix.databaseName }} --admin-secret hasura --up ${{ matrix.numberOfMigrations }}"

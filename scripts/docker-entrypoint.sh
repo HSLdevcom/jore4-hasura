@@ -2,13 +2,10 @@
 
 set -eu
 
-SECRET_STORE_BASE_PATH="${SECRET_STORE_BASE_PATH:-/run/secrets}"
-HASURA_ADMIN_SECRET="$(cat "${SECRET_STORE_BASE_PATH}/hasura-admin-secret")"
-DB_USERNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-username")"
-DB_PASSWORD="$(cat "${SECRET_STORE_BASE_PATH}/db-password")"
-DB_HOSTNAME="$(cat "${SECRET_STORE_BASE_PATH}/db-hostname")"
-DB_NAME="$(cat "${SECRET_STORE_BASE_PATH}/db-name")"
 REPLACE_PLACEHOLDERS_SCRIPT='/app/scripts/replace-placeholders-in-sql-schema-migrations.sh'
+
+# read secrets into environment variables
+. /app/scripts/read-secrets.sh
 
 # Replace the possible placeholders in the SQL schema migrations.
 #
@@ -19,4 +16,5 @@ REPLACE_PLACEHOLDERS_SCRIPT='/app/scripts/replace-placeholders-in-sql-schema-mig
 # HASURA_GRAPHQL_DATABASE_URL format: postgres://<user>:<password>@<host>:<port>/<db-name>
 HASURA_GRAPHQL_ADMIN_SECRET="$HASURA_ADMIN_SECRET" \
   HASURA_GRAPHQL_DATABASE_URL="postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOSTNAME}:5432/${DB_NAME}" \
+  HASURA_TIMETABLES_DATABASE_URL="postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOSTNAME}:5432/${DB_TIMETABLES_NAME}" \
   exec /bin/docker-entrypoint.sh "$@"
