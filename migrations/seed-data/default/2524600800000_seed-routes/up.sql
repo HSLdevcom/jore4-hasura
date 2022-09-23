@@ -1,5 +1,4 @@
 -- seed data for developing the UI
--- warning: this data does not actually make any sense, should update it when we get real data from jore3
 
 -- For testing purposes when checking the migrations' data compatibility, we do not want delete the
 -- seed data in the "down" migrations... Which results in having some data in the database when

@@ -1,0 +1,15 @@
+table:
+  name: scheduled_stop_point_in_journey_pattern_ref
+  schema: service_pattern
+object_relationships:
+  - name: journey_pattern_ref
+    using:
+      foreign_key_constraint_on: journey_pattern_ref_id
+array_relationships:
+  - name: timetabled_passing_times
+    using:
+      foreign_key_constraint_on:
+        column: scheduled_stop_point_in_journey_pattern_ref_id
+        table:
+          name: timetabled_passing_time
+          schema: passing_times
