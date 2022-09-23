@@ -1,3 +1,4 @@
+- "!include hsl_route_transport_target.yaml"
 - "!include infrastructure_network_direction.yaml"
 - "!include infrastructure_network_external_source.yaml"
 - "!include infrastructure_network_infrastructure_link.yaml"
@@ -13,3 +14,4 @@
 - "!include route_type_of_line.yaml"
 - "!include service_pattern_scheduled_stop_point.yaml"
 - "!include service_pattern_vehicle_mode_on_scheduled_stop_point.yaml"
+- "!include timing_pattern_timing_point.yaml"
