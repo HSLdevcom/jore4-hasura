@@ -1,0 +1,29 @@
+table:
+  name: journey_pattern_ref
+  schema: journey_pattern
+array_relationships:
+  - name: scheduled_stop_point_in_journey_pattern_refs
+    using:
+      foreign_key_constraint_on:
+        column: journey_pattern_ref_id
+        table:
+          name: scheduled_stop_point_in_journey_pattern_ref
+          schema: service_pattern
+  - name: vehicle_journeys
+    using:
+      foreign_key_constraint_on:
+        column: journey_pattern_ref_id
+        table:
+          name: vehicle_journey
+          schema: vehicle_journey
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: object
+        source: default
+        table:
+          name: journey_pattern
+          schema: journey_pattern
+    name: journey_pattern_instance

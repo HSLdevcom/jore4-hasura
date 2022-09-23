@@ -1,0 +1,11 @@
+table:
+  name: vehicle_schedule_frame
+  schema: vehicle_schedule
+array_relationships:
+  - name: vehicle_services
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_schedule_frame_id
+        table:
+          name: vehicle_service
+          schema: vehicle_service
