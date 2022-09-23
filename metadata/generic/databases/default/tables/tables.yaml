@@ -1,3 +1,4 @@
+- "!include hsl_route_transport_target.yaml"
 - "!include infrastructure_network_direction.yaml"
 - "!include infrastructure_network_external_source.yaml"
 - "!include infrastructure_network_infrastructure_link.yaml"
