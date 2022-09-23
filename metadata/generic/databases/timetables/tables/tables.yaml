@@ -1,0 +1,8 @@
+- "!include journey_pattern_journey_pattern_ref.yaml"
+- "!include passing_times_timetabled_passing_time.yaml"
+- "!include service_calendar_day_type.yaml"
+- "!include service_pattern_scheduled_stop_point_in_journey_pattern_ref.yaml"
+- "!include vehicle_journey_vehicle_journey.yaml"
+- "!include vehicle_schedule_vehicle_schedule_frame.yaml"
+- "!include vehicle_service_block.yaml"
+- "!include vehicle_service_vehicle_service.yaml"
