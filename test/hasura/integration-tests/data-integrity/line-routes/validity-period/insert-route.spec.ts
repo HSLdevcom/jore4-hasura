@@ -8,13 +8,14 @@ import { Route, RouteDirection, RouteProps } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeInserted = (
   on_line_id: string,
-  validity_start: Date | null,
-  validity_end: Date | null,
+  validity_start: LocalDate | null,
+  validity_end: LocalDate | null,
 ): Partial<Route> => ({
   ...buildRoute('new route'),
   on_line_id,
@@ -26,8 +27,8 @@ const toBeInserted = (
 
 const buildMutation = (
   on_line_id: string,
-  validity_start: Date | null,
-  validity_end: Date | null,
+  validity_start: LocalDate | null,
+  validity_end: LocalDate | null,
 ) => `
   mutation {
     insert_route_route(objects: ${dataset.toGraphQlObject(
@@ -54,8 +55,8 @@ describe('Insert route', () => {
 
   const shouldReturnErrorResponse = (
     on_line_id: string,
-    validity_start: Date | null,
-    validity_end: Date | null,
+    validity_start: LocalDate | null,
+    validity_end: LocalDate | null,
   ) =>
     it('should return error response', async () => {
       await rp
@@ -74,8 +75,8 @@ describe('Insert route', () => {
 
   const shouldNotModifyDatabase = (
     on_line_id: string,
-    validity_start: Date | null,
-    validity_end: Date | null,
+    validity_start: LocalDate | null,
+    validity_end: LocalDate | null,
   ) =>
     it('should not modify the database', async () => {
       await rp.post({
@@ -93,8 +94,8 @@ describe('Insert route', () => {
 
   const shouldReturnCorrectResponse = (
     on_line_id: string,
-    validity_start: Date | null,
-    validity_end: Date | null,
+    validity_start: LocalDate | null,
+    validity_end: LocalDate | null,
   ) =>
     it('should return correct response', async () => {
       const response = await rp.post({
@@ -129,8 +130,8 @@ describe('Insert route', () => {
 
   const shouldInsertCorrectRowIntoDatabase = (
     on_line_id: string,
-    validity_start: Date | null,
-    validity_end: Date | null,
+    validity_start: LocalDate | null,
+    validity_end: LocalDate | null,
   ) =>
     it('should insert correct row into the database', async () => {
       await rp.post({
@@ -168,26 +169,26 @@ describe('Insert route', () => {
   describe("which is valid for a fixed period not entirely covered by it's line's validity period", () => {
     shouldReturnErrorResponse(
       lines[1].line_id,
-      new Date('2044-03-01 23:11:32Z'),
-      new Date('2045-03-01 23:11:32Z'),
+      new LocalDate('2044-03-01'),
+      new LocalDate('2045-03-01'),
     );
     shouldNotModifyDatabase(
       lines[1].line_id,
-      new Date('2044-03-01 23:11:32Z'),
-      new Date('2045-03-01 23:11:32Z'),
+      new LocalDate('2044-03-01'),
+      new LocalDate('2045-03-01'),
     );
   });
 
   describe("which is valid for a fixed period entirely covered by it's line's validity period", () => {
     shouldReturnCorrectResponse(
       lines[1].line_id,
-      new Date('2044-07-01 23:11:32Z'),
-      new Date('2045-03-01 23:11:32Z'),
+      new LocalDate('2044-07-01'),
+      new LocalDate('2045-03-01'),
     );
     shouldInsertCorrectRowIntoDatabase(
       lines[1].line_id,
-      new Date('2044-07-01 23:11:32Z'),
-      new Date('2045-03-01 23:11:32Z'),
+      new LocalDate('2044-07-01'),
+      new LocalDate('2045-03-01'),
     );
   });
 });

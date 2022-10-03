@@ -7,6 +7,7 @@ import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -88,8 +89,8 @@ describe('Insert line', () => {
       name_i18n: buildLocalizedString('conflicting transport tram line 34'),
       short_name_i18n: buildLocalizedString('conflicting line 34'),
       priority: 10,
-      validity_start: new Date('2041-06-01 23:11:32Z'),
-      validity_end: new Date('2042-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2041-06-01'),
+      validity_end: new LocalDate('2042-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -104,8 +105,8 @@ describe('Insert line', () => {
       name_i18n: buildLocalizedString('conflicting transport tram line 34'),
       short_name_i18n: buildLocalizedString('conflicting line 34'),
       priority: 20,
-      validity_start: new Date('2041-06-01 23:11:32Z'),
-      validity_end: new Date('2042-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2041-06-01'),
+      validity_end: new LocalDate('2042-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -119,8 +120,8 @@ describe('Insert line', () => {
       name_i18n: buildLocalizedString('conflicting transport tram line 34'),
       short_name_i18n: buildLocalizedString('conflicting line 34'),
       priority: 20,
-      validity_start: new Date('2045-06-01 23:11:32Z'),
-      validity_end: new Date('2047-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2045-06-01'),
+      validity_end: new LocalDate('2047-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -132,8 +133,8 @@ describe('Insert line', () => {
     const toBeInserted: Partial<Line> = {
       ...buildLine('2', VehicleMode.Bus),
       priority: 10,
-      validity_start: new Date('2045-05-01 23:11:32Z'),
-      validity_end: new Date('2046-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2045-05-01'),
+      validity_end: new LocalDate('2046-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -145,8 +146,8 @@ describe('Insert line', () => {
     const toBeInserted: Partial<Line> = {
       ...buildLine('2', VehicleMode.Bus),
       priority: 20,
-      validity_start: new Date('2044-06-01 23:11:32Z'),
-      validity_end: new Date('2045-04-01 23:11:32Z'),
+      validity_start: new LocalDate('2044-06-01'),
+      validity_end: new LocalDate('2045-03-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -158,8 +159,8 @@ describe('Insert line', () => {
     const toBeInserted: Partial<Line> = {
       ...buildLine('77', VehicleMode.Tram),
       priority: 30,
-      validity_start: new Date('2043-06-01 23:11:32Z'),
-      validity_end: new Date('2044-04-01 23:11:32Z'),
+      validity_start: new LocalDate('2043-06-01'),
+      validity_end: new LocalDate('2044-03-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);

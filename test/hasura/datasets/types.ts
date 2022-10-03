@@ -1,4 +1,5 @@
 import { GeometryObject } from '@util/dataset';
+import { LocalDate } from 'local-date';
 
 export type PropArray = (
   | string
@@ -101,8 +102,8 @@ export type ScheduledStopPoint = {
   measured_location: GeometryObject;
   label: string;
   priority: number;
-  validity_start: Date | null;
-  validity_end: Date | null;
+  validity_start: LocalDate | null;
+  validity_end: LocalDate | null;
 };
 export const ScheduledStopPointProps: PropArray = [
   'scheduled_stop_point_id',
@@ -142,8 +143,8 @@ export type Route = {
   label: string;
   direction: RouteDirection;
   priority: number;
-  validity_start: Date | null;
-  validity_end: Date | null;
+  validity_start: LocalDate | null;
+  validity_end: LocalDate | null;
 };
 export const RouteProps: PropArray = [
   'route_id',
@@ -182,8 +183,8 @@ export type Line = {
   label: string;
   type_of_line: TypeOfLine;
   priority: number;
-  validity_start: Date | null;
-  validity_end: Date | null;
+  validity_start: LocalDate | null;
+  validity_end: LocalDate | null;
 };
 export const LineProps: PropArray = [
   'line_id',
@@ -231,7 +232,7 @@ export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   new_measured_location: GeometryObject | null;
   new_direction: LinkDirection | null;
   new_label: string | null;
-  new_validity_start: Date | null;
-  new_validity_end: Date | null;
+  new_validity_start: LocalDate | null;
+  new_validity_end: LocalDate | null;
   new_priority: number | null;
 };

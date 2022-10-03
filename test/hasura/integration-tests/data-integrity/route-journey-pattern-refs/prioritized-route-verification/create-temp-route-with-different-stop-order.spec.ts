@@ -18,6 +18,7 @@ import {
   shouldReturnCorrectScheduledStopPointResponse,
   shouldReturnErrorResponse,
 } from './util';
+import { newLocalDate } from '@util/helpers';
 
 describe('Creating a temporary route with different stop order', () => {
   let dbConnectionPool: pg.Pool;
@@ -71,8 +72,10 @@ describe('Creating a temporary route with different stop order', () => {
     const tempRouteWithSameLinksAndTooShortValidityTime = {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
-      validity_end: new Date(
-        tempRouteWithSameLinks.validity_end!.getTime() - 1000,
+      validity_end: newLocalDate(
+        tempRouteWithSameLinks.validity_end!.getFullYear(),
+        tempRouteWithSameLinks.validity_end!.getMonth(),
+        tempRouteWithSameLinks.validity_end!.getDate() - 1,
       ),
     };
     await insertRoute(

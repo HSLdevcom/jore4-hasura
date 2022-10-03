@@ -4,6 +4,7 @@ import {
   Route,
   RouteDirection,
 } from '@datasets/types';
+import { LocalDate } from 'local-date';
 
 export const routes: Route[] = [
   {
@@ -13,8 +14,8 @@ export const routes: Route[] = [
     description_i18n: null,
     direction: RouteDirection.Inbound,
     priority: 10,
-    validity_start: new Date('2054-05-01 23:11:32Z'),
-    validity_end: new Date('2074-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2054-05-01'),
+    validity_end: new LocalDate('2074-04-30'),
   },
 ];
 

@@ -11,6 +11,7 @@ import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {
@@ -64,8 +65,8 @@ describe('Insert route', () => {
       on_line_id: lines[4].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2024-09-02 23:11:32Z'),
-      validity_end: new Date('2034-09-02 23:11:32Z'),
+      validity_start: new LocalDate('2024-09-02'),
+      validity_end: new LocalDate('2034-09-01'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -79,8 +80,8 @@ describe('Insert route', () => {
       on_line_id: lines[1].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2044-04-02 23:11:32Z'),
-      validity_end: new Date('2044-10-02 23:11:32Z'),
+      validity_start: new LocalDate('2044-04-02'),
+      validity_end: new LocalDate('2044-10-01'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -94,8 +95,8 @@ describe('Insert route', () => {
       on_line_id: lines[1].line_id,
       direction: RouteDirection.Southbound,
       priority: 20,
-      validity_start: new Date('2044-09-02 23:11:32Z'),
-      validity_end: new Date('2045-02-02 23:11:32Z'),
+      validity_start: new LocalDate('2044-09-02'),
+      validity_end: new LocalDate('2045-02-01'),
     };
 
     shouldReturnErrorResponse(toBeInserted);

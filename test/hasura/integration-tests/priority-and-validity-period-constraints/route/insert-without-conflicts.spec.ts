@@ -9,6 +9,7 @@ import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {
@@ -89,8 +90,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2024-09-02 23:11:32Z'),
-      validity_end: new Date('2034-09-02 23:11:32Z'),
+      validity_start: new LocalDate('2024-09-02'),
+      validity_end: new LocalDate('2034-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -105,8 +106,8 @@ describe('Insert route', () => {
       label: 'route 3X',
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2024-09-02 23:11:32Z'),
-      validity_end: new Date('2034-09-02 23:11:32Z'),
+      validity_start: new LocalDate('2024-09-02'),
+      validity_end: new LocalDate('2034-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -120,8 +121,8 @@ describe('Insert route', () => {
       on_line_id: lines[4].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2044-09-02 23:11:32Z'),
-      validity_end: new Date('2045-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2044-09-02'),
+      validity_end: new LocalDate('2045-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -135,8 +136,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2044-06-02 21:11:32Z'),
-      validity_end: new Date('2045-06-01 23:11:32Z'),
+      validity_start: new LocalDate('2044-06-02'),
+      validity_end: new LocalDate('2045-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -150,8 +151,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: new Date('2044-04-02 21:11:32Z'),
-      validity_end: new Date('2044-08-02 22:11:32Z'),
+      validity_start: new LocalDate('2044-04-02'),
+      validity_end: new LocalDate('2044-07-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -165,8 +166,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 30,
-      validity_start: new Date('2042-09-02 23:11:32Z'),
-      validity_end: new Date('2043-09-02 23:11:32Z'),
+      validity_start: new LocalDate('2042-09-02'),
+      validity_end: new LocalDate('2043-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);

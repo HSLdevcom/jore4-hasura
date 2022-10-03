@@ -15,6 +15,7 @@ import { expect } from '@jest/globals';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -96,8 +97,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop2',
       priority: 20,
-      validity_start: new Date('2062-01-03 12:34:56'),
-      validity_end: new Date('2063-01-03 12:34:56'),
+      validity_start: new LocalDate('2062-01-03'),
+      validity_end: new LocalDate('2063-01-02'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -120,8 +121,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 10,
-      validity_start: new Date('2065-01-16 12:34:56'),
-      validity_end: new Date('2065-05-01 12:34:56'),
+      validity_start: new LocalDate('2065-01-16'),
+      validity_end: new LocalDate('2065-04-30'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
@@ -144,8 +145,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 10,
-      validity_start: new Date('2065-01-05 12:34:56'),
-      validity_end: new Date('2065-01-08 12:34:56'),
+      validity_start: new LocalDate('2065-01-05'),
+      validity_end: new LocalDate('2065-01-07'),
     };
 
     shouldReturnErrorResponse(toBeInserted);
