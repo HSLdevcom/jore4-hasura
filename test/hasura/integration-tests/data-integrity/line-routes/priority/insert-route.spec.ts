@@ -10,6 +10,7 @@ import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const toBeInserted = (
   on_line_id: string | undefined,
@@ -19,8 +20,8 @@ const toBeInserted = (
   on_line_id,
   direction: RouteDirection.Clockwise,
   priority,
-  validity_start: new Date('2044-05-01 23:11:32Z'),
-  validity_end: new Date('2045-05-01 23:11:32Z'),
+  validity_start: new LocalDate('2044-05-01'),
+  validity_end: new LocalDate('2045-04-30'),
 });
 
 const buildMutation = (on_line_id: string | undefined, priority: number) => `

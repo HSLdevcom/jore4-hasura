@@ -7,6 +7,7 @@ import {
 import { infrastructureLinks } from './infrastructure-links';
 import { lines } from './lines';
 import { scheduledStopPoints } from './scheduled-stop-points';
+import { LocalDate } from 'local-date';
 
 export const routes: Route[] = [
   {
@@ -15,7 +16,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
     validity_end: null,
   },
   {
@@ -24,8 +25,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
-    validity_end: new Date('2064-02-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
+    validity_end: new LocalDate('2064-02-01'),
   },
   {
     ...buildRoute('3'),
@@ -33,8 +34,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
-    validity_end: new Date('2064-04-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
+    validity_end: new LocalDate('2064-04-01'),
   },
   {
     ...buildRoute('4'),
@@ -42,8 +43,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
-    validity_end: new Date('2064-06-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
+    validity_end: new LocalDate('2064-06-01'),
   },
   {
     ...buildRoute('2A'),
@@ -51,8 +52,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
-    validity_end: new Date('2064-08-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
+    validity_end: new LocalDate('2064-08-01'),
   },
   {
     ...buildRoute('5'),
@@ -60,8 +61,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
-    validity_end: new Date('2064-10-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
+    validity_end: new LocalDate('2064-10-01'),
   },
   {
     ...buildRoute('6'),
@@ -69,7 +70,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 30,
-    validity_start: new Date('2044-05-02 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-02'),
     validity_end: null,
   },
 ];

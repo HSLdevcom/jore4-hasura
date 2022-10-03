@@ -8,6 +8,8 @@ import { Route, RouteProps } from '@datasets/types';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
 import { lines } from '@datasets/defaultSetup/lines';
+import { LocalDate } from 'local-date';
+import { newLocalDate } from '@util/helpers';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
   mutation {
@@ -119,21 +121,21 @@ describe('Update route', () => {
     });
 
   describe('with a fixed validity start time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_start: new Date('2040-03-02 23:11:32Z') };
+    const toBeUpdated = { validity_start: new LocalDate('2040-03-02') };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_end: new Date('2046-08-02 23:11:32Z') };
+    const toBeUpdated = { validity_end: new LocalDate('2046-08-01') };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time within the validity time of the line', () => {
-    const toBeUpdated = { validity_start: new Date('2044-12-02 23:11:32Z') };
+    const toBeUpdated = { validity_start: new LocalDate('2044-12-02') };
 
     shouldReturnCorrectResponse(routes[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(routes[1], toBeUpdated);
@@ -146,9 +148,13 @@ describe('Update route', () => {
     shouldUpdateCorrectRowInDatabase(routes[3], toBeUpdated);
   });
 
-  describe('with a fixed validity start time of 1 ms prior to the validity time of the line', () => {
+  describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
-      validity_start: new Date(lines[1].validity_start!.getTime() - 1),
+      validity_start: newLocalDate(
+        lines[1].validity_start!.getFullYear(),
+        lines[1].validity_start!.getMonth(),
+        lines[1].validity_start!.getDate() - 1,
+      ),
     };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);

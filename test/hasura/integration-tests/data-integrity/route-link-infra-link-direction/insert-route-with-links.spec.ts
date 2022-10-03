@@ -19,14 +19,15 @@ import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const routeToBeInserted: Partial<Route> = {
   ...buildRoute('new route'),
   on_line_id: lines[1].line_id,
   direction: RouteDirection.Clockwise,
   priority: lines[1].priority + 10,
-  validity_start: new Date('2044-05-01 23:11:32Z'),
-  validity_end: new Date('2045-05-01 23:11:32Z'),
+  validity_start: new LocalDate('2044-05-01'),
+  validity_end: new LocalDate('2045-04-30'),
 };
 
 const createLinksToBeInserted = (

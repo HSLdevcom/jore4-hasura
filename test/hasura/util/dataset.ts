@@ -1,6 +1,7 @@
 import { Geometry } from 'wkx';
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
 import * as geojson from 'geojson';
+import { LocalDate } from 'local-date';
 
 export type GeometryObject = geojson.GeometryObject;
 
@@ -65,10 +66,7 @@ export const asGraphQlTimestampObject = (obj: {
     const value = obj[prop];
     return {
       ...mapped,
-      // cut off milliseconds and add explicit UTC offset
-      [prop]:
-        value instanceof Date
-          ? value.toISOString().replace(/\.\d+Z$/, '+00:00')
-          : value,
+      // format dates YYYY-MM-DD
+      [prop]: value instanceof LocalDate ? value.toISOString() : value,
     };
   }, {});

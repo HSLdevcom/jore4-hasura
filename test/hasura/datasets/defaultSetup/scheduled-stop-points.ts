@@ -7,6 +7,7 @@ import {
 } from '@datasets/types';
 import { infrastructureLinks } from './infrastructure-links';
 import { uniqBy } from 'lodash';
+import { LocalDate } from 'local-date';
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
   {
@@ -24,8 +25,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: new Date('2065-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2065-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: '5be29866-4a74-45f3-9b85-b0717283231b',
@@ -42,7 +43,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: new Date('2065-02-03 12:34:56'),
+    validity_start: new LocalDate('2065-02-03'),
     validity_end: null,
   },
   {
@@ -61,7 +62,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2',
     priority: 20,
     validity_start: null,
-    validity_end: new Date('2064-01-03 12:34:56'),
+    validity_end: new LocalDate('2064-01-02'),
   },
   {
     scheduled_stop_point_id: 'f150e375-ebe0-448b-a974-cdc2f482268d',
@@ -78,8 +79,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopX',
     priority: 10,
-    validity_start: new Date('2035-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2035-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: '02eca2f4-743a-4505-99ed-52390970a3d2',
@@ -96,7 +97,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopY',
     priority: 10,
-    validity_start: new Date('2035-02-03 12:34:56'),
+    validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
   },
   {
@@ -114,8 +115,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopZ',
     priority: 10,
-    validity_start: new Date('2035-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2035-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: 'a1b6e453-07b1-4c31-8ade-6872994bc857',
@@ -133,7 +134,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stopZ2',
     priority: 30,
     validity_start: null,
-    validity_end: new Date('2064-01-03 12:34:56'),
+    validity_end: new LocalDate('2064-01-02'),
   },
 ];
 

@@ -23,6 +23,7 @@ import {
   shouldReturnCorrectScheduledStopPointResponse,
   shouldReturnErrorResponse,
 } from './util';
+import { newLocalDate } from '@util/helpers';
 
 describe('Creating a temporary route with different infra links', () => {
   let dbConnectionPool: pg.Pool;
@@ -90,8 +91,10 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooShortValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: new Date(
-        tempRouteWithOtherLinks.validity_end!.getTime() - 1000,
+      validity_end: newLocalDate(
+        tempRouteWithOtherLinks.validity_end!.getFullYear(),
+        tempRouteWithOtherLinks.validity_end!.getMonth(),
+        tempRouteWithOtherLinks.validity_end!.getDate() - 1,
       ),
     };
 
@@ -120,8 +123,10 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooLongValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: new Date(
-        tempRouteWithOtherLinks.validity_end!.getTime() + 1000,
+      validity_end: newLocalDate(
+        tempRouteWithOtherLinks.validity_end!.getFullYear(),
+        tempRouteWithOtherLinks.validity_end!.getMonth(),
+        tempRouteWithOtherLinks.validity_end!.getDate() + 1,
       ),
     };
 
