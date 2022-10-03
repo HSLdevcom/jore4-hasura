@@ -125,7 +125,7 @@ describe('Update route', () => {
 
     shouldReturnErrorResponse(
       toBeUpdated,
-      'unexpected null value for type \\"uuid\\"',
+      `unexpected null value for type 'uuid'`,
     );
     shouldNotModifyDatabase(toBeUpdated);
   });
