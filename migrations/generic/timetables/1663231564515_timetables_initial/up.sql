@@ -67,12 +67,14 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
   vehicle_schedule_frame_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   name_i18n jsonb NOT NULL,
   validity_start date NULL,
-  validity_end date NULL
+  validity_end date NULL,
+  priority int NOT NULL
 );
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.name_i18n IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts. Null if always has been valid.';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity end. Null if always will be valid.';
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.priority IS 'The priority of the timetable definition. The definition may be overridden by higher priority definitions.';
 
 -------------------- Vehicle Service --------------------
 
@@ -84,7 +86,7 @@ CREATE TABLE vehicle_service.vehicle_service (
   day_type_id uuid REFERENCES service_calendar.day_type (day_type_id) NOT NULL,
   vehicle_schedule_frame_id uuid REFERENCES vehicle_schedule.vehicle_schedule_frame (vehicle_schedule_frame_id) NOT NULL
 );
-COMMENT ON TABLE vehicle_service.vehicle_service IS 'A work plan for a single vehicle for a whole day, planned for a specific DAY TYPE. A VEHICLE SERVICE includes one or several VEHICLE SERVICE PARTs. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:965 ';
+COMMENT ON TABLE vehicle_service.vehicle_service IS 'A work plan for a single vehicle for a whole day, planned for a specific DAY TYPE. A VEHICLE SERVICE includes one or several BLOCKs. If there is no service on a given day, it does not include any BLOCKs. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:965 ';
 COMMENT ON COLUMN vehicle_service.vehicle_service.day_type_id IS 'The DAY TYPE for the VEHICLE SERVICE.';
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 
