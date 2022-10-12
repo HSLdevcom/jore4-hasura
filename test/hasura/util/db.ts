@@ -28,20 +28,25 @@ class QueryRunner {
       `SET session_replication_role = ${disable ? 'replica' : 'DEFAULT'}`,
     );
 
-  run = () =>
-    this.connectionPool
-      .connect()
-      .then((client) =>
-        this.queries
-          .reduce(
-            (promise: Promise<void | QueryResult>, nextQuery) =>
-              promise.then(() =>
-                client.query(nextQuery.query, nextQuery.params),
-              ),
-            Promise.resolve(),
-          )
-          .finally(() => client.release()),
-      );
+  run = (rollbackOnError?: boolean) =>
+    this.connectionPool.connect().then((client) =>
+      this.queries
+        .reduce(
+          (promise: Promise<void | QueryResult>, nextQuery) =>
+            promise.then(() => client.query(nextQuery.query, nextQuery.params)),
+          Promise.resolve(),
+        )
+        .catch((err) => {
+          if (rollbackOnError) {
+            return client.query('ROLLBACK').finally(() => {
+              throw err;
+            });
+          } else {
+            throw err;
+          }
+        })
+        .finally(() => client.release()),
+    );
 }
 
 export const queryRunner = (connectionPool: Pool) =>
