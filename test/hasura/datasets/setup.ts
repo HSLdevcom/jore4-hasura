@@ -77,7 +77,7 @@ export const setupDb = (
     queryRunner = queryRunner.disableTriggers(false);
   }
 
-  return queryRunner.run();
+  return queryRunner.run(true);
 };
 
 export const getTableConfig = (
