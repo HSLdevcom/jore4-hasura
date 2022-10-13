@@ -56,6 +56,32 @@ VALUES
   ('61374d2b-5cce-4a7d-b63a-d487f3a05e0d','LA','{"fi_FI": "Lauantai", "sv_FI": "Lördag"}'),
   ('0e1855f1-dfca-4900-a118-f608aa07e939','SU','{"fi_FI": "Sunnuntai", "sv_FI": "Söndag"}');
 
+CREATE TABLE service_calendar.day_type_active_on_day_of_week (
+  day_type_id UUID REFERENCES service_calendar.day_type (day_type_id) NOT NULL,
+  day_of_week INT NOT NULL CHECK (day_of_week >= 1 AND day_of_week <= 7),
+  PRIMARY KEY(day_type_id, day_of_week)
+);
+COMMENT ON TABLE service_calendar.day_type_active_on_day_of_week IS 'Tells on which days of week a particular DAY TYPE is active';
+COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
+COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS 'ISO week day definition (1 = Monday, 7 = Sunday)';
+
+-- setting that basic day types are active on which day(s)
+INSERT INTO service_calendar.day_type_active_on_day_of_week
+  (day_type_id, day_of_week)
+VALUES
+  ('6781bd06-08cf-489e-a2bb-be9a07b15752',1),
+  ('6781bd06-08cf-489e-a2bb-be9a07b15752',2),
+  ('6781bd06-08cf-489e-a2bb-be9a07b15752',3),
+  ('6781bd06-08cf-489e-a2bb-be9a07b15752',4),
+  ('38853b0d-ec36-4110-b4bc-f53218c6cdcd',1),
+  ('38853b0d-ec36-4110-b4bc-f53218c6cdcd',2),
+  ('38853b0d-ec36-4110-b4bc-f53218c6cdcd',3),
+  ('38853b0d-ec36-4110-b4bc-f53218c6cdcd',4),
+  ('38853b0d-ec36-4110-b4bc-f53218c6cdcd',5),
+  ('7176e238-d46e-4583-a567-b836b1ae2589',5),
+  ('61374d2b-5cce-4a7d-b63a-d487f3a05e0d',6),
+  ('0e1855f1-dfca-4900-a118-f608aa07e939',7);
+
 -------------------- Vehicle Schedule --------------------
 
 CREATE SCHEMA vehicle_schedule;
