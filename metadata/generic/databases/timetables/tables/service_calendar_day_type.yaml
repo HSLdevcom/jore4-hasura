@@ -2,6 +2,13 @@ table:
   name: day_type
   schema: service_calendar
 array_relationships:
+  - name: active_on_days_of_week
+    using:
+      foreign_key_constraint_on:
+        column: day_type_id
+        table:
+          name: day_type_active_on_day_of_week
+          schema: service_calendar
   - name: vehicle_services
     using:
       foreign_key_constraint_on:
