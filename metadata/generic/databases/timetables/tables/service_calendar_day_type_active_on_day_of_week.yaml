@@ -1,0 +1,7 @@
+table:
+  name: day_type_active_on_day_of_week
+  schema: service_calendar
+object_relationships:
+  - name: day_type
+    using:
+      foreign_key_constraint_on: day_type_id
