@@ -229,6 +229,12 @@ COMMENT ON SCHEMA route IS 'The route model adapted from Transmodel: https://www
 COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:840';
 
 --
+-- Name: SCHEMA timing_pattern; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:703 ';
+
+--
 -- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: dbadmin
 --
 
@@ -948,6 +954,12 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 
 --
+-- Name: COLUMN scheduled_stop_point.timing_place_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.timing_place_id IS 'Optional reference to a TIMING PLACE. If NULL, the SCHEDULED STOP POINT is not used for timing.';
+
+--
 -- Name: COLUMN scheduled_stop_point.validity_end; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1034,6 +1046,12 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger O
 
    This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
    level trigger.';
+
+--
+-- Name: TABLE timing_place; Type: COMMENT; Schema: timing_pattern; Owner: dbhasura
+--
+
+COMMENT ON TABLE timing_pattern.timing_place IS 'A set of SCHEDULED STOP POINTs against which the timing information necessary to build schedules may be recorded. In HSL context this is "Hastus paikka". Based on Transmodel entity TIMING POINT: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:709 ';
 
 --
 -- Name: hdb_action_log hdb_action_log_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: dbhasura
@@ -1230,6 +1248,20 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point_invariant
 
 ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_serviced_by_vehicle_mode_pkey PRIMARY KEY (scheduled_stop_point_id, vehicle_mode);
+
+--
+-- Name: timing_place timing_place_label_key; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY timing_pattern.timing_place
+    ADD CONSTRAINT timing_place_label_key UNIQUE (label);
+
+--
+-- Name: timing_place timing_place_pkey; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY timing_pattern.timing_place
+    ADD CONSTRAINT timing_place_pkey PRIMARY KEY (timing_place_id);
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
@@ -1437,6 +1469,13 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_scheduled_stop_point_invariant_label_fkey FOREIGN KEY (label) REFERENCES service_pattern.scheduled_stop_point_invariant(label);
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_timing_place_id_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_timing_place_id_fkey FOREIGN KEY (timing_place_id) REFERENCES timing_pattern.timing_place(timing_place_id);
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_serviced_by_vehicle_mode_vehicle_mode_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -5914,6 +5953,15 @@ CREATE SCHEMA tiger_data;
 ALTER SCHEMA tiger_data OWNER TO dbadmin;
 
 --
+-- Name: timing_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA timing_pattern;
+
+
+ALTER SCHEMA timing_pattern OWNER TO dbhasura;
+
+--
 -- Name: topology; Type: SCHEMA; Schema: -; Owner: dbadmin
 --
 
@@ -6254,7 +6302,8 @@ CREATE TABLE service_pattern.scheduled_stop_point (
     label text NOT NULL,
     validity_start date,
     validity_end date,
-    priority integer NOT NULL
+    priority integer NOT NULL,
+    timing_place_id uuid
 );
 
 
@@ -6282,6 +6331,19 @@ CREATE TABLE service_pattern.vehicle_mode_on_scheduled_stop_point (
 
 
 ALTER TABLE service_pattern.vehicle_mode_on_scheduled_stop_point OWNER TO dbhasura;
+
+--
+-- Name: timing_place; Type: TABLE; Schema: timing_pattern; Owner: dbhasura
+--
+
+CREATE TABLE timing_pattern.timing_place (
+    timing_place_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    label text NOT NULL,
+    description jsonb
+);
+
+
+ALTER TABLE timing_pattern.timing_place OWNER TO dbhasura;
 
 --
 -- Name: infrastructure_link check_infrastructure_link_route_link_direction_trigger; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura

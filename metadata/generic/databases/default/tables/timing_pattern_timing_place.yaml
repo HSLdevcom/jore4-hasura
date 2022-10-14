@@ -1,0 +1,11 @@
+table:
+  name: timing_place
+  schema: timing_pattern
+array_relationships:
+  - name: scheduled_stop_points
+    using:
+      foreign_key_constraint_on:
+        column: timing_place_id
+        table:
+          name: scheduled_stop_point
+          schema: service_pattern
