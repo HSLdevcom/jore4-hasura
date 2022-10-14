@@ -1,6 +1,13 @@
 table:
   name: scheduled_stop_point
   schema: service_pattern
+object_relationships:
+  - name: located_on_infrastructure_link
+    using:
+      foreign_key_constraint_on: located_on_infrastructure_link_id
+  - name: timing_point
+    using:
+      foreign_key_constraint_on: timing_point_id
 array_relationships:
   - name: scheduled_stop_point_in_journey_patterns
     using:
