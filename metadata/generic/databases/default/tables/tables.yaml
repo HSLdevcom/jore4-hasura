@@ -13,3 +13,4 @@
 - "!include route_type_of_line.yaml"
 - "!include service_pattern_scheduled_stop_point.yaml"
 - "!include service_pattern_vehicle_mode_on_scheduled_stop_point.yaml"
+- "!include timing_pattern_timing_place.yaml"
