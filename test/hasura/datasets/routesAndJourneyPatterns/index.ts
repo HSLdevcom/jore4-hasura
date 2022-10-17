@@ -1,13 +1,3 @@
-import {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-} from './infrastructure-links';
-import {
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-} from './scheduled-stop-points';
-import { lines } from './lines';
-import { infrastructureLinkAlongRoute, routes } from './routes';
 import { TableLikeConfig } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRouteProps,
@@ -22,10 +12,20 @@ import {
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
 import {
+  infrastructureLinks,
+  vehicleSubmodeOnInfrastructureLink,
+} from './infrastructure-links';
+import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
 } from './journey-patterns';
-import { scheduledStopPointInvariants } from './scheduled-stop-points';
+import { lines } from './lines';
+import { infrastructureLinkAlongRoute, routes } from './routes';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+  vehicleModeOnScheduledStopPoint,
+} from './scheduled-stop-points';
 
 export const routesAndJourneyPatternsTableConfig: TableLikeConfig[] = [
   {
@@ -39,12 +39,12 @@ export const routesAndJourneyPatternsTableConfig: TableLikeConfig[] = [
     props: VehicleSubmodeOnInfrastructureLinkProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    name: 'service_pattern.scheduled_stop_point_invariant',
     data: scheduledStopPointInvariants,
     props: ScheduledStopPointInvariantProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point',
+    name: 'service_pattern.scheduled_stop_point',
     data: scheduledStopPoints,
     props: ScheduledStopPointProps,
   },
