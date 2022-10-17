@@ -1,24 +1,24 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets/defaultSetup/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
 } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -122,7 +122,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnectionPool,
-          'internal_service_pattern.scheduled_stop_point_invariant',
+          'service_pattern.scheduled_stop_point_invariant',
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(
@@ -236,7 +236,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnectionPool,
-          'internal_service_pattern.scheduled_stop_point_invariant',
+          'service_pattern.scheduled_stop_point_invariant',
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(
