@@ -1,6 +1,6 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
+import { buildLocalizedString } from '@datasets/factories';
+import { setupDb } from '@datasets/setup';
 import {
   InfrastructureLink,
   InfrastructureLinkProps,
@@ -14,12 +14,12 @@ import {
   ScheduledStopPointInJourneyPatternProps,
   ScheduledStopPointProps,
 } from '@datasets/types';
-import { setupDb } from '@datasets/setup';
 import * as db from '@util/db';
-import { randomUUID } from 'crypto';
-import { buildLocalizedString } from '@datasets/factories';
-import { LocalDate } from 'local-date';
 import { nextDay, prevDay } from '@util/helpers';
+import '@util/matchers';
+import { randomUUID } from 'crypto';
+import { LocalDate } from 'local-date';
+import * as pg from 'pg';
 
 const defaultRouteLabel = 'route 2';
 const stopLabel = 'stop A';
@@ -102,7 +102,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
           data: [infraLink],
         },
         {
-          name: 'internal_service_pattern.scheduled_stop_point',
+          name: 'service_pattern.scheduled_stop_point',
           props: ScheduledStopPointProps,
           data: stopData,
         },
