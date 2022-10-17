@@ -1,25 +1,25 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import {
-  LinkDirection,
-  ScheduledStopPoint,
-  ScheduledStopPointProps,
-  VehicleMode,
-} from '@datasets/types';
-import '@util/matchers';
-import { asDbGeometryObjectArray } from '@util/dataset';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
 } from '@datasets/setup';
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  ScheduledStopPointProps,
+  VehicleMode,
+} from '@datasets/types';
+import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const createToBeInserted = (
   infrastructureLinkId: string,
@@ -81,8 +81,8 @@ describe('Insert scheduled stop point', () => {
       getTableConfigArray([
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
-        'internal_service_pattern.scheduled_stop_point_invariant',
-        'internal_service_pattern.scheduled_stop_point',
+        'service_pattern.scheduled_stop_point_invariant',
+        'service_pattern.scheduled_stop_point',
         'service_pattern.vehicle_mode_on_scheduled_stop_point',
         'route.line',
         'route.route',
