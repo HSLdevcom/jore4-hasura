@@ -1,21 +1,9 @@
 import {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-} from './infrastructure-links';
-import {
-  scheduledStopPointInvariants,
-  scheduledStopPoints,
-  scheduledStopPointsWithTempRoute,
-  vehicleModeOnScheduledStopPoint,
-  vehicleModeOnScheduledStopPointWithTempRoute,
-} from './scheduled-stop-points';
-import { lines } from './lines';
-import {
-  infrastructureLinkAlongRoute,
-  infrastructureLinkAlongRouteWithTempRoute,
-  routes,
-  routesWithTempRoute,
-} from './routes';
+  journeyPatterns,
+  journeyPatternsWithTempRoute,
+  scheduledStopPointInJourneyPattern,
+  scheduledStopPointInJourneyPatternWithTempRoute,
+} from '@datasets/prioritizedRouteVerification/journey-patterns';
 import { TableLikeConfig } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRouteProps,
@@ -30,11 +18,23 @@ import {
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
 import {
-  journeyPatterns,
-  journeyPatternsWithTempRoute,
-  scheduledStopPointInJourneyPattern,
-  scheduledStopPointInJourneyPatternWithTempRoute,
-} from '@datasets/prioritizedRouteVerification/journey-patterns';
+  infrastructureLinks,
+  vehicleSubmodeOnInfrastructureLink,
+} from './infrastructure-links';
+import { lines } from './lines';
+import {
+  infrastructureLinkAlongRoute,
+  infrastructureLinkAlongRouteWithTempRoute,
+  routes,
+  routesWithTempRoute,
+} from './routes';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+  scheduledStopPointsWithTempRoute,
+  vehicleModeOnScheduledStopPoint,
+  vehicleModeOnScheduledStopPointWithTempRoute,
+} from './scheduled-stop-points';
 
 export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
   {
@@ -48,12 +48,12 @@ export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
     props: VehicleSubmodeOnInfrastructureLinkProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    name: 'service_pattern.scheduled_stop_point_invariant',
     data: scheduledStopPointInvariants,
     props: ScheduledStopPointInvariantProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point',
+    name: 'service_pattern.scheduled_stop_point',
     data: scheduledStopPoints,
     props: ScheduledStopPointProps,
   },
@@ -97,7 +97,7 @@ export const prioritizedRouteVerificationWithTempRouteTableConfig: TableLikeConf
 
     const newData = (() => {
       switch (tableLikeConfig.name) {
-        case 'internal_service_pattern.scheduled_stop_point':
+        case 'service_pattern.scheduled_stop_point':
           return scheduledStopPointsWithTempRoute;
         case 'service_pattern.vehicle_mode_on_scheduled_stop_point':
           return vehicleModeOnScheduledStopPointWithTempRoute;
