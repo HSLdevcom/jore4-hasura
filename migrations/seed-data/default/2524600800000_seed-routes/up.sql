@@ -25,7 +25,7 @@ ON CONFLICT DO NOTHING;
 -- to avoid constraint conflicts, inserting scheduled_stop_points and their allowed vehicle modes at the same time, within a transaction
 DO $$
 BEGIN
-  INSERT INTO internal_service_pattern.scheduled_stop_point_invariant
+  INSERT INTO service_pattern.scheduled_stop_point_invariant
     (label)
   VALUES
     ('Ki0713'),
@@ -250,7 +250,7 @@ BEGIN
     ('H1236')
   ON CONFLICT DO NOTHING;
 
-  INSERT INTO internal_service_pattern.scheduled_stop_point
+  INSERT INTO service_pattern.scheduled_stop_point
     (scheduled_stop_point_id,measured_location,located_on_infrastructure_link_id,direction,label,validity_start,validity_end,priority)
   VALUES
     ('e3528755-711f-4e4f-9461-7931a2c4bc6d'::uuid,'SRID=4326;POINT Z(24.928326557825727 60.16391811339392 0)'::geography,'c63b749f-5060-4710-8b07-ec9ac017cb5f'::uuid,'bidirectional','H1234','2021-01-01','2023-12-13',10),
