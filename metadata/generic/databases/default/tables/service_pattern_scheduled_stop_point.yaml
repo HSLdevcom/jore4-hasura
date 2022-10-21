@@ -29,3 +29,14 @@ array_relationships:
         insertion_order: null
         column_mapping:
           scheduled_stop_point_id: scheduled_stop_point_id
+computed_fields:
+  - name: closest_point_on_infrastructure_link
+    definition:
+      function:
+        schema: service_pattern
+        name: scheduled_stop_point_closest_point_on_infrastructure_link
+  - name: relative_distance_from_infrastructure_link
+    definition:
+      function:
+        schema: service_pattern
+        name: scheduled_stop_point_relative_distance_from_infrastructure_link
