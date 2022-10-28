@@ -189,7 +189,7 @@ describe('Update scheduled stop point', () => {
               data: {
                 update_service_pattern_scheduled_stop_point: {
                   returning: [
-                    dataset.asGraphQlTimestampObject({
+                    dataset.asGraphQlDateObject({
                       ...original,
                       ...toBeUpdated,
                     }),

@@ -15,6 +15,7 @@ import {
 } from '@datasets/types';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { LocalDate } from 'local-date';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   scheduled_stop_point_id: 'd1e8878f-da19-474a-b156-13ac41175789',
@@ -31,7 +32,7 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
   } as dataset.GeometryObject,
   label: 'inserted stop point',
   priority: 50,
-  validity_end: new Date('2060-11-04 15:30:40Z'),
+  validity_end: new LocalDate('2060-11-03'),
 };
 
 const insertedDefaultValues: Partial<ScheduledStopPoint> = {
@@ -83,7 +84,7 @@ describe('Insert scheduled_stop_point', () => {
           insert_service_pattern_scheduled_stop_point: {
             returning: [
               {
-                ...dataset.asGraphQlTimestampObject(toBeInserted),
+                ...dataset.asGraphQlDateObject(toBeInserted),
                 ...insertedDefaultValues,
               },
             ],

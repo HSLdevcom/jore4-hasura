@@ -249,7 +249,7 @@ export const shouldReturnCorrectScheduledStopPointResponse = (
         insert_service_pattern_scheduled_stop_point: {
           returning: [
             {
-              ...dataset.asGraphQlTimestampObject(toBeInserted),
+              ...dataset.asGraphQlDateObject(toBeInserted),
               scheduled_stop_point_id: expect.any(String),
             },
           ],
@@ -293,7 +293,7 @@ export const shouldReturnCorrectInsertRouteResponse = (
         insert_route_route: {
           returning: [
             {
-              ...dataset.asGraphQlTimestampObject(route),
+              ...dataset.asGraphQlDateObject(route),
               route_id: expect.any(String),
             },
           ],

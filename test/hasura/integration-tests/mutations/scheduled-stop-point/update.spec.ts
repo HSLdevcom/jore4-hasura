@@ -7,6 +7,7 @@ import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-point
 import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { LocalDate } from 'local-date';
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -20,8 +21,8 @@ const toBeUpdated: Partial<ScheduledStopPoint> = {
     },
   } as dataset.GeometryObject,
   priority: 30,
-  validity_start: new Date('2077-10-22 23:44:11'),
-  validity_end: new Date('2079-10-22 23:44:11'),
+  validity_start: new LocalDate('2077-10-22'),
+  validity_end: new LocalDate('2079-10-21'),
 };
 
 const completeUpdated: ScheduledStopPoint = {
@@ -67,7 +68,7 @@ describe('Update scheduled_stop_point', () => {
       expect.objectContaining({
         data: {
           update_service_pattern_scheduled_stop_point: {
-            returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
+            returning: [dataset.asGraphQlDateObject(completeUpdated)],
           },
         },
       }),

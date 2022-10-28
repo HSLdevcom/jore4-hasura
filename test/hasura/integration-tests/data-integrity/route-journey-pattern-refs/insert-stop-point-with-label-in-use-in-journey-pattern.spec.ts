@@ -108,7 +108,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
             insert_service_pattern_scheduled_stop_point: {
               returning: [
                 {
-                  ...dataset.asGraphQlTimestampObject(toBeInserted),
+                  ...dataset.asGraphQlDateObject(toBeInserted),
                   scheduled_stop_point_id: expect.any(String),
                 },
               ],

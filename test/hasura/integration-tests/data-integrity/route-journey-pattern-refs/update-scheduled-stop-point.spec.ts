@@ -147,7 +147,7 @@ describe('Move scheduled stop point to other infra link', () => {
         expect.objectContaining({
           data: {
             update_service_pattern_scheduled_stop_point: {
-              returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
+              returning: [dataset.asGraphQlDateObject(completeUpdated)],
             },
           },
         }),

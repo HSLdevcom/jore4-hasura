@@ -90,7 +90,7 @@ describe('Update route', () => {
           data: {
             update_route_route: {
               returning: [
-                dataset.asGraphQlTimestampObject(completeUpdated(toBeUpdated)),
+                dataset.asGraphQlDateObject(completeUpdated(toBeUpdated)),
               ],
             },
           },

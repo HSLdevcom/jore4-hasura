@@ -1,12 +1,12 @@
 import * as config from '@config';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Route, RouteDirection, RouteProps } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 
@@ -15,8 +15,8 @@ const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
   direction: RouteDirection.Clockwise,
   priority: 40,
-  validity_start: new Date('2044-05-01 23:11:32Z'),
-  validity_end: new Date('2045-05-01 23:11:32Z'),
+  validity_start: new LocalDate('2044-05-01'),
+  validity_end: new LocalDate('2045-04-30'),
 };
 
 const mutation = `
@@ -54,7 +54,7 @@ describe('Insert route', () => {
           insert_route_route: {
             returning: [
               {
-                ...dataset.asGraphQlTimestampObject(toBeInserted),
+                ...dataset.asGraphQlDateObject(toBeInserted),
                 route_id: expect.any(String),
               },
             ],

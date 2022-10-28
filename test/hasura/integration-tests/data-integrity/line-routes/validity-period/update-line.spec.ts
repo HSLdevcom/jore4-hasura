@@ -7,6 +7,7 @@ import '@util/matchers';
 import { Line, LineProps } from '@datasets/types';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 
 const buildMutation = (line: Line, toBeUpdated: Partial<Line>) => `
   mutation {
@@ -84,9 +85,7 @@ describe('Update line', () => {
           data: {
             update_route_line: {
               returning: [
-                dataset.asGraphQlTimestampObject(
-                  completeUpdated(line, toBeUpdated),
-                ),
+                dataset.asGraphQlDateObject(completeUpdated(line, toBeUpdated)),
               ],
             },
           },
@@ -118,21 +117,21 @@ describe('Update line', () => {
     });
 
   describe('with a fixed validity start time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: new Date('2045-03-02 23:11:32Z') };
+    const toBeUpdated = { validity_start: new LocalDate('2045-03-02') };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_end: new Date('2044-08-02 23:11:32Z') };
+    const toBeUpdated = { validity_end: new LocalDate('2044-08-01') };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: new Date('2043-03-02 23:11:32Z') };
+    const toBeUpdated = { validity_start: new LocalDate('2043-03-02') };
 
     shouldReturnCorrectResponse(lines[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(lines[1], toBeUpdated);

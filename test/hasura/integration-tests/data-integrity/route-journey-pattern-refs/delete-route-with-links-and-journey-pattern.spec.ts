@@ -45,7 +45,7 @@ describe('Delete route with infra links and journey pattern', () => {
       expect.objectContaining({
         data: {
           delete_route_route: {
-            returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
+            returning: [dataset.asGraphQlDateObject(toBeDeleted)],
           },
         },
       }),

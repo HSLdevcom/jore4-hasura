@@ -135,7 +135,7 @@ describe('Update infrastructure link', () => {
               data: {
                 update_infrastructure_network_infrastructure_link: {
                   returning: [
-                    dataset.asGraphQlTimestampObject({
+                    dataset.asGraphQlDateObject({
                       ...original,
                       ...toBeUpdated,
                     }),

@@ -8,11 +8,12 @@ import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
+import { LocalDate } from 'local-date';
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: buildLocalizedString('updated route'),
   priority: 50,
-  validity_end: new Date('2045-04-01 12:11:32Z'),
+  validity_end: new LocalDate('2045-03-31'),
 };
 
 const completeUpdated: Route = {
@@ -56,7 +57,7 @@ describe('Update route', () => {
       expect.objectContaining({
         data: {
           update_route_route: {
-            returning: [dataset.asGraphQlTimestampObject(completeUpdated)],
+            returning: [dataset.asGraphQlDateObject(completeUpdated)],
           },
         },
       }),

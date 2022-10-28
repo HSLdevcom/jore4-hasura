@@ -6,6 +6,7 @@ import {
   VehicleModeOnScheduledStopPoint,
 } from '@datasets/types';
 import { uniqBy } from 'lodash';
+import { LocalDate } from 'local-date';
 
 const scheduledStopPointPohjantie: ScheduledStopPoint = {
   scheduled_stop_point_id: '8025166f-27c1-4973-9f07-8b28c5ba3166',
@@ -21,8 +22,8 @@ const scheduledStopPointPohjantie: ScheduledStopPoint = {
   direction: LinkDirection.Backward,
   label: 'Pohjantie (42)',
   priority: 10,
-  validity_start: new Date('2044-05-01 23:11:32Z'),
-  validity_end: new Date('2084-05-01 23:11:32Z'),
+  validity_start: new LocalDate('2044-05-01'),
+  validity_end: new LocalDate('2084-04-30'),
 };
 
 export const scheduledStopPointWithSameLabelAndOnSameLink: ScheduledStopPoint =
@@ -104,8 +105,8 @@ export const scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappin
   {
     ...scheduledStopPointWithSameLabelOnLinkAfterNextStop,
     scheduled_stop_point_id: '45458d15-eef6-4306-9614-d90ef4528747',
-    validity_start: new Date('2075-05-01 23:11:32Z'),
-    validity_end: new Date('2099-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2075-05-01'),
+    validity_end: new LocalDate('2099-04-30'),
   };
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
@@ -123,8 +124,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'WeeGee-talo',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '405cf0dd-89de-4a49-b9b3-fd93061cf144',
@@ -140,8 +141,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Kaskenkaataja',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '0d9b70bc-1eff-4657-88fa-73bce5062934',
@@ -157,8 +158,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Ahertajankuja',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '994ab02f-e4d4-4743-8af4-611783709f85',
@@ -174,8 +175,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Kulttuuriaukio',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '231f6797-21f5-404c-8934-e5e180e9d152',
@@ -191,8 +192,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tapiolan uimahalli',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '3c451d12-f912-4f21-a331-573e20410344',
@@ -208,8 +209,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Sateentie (24)',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '050cee7c-953d-40a6-af47-8f1edc7dcf9c',
@@ -225,8 +226,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tuuliniitty (31)',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: 'b7e0370e-72ad-46a2-bab1-30bcf1027cc3',
@@ -242,8 +243,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tuuliniitty (32)',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: 'd455b413-db93-4321-a22a-70c7739a94ea',
@@ -259,8 +260,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tapionaukio',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '79f5ae02-6974-4448-9466-7601b7ae54d0',
@@ -276,8 +277,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Sateentie (23)',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: 'a6698564-cd9d-4293-b0a6-c94fd962bb25',
@@ -293,8 +294,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tuulikuja',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '5c135b2b-1c85-4b57-abec-4a793336ca29',
@@ -310,8 +311,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Sateenkaari',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: '335de7c6-7e98-4b30-87b4-bfcabf0ef0e7',
@@ -327,8 +328,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Länsituulenkuja',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   {
     scheduled_stop_point_id: 'be69cd74-fccf-463a-8f21-ad1f9a43934b',
@@ -344,8 +345,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tapiola (M) (11)',
     priority: 10,
-    validity_start: new Date('2044-05-01 23:11:32Z'),
-    validity_end: new Date('2084-05-01 23:11:32Z'),
+    validity_start: new LocalDate('2044-05-01'),
+    validity_end: new LocalDate('2084-04-30'),
   },
   scheduledStopPointPohjantie,
 ];

@@ -7,6 +7,7 @@ import {
 } from '@datasets/types';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 import { lines } from './lines';
+import { LocalDate } from 'local-date';
 
 export const basicRoute: Route = {
   route_id: '61bef596-84a0-40ea-b818-423d6b9b1fcf',
@@ -14,8 +15,8 @@ export const basicRoute: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 10,
-  validity_start: new Date('2044-05-02 23:11:32Z'),
-  validity_end: new Date('2074-05-02 23:11:32Z'),
+  validity_start: new LocalDate('2044-05-02'),
+  validity_end: new LocalDate('2074-05-01'),
 };
 
 export const tempRouteWithSameLinks: Route = {
@@ -24,8 +25,8 @@ export const tempRouteWithSameLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: new Date('2054-05-02 23:11:32Z'),
-  validity_end: new Date('2064-05-02 23:11:32Z'),
+  validity_start: new LocalDate('2054-05-02'),
+  validity_end: new LocalDate('2064-05-01'),
 };
 
 export const tempRouteWithOtherLinks: Route = {
@@ -34,8 +35,8 @@ export const tempRouteWithOtherLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: new Date('2054-05-02 23:11:32Z'),
-  validity_end: new Date('2064-05-02 23:11:32Z'),
+  validity_start: new LocalDate('2054-05-02'),
+  validity_end: new LocalDate('2064-05-01'),
 };
 
 export const routes: Route[] = [basicRoute];

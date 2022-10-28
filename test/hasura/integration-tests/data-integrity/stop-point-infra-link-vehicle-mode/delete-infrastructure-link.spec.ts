@@ -89,7 +89,7 @@ describe('Delete infrastructure link', () => {
         expect.objectContaining({
           data: {
             delete_infrastructure_network_infrastructure_link: {
-              returning: [dataset.asGraphQlTimestampObject(toBeDeleted)],
+              returning: [dataset.asGraphQlDateObject(toBeDeleted)],
             },
           },
         }),

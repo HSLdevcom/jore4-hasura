@@ -7,6 +7,7 @@ import {
 } from '@datasets/types';
 import { infrastructureLinks } from './infrastructure-links';
 import { uniqBy } from 'lodash';
+import { LocalDate } from 'local-date';
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
   {
@@ -24,8 +25,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: new Date('2035-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2035-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: '5be29866-4a74-45f3-9b85-b0717283231b',
@@ -42,7 +43,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: new Date('2035-02-03 12:34:56'),
+    validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
   },
   {
@@ -61,7 +62,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2',
     priority: 30,
     validity_start: null,
-    validity_end: new Date('2064-01-03 12:34:56'),
+    validity_end: new LocalDate('2064-01-02'),
   },
   {
     scheduled_stop_point_id: 'f150e375-ebe0-448b-a974-cdc2f482268d',
@@ -78,8 +79,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopX',
     priority: 10,
-    validity_start: new Date('2035-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2035-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: '02eca2f4-743a-4505-99ed-52390970a3d2',
@@ -96,7 +97,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopY',
     priority: 10,
-    validity_start: new Date('2035-02-03 12:34:56'),
+    validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
   },
   {
@@ -115,7 +116,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stopZ',
     priority: 20,
     validity_start: null,
-    validity_end: new Date('2064-01-03 12:34:56'),
+    validity_end: new LocalDate('2064-01-02'),
   },
   {
     scheduled_stop_point_id: '1a794279-266e-4826-b08e-155d7cde4bce',
@@ -132,8 +133,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1X',
     priority: 10,
-    validity_start: new Date('2035-01-01 12:34:56'),
-    validity_end: new Date('2065-02-01 12:34:56'),
+    validity_start: new LocalDate('2035-01-01'),
+    validity_end: new LocalDate('2065-01-31'),
   },
   {
     scheduled_stop_point_id: '4927238b-9bd9-4f86-bba2-3810a2e97f51',
@@ -150,7 +151,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3X',
     priority: 10,
-    validity_start: new Date('2035-02-03 12:34:56'),
+    validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
   },
   {
@@ -169,7 +170,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2X',
     priority: 30,
     validity_start: null,
-    validity_end: new Date('2064-01-03 12:34:56'),
+    validity_end: new LocalDate('2064-01-02'),
   },
   {
     scheduled_stop_point_id: '431ab46f-3271-40bb-ab14-e217813a6a7f',
@@ -186,8 +187,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop4X',
     priority: 10,
-    validity_start: new Date('2030-02-03 12:34:56'),
-    validity_end: new Date('2032-02-03 12:34:56'),
+    validity_start: new LocalDate('2030-02-03'),
+    validity_end: new LocalDate('2032-02-02'),
   },
 ];
 
