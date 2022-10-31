@@ -1,4 +1,3 @@
-
 REVOKE USAGE ON SCHEMA infrastructure_network FROM xxx_db_jore3importer_username_xxx;
 REVOKE SELECT ON ALL TABLES IN SCHEMA infrastructure_network FROM xxx_db_jore3importer_username_xxx;
 

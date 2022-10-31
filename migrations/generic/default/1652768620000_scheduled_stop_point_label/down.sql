@@ -1,4 +1,3 @@
-
 -- changes need to be made in separate transactions because of existing constraints
 
 BEGIN;
@@ -11,24 +10,24 @@ ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
 UPDATE journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
 SET scheduled_stop_point_id = (
   SELECT scheduled_stop_point_id
-  FROM internal_service_pattern.scheduled_stop_point ssp
-         JOIN journey_pattern.journey_pattern jp
-              ON jp.journey_pattern_id = sspijp.journey_pattern_id
-         JOIN route.route r
-              ON r.route_id = jp.on_route_id
-  WHERE ssp.label = sspijp.scheduled_stop_point_label
-    AND TSTZRANGE(ssp.validity_start, ssp.validity_end) && TSTZRANGE(r.validity_start, r.validity_end)
-  ORDER BY ssp.validity_start ASC
+  FROM internal_service_pattern.scheduled_stop_point
+         INNER JOIN journey_pattern.journey_pattern
+              ON journey_pattern.journey_pattern.journey_pattern_id = sspijp.journey_pattern_id
+         INNER JOIN route.route
+              ON route.route.route_id = journey_pattern.journey_pattern.on_route_id
+  WHERE internal_service_pattern.scheduled_stop_point.label = sspijp.scheduled_stop_point_label
+    AND TSTZRANGE(internal_service_pattern.scheduled_stop_point.validity_start, internal_service_pattern.scheduled_stop_point.validity_end) && TSTZRANGE(route.route.validity_start, route.route.validity_end)
+  ORDER BY internal_service_pattern.scheduled_stop_point.validity_start ASC
   LIMIT 1
 );
 
 -- if there was no overlapping validity time with any stop point, set the first stop point id found
 UPDATE journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
 SET scheduled_stop_point_id = (
-  SELECT scheduled_stop_point_id
-  FROM internal_service_pattern.scheduled_stop_point ssp
-  WHERE ssp.label = sspijp.scheduled_stop_point_label
-  ORDER BY ssp.validity_start ASC
+  SELECT internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id
+  FROM internal_service_pattern.scheduled_stop_point
+  WHERE internal_service_pattern.scheduled_stop_point.label = sspijp.scheduled_stop_point_label
+  ORDER BY internal_service_pattern.scheduled_stop_point.validity_start ASC
   LIMIT 1
 )
 WHERE scheduled_stop_point_id IS NULL;

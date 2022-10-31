@@ -1,4 +1,3 @@
-
 CREATE FUNCTION internal_route.check_route_validity_is_within_line_validity()
   RETURNS trigger
   LANGUAGE plpgsql AS

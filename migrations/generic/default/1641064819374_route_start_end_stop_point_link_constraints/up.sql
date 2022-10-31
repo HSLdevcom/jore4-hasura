@@ -1,6 +1,5 @@
-
-CREATE FUNCTION route.verify_route_start_end_stop_points(param_route_id UUID)
-  RETURNS VOID
+CREATE FUNCTION route.verify_route_start_end_stop_points(param_route_id uuid)
+  RETURNS void
   LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -40,7 +39,7 @@ $$;
 
 
 CREATE FUNCTION route.verify_route_start_end_stop_points_by_new_route_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -51,7 +50,7 @@ END;
 $$;
 
 CREATE FUNCTION route.verify_route_start_end_stop_points_by_old_and_new_route_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -63,7 +62,7 @@ END;
 $$;
 
 CREATE FUNCTION route.verify_route_start_end_stop_points_by_old_and_new_link_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql AS
 $$
 DECLARE

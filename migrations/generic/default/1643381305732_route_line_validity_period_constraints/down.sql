@@ -1,4 +1,3 @@
-
 DROP TRIGGER check_line_validity_against_all_associated_routes_trigger
   ON route.line;
 

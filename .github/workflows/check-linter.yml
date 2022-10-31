@@ -1,0 +1,16 @@
+name: Check linter
+
+on:
+  pull_request:
+
+jobs:
+  check_prettify:
+    name: Check linter
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Lint sources
+        run: ./scripts/linter.sh

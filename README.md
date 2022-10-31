@@ -256,6 +256,18 @@ Secrets should be passed as files to Docker images in production environments.
 [As long as Hasura cannot read secrets from files](https://github.com/hasura/graphql-engine/issues/3989), we need to provide our own entrypoint for the Docker image.
 Our entrypoint reads the secrets and delivers them to Hasura.
 
+## Code quality
+
+For generic prettifying of text files, run `./scripts/prettify.sh`.
+
+For running SQL linter, run `./scripts/linter.sh`. For now, this only checks for a subset of linter
+rules, more should be added in the future. To enable more rules, edit the `linter.sh` file. To try
+fixing linter issues automatically, run `./scripts/linter.sh fix`. The configuration file for the
+linter can be found at `./migrations/.sqlfluff`. See linter [Reference](https://docs.sqlfluff.com/)
+for more details.
+
+Note that CI checks both `prettier` and `linter`.
+
 ### Secrets used by the docker image
 
 Our Docker image expects the following secrets to be bound to the container:

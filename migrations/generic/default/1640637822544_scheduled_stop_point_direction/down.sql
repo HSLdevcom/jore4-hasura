@@ -1,4 +1,3 @@
-
 DROP TRIGGER check_infrastructure_link_scheduled_stop_points_direction_trigger
   ON infrastructure_network.infrastructure_link;
 

@@ -1,4 +1,3 @@
-
 DROP TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger
   ON infrastructure_network.vehicle_submode_on_infrastructure_link;
 

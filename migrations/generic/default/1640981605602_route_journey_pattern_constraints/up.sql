@@ -112,7 +112,7 @@ $$;
 
 
 CREATE FUNCTION journey_pattern.verify_infra_link_stop_refs_by_new_journey_pattern_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql
 AS
 $$
@@ -124,7 +124,7 @@ END;
 $$;
 
 CREATE FUNCTION journey_pattern.verify_infra_link_stop_refs_by_old_route_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql
 AS
 $$
@@ -136,7 +136,7 @@ END;
 $$;
 
 CREATE FUNCTION journey_pattern.verify_infra_link_stop_refs_by_new_scheduled_stop_point_id()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql AS
 $$
 DECLARE

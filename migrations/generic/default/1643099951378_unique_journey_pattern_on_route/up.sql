@@ -1,4 +1,3 @@
-
 -- This change can later be undone when the UI supports multiple journey patterns under the same route.
 
 -- In order to do so, add a new migration containing this migration's up.sql and

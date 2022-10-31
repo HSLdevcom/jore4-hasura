@@ -1,4 +1,3 @@
-
 DROP TRIGGER verify_route_start_end_stop_points_by_old_and_new_link_id_trigger
   ON internal_service_pattern.scheduled_stop_point;
 
@@ -14,4 +13,4 @@ DROP FUNCTION route.verify_route_start_end_stop_points_by_old_and_new_route_id()
 
 DROP FUNCTION route.verify_route_start_end_stop_points_by_new_route_id();
 
-DROP FUNCTION route.verify_route_start_end_stop_points(param_route_id UUID);
+DROP FUNCTION route.verify_route_start_end_stop_points(param_route_id uuid);

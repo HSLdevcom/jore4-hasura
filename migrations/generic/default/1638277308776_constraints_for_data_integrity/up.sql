@@ -1,4 +1,3 @@
-
 ALTER TABLE internal_route.route
 ALTER COLUMN on_line_id SET NOT NULL;
 

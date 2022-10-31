@@ -1,4 +1,3 @@
-
 DROP TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger ON journey_pattern.journey_pattern;
 
 DROP TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON internal_service_pattern.scheduled_stop_point;

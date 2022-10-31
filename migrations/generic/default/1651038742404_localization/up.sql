@@ -51,7 +51,7 @@ COMMENT ON COLUMN localization.localized_text.localized_text IS
 
 -- delete related localizations when routes are deleted
 CREATE FUNCTION internal_route.delete_route_related_localizations ()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql
 AS $delete_route_related_localizations$
 BEGIN
@@ -67,7 +67,7 @@ CREATE TRIGGER internal_route_after_delete_route_trigger
 
 -- delete related localizations when lines are deleted
 CREATE FUNCTION route.delete_line_related_localizations ()
-  RETURNS TRIGGER
+  RETURNS trigger
   LANGUAGE plpgsql
 AS $delete_line_related_localizations$
 BEGIN

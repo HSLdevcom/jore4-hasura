@@ -1,4 +1,3 @@
-
 CREATE FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructure_link_direction()
   RETURNS trigger
   LANGUAGE plpgsql AS

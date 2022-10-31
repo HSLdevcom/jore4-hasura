@@ -4,7 +4,7 @@ CREATE FUNCTION infrastructure_network.find_point_direction_on_link (
     point_max_distance_in_meters double precision DEFAULT 50.0
 )
 RETURNS SETOF infrastructure_network.direction
-LANGUAGE SQL
+LANGUAGE sql
 STABLE
 STRICT
 PARALLEL SAFE

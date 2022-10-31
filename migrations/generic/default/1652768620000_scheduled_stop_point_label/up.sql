@@ -1,11 +1,10 @@
-
 -- changes need to be made in separate transactions because of existing constraints
 
 -- create table for scheduled stop point invariants and fill it up with the distinct stop labels
 BEGIN;
 
 CREATE TABLE internal_service_pattern.scheduled_stop_point_invariant (
-  label TEXT NOT NULL,
+  label text NOT NULL,
   PRIMARY KEY (label)
 );
 
@@ -25,7 +24,7 @@ COMMIT;
 BEGIN;
 
 ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
-  ADD COLUMN scheduled_stop_point_label TEXT,
+  ADD COLUMN scheduled_stop_point_label text,
   ADD CONSTRAINT scheduled_stop_point_in_journe__scheduled_stop_point_label_fkey
     FOREIGN KEY (scheduled_stop_point_label) REFERENCES internal_service_pattern.scheduled_stop_point_invariant (label)
       ON DELETE CASCADE;
@@ -35,9 +34,9 @@ CREATE INDEX scheduled_stop_point_in_journey__scheduled_stop_point_label_idx
 
 UPDATE journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
   SET scheduled_stop_point_label = (
-    SELECT "label"
-    FROM internal_service_pattern.scheduled_stop_point ssp
-    WHERE ssp.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
+    SELECT internal_service_pattern.scheduled_stop_point."label"
+    FROM internal_service_pattern.scheduled_stop_point
+    WHERE internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id = sspijp.scheduled_stop_point_id
   );
 
 COMMIT;

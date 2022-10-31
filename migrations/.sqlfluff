@@ -1,0 +1,22 @@
+[sqlfluff]
+large_file_skip_byte_limit = 100000
+processes = 4
+exclude_rules = L016,L008,L048,L003
+# L016 = long lines; cannot be configured properly for comments
+# L008 = whitespace after commas; breaks INSERT blocks
+# L048 = whitespace after '' blocks; breaks INSERT blocks
+# L003 = consistent indents; not intelligent enough to be able to configure for each use-case
+
+[sqlfluff:rules]
+tab_space_size = 2
+max_line_length = 80
+indent_unit = space
+comma_style = trailing
+
+[sqlfluff:rules:L003]
+hanging_indents = False
+
+[sqlfluff:rules:L063]
+# https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L063
+# lowercase data types
+extended_capitalisation_policy = lower

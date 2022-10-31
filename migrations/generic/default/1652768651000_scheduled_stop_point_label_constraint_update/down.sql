@@ -1,4 +1,3 @@
-
 DROP TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger
   ON internal_service_pattern.scheduled_stop_point;
 
@@ -19,13 +18,13 @@ EXECUTE PROCEDURE journey_pattern.verify_infra_link_stop_refs_by_new_scheduled_s
 
 
 DROP FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(
-  replace_scheduled_stop_point_id UUID,
-  new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
-  new_direction TEXT,
-  new_label TEXT,
-  new_validity_start timestamp WITH TIME ZONE,
-  new_validity_end timestamp WITH TIME ZONE
+  replace_scheduled_stop_point_id uuid,
+  new_located_on_infrastructure_link_id uuid,
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
+  new_direction text,
+  new_label text,
+  new_validity_start timestamp with time zone,
+  new_validity_end timestamp with time zone
 );
 
 DROP FUNCTION journey_pattern.verify_route_journey_pattern_refs(uuid, uuid);
@@ -33,24 +32,24 @@ DROP FUNCTION journey_pattern.verify_route_journey_pattern_refs(uuid, uuid);
 DROP FUNCTION journey_pattern.check_route_journey_pattern_refs(
   filter_journey_pattern_id uuid,
   filter_route_id uuid,
-  replace_scheduled_stop_point_id UUID,
-  new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
-  new_direction TEXT,
-  new_label TEXT,
-  new_validity_start timestamp WITH TIME ZONE,
-  new_validity_end timestamp WITH TIME ZONE
+  replace_scheduled_stop_point_id uuid,
+  new_located_on_infrastructure_link_id uuid,
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
+  new_direction text,
+  new_label text,
+  new_validity_start timestamp with time zone,
+  new_validity_end timestamp with time zone
 );
 
 DROP FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new(
-  replace_scheduled_stop_point_id UUID,
-  new_scheduled_stop_point_id UUID,
-  new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
-  new_direction TEXT,
-  new_label TEXT,
-  new_validity_start timestamp WITH TIME ZONE,
-  new_validity_end timestamp WITH TIME ZONE
+  replace_scheduled_stop_point_id uuid,
+  new_scheduled_stop_point_id uuid,
+  new_located_on_infrastructure_link_id uuid,
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
+  new_direction text,
+  new_label text,
+  new_validity_start timestamp with time zone,
+  new_validity_end timestamp with time zone
 );
 
 ALTER FUNCTION deleted.verify_route_journey_pattern_refs_1649661919181(uuid, uuid)

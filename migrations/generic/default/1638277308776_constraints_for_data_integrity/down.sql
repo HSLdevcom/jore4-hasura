@@ -1,4 +1,3 @@
-
 DROP TRIGGER check_line_routes_priorities_trigger
   ON route.line;
 

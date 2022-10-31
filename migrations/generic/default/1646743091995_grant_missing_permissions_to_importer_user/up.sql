@@ -1,4 +1,3 @@
-
 GRANT USAGE ON SCHEMA infrastructure_network TO xxx_db_jore3importer_username_xxx;
 GRANT SELECT ON ALL TABLES IN SCHEMA infrastructure_network TO xxx_db_jore3importer_username_xxx;
 

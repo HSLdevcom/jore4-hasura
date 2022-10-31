@@ -1,4 +1,3 @@
-
 ALTER TABLE route.line
 DROP CONSTRAINT unique_validity_period;
 

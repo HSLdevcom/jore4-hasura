@@ -40,8 +40,8 @@ BEGIN
   RETURN NEW;
 END;
 $$;
-CREATE OR REPLACE FUNCTION route.verify_route_start_end_stop_points(param_route_id UUID)
-  RETURNS VOID
+CREATE OR REPLACE FUNCTION route.verify_route_start_end_stop_points(param_route_id uuid)
+  RETURNS void
   LANGUAGE plpgsql AS
 $$
 BEGIN
