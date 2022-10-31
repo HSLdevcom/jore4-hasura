@@ -1,1 +1,1 @@
-drop index route.idx_line_transport_target;
+DROP INDEX route.idx_line_transport_target;

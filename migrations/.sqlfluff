@@ -1,0 +1,19 @@
+[sqlfluff]
+large_file_skip_byte_limit = 100000
+processes = 4
+
+[sqlfluff:rules]
+tab_space_size = 2
+max_line_length = 80
+indent_unit = space
+comma_style = trailing
+
+[sqlfluff:rules:L010]
+# https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L010
+# uppercase keywords
+capitalisation_policy = upper
+
+[sqlfluff:rules:L014]
+# https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L014
+# uppercase unquoted identifiers
+extended_capitalisation_policy = lower

@@ -38,7 +38,7 @@ COMMENT ON SCHEMA service_calendar IS 'The service calendar model adapted from T
 
 -- = päivätyyppi, erikoispäivätyyppi. E.g. "Monday-Thursday" or "Christmas day"
 CREATE TABLE service_calendar.day_type (
-  day_type_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  day_type_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   label text NOT NULL,
   name_i18n jsonb NOT NULL,
   UNIQUE (label)

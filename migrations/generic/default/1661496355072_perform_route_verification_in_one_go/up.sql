@@ -17,7 +17,7 @@ ALTER FUNCTION journey_pattern.maximum_priority_validity_spans(
   replace_scheduled_stop_point_id UUID,
   new_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -34,7 +34,7 @@ ALTER FUNCTION journey_pattern.maximum_priority_validity_spans_1661496355072(
   replace_scheduled_stop_point_id UUID,
   new_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -50,7 +50,7 @@ ALTER FUNCTION journey_pattern.check_route_journey_pattern_refs(
   filter_route_id uuid,
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -64,7 +64,7 @@ ALTER FUNCTION journey_pattern.check_route_journey_pattern_refs_1661496355072(
   filter_route_id uuid,
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -78,7 +78,7 @@ ALTER FUNCTION journey_pattern.check_route_journey_pattern_refs_1661496355072(
 ALTER FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -90,7 +90,7 @@ ALTER FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_sto
 ALTER FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_ssp_1661496355072(
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -207,7 +207,7 @@ CREATE FUNCTION journey_pattern.get_broken_route_check_filters(filter_route_ids 
           )
   STABLE
   PARALLEL SAFE
-  LANGUAGE SQL
+  LANGUAGE sql
 AS
 $$
 WITH RECURSIVE
@@ -251,7 +251,7 @@ CREATE FUNCTION journey_pattern.maximum_priority_validity_spans(
   replace_scheduled_stop_point_id UUID DEFAULT NULL,
   new_scheduled_stop_point_id UUID DEFAULT NULL,
   new_located_on_infrastructure_link_id UUID DEFAULT NULL,
-  new_measured_location geography(PointZ, 4326) DEFAULT NULL,
+  new_measured_location GEOGRAPHY(POINTZ, 4326) DEFAULT NULL,
   new_direction TEXT DEFAULT NULL,
   new_label TEXT DEFAULT NULL,
   new_validity_start timestamp WITH TIME ZONE DEFAULT NULL,
@@ -266,7 +266,7 @@ CREATE FUNCTION journey_pattern.maximum_priority_validity_spans(
           )
   STABLE
   PARALLEL SAFE
-  LANGUAGE SQL
+  LANGUAGE sql
 AS
 $$
 WITH RECURSIVE
@@ -471,7 +471,7 @@ COMMENT ON FUNCTION journey_pattern.maximum_priority_validity_spans(
   replace_scheduled_stop_point_id UUID,
   new_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -507,7 +507,7 @@ CREATE FUNCTION journey_pattern.get_broken_route_journey_patterns(
   filter_route_ids UUID[],
   replace_scheduled_stop_point_id UUID DEFAULT NULL,
   new_located_on_infrastructure_link_id UUID DEFAULT NULL,
-  new_measured_location geography(PointZ, 4326) DEFAULT NULL,
+  new_measured_location GEOGRAPHY(POINTZ, 4326) DEFAULT NULL,
   new_direction TEXT DEFAULT NULL,
   new_label TEXT DEFAULT NULL,
   new_validity_start timestamp WITH TIME ZONE DEFAULT NULL,
@@ -517,7 +517,7 @@ CREATE FUNCTION journey_pattern.get_broken_route_journey_patterns(
   RETURNS SETOF journey_pattern.journey_pattern
   STABLE
   PARALLEL SAFE
-  LANGUAGE SQL
+  LANGUAGE sql
 AS
 $$
 WITH RECURSIVE
@@ -760,7 +760,7 @@ COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(
   filter_route_ids UUID[],
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -785,7 +785,7 @@ COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(
 CREATE FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
@@ -795,7 +795,7 @@ CREATE FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_st
   RETURNS SETOF journey_pattern.journey_pattern
   STABLE
   PARALLEL SAFE
-  LANGUAGE SQL AS
+  LANGUAGE sql AS
 $$
 WITH filter_route_ids AS (
   SELECT array_agg(DISTINCT r.route_id) AS arr
@@ -828,7 +828,7 @@ $$;
 COMMENT ON FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(
   replace_scheduled_stop_point_id UUID,
   new_located_on_infrastructure_link_id UUID,
-  new_measured_location geography(PointZ, 4326),
+  new_measured_location GEOGRAPHY(POINTZ, 4326),
   new_direction TEXT,
   new_label TEXT,
   new_validity_start timestamp WITH TIME ZONE,
