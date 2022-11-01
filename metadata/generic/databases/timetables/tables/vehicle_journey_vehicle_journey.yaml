@@ -16,3 +16,14 @@ array_relationships:
         table:
           name: timetabled_passing_time
           schema: passing_times
+computed_fields:
+  - name: end_time
+    definition:
+      function:
+        name: vehicle_journey_end_time
+        schema: vehicle_journey
+  - name: start_time
+    definition:
+      function:
+        name: vehicle_journey_start_time
+        schema: vehicle_journey

@@ -435,6 +435,36 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
 
 --
+-- Name: vehicle_journey_end_time(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_journey.vehicle_journey_end_time(vj vehicle_journey.vehicle_journey) RETURNS text
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MAX (arrival_time)::text AS end_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$;
+
+
+ALTER FUNCTION vehicle_journey.vehicle_journey_end_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
+-- Name: vehicle_journey_start_time(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) RETURNS text
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MIN (departure_time)::text AS start_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$;
+
+
+ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
 -- Name: journey_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
