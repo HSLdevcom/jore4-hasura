@@ -20,12 +20,6 @@ SET row_security = off;
 GRANT USAGE ON SCHEMA infrastructure_network TO dbimporter;
 
 --
--- Name: SCHEMA internal_service_pattern; Type: ACL; Schema: -; Owner: dbhasura
---
-
-GRANT USAGE ON SCHEMA internal_service_pattern TO dbimporter;
-
---
 -- Name: SCHEMA internal_utils; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -56,6 +50,12 @@ GRANT USAGE ON SCHEMA route TO dbimporter;
 GRANT USAGE ON SCHEMA service_pattern TO dbimporter;
 
 --
+-- Name: TABLE scheduled_stop_point_1666001572785; Type: ACL; Schema: deleted; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE deleted.scheduled_stop_point_1666001572785 TO dbimporter;
+
+--
 -- Name: TABLE direction; Type: ACL; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -78,18 +78,6 @@ GRANT SELECT ON TABLE infrastructure_network.infrastructure_link TO dbimporter;
 --
 
 GRANT SELECT ON TABLE infrastructure_network.vehicle_submode_on_infrastructure_link TO dbimporter;
-
---
--- Name: TABLE scheduled_stop_point; Type: ACL; Schema: internal_service_pattern; Owner: dbhasura
---
-
-GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE internal_service_pattern.scheduled_stop_point TO dbimporter;
-
---
--- Name: TABLE scheduled_stop_point_invariant; Type: ACL; Schema: internal_service_pattern; Owner: dbhasura
---
-
-GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE internal_service_pattern.scheduled_stop_point_invariant TO dbimporter;
 
 --
 -- Name: TABLE journey_pattern; Type: ACL; Schema: journey_pattern; Owner: dbhasura
@@ -149,7 +137,13 @@ GRANT SELECT ON TABLE route.type_of_line TO dbimporter;
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE service_pattern.scheduled_stop_point TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_point TO dbimporter;
+
+--
+-- Name: TABLE scheduled_stop_point_invariant; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_point_invariant TO dbimporter;
 
 --
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -239,6 +233,66 @@ COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Tra
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.closest_point_on_infrastructure_link; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.closest_point_on_infrastructure_link IS 'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.direction; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.direction IS 'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified LineString.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.label; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.label IS 'The label is the short code that identifies the stop to the passengers. There can be at most one stop with the same label at a time. The label matches the GTFS stop_code.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.located_on_infrastructure_link_id; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.located_on_infrastructure_link_id IS 'The infrastructure link on which the stop is located.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.measured_location; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.measured_location IS 'The measured location describes the physical location of the stop. For some stops this describes the location of the pole-mounted flag. A PostGIS PointZ geography in EPSG:4326.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.priority; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.priority IS 'The priority of the stop definition. The definition may be overridden by higher priority definitions.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.relative_distance_from_infrastructure_link_start; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.relative_distance_from_infrastructure_link_start IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.scheduled_stop_point_id; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.scheduled_stop_point_id IS 'The ID of the scheduled stop point.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.validity_end; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.validity_end IS 'The date from which onwards the stop is no longer valid. If NULL, the stop will be always valid.';
+
+--
+-- Name: COLUMN scheduled_stop_point_1666001572785.validity_start; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON COLUMN deleted.scheduled_stop_point_1666001572785.validity_start IS 'The date when the stop becomes valid. If NULL, the stop has been always valid.';
 
 --
 -- Name: FUNCTION check_infra_link_stop_refs_with_new_ssp_1657795756608(replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start timestamp with time zone, new_validity_end timestamp with time zone); Type: COMMENT; Schema: deleted; Owner: dbhasura
@@ -427,6 +481,12 @@ COMMENT ON FUNCTION deleted.verify_infra_link_stop_refs_1661496355072() IS '''Pe
   successful run to prevent from double checks in subsequent function calls within the same transaction.''';
 
 --
+-- Name: VIEW scheduled_stop_point_1666001572785; Type: COMMENT; Schema: deleted; Owner: dbhasura
+--
+
+COMMENT ON VIEW deleted.scheduled_stop_point_1666001572785 IS 'The scheduled stop points: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:845 . Colloquially known as stops from the perspective of timetable planning.';
+
+--
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -499,76 +559,6 @@ COMMENT ON TABLE infrastructure_network.infrastructure_link IS 'The infrastructu
 --
 
 COMMENT ON TABLE infrastructure_network.vehicle_submode_on_infrastructure_link IS 'Which infrastructure links are safely traversed by which vehicle submodes?';
-
---
--- Name: COLUMN scheduled_stop_point.validity_end; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN internal_service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time';
-
---
--- Name: COLUMN scheduled_stop_point.validity_start; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN internal_service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time';
-
---
--- Name: FUNCTION get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Returns the scheduled stop points from the internal_service_pattern.scheduled_stop_point table.
-     If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
-     Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
-     appended to the result (it is not inserted into the table).';
-
---
--- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger ON scheduled_stop_point; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger ON internal_service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
-      Deleting a scheduled_stop_point instance can break the route consistency in the following ways:
-      1. The deleted stop point instance may "reveal" a lower priority stop point instance, which may make the route and
-         journey pattern conflict in the ways described above (see trigger for insertion of a row in the
-         scheduled_stop_point table).
-      2. The updated stop point might not anymore have any instances whose validity time would at all overlap with the
-         journey pattern''s route''s validity time ("ghost stop").';
-
---
--- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger ON scheduled_stop_point; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger ON internal_service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
-      Inserting a scheduled_stop_point instance can break the route consistency in the following ways:
-      1. The new stop point instance might be located on an infra link which is not part of all of its journey
-         pattern''s routes.
-      2. The stop point instance might be located on an infra link, whose position in a route does not correspond to the
-         position of the stop point in the corresponding journey pattern.';
-
---
--- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger ON scheduled_stop_point; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger ON internal_service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
-      Updating a scheduled_stop_point instance can break the route consistency in the following ways:
-      1. The updated stop point instance might be located on an infra link which is not part of all of its journey
-         pattern''s routes.
-      2. The updated stop point instance might be located on an infra link, whose position in a route does not
-         correspond to the position of the stop point in the corresponding journey pattern.
-      3. The deleted stop point instance may "reveal" a lower priority stop point instance (by change of validity time),
-         which may make the route and journey pattern conflict in the ways described above with regard to the revealed
-         stop point.
-      4. The updated stop point might not anymore have any instances whose validity time would at all overlap with the
-         journey pattern''s route''s validity time ("ghost stop").';
-
---
--- Name: TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON scheduled_stop_point; Type: COMMENT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-COMMENT ON TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON internal_service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> stop references after an insert, update, or delete on the
-   scheduled_stop_point table.
-
-   This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
-   level trigger.';
 
 --
 -- Name: FUNCTION date_closed_upper(range daterange); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
@@ -1024,64 +1014,16 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 
 --
--- Name: COLUMN scheduled_stop_point.closest_point_on_infrastructure_link; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.closest_point_on_infrastructure_link IS 'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
-
---
--- Name: COLUMN scheduled_stop_point.direction; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.direction IS 'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified LineString.';
-
---
--- Name: COLUMN scheduled_stop_point.label; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.label IS 'The label is the short code that identifies the stop to the passengers. There can be at most one stop with the same label at a time. The label matches the GTFS stop_code.';
-
---
--- Name: COLUMN scheduled_stop_point.located_on_infrastructure_link_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.located_on_infrastructure_link_id IS 'The infrastructure link on which the stop is located.';
-
---
--- Name: COLUMN scheduled_stop_point.measured_location; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.measured_location IS 'The measured location describes the physical location of the stop. For some stops this describes the location of the pole-mounted flag. A PostGIS PointZ geography in EPSG:4326.';
-
---
--- Name: COLUMN scheduled_stop_point.priority; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.priority IS 'The priority of the stop definition. The definition may be overridden by higher priority definitions.';
-
---
--- Name: COLUMN scheduled_stop_point.relative_distance_from_infrastructure_link_start; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.relative_distance_from_infrastructure_link_start IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
-
---
--- Name: COLUMN scheduled_stop_point.scheduled_stop_point_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.scheduled_stop_point_id IS 'The ID of the scheduled stop point.';
-
---
 -- Name: COLUMN scheduled_stop_point.validity_end; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'The date from which onwards the stop is no longer valid. If NULL, the stop will be always valid.';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time';
 
 --
 -- Name: COLUMN scheduled_stop_point.validity_start; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'The date when the stop becomes valid. If NULL, the stop has been always valid.';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time';
 
 --
 -- Name: COLUMN vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -1102,10 +1044,53 @@ COMMENT ON COLUMN service_pattern.vehicle_mode_on_scheduled_stop_point.vehicle_m
 COMMENT ON TABLE service_pattern.vehicle_mode_on_scheduled_stop_point IS 'Which scheduled stop points are serviced by which vehicle modes?';
 
 --
--- Name: VIEW scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger ON scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON VIEW service_pattern.scheduled_stop_point IS 'The scheduled stop points: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:845 . Colloquially known as stops from the perspective of timetable planning.';
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger ON service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
+      Deleting a scheduled_stop_point instance can break the route consistency in the following ways:
+      1. The deleted stop point instance may "reveal" a lower priority stop point instance, which may make the route and
+         journey pattern conflict in the ways described above (see trigger for insertion of a row in the
+         scheduled_stop_point table).
+      2. The updated stop point might not anymore have any instances whose validity time would at all overlap with the
+         journey pattern''s route''s validity time ("ghost stop").';
+
+--
+-- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger ON scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
+      Inserting a scheduled_stop_point instance can break the route consistency in the following ways:
+      1. The new stop point instance might be located on an infra link which is not part of all of its journey
+         pattern''s routes.
+      2. The stop point instance might be located on an infra link, whose position in a route does not correspond to the
+         position of the stop point in the corresponding journey pattern.';
+
+--
+-- Name: TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger ON scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger ON service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> scheduled stop point references.
+      Updating a scheduled_stop_point instance can break the route consistency in the following ways:
+      1. The updated stop point instance might be located on an infra link which is not part of all of its journey
+         pattern''s routes.
+      2. The updated stop point instance might be located on an infra link, whose position in a route does not
+         correspond to the position of the stop point in the corresponding journey pattern.
+      3. The deleted stop point instance may "reveal" a lower priority stop point instance (by change of validity time),
+         which may make the route and journey pattern conflict in the ways described above with regard to the revealed
+         stop point.
+      4. The updated stop point might not anymore have any instances whose validity time would at all overlap with the
+         journey pattern''s route''s validity time ("ghost stop").';
+
+--
+-- Name: TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger ON service_pattern.scheduled_stop_point IS 'Trigger to verify the infra link <-> stop references after an insert, update, or delete on the
+   scheduled_stop_point table.
+
+   This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
+   level trigger.';
 
 --
 -- Name: hdb_action_log hdb_action_log_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: dbhasura
@@ -1199,27 +1184,6 @@ ALTER TABLE ONLY infrastructure_network.vehicle_submode_on_infrastructure_link
     ADD CONSTRAINT vehicle_submode_on_infrastructure_link_pkey PRIMARY KEY (infrastructure_link_id, vehicle_submode);
 
 --
--- Name: scheduled_stop_point scheduled_stop_point_pkey; Type: CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point
-    ADD CONSTRAINT scheduled_stop_point_pkey PRIMARY KEY (scheduled_stop_point_id);
-
---
--- Name: scheduled_stop_point unique_validity_period; Type: CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point
-    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
-
---
--- Name: scheduled_stop_point_invariant scheduled_stop_point_invariant_pkey; Type: CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point_invariant
-    ADD CONSTRAINT scheduled_stop_point_invariant_pkey PRIMARY KEY (label);
-
---
 -- Name: journey_pattern journey_pattern_pkey; Type: CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1297,17 +1261,32 @@ ALTER TABLE ONLY route.type_of_line
     ADD CONSTRAINT type_of_line_pkey PRIMARY KEY (type_of_line);
 
 --
+-- Name: scheduled_stop_point scheduled_stop_point_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_pkey PRIMARY KEY (scheduled_stop_point_id);
+
+--
+-- Name: scheduled_stop_point unique_validity_period; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+
+--
+-- Name: scheduled_stop_point_invariant scheduled_stop_point_invariant_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point_invariant
+    ADD CONSTRAINT scheduled_stop_point_invariant_pkey PRIMARY KEY (label);
+
+--
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_serviced_by_vehicle_mode_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
 ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_serviced_by_vehicle_mode_pkey PRIMARY KEY (scheduled_stop_point_id, vehicle_mode);
-
---
--- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
@@ -1406,27 +1385,6 @@ ALTER TABLE ONLY infrastructure_network.vehicle_submode_on_infrastructure_link
     ADD CONSTRAINT vehicle_submode_on_infrastructure_link_vehicle_submode_fkey FOREIGN KEY (vehicle_submode) REFERENCES reusable_components.vehicle_submode(vehicle_submode);
 
 --
--- Name: scheduled_stop_point scheduled_stop_point_direction_fkey; Type: FK CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point
-    ADD CONSTRAINT scheduled_stop_point_direction_fkey FOREIGN KEY (direction) REFERENCES infrastructure_network.direction(value);
-
---
--- Name: scheduled_stop_point scheduled_stop_point_located_on_infrastructure_link_id_fkey; Type: FK CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point
-    ADD CONSTRAINT scheduled_stop_point_located_on_infrastructure_link_id_fkey FOREIGN KEY (located_on_infrastructure_link_id) REFERENCES infrastructure_network.infrastructure_link(infrastructure_link_id);
-
---
--- Name: scheduled_stop_point scheduled_stop_point_scheduled_stop_point_invariant_label_fkey; Type: FK CONSTRAINT; Schema: internal_service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY internal_service_pattern.scheduled_stop_point
-    ADD CONSTRAINT scheduled_stop_point_scheduled_stop_point_invariant_label_fkey FOREIGN KEY (label) REFERENCES internal_service_pattern.scheduled_stop_point_invariant(label);
-
---
 -- Name: journey_pattern journey_pattern_on_route_id_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1438,7 +1396,7 @@ ALTER TABLE ONLY journey_pattern.journey_pattern
 --
 
 ALTER TABLE ONLY journey_pattern.scheduled_stop_point_in_journey_pattern
-    ADD CONSTRAINT scheduled_stop_point_in_journe__scheduled_stop_point_label_fkey FOREIGN KEY (scheduled_stop_point_label) REFERENCES internal_service_pattern.scheduled_stop_point_invariant(label) ON DELETE CASCADE;
+    ADD CONSTRAINT scheduled_stop_point_in_journe__scheduled_stop_point_label_fkey FOREIGN KEY (scheduled_stop_point_label) REFERENCES service_pattern.scheduled_stop_point_invariant(label) ON DELETE CASCADE;
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern scheduled_stop_point_in_journey_pattern_journey_pattern_id_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
@@ -1511,6 +1469,27 @@ ALTER TABLE ONLY route.type_of_line
     ADD CONSTRAINT type_of_line_belonging_to_vehicle_mode_fkey FOREIGN KEY (belonging_to_vehicle_mode) REFERENCES reusable_components.vehicle_mode(vehicle_mode);
 
 --
+-- Name: scheduled_stop_point scheduled_stop_point_direction_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_direction_fkey FOREIGN KEY (direction) REFERENCES infrastructure_network.direction(value);
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_located_on_infrastructure_link_id_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_located_on_infrastructure_link_id_fkey FOREIGN KEY (located_on_infrastructure_link_id) REFERENCES infrastructure_network.infrastructure_link(infrastructure_link_id);
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_scheduled_stop_point_invariant_label_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_scheduled_stop_point_invariant_label_fkey FOREIGN KEY (label) REFERENCES service_pattern.scheduled_stop_point_invariant(label);
+
+--
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_serviced_by_vehicle_mode_vehicle_mode_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1522,7 +1501,7 @@ ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
 --
 
 ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
-    ADD CONSTRAINT vehicle_mode_on_scheduled_stop_point_scheduled_stop_point_id_fk FOREIGN KEY (scheduled_stop_point_id) REFERENCES internal_service_pattern.scheduled_stop_point(scheduled_stop_point_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT vehicle_mode_on_scheduled_stop_point_scheduled_stop_point_id_fk FOREIGN KEY (scheduled_stop_point_id) REFERENCES service_pattern.scheduled_stop_point(scheduled_stop_point_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
 -- Name: check_infra_link_stop_refs_with_new_ssp_1657795756608(uuid, uuid, public.geography, text, text, timestamp with time zone, timestamp with time zone); Type: FUNCTION; Schema: deleted; Owner: dbhasura
@@ -3993,15 +3972,15 @@ CREATE FUNCTION infrastructure_network.check_infrastructure_link_scheduled_stop_
 BEGIN
   IF EXISTS(
     SELECT 1
-    FROM internal_service_pattern.scheduled_stop_point
+    FROM service_pattern.scheduled_stop_point
     JOIN infrastructure_network.infrastructure_link
       ON infrastructure_network.infrastructure_link.infrastructure_link_id =
-         internal_service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
-    WHERE internal_service_pattern.scheduled_stop_point.located_on_infrastructure_link_id = NEW.infrastructure_link_id
+         service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
+    WHERE service_pattern.scheduled_stop_point.located_on_infrastructure_link_id = NEW.infrastructure_link_id
     AND (
-      (internal_service_pattern.scheduled_stop_point.direction = 'forward' AND NEW.direction = 'backward') OR
-      (internal_service_pattern.scheduled_stop_point.direction = 'backward' AND NEW.direction = 'forward') OR
-      (internal_service_pattern.scheduled_stop_point.direction = 'bidirectional' AND NEW.direction != 'bidirectional')
+      (service_pattern.scheduled_stop_point.direction = 'forward' AND NEW.direction = 'backward') OR
+      (service_pattern.scheduled_stop_point.direction = 'backward' AND NEW.direction = 'forward') OR
+      (service_pattern.scheduled_stop_point.direction = 'bidirectional' AND NEW.direction != 'bidirectional')
     )
   )
   THEN
@@ -4089,141 +4068,6 @@ $$;
 
 
 ALTER FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) OWNER TO dbhasura;
-
---
--- Name: check_scheduled_stop_point_infrastructure_link_direction(); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructure_link_direction() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  link_dir TEXT;
-BEGIN
-  SELECT infrastructure_network.infrastructure_link.direction
-  FROM infrastructure_network.infrastructure_link
-  INTO link_dir
-  WHERE infrastructure_network.infrastructure_link.infrastructure_link_id = NEW.located_on_infrastructure_link_id;
-
-  IF (NEW.direction = 'forward' AND link_dir = 'backward') OR
-     (NEW.direction = 'backward' AND link_dir = 'forward') OR
-     (NEW.direction = 'bidirectional' AND link_dir != 'bidirectional')
-  THEN
-    RAISE EXCEPTION 'scheduled stop point direction must be compatible with infrastructure link direction';
-  END IF;
-
-  RETURN NEW;
-END;
-$$;
-
-
-ALTER FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructure_link_direction() OWNER TO dbhasura;
-
---
--- Name: delete_scheduled_stop_point_label(text); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION internal_service_pattern.delete_scheduled_stop_point_label(old_label text) RETURNS void
-    LANGUAGE sql
-    AS $$
-DELETE FROM internal_service_pattern.scheduled_stop_point_invariant
-WHERE label = old_label
-  AND NOT EXISTS (SELECT 1 FROM internal_service_pattern.scheduled_stop_point WHERE label = old_label);
-$$;
-
-
-ALTER FUNCTION internal_service_pattern.delete_scheduled_stop_point_label(old_label text) OWNER TO dbhasura;
-
---
--- Name: get_scheduled_stop_points_with_new(uuid, uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS SETOF service_pattern.scheduled_stop_point
-    LANGUAGE plpgsql STABLE
-    AS $$
-BEGIN
-  IF new_scheduled_stop_point_id IS NULL THEN
-    RETURN QUERY
-      SELECT *
-      FROM service_pattern.scheduled_stop_point ssp
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
-  ELSE
-    RETURN QUERY
-      SELECT *
-      FROM service_pattern.scheduled_stop_point ssp
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
-      UNION ALL
-      SELECT new_scheduled_stop_point_id,
-             new_label,
-             new_measured_location::geography(PointZ, 4326),
-             new_located_on_infrastructure_link_id,
-             new_direction,
-             internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
-             NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link,
-             new_validity_start,
-             new_validity_end,
-             new_priority
-      FROM infrastructure_network.infrastructure_link il
-      WHERE il.infrastructure_link_id = new_located_on_infrastructure_link_id;
-  END IF;
-END;
-$$;
-
-
-ALTER FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
-
---
--- Name: insert_scheduled_stop_point_label(text); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point_label(new_label text) RETURNS void
-    LANGUAGE sql
-    AS $$
-INSERT INTO internal_service_pattern.scheduled_stop_point_invariant (label)
-VALUES (new_label)
-ON CONFLICT (label)
-  DO NOTHING;
-$$;
-
-
-ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_label(new_label text) OWNER TO dbhasura;
-
---
--- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  INSERT INTO internal_service_pattern.scheduled_stop_point (scheduled_stop_point_id,
-                                                             measured_location,
-                                                             located_on_infrastructure_link_id,
-                                                             direction,
-                                                             label,
-                                                             validity_start,
-                                                             validity_end,
-                                                             priority)
-  VALUES (scheduled_stop_point_id,
-          measured_location,
-          located_on_infrastructure_link_id,
-          direction,
-          label,
-          validity_start,
-          validity_end,
-          priority);
-
-  INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point(scheduled_stop_point_id,
-                                                                   vehicle_mode)
-  VALUES (scheduled_stop_point_id,
-          supported_vehicle_mode);
-END;
-$$;
-
-
-ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) OWNER TO dbhasura;
 
 --
 -- Name: const_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
@@ -4399,7 +4243,7 @@ WITH filter_route_ids AS (
          LEFT JOIN journey_pattern.journey_pattern jp ON jp.on_route_id = r.route_id
          LEFT JOIN journey_pattern.scheduled_stop_point_in_journey_pattern sspijp
                    ON sspijp.journey_pattern_id = jp.journey_pattern_id
-         LEFT JOIN internal_service_pattern.scheduled_stop_point ssp
+         LEFT JOIN service_pattern.scheduled_stop_point ssp
                    ON ssp.label = sspijp.scheduled_stop_point_label
        -- 1. the scheduled stop point instance to be inserted (defined by the new_... arguments) or
   WHERE ((sspijp.scheduled_stop_point_label = new_label AND
@@ -4520,7 +4364,7 @@ WITH RECURSIVE
   ),
   ssp_with_new AS (
     SELECT *
-    FROM internal_service_pattern.get_scheduled_stop_points_with_new(
+    FROM service_pattern.get_scheduled_stop_points_with_new(
       replace_scheduled_stop_point_id,
       (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
       new_located_on_infrastructure_link_id,
@@ -4783,7 +4627,7 @@ WITH RECURSIVE
            ssp.label                   AS key1,
            NULL                        AS key2,
            ssp.priority
-    FROM internal_service_pattern.get_scheduled_stop_points_with_new(
+    FROM service_pattern.get_scheduled_stop_points_with_new(
            replace_scheduled_stop_point_id,
            new_scheduled_stop_point_id,
            new_located_on_infrastructure_link_id,
@@ -5459,6 +5303,35 @@ $$;
 ALTER FUNCTION route.update_route() OWNER TO dbhasura;
 
 --
+-- Name: check_scheduled_stop_point_infrastructure_link_direction(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  link_dir TEXT;
+BEGIN
+  SELECT infrastructure_network.infrastructure_link.direction
+  FROM infrastructure_network.infrastructure_link
+  INTO link_dir
+  WHERE infrastructure_network.infrastructure_link.infrastructure_link_id = NEW.located_on_infrastructure_link_id;
+
+  IF (NEW.direction = 'forward' AND link_dir = 'backward') OR
+     (NEW.direction = 'backward' AND link_dir = 'forward') OR
+     (NEW.direction = 'bidirectional' AND link_dir != 'bidirectional')
+  THEN
+    RAISE EXCEPTION 'scheduled stop point direction must be compatible with infrastructure link direction';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction() OWNER TO dbhasura;
+
+--
 -- Name: check_scheduled_stop_point_vehicle_mode_by_infra_link(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -5472,11 +5345,11 @@ BEGIN
            JOIN service_pattern.vehicle_mode_on_scheduled_stop_point
                 ON service_pattern.vehicle_mode_on_scheduled_stop_point.vehicle_mode =
                    reusable_components.vehicle_submode.belonging_to_vehicle_mode
-           JOIN internal_service_pattern.scheduled_stop_point
-                ON internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id =
+           JOIN service_pattern.scheduled_stop_point
+                ON service_pattern.scheduled_stop_point.scheduled_stop_point_id =
                    service_pattern.vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id
     WHERE reusable_components.vehicle_submode.vehicle_submode = OLD.vehicle_submode
-      AND internal_service_pattern.scheduled_stop_point.located_on_infrastructure_link_id = OLD.infrastructure_link_id
+      AND service_pattern.scheduled_stop_point.located_on_infrastructure_link_id = OLD.infrastructure_link_id
     )
   THEN
     RAISE
@@ -5500,12 +5373,12 @@ BEGIN
   IF NOT EXISTS(
     SELECT 1
     FROM service_pattern.vehicle_mode_on_scheduled_stop_point
-           JOIN internal_service_pattern.scheduled_stop_point
-                ON internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id =
+           JOIN service_pattern.scheduled_stop_point
+                ON service_pattern.scheduled_stop_point.scheduled_stop_point_id =
                    service_pattern.vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id
            JOIN infrastructure_network.infrastructure_link
                 ON infrastructure_network.infrastructure_link.infrastructure_link_id =
-                   internal_service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
+                   service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
            JOIN infrastructure_network.vehicle_submode_on_infrastructure_link
                 ON infrastructure_network.vehicle_submode_on_infrastructure_link.infrastructure_link_id =
                    infrastructure_network.infrastructure_link.infrastructure_link_id
@@ -5513,7 +5386,7 @@ BEGIN
                                                        infrastructure_network.vehicle_submode_on_infrastructure_link.vehicle_submode
     WHERE service_pattern.vehicle_mode_on_scheduled_stop_point.vehicle_mode =
           reusable_components.vehicle_submode.belonging_to_vehicle_mode
-      AND internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id = NEW.scheduled_stop_point_id
+      AND service_pattern.scheduled_stop_point.scheduled_stop_point_id = NEW.scheduled_stop_point_id
     )
   THEN
     RAISE EXCEPTION 'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes';
@@ -5537,12 +5410,12 @@ BEGIN
   IF EXISTS(
        SELECT 1
        FROM service_pattern.vehicle_mode_on_scheduled_stop_point
-              JOIN internal_service_pattern.scheduled_stop_point
-                   ON internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id =
+              JOIN service_pattern.scheduled_stop_point
+                   ON service_pattern.scheduled_stop_point.scheduled_stop_point_id =
                       service_pattern.vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id
               JOIN infrastructure_network.infrastructure_link
                    ON infrastructure_network.infrastructure_link.infrastructure_link_id =
-                      internal_service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
+                      service_pattern.scheduled_stop_point.located_on_infrastructure_link_id
               JOIN infrastructure_network.vehicle_submode_on_infrastructure_link
                    ON infrastructure_network.vehicle_submode_on_infrastructure_link.infrastructure_link_id =
                       infrastructure_network.infrastructure_link.infrastructure_link_id
@@ -5550,13 +5423,13 @@ BEGIN
                                                           infrastructure_network.vehicle_submode_on_infrastructure_link.vehicle_submode
        WHERE service_pattern.vehicle_mode_on_scheduled_stop_point.vehicle_mode =
              reusable_components.vehicle_submode.belonging_to_vehicle_mode
-         AND internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id = OLD.scheduled_stop_point_id
+         AND service_pattern.scheduled_stop_point.scheduled_stop_point_id = OLD.scheduled_stop_point_id
        )
     !=
      EXISTS(
        SELECT 1
-       FROM internal_service_pattern.scheduled_stop_point
-       WHERE internal_service_pattern.scheduled_stop_point.scheduled_stop_point_id = OLD.scheduled_stop_point_id
+       FROM service_pattern.scheduled_stop_point
+       WHERE service_pattern.scheduled_stop_point.scheduled_stop_point_id = OLD.scheduled_stop_point_id
        )
   THEN
     RAISE EXCEPTION 'scheduled stop point must be assigned a vehicle mode which is compatible with allowed infrastructure link vehicle submodes';
@@ -5577,16 +5450,88 @@ CREATE FUNCTION service_pattern.delete_scheduled_stop_point() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  DELETE FROM internal_service_pattern.scheduled_stop_point
-  WHERE scheduled_stop_point_id = OLD.scheduled_stop_point_id;
-
-  PERFORM internal_service_pattern.delete_scheduled_stop_point_label(OLD.label);
+  PERFORM service_pattern.delete_scheduled_stop_point_label(OLD.label);
   RETURN OLD;
 END;
 $$;
 
 
 ALTER FUNCTION service_pattern.delete_scheduled_stop_point() OWNER TO dbhasura;
+
+--
+-- Name: delete_scheduled_stop_point_label(text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.delete_scheduled_stop_point_label(old_label text) RETURNS void
+    LANGUAGE sql
+    AS $$
+DELETE FROM service_pattern.scheduled_stop_point_invariant
+WHERE label = old_label
+  AND NOT EXISTS (SELECT 1 FROM service_pattern.scheduled_stop_point WHERE label = old_label);
+$$;
+
+
+ALTER FUNCTION service_pattern.delete_scheduled_stop_point_label(old_label text) OWNER TO dbhasura;
+
+--
+-- Name: get_scheduled_stop_points_with_new(uuid, uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
+    LANGUAGE plpgsql STABLE
+    AS $$
+BEGIN
+  IF new_scheduled_stop_point_id IS NULL THEN
+    RETURN QUERY
+      SELECT ssp.scheduled_stop_point_id,
+             ssp.measured_location,
+             ssp.located_on_infrastructure_link_id,
+             ssp.direction,
+             ssp.label,
+             ssp.validity_start,
+             ssp.validity_end,
+             ssp.priority,
+             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+      FROM service_pattern.scheduled_stop_point ssp
+        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      WHERE replace_scheduled_stop_point_id IS NULL
+         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
+  ELSE
+    RETURN QUERY
+      SELECT ssp.scheduled_stop_point_id,
+             ssp.measured_location,
+             ssp.located_on_infrastructure_link_id,
+             ssp.direction,
+             ssp.label,
+             ssp.validity_start,
+             ssp.validity_end,
+             ssp.priority,
+             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+      FROM service_pattern.scheduled_stop_point ssp
+        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      WHERE replace_scheduled_stop_point_id IS NULL
+         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+      SELECT new_scheduled_stop_point_id,
+             new_measured_location::geography(PointZ, 4326),
+             new_located_on_infrastructure_link_id,
+             new_direction,
+             new_label,
+             new_validity_start,
+             new_validity_end,
+             new_priority,
+             internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
+             NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
+      FROM infrastructure_network.infrastructure_link il
+      WHERE il.infrastructure_link_id = new_located_on_infrastructure_link_id;
+  END IF;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
 
 --
 -- Name: insert_scheduled_stop_point(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
@@ -5596,54 +5541,96 @@ CREATE FUNCTION service_pattern.insert_scheduled_stop_point() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  PERFORM internal_service_pattern.insert_scheduled_stop_point_label(NEW.label);
-
-  IF NEW.scheduled_stop_point_id IS NOT NULL
-  THEN
-    INSERT INTO internal_service_pattern.scheduled_stop_point (
-      scheduled_stop_point_id,
-      measured_location,
-      located_on_infrastructure_link_id,
-      direction,
-      label,
-      validity_start,
-      validity_end,
-      priority
-    ) VALUES (
-               NEW.scheduled_stop_point_id,
-               NEW.measured_location,
-               NEW.located_on_infrastructure_link_id,
-               NEW.direction,
-               NEW.label,
-               NEW.validity_start,
-               NEW.validity_end,
-               NEW.priority
-             ) RETURNING scheduled_stop_point_id INTO NEW.scheduled_stop_point_id;
-  ELSE
-    INSERT INTO internal_service_pattern.scheduled_stop_point (
-      measured_location,
-      located_on_infrastructure_link_id,
-      direction,
-      label,
-      validity_start,
-      validity_end,
-      priority
-    ) VALUES (
-               NEW.measured_location,
-               NEW.located_on_infrastructure_link_id,
-               NEW.direction,
-               NEW.label,
-               NEW.validity_start,
-               NEW.validity_end,
-               NEW.priority
-             ) RETURNING scheduled_stop_point_id INTO NEW.scheduled_stop_point_id;
-  END IF;
+  PERFORM service_pattern.insert_scheduled_stop_point_label(NEW.label);
   RETURN NEW;
 END;
 $$;
 
 
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point() OWNER TO dbhasura;
+
+--
+-- Name: insert_scheduled_stop_point_label(text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text) RETURNS void
+    LANGUAGE sql
+    AS $$
+INSERT INTO service_pattern.scheduled_stop_point_invariant (label)
+VALUES (new_label)
+ON CONFLICT (label)
+  DO NOTHING;
+$$;
+
+
+ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text) OWNER TO dbhasura;
+
+--
+-- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  INSERT INTO service_pattern.scheduled_stop_point (scheduled_stop_point_id,
+                                                             measured_location,
+                                                             located_on_infrastructure_link_id,
+                                                             direction,
+                                                             label,
+                                                             validity_start,
+                                                             validity_end,
+                                                             priority)
+  VALUES (scheduled_stop_point_id,
+          measured_location,
+          located_on_infrastructure_link_id,
+          direction,
+          label,
+          validity_start,
+          validity_end,
+          priority);
+
+  INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point(scheduled_stop_point_id,
+                                                                   vehicle_mode)
+  VALUES (scheduled_stop_point_id,
+          supported_vehicle_mode);
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) OWNER TO dbhasura;
+
+--
+-- Name: scheduled_stop_point_closest_point_on_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point) RETURNS public.geography
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT
+    internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+  FROM infrastructure_network.infrastructure_link il
+  WHERE ssp.located_on_infrastructure_link_id = il.infrastructure_link_id;
+$$;
+
+
+ALTER FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point) OWNER TO dbhasura;
+
+--
+-- Name: scheduled_stop_point_relative_distance_from_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) RETURNS double precision
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT
+    internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start
+  FROM infrastructure_network.infrastructure_link il
+  WHERE ssp.located_on_infrastructure_link_id = il.infrastructure_link_id;
+$$;
+
+
+ALTER FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) OWNER TO dbhasura;
 
 --
 -- Name: update_scheduled_stop_point(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
@@ -5653,21 +5640,8 @@ CREATE FUNCTION service_pattern.update_scheduled_stop_point() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  PERFORM internal_service_pattern.insert_scheduled_stop_point_label(NEW.label);
-
-  UPDATE internal_service_pattern.scheduled_stop_point
-  SET
-    scheduled_stop_point_id = NEW.scheduled_stop_point_id,
-    measured_location = NEW.measured_location,
-    located_on_infrastructure_link_id = NEW.located_on_infrastructure_link_id,
-    direction = NEW.direction,
-    label = NEW.label,
-    validity_start = NEW.validity_start,
-    validity_end = NEW.validity_end,
-    priority = NEW.priority
-  WHERE scheduled_stop_point_id = OLD.scheduled_stop_point_id;
-
-  PERFORM internal_service_pattern.delete_scheduled_stop_point_label(OLD.label);
+  PERFORM service_pattern.insert_scheduled_stop_point_label(NEW.label);
+  PERFORM service_pattern.delete_scheduled_stop_point_label(OLD.label);
   RETURN NEW;
 END;
 $$;
@@ -5734,30 +5708,6 @@ CREATE UNIQUE INDEX infrastructure_link_external_link_id_external_link_source_id
 --
 
 CREATE INDEX vehicle_submode_on_infrastruc_vehicle_submode_infrastructur_idx ON infrastructure_network.vehicle_submode_on_infrastructure_link USING btree (vehicle_submode, infrastructure_link_id);
-
---
--- Name: idx_scheduled_stop_point_direction; Type: INDEX; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE INDEX idx_scheduled_stop_point_direction ON internal_service_pattern.scheduled_stop_point USING btree (direction);
-
---
--- Name: scheduled_stop_point_label_idx; Type: INDEX; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE INDEX scheduled_stop_point_label_idx ON internal_service_pattern.scheduled_stop_point USING btree (label);
-
---
--- Name: scheduled_stop_point_located_on_infrastructure_link_id_idx; Type: INDEX; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE INDEX scheduled_stop_point_located_on_infrastructure_link_id_idx ON internal_service_pattern.scheduled_stop_point USING btree (located_on_infrastructure_link_id);
-
---
--- Name: scheduled_stop_point_measured_location_idx; Type: INDEX; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE INDEX scheduled_stop_point_measured_location_idx ON internal_service_pattern.scheduled_stop_point USING gist (measured_location);
 
 --
 -- Name: idx_scheduled_stop_point_in_journey_pattern_via_point_name_i18n; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
@@ -5886,6 +5836,30 @@ CREATE INDEX infrastructure_link_along_route_infrastructure_link_id_idx ON route
 CREATE INDEX type_of_line_belonging_to_vehicle_mode_idx ON route.type_of_line USING btree (belonging_to_vehicle_mode);
 
 --
+-- Name: idx_scheduled_stop_point_direction; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE INDEX idx_scheduled_stop_point_direction ON service_pattern.scheduled_stop_point USING btree (direction);
+
+--
+-- Name: scheduled_stop_point_label_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE INDEX scheduled_stop_point_label_idx ON service_pattern.scheduled_stop_point USING btree (label);
+
+--
+-- Name: scheduled_stop_point_located_on_infrastructure_link_id_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE INDEX scheduled_stop_point_located_on_infrastructure_link_id_idx ON service_pattern.scheduled_stop_point USING btree (located_on_infrastructure_link_id);
+
+--
+-- Name: scheduled_stop_point_measured_location_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE INDEX scheduled_stop_point_measured_location_idx ON service_pattern.scheduled_stop_point USING gist (measured_location);
+
+--
 -- Name: scheduled_stop_point_serviced_vehicle_mode_scheduled_stop_p_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -5917,15 +5891,6 @@ CREATE SCHEMA infrastructure_network;
 
 
 ALTER SCHEMA infrastructure_network OWNER TO dbhasura;
-
---
--- Name: internal_service_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
---
-
-CREATE SCHEMA internal_service_pattern;
-
-
-ALTER SCHEMA internal_service_pattern OWNER TO dbhasura;
 
 --
 -- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
@@ -6187,35 +6152,6 @@ CREATE TABLE infrastructure_network.vehicle_submode_on_infrastructure_link (
 ALTER TABLE infrastructure_network.vehicle_submode_on_infrastructure_link OWNER TO dbhasura;
 
 --
--- Name: scheduled_stop_point; Type: TABLE; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE TABLE internal_service_pattern.scheduled_stop_point (
-    scheduled_stop_point_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    measured_location public.geography(PointZ,4326) NOT NULL,
-    located_on_infrastructure_link_id uuid NOT NULL,
-    direction text NOT NULL,
-    label text NOT NULL,
-    validity_start date,
-    validity_end date,
-    priority integer NOT NULL
-);
-
-
-ALTER TABLE internal_service_pattern.scheduled_stop_point OWNER TO dbhasura;
-
---
--- Name: scheduled_stop_point_invariant; Type: TABLE; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE TABLE internal_service_pattern.scheduled_stop_point_invariant (
-    label text NOT NULL
-);
-
-
-ALTER TABLE internal_service_pattern.scheduled_stop_point_invariant OWNER TO dbhasura;
-
---
 -- Name: journey_pattern; Type: TABLE; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -6349,6 +6285,35 @@ CREATE TABLE route.type_of_line (
 ALTER TABLE route.type_of_line OWNER TO dbhasura;
 
 --
+-- Name: scheduled_stop_point; Type: TABLE; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TABLE service_pattern.scheduled_stop_point (
+    scheduled_stop_point_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    measured_location public.geography(PointZ,4326) NOT NULL,
+    located_on_infrastructure_link_id uuid NOT NULL,
+    direction text NOT NULL,
+    label text NOT NULL,
+    validity_start date,
+    validity_end date,
+    priority integer NOT NULL
+);
+
+
+ALTER TABLE service_pattern.scheduled_stop_point OWNER TO dbhasura;
+
+--
+-- Name: scheduled_stop_point_invariant; Type: TABLE; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TABLE service_pattern.scheduled_stop_point_invariant (
+    label text NOT NULL
+);
+
+
+ALTER TABLE service_pattern.scheduled_stop_point_invariant OWNER TO dbhasura;
+
+--
 -- Name: vehicle_mode_on_scheduled_stop_point; Type: TABLE; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -6359,6 +6324,24 @@ CREATE TABLE service_pattern.vehicle_mode_on_scheduled_stop_point (
 
 
 ALTER TABLE service_pattern.vehicle_mode_on_scheduled_stop_point OWNER TO dbhasura;
+
+--
+-- Name: scheduled_stop_point_1666001572785 service_pattern_delete_scheduled_stop_point_trigger; Type: TRIGGER; Schema: deleted; Owner: dbhasura
+--
+
+CREATE TRIGGER service_pattern_delete_scheduled_stop_point_trigger INSTEAD OF DELETE ON deleted.scheduled_stop_point_1666001572785 FOR EACH ROW EXECUTE FUNCTION service_pattern.delete_scheduled_stop_point();
+
+--
+-- Name: scheduled_stop_point_1666001572785 service_pattern_insert_scheduled_stop_point_trigger; Type: TRIGGER; Schema: deleted; Owner: dbhasura
+--
+
+CREATE TRIGGER service_pattern_insert_scheduled_stop_point_trigger INSTEAD OF INSERT ON deleted.scheduled_stop_point_1666001572785 FOR EACH ROW EXECUTE FUNCTION service_pattern.insert_scheduled_stop_point();
+
+--
+-- Name: scheduled_stop_point_1666001572785 service_pattern_update_scheduled_stop_point_trigger; Type: TRIGGER; Schema: deleted; Owner: dbhasura
+--
+
+CREATE TRIGGER service_pattern_update_scheduled_stop_point_trigger INSTEAD OF UPDATE ON deleted.scheduled_stop_point_1666001572785 FOR EACH ROW EXECUTE FUNCTION service_pattern.update_scheduled_stop_point();
 
 --
 -- Name: infrastructure_link check_infrastructure_link_route_link_direction_trigger; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura
@@ -6383,42 +6366,6 @@ CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE U
 --
 
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger AFTER DELETE ON infrastructure_network.vehicle_submode_on_infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link();
-
---
--- Name: scheduled_stop_point check_scheduled_stop_point_infrastructure_link_direction_trigge; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_infrastructure_link_direction_trigge AFTER INSERT OR UPDATE ON internal_service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructure_link_direction();
-
---
--- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_delete_trigger; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger AFTER DELETE ON internal_service_pattern.scheduled_stop_point REFERENCING OLD TABLE AS old_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_old_ssp_label();
-
---
--- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_insert_trigger; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger AFTER INSERT ON internal_service_pattern.scheduled_stop_point REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_ssp_label();
-
---
--- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_update_trigger; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger AFTER UPDATE ON internal_service_pattern.scheduled_stop_point REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_ssp_label();
-
---
--- Name: scheduled_stop_point scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigg; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigg AFTER INSERT OR UPDATE ON internal_service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_scheduled_stop_point();
-
---
--- Name: scheduled_stop_point verify_infra_link_stop_refs_on_scheduled_stop_point_trigger; Type: TRIGGER; Schema: internal_service_pattern; Owner: dbhasura
---
-
-CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger AFTER INSERT OR DELETE OR UPDATE ON internal_service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
 
 --
 -- Name: journey_pattern queue_verify_infra_link_stop_refs_on_jp_update_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
@@ -6523,22 +6470,58 @@ CREATE TRIGGER queue_verify_infra_link_stop_refs_on_route_delete_trigger AFTER D
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_route_trigger AFTER DELETE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
 
 --
+-- Name: scheduled_stop_point check_scheduled_stop_point_infrastructure_link_direction_trigge; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_infrastructure_link_direction_trigge AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction();
+
+--
+-- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_delete_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_delete_trigger AFTER DELETE ON service_pattern.scheduled_stop_point REFERENCING OLD TABLE AS old_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_old_ssp_label();
+
+--
+-- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_ssp_label();
+
+--
+-- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_update_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_ssp_label();
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigg; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigg AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_scheduled_stop_point();
+
+--
 -- Name: scheduled_stop_point service_pattern_delete_scheduled_stop_point_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER service_pattern_delete_scheduled_stop_point_trigger INSTEAD OF DELETE ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.delete_scheduled_stop_point();
+CREATE TRIGGER service_pattern_delete_scheduled_stop_point_trigger AFTER DELETE ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.delete_scheduled_stop_point();
 
 --
 -- Name: scheduled_stop_point service_pattern_insert_scheduled_stop_point_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER service_pattern_insert_scheduled_stop_point_trigger INSTEAD OF INSERT ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.insert_scheduled_stop_point();
+CREATE TRIGGER service_pattern_insert_scheduled_stop_point_trigger BEFORE INSERT ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.insert_scheduled_stop_point();
 
 --
 -- Name: scheduled_stop_point service_pattern_update_scheduled_stop_point_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER service_pattern_update_scheduled_stop_point_trigger INSTEAD OF UPDATE ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.update_scheduled_stop_point();
+CREATE TRIGGER service_pattern_update_scheduled_stop_point_trigger BEFORE UPDATE ON service_pattern.scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION service_pattern.update_scheduled_stop_point();
+
+--
+-- Name: scheduled_stop_point verify_infra_link_stop_refs_on_scheduled_stop_point_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger AFTER INSERT OR DELETE OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point prevent_update_of_vehicle_mode_on_scheduled_stop_point; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
@@ -6553,10 +6536,10 @@ CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPD
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger AFTER DELETE ON service_pattern.vehicle_mode_on_scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_vehicle_mode();
 
 --
--- Name: scheduled_stop_point; Type: VIEW; Schema: service_pattern; Owner: dbhasura
+-- Name: scheduled_stop_point_1666001572785; Type: VIEW; Schema: deleted; Owner: dbhasura
 --
 
-CREATE VIEW service_pattern.scheduled_stop_point AS
+CREATE VIEW deleted.scheduled_stop_point_1666001572785 AS
  SELECT ssp.scheduled_stop_point_id,
     ssp.label,
     ssp.measured_location,
@@ -6567,11 +6550,11 @@ CREATE VIEW service_pattern.scheduled_stop_point AS
     ssp.validity_start,
     ssp.validity_end,
     ssp.priority
-   FROM (internal_service_pattern.scheduled_stop_point ssp
+   FROM (service_pattern.scheduled_stop_point ssp
      JOIN infrastructure_network.infrastructure_link il ON ((ssp.located_on_infrastructure_link_id = il.infrastructure_link_id)));
 
 
-ALTER TABLE service_pattern.scheduled_stop_point OWNER TO dbhasura;
+ALTER TABLE deleted.scheduled_stop_point_1666001572785 OWNER TO dbhasura;
 
 --
 -- Sorted dump complete
