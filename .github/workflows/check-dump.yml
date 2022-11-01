@@ -1,0 +1,27 @@
+on:
+  # this workflow is only called by others, won't be executed on itself
+  # as it uses the pre-built docker image that is produced in the upstream job
+  workflow_call:
+
+jobs:
+  check_dumps:
+    name: Check if the generated dumps are up to date
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: '$IMAGE_NAME:generic-$COMMIT_ID'
+
+      - name: Generate database dumps
+        run: ./scripts/generate-dumps.sh
+
+      - name: Verify that generate dump command made no changes
+        run: '[ -z "$(git status --porcelain)" ]'

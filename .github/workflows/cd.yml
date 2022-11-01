@@ -64,6 +64,11 @@ jobs:
           docker push $IMAGE_NAME:seed-data
           docker push $IMAGE_NAME:latest
 
+  run_dump_tests:
+    needs:
+      - push_to_registry
+    uses: ./.github/workflows/check-dump.yml
+
   run_e2e_tests:
     needs: push_to_registry
     name: Run e2e tests
