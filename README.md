@@ -250,6 +250,19 @@ To run the migration tests on a database with data, you can use the seed version
 image target in `./docker/docker-compose.custom.yml` to `target: hasura-seed`. The same
 `test-migrations.sh` should work.
 
+## Dump tests
+
+We're using the generated dumps `./migrations/routesdb-dump.sql` and `./migrations/timetablesdb-dump.sql`
+to see the latest version of the database schema. This helps to see what actual changes happened after
+a potentially long and verbose migration script. Note that these dumps are sorted for comparability
+using the [pgdump-sort](https://github.com/tigra564/pgdump-sort) tool.
+
+These dumps are generated within the testdb docker container to assure version compatibility and to
+avoid unnecessary changes in git. To generate the dumps, execute `./scripts/generate-dumps.sh` while
+the latest version of the generic hasura container is running (`./scripts/start-dependencies.sh`).
+
+Note that CI also checks that the dumps are up-to-date.
+
 ## Deployment
 
 Secrets should be passed as files to Docker images in production environments.
