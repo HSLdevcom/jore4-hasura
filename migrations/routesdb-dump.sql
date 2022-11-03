@@ -20,6 +20,12 @@ SET row_security = off;
 GRANT USAGE ON SCHEMA infrastructure_network TO dbimporter;
 
 --
+-- Name: SCHEMA internal_service_pattern; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA internal_service_pattern TO dbimporter;
+
+--
 -- Name: SCHEMA internal_utils; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -1287,6 +1293,12 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point_invariant
 
 ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_serviced_by_vehicle_mode_pkey PRIMARY KEY (scheduled_stop_point_id, vehicle_mode);
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
@@ -4070,6 +4082,41 @@ $$;
 ALTER FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) OWNER TO dbhasura;
 
 --
+-- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  INSERT INTO service_pattern.scheduled_stop_point (scheduled_stop_point_id,
+                                                             measured_location,
+                                                             located_on_infrastructure_link_id,
+                                                             direction,
+                                                             label,
+                                                             validity_start,
+                                                             validity_end,
+                                                             priority)
+  VALUES (scheduled_stop_point_id,
+          measured_location,
+          located_on_infrastructure_link_id,
+          direction,
+          label,
+          validity_start,
+          validity_end,
+          priority);
+
+  INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point(scheduled_stop_point_id,
+                                                                   vehicle_mode)
+  VALUES (scheduled_stop_point_id,
+          supported_vehicle_mode);
+END;
+$$;
+
+
+ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) OWNER TO dbhasura;
+
+--
 -- Name: const_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
 --
 
@@ -5566,41 +5613,6 @@ $$;
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text) OWNER TO dbhasura;
 
 --
--- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  INSERT INTO service_pattern.scheduled_stop_point (scheduled_stop_point_id,
-                                                             measured_location,
-                                                             located_on_infrastructure_link_id,
-                                                             direction,
-                                                             label,
-                                                             validity_start,
-                                                             validity_end,
-                                                             priority)
-  VALUES (scheduled_stop_point_id,
-          measured_location,
-          located_on_infrastructure_link_id,
-          direction,
-          label,
-          validity_start,
-          validity_end,
-          priority);
-
-  INSERT INTO service_pattern.vehicle_mode_on_scheduled_stop_point(scheduled_stop_point_id,
-                                                                   vehicle_mode)
-  VALUES (scheduled_stop_point_id,
-          supported_vehicle_mode);
-END;
-$$;
-
-
-ALTER FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) OWNER TO dbhasura;
-
---
 -- Name: scheduled_stop_point_closest_point_on_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -5891,6 +5903,15 @@ CREATE SCHEMA infrastructure_network;
 
 
 ALTER SCHEMA infrastructure_network OWNER TO dbhasura;
+
+--
+-- Name: internal_service_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA internal_service_pattern;
+
+
+ALTER SCHEMA internal_service_pattern OWNER TO dbhasura;
 
 --
 -- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
