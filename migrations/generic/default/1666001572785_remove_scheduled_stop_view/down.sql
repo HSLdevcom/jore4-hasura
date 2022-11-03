@@ -11,9 +11,55 @@ ALTER FUNCTION service_pattern.delete_scheduled_stop_point_label SET SCHEMA inte
 ALTER FUNCTION service_pattern.get_scheduled_stop_points_with_new SET SCHEMA internal_service_pattern;
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label SET SCHEMA internal_service_pattern;
 
--- retrieve old service_pattern.scheduled_stop_point view
-ALTER VIEW deleted.scheduled_stop_point_1666001572785 SET SCHEMA service_pattern;
-ALTER VIEW service_pattern.scheduled_stop_point_1666001572785 RENAME TO scheduled_stop_point;
+-- recreate old scheduled_stop_point view
+CREATE VIEW service_pattern.scheduled_stop_point AS
+SELECT ssp.scheduled_stop_point_id,
+       ssp.label,
+       ssp.measured_location,
+       ssp.located_on_infrastructure_link_id,
+       ssp.direction,
+       internal_utils.ST_LineLocatePoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+       internal_utils.ST_ClosestPoint(il.shape, ssp.measured_location)    AS closest_point_on_infrastructure_link,
+       ssp.validity_start,
+       ssp.validity_end,
+       ssp.priority
+FROM internal_service_pattern.scheduled_stop_point AS ssp
+       INNER JOIN infrastructure_network.infrastructure_link AS il
+                  ON (ssp.located_on_infrastructure_link_id = il.infrastructure_link_id);
+COMMENT ON VIEW
+  service_pattern.scheduled_stop_point IS
+  'The scheduled stop points: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:845 . Colloquially known as stops from the perspective of timetable planning.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.scheduled_stop_point_id IS
+  'The ID of the scheduled stop point.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.label IS
+  'The label is the short code that identifies the stop to the passengers. There can be at most one stop with the same label at a time. The label matches the GTFS stop_code.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.measured_location IS
+  'The measured location describes the physical location of the stop. For some stops this describes the location of the pole-mounted flag. A PostGIS PointZ geography in EPSG:4326.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.located_on_infrastructure_link_id IS
+  'The infrastructure link on which the stop is located.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.direction IS
+  'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified LineString.';
+
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.relative_distance_from_infrastructure_link_start IS
+  'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.closest_point_on_infrastructure_link IS
+  'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.validity_start IS
+  'The date when the stop becomes valid. If NULL, the stop has been always valid.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.validity_end IS
+  'The date from which onwards the stop is no longer valid. If NULL, the stop will be always valid.';
+COMMENT ON COLUMN
+  service_pattern.scheduled_stop_point.priority IS
+  'The priority of the stop definition. The definition may be overridden by higher priority definitions.';
 
 -- fix the functions that they use the new schema in their body
 CREATE OR REPLACE FUNCTION infrastructure_network.check_infrastructure_link_scheduled_stop_points_direction_trigg() RETURNS trigger

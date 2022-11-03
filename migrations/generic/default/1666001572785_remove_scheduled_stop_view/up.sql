@@ -1,11 +1,13 @@
 
--- rename and archive old service_pattern.scheduled_stop_point view
-ALTER VIEW service_pattern.scheduled_stop_point RENAME TO scheduled_stop_point_1666001572785;
-ALTER VIEW service_pattern.scheduled_stop_point_1666001572785 SET SCHEMA deleted;
+-- rename the service_pattern.scheduled_stop_point view to be able to move the table to its place
+-- note: cannot drop it yet as many function refer to it
+ALTER VIEW service_pattern.scheduled_stop_point RENAME TO scheduled_stop_point_to_be_deleted;
 
--- move the internal_service_pattern schema contents to the new service_pattern schema
+-- move the internal_service_pattern.scheduled_stop_point table into the old view's place
 ALTER TABLE internal_service_pattern.scheduled_stop_point SET SCHEMA service_pattern;
 ALTER TABLE internal_service_pattern.scheduled_stop_point_invariant SET SCHEMA service_pattern;
+
+-- move the internal_service_pattern schema contents to the new service_pattern schema
 ALTER FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructure_link_direction SET SCHEMA service_pattern;
 ALTER FUNCTION internal_service_pattern.delete_scheduled_stop_point_label SET SCHEMA service_pattern;
 ALTER FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new SET SCHEMA service_pattern;
@@ -763,3 +765,5 @@ BEGIN
   END IF;
 END;
 $$;
+
+DROP VIEW service_pattern.scheduled_stop_point_to_be_deleted;
