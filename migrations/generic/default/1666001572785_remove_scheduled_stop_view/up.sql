@@ -10,10 +10,6 @@ ALTER FUNCTION internal_service_pattern.check_scheduled_stop_point_infrastructur
 ALTER FUNCTION internal_service_pattern.delete_scheduled_stop_point_label SET SCHEMA service_pattern;
 ALTER FUNCTION internal_service_pattern.get_scheduled_stop_points_with_new SET SCHEMA service_pattern;
 ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_label SET SCHEMA service_pattern;
-ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode SET SCHEMA service_pattern;
-
--- delete the internal_service_pattern schema
-DROP SCHEMA internal_service_pattern;
 
 -- fix the functions that they use the new schema in their body
 CREATE OR REPLACE FUNCTION infrastructure_network.check_infrastructure_link_scheduled_stop_points_direction_trigg() RETURNS trigger
@@ -670,7 +666,7 @@ ON CONFLICT (label)
   DO NOTHING;
 $$;
 
-CREATE OR REPLACE FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
+CREATE OR REPLACE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
     LANGUAGE plpgsql
     AS $$
 BEGIN

@@ -1,5 +1,3 @@
-CREATE SCHEMA internal_service_pattern;
-
 -- drop the triggers that were created for the table
 DROP TRIGGER service_pattern_insert_scheduled_stop_point_trigger ON service_pattern.scheduled_stop_point;
 DROP TRIGGER service_pattern_update_scheduled_stop_point_trigger ON service_pattern.scheduled_stop_point;
@@ -12,7 +10,6 @@ ALTER FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_di
 ALTER FUNCTION service_pattern.delete_scheduled_stop_point_label SET SCHEMA internal_service_pattern;
 ALTER FUNCTION service_pattern.get_scheduled_stop_points_with_new SET SCHEMA internal_service_pattern;
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label SET SCHEMA internal_service_pattern;
-ALTER FUNCTION service_pattern.insert_scheduled_stop_point_with_vehicle_mode SET SCHEMA internal_service_pattern;
 
 -- retrieve old service_pattern.scheduled_stop_point view
 ALTER VIEW deleted.scheduled_stop_point_1666001572785 SET SCHEMA service_pattern;
