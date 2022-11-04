@@ -44,8 +44,8 @@ describe('Delete scheduled_stop_point', () => {
       getTableConfigArray([
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
-        'internal_service_pattern.scheduled_stop_point_invariant',
-        'internal_service_pattern.scheduled_stop_point',
+        'service_pattern.scheduled_stop_point_invariant',
+        'service_pattern.scheduled_stop_point',
         'service_pattern.vehicle_mode_on_scheduled_stop_point',
       ]),
     ),
@@ -96,7 +96,7 @@ describe('Delete scheduled_stop_point', () => {
 
     const stopPointInvariantResponse = await queryTable(
       dbConnectionPool,
-      'internal_service_pattern.scheduled_stop_point_invariant',
+      'service_pattern.scheduled_stop_point_invariant',
     );
 
     expect(stopPointInvariantResponse.rowCount).toEqual(
