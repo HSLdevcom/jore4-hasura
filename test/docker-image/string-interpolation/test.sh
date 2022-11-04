@@ -20,7 +20,8 @@ script_dir_in_docker='/script'
 
 docker_tag='hsldevcom/jore4-hasura:hasura-for-testing-string-interpolation'
 # Use our Dockerfile to get the expected shell.
-dockerfile_path='../../..'
+dockerfile_path='../../../hasura.Dockerfile'
+docker_context_path='../../..'
 entrypoint='/bin/sh'
 
 cleanup() {
@@ -33,7 +34,7 @@ trap cleanup EXIT
 
 echo 1>&2 "Starting string interpolation tests."
 
-docker build -q -t "${docker_tag}" "${dockerfile_path}" >/dev/null
+docker build -q -f "${dockerfile_path}" -t "${docker_tag}" "${docker_context_path}" >/dev/null
 
 # Run tests on copies in a temporary directory.
 test_run_dir="$(mktemp -d)"
