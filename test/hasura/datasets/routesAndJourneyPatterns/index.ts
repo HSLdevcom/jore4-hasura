@@ -39,12 +39,12 @@ export const routesAndJourneyPatternsTableConfig: TableLikeConfig[] = [
     props: VehicleSubmodeOnInfrastructureLinkProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    name: 'service_pattern.scheduled_stop_point_invariant',
     data: scheduledStopPointInvariants,
     props: ScheduledStopPointInvariantProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point',
+    name: 'service_pattern.scheduled_stop_point',
     data: scheduledStopPoints,
     props: ScheduledStopPointProps,
   },

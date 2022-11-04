@@ -102,7 +102,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
           data: [infraLink],
         },
         {
-          name: 'internal_service_pattern.scheduled_stop_point',
+          name: 'service_pattern.scheduled_stop_point',
           props: ScheduledStopPointProps,
           data: stopData,
         },

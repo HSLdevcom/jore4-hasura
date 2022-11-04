@@ -48,12 +48,12 @@ export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
     props: VehicleSubmodeOnInfrastructureLinkProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point_invariant',
+    name: 'service_pattern.scheduled_stop_point_invariant',
     data: scheduledStopPointInvariants,
     props: ScheduledStopPointInvariantProps,
   },
   {
-    name: 'internal_service_pattern.scheduled_stop_point',
+    name: 'service_pattern.scheduled_stop_point',
     data: scheduledStopPoints,
     props: ScheduledStopPointProps,
   },
@@ -97,7 +97,7 @@ export const prioritizedRouteVerificationWithTempRouteTableConfig: TableLikeConf
 
     const newData = (() => {
       switch (tableLikeConfig.name) {
-        case 'internal_service_pattern.scheduled_stop_point':
+        case 'service_pattern.scheduled_stop_point':
           return scheduledStopPointsWithTempRoute;
         case 'service_pattern.vehicle_mode_on_scheduled_stop_point':
           return vehicleModeOnScheduledStopPointWithTempRoute;
