@@ -122,7 +122,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnectionPool,
-          'internal_service_pattern.scheduled_stop_point_invariant',
+          'service_pattern.scheduled_stop_point_invariant',
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(
@@ -236,7 +236,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnectionPool,
-          'internal_service_pattern.scheduled_stop_point_invariant',
+          'service_pattern.scheduled_stop_point_invariant',
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(
