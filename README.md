@@ -2,6 +2,35 @@
 
 Minimal hasura & docker setup for jore4 development.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [jore4-hasura](#jore4-hasura)
+  - [Development](#development)
+    - [Change the SQL schema](#change-the-sql-schema)
+      - [Optimizations](#optimizations)
+    - [Change the Hasura API](#change-the-hasura-api)
+    - [Add/modify seed data](#addmodify-seed-data)
+    - [Add/modify HSL specific schema](#addmodify-hsl-specific-schema)
+      - [Advice for permissions](#advice-for-permissions)
+      - [Incompatible SQL schema and metadata](#incompatible-sql-schema-and-metadata)
+  - [Integration tests](#integration-tests)
+  - [Migration tests](#migration-tests)
+  - [Dump tests](#dump-tests)
+  - [Deployment](#deployment)
+    - [Hasura docker image](#hasura-docker-image)
+      - [Secrets used by the docker image](#secrets-used-by-the-docker-image)
+      - [Use of the Docker image](#use-of-the-docker-image)
+    - [SQL migrator docker image](#sql-migrator-docker-image)
+      - [Secrets used by the docker image](#secrets-used-by-the-docker-image-1)
+      - [Use of the Docker image](#use-of-the-docker-image-1)
+    - [Authorizing PostgreSQL users in the SQL schema migrations](#authorizing-postgresql-users-in-the-sql-schema-migrations)
+      - [Requirements for the secrets](#requirements-for-the-secrets)
+      - [Design rationale](#design-rationale)
+      - [Tests](#tests)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 ## Development
 
 To play with the GraphQL API or to modify the backend, it is easiest to use the Hasura admin UI ("console").
@@ -265,11 +294,13 @@ Note that CI also checks that the dumps are up-to-date.
 
 ## Deployment
 
+### Hasura docker image
+
 Secrets should be passed as files to Docker images in production environments.
 [As long as Hasura cannot read secrets from files](https://github.com/hasura/graphql-engine/issues/3989), we need to provide our own entrypoint for the Docker image.
 Our entrypoint reads the secrets and delivers them to Hasura.
 
-### Secrets used by the docker image
+#### Secrets used by the docker image
 
 Our Docker image expects the following secrets to be bound to the container:
 
@@ -284,7 +315,55 @@ Our Docker image expects the following secrets to be bound to the container:
 | db-auth-username          | Name of the sql user that is used by the auth backend service           |
 | db-jore3importer-username | Name of the sql user that is used by the jore3 importer service         |
 
-### Use of the Docker image
+#### Use of the Docker image
+
+The Docker image expects the following values for the following environment variables or for the corresponding CLI options.
+The expected values are **set by default**.
+
+| Environment variable             | Default value      |
+| -------------------------------- | ------------------ |
+| HASURA_GRAPHQL_UNAUTHORIZED_ROLE | anonymous          |
+| HASURA_GRAPHQL_MIGRATIONS_DIR    | /hasura-migrations |
+| HASURA_GRAPHQL_METADATA_DIR      | /hasura-metadata   |
+
+**Please don't change them. Either don't define them at all or set them to the same values as documented above.**
+
+In addition, you should properly set the following environment variables for authorization to work:
+
+| Environment variable          | Value                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| HASURA_GRAPHQL_AUTH_HOOK_MODE | GET                                                                                 |
+| HASURA_GRAPHQL_AUTH_HOOK      | auth-backend webhook url, e.g. "http://localhost:3001/api/public/v1/hasura/webhook" |
+
+When using authorization via the web hook, you should normally leave the above mentioned
+`HASURA_GRAPHQL_UNAUTHORIZED_ROLE` variable _unset_.
+
+For more detailed documentation on the used environment variables, please see
+[the Hasura documentation](https://hasura.io/docs/latest/graphql/core/deployment/graphql-engine-flags/reference.html).
+
+We are using [hasura/graphql-engine](https://registry.hub.docker.com/r/hasura/graphql-engine) as a base image.
+Please see the link for detailed documentation.
+
+### SQL migrator docker image
+
+For running SQL migrations, we are using [Flyway](https://flywaydb.org/). This offers flexibility
+over Hasura's embedded migrations functionality like repeatable migrations and lifecycle hooks.
+
+#### Secrets used by the docker image
+
+Our Docker image expects the following secrets to be bound to the container:
+
+| Secret file               | Description                                                             |
+| ------------------------- | ----------------------------------------------------------------------- |
+| db-hostname               | Hostname/IP address for the default database                            |
+| db-name                   | Name of the database instance to connect to within the default database |
+| db-timetables-name        | Name of the logical database for timetables                             |
+| db-username               | Username for the default database                                       |
+| db-password               | Password for the default database                                       |
+| db-auth-username          | Name of the sql user that is used by the auth backend service           |
+| db-jore3importer-username | Name of the sql user that is used by the jore3 importer service         |
+
+#### Use of the Docker image
 
 The Docker image expects the following values for the following environment variables or for the corresponding CLI options.
 The expected values are **set by default**.

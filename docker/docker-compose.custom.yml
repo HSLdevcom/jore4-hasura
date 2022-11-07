@@ -16,3 +16,36 @@ services:
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+
+  jore4-flyway:
+    container_name: flyway
+    # build and the docker image from the local repo
+    build:
+      context: ../flyway
+      dockerfile: ../flyway/Dockerfile
+    networks:
+      - jore4
+    # Waiting for database to be ready to avoid startup delay due to initial crash
+    # Note: this should only be done in development setups as Kubernetes does not allow waiting for services to be ready
+    depends_on:
+      jore4-testdb:
+        condition: service_healthy
+    environment:
+      SECRET_STORE_BASE_PATH: "/mnt/secrets-store"
+      INCLUDE_HSL_MIGRATIONS: "true"
+      INCLUDE_SEED_DATA_MIGRATIONS: "true"
+    secrets:
+      - source: hasura-db-auth-username
+        target: /mnt/secrets-store/db-auth-username
+      - source: hasura-db-hostname
+        target: /mnt/secrets-store/db-hostname
+      - source: hasura-db-jore3importer-username
+        target: /mnt/secrets-store/db-jore3importer-username
+      - source: hasura-db-name
+        target: /mnt/secrets-store/db-name
+      - source: hasura-db-password
+        target: /mnt/secrets-store/db-password
+      - source: hasura-db-timetables-name
+        target: /mnt/secrets-store/db-timetables-name
+      - source: hasura-db-username
+        target: /mnt/secrets-store/db-username

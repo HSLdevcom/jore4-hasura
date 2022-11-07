@@ -22,4 +22,4 @@ else
 fi
 
 # start up test database and hasura for migrations
-docker-compose -f ../docker/docker-compose.yml -f ../docker/docker-compose.custom.yml up --build "$@" jore4-testdb jore4-hasura jore4-auth
+docker-compose -f ../docker/docker-compose.yml -f ../docker/docker-compose.custom.yml up --build "$@" jore4-testdb jore4-flyway #jore4-auth jore4-hasura
