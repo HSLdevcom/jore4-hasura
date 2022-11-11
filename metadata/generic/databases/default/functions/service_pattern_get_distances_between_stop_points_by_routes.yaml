@@ -1,0 +1,3 @@
+function:
+  name: get_distances_between_stop_points_by_routes
+  schema: service_pattern
