@@ -1,0 +1,3 @@
+function:
+  name: get_distances_between_stop_points_in_journey_patterns
+  schema: service_pattern

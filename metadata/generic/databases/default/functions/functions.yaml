@@ -1,3 +1,5 @@
 - "!include infrastructure_network_find_point_direction_on_link.yaml"
 - "!include infrastructure_network_resolve_point_to_closest_link.yaml"
 - "!include journey_pattern_check_infra_link_stop_refs_with_new_scheduled_stop_point.yaml"
+- "!include service_pattern_get_distances_between_stop_points_by_routes.yaml"
+- "!include service_pattern_get_distances_between_stop_points_in_journey_patterns.yaml"
