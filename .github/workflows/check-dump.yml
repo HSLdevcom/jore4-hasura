@@ -25,3 +25,17 @@ jobs:
 
       - name: Verify that generate dump command made no changes
         run: '[ -z "$(git status --porcelain)" ]'
+
+      - name: Remove the hasura container
+        run: docker rm --force hasura && docker volume prune --force
+
+      - name: Restart the hasura container to rerun the repeatable migrations
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: '$IMAGE_NAME:generic-$COMMIT_ID'
+
+      - name: Generate database dumps again, this time after the repeatable migrations
+        run: ./scripts/generate-dumps.sh
+
+      - name: Verify that generate dump command still made no changes
+        run: '[ -z "$(git status --porcelain)" ]'

@@ -1,2 +1,0 @@
-ALTER TABLE service_pattern.scheduled_stop_point_serviced_by_vehicle_mode
-  RENAME TO vehicle_mode_on_scheduled_stop_point;

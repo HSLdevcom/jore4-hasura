@@ -1,1 +1,0 @@
-DROP SCHEMA IF EXISTS import_jore3 CASCADE;
