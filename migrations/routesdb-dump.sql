@@ -131,7 +131,7 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.route TO dbimporter;
 -- Name: TABLE type_of_line; Type: ACL; Schema: route; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE route.type_of_line TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.type_of_line TO dbimporter;
 
 --
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -186,11 +186,6 @@ COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and rever
 --
 
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
-
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -1064,18 +1059,17 @@ ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_serviced_by_vehicle_mode_pkey PRIMARY KEY (scheduled_stop_point_id, vehicle_mode);
 
 --
--- Name: timing_place timing_place_label_key; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY timing_pattern.timing_place
-    ADD CONSTRAINT timing_place_label_key UNIQUE (label);
-
---
 -- Name: timing_place timing_place_pkey; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
 --
 
 ALTER TABLE ONLY timing_pattern.timing_place
     ADD CONSTRAINT timing_place_pkey PRIMARY KEY (timing_place_id);
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: infrastructure_network; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA infrastructure_network GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
@@ -1084,10 +1078,22 @@ ALTER TABLE ONLY timing_pattern.timing_place
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT ON TABLES  TO dbimporter;
 
 --
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES  TO dbimporter;
+
+--
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT ON TABLES  TO dbimporter;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: reusable_components; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
@@ -1380,6 +1386,10 @@ $$;
 
 ALTER FUNCTION infrastructure_network.check_infrastructure_link_scheduled_stop_points_direction_trigg() OWNER TO dbhasura;
 
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
 --
 -- Name: find_point_direction_on_link(public.geography, uuid, double precision); Type: FUNCTION; Schema: infrastructure_network; Owner: dbhasura
 --
@@ -1578,6 +1588,21 @@ $$;
 
 
 ALTER FUNCTION internal_utils.prev_day(bound date) OWNER TO dbhasura;
+
+--
+-- Name: prevent_update(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.prevent_update() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RAISE EXCEPTION 'update of table not allowed';
+END;
+$$;
+
+
+ALTER FUNCTION internal_utils.prevent_update() OWNER TO dbhasura;
 
 --
 -- Name: st_closestpoint(public.geography, public.geography); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
@@ -2437,21 +2462,6 @@ $$;
 ALTER FUNCTION journey_pattern.verify_route_journey_pattern_refs(filter_journey_pattern_id uuid, filter_route_id uuid) OWNER TO dbhasura;
 
 --
--- Name: prevent_update(); Type: FUNCTION; Schema: public; Owner: dbhasura
---
-
-CREATE FUNCTION public.prevent_update() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  RAISE EXCEPTION 'update of table not allowed';
-END;
-$$;
-
-
-ALTER FUNCTION public.prevent_update() OWNER TO dbhasura;
-
---
 -- Name: check_line_routes_priorities(); Type: FUNCTION; Schema: route; Owner: dbhasura
 --
 
@@ -3066,12 +3076,6 @@ CREATE INDEX hdb_scheduled_event_status ON hdb_catalog.hdb_scheduled_events USIN
 CREATE UNIQUE INDEX hdb_version_one_row ON hdb_catalog.hdb_version USING btree (((version IS NOT NULL)));
 
 --
--- Name: idx_hdb_catalog_hdb_scheduled_event_invocation_logs; Type: INDEX; Schema: hdb_catalog; Owner: dbhasura
---
-
-CREATE INDEX idx_hdb_catalog_hdb_scheduled_event_invocation_logs ON hdb_catalog.hdb_scheduled_event_invocation_logs USING btree (event_id);
-
---
 -- Name: idx_infrastructure_link_direction; Type: INDEX; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -3250,6 +3254,12 @@ CREATE INDEX scheduled_stop_point_measured_location_idx ON service_pattern.sched
 --
 
 CREATE INDEX scheduled_stop_point_serviced_vehicle_mode_scheduled_stop_p_idx ON service_pattern.vehicle_mode_on_scheduled_stop_point USING btree (vehicle_mode, scheduled_stop_point_id);
+
+--
+-- Name: timing_place_label_idx; Type: INDEX; Schema: timing_pattern; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX timing_place_label_idx ON timing_pattern.timing_place USING btree (label);
 
 --
 -- Name: hdb_catalog; Type: SCHEMA; Schema: -; Owner: dbhasura
@@ -3750,7 +3760,7 @@ CREATE CONSTRAINT TRIGGER check_infrastructure_link_scheduled_stop_points_direct
 -- Name: vehicle_submode_on_infrastructure_link prevent_update_of_vehicle_submode_on_infrastructure_link; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura
 --
 
-CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE UPDATE ON infrastructure_network.vehicle_submode_on_infrastructure_link FOR EACH ROW EXECUTE FUNCTION public.prevent_update();
+CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE UPDATE ON infrastructure_network.vehicle_submode_on_infrastructure_link FOR EACH ROW EXECUTE FUNCTION internal_utils.prevent_update();
 
 --
 -- Name: vehicle_submode_on_infrastructure_link scheduled_stop_point_vehicle_mode_by_infra_link_trigger; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura
@@ -3846,7 +3856,7 @@ CREATE CONSTRAINT TRIGGER check_route_line_priorities_trigger AFTER INSERT OR UP
 -- Name: route check_route_validity_is_within_line_validity_trigger; Type: TRIGGER; Schema: route; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER check_route_validity_is_within_line_validity_trigger AFTER INSERT OR UPDATE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION deleted.check_route_validity_is_within_line_validity_1664191395447();
+CREATE CONSTRAINT TRIGGER check_route_validity_is_within_line_validity_trigger AFTER INSERT OR UPDATE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION route.check_route_validity_is_within_line_validity();
 
 --
 -- Name: route queue_verify_infra_link_stop_refs_on_route_delete_trigger; Type: TRIGGER; Schema: route; Owner: dbhasura
@@ -3918,7 +3928,7 @@ CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_tr
 -- Name: vehicle_mode_on_scheduled_stop_point prevent_update_of_vehicle_mode_on_scheduled_stop_point; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPDATE ON service_pattern.vehicle_mode_on_scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION public.prevent_update();
+CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPDATE ON service_pattern.vehicle_mode_on_scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION internal_utils.prevent_update();
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
