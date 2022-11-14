@@ -131,7 +131,7 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.route TO dbimporter;
 -- Name: TABLE type_of_line; Type: ACL; Schema: route; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE route.type_of_line TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.type_of_line TO dbimporter;
 
 --
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -186,11 +186,6 @@ COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and rever
 --
 
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
-
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -697,6 +692,54 @@ COMMENT ON COLUMN route.line.validity_end IS 'The point in time from which onwar
 COMMENT ON COLUMN route.line.validity_start IS 'The point in time when the line becomes valid. If NULL, the line has been always valid.';
 
 --
+-- Name: COLUMN route.description_i18n; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.description_i18n IS 'The description of the route in the form of starting location - destination. Placeholder for multilingual strings.';
+
+--
+-- Name: COLUMN route.direction; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition, label and direction together are unique for a certain priority and validity period.';
+
+--
+-- Name: COLUMN route.label; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.label IS 'The label of the route definition, label and direction together are unique for a certain priority and validity period.';
+
+--
+-- Name: COLUMN route.on_line_id; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.on_line_id IS 'The line to which this route belongs.';
+
+--
+-- Name: COLUMN route.priority; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.priority IS 'The priority of the route definition. The definition may be overridden by higher priority definitions.';
+
+--
+-- Name: COLUMN route.route_id; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.route_id IS 'The ID of the route.';
+
+--
+-- Name: COLUMN route.validity_end; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.validity_end IS 'The point in time from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
+
+--
+-- Name: COLUMN route.validity_start; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.validity_start IS 'The point in time when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
+
+--
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -719,6 +762,12 @@ COMMENT ON TABLE route.infrastructure_link_along_route IS 'The infrastructure li
 --
 
 COMMENT ON TABLE route.line IS 'The line from Transmodel: http://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:487';
+
+--
+-- Name: TABLE route; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON TABLE route.route IS 'The routes from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:483';
 
 --
 -- Name: TABLE type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -768,6 +817,36 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 
 --
+-- Name: COLUMN scheduled_stop_point.direction; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.direction IS 'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified line string.';
+
+--
+-- Name: COLUMN scheduled_stop_point.label; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.label IS 'The label is the short code that identifies the stop to the passengers. There can be at most one stop with the same label at a time. The label matches the GTFS stop_code.';
+
+--
+-- Name: COLUMN scheduled_stop_point.located_on_infrastructure_link_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.located_on_infrastructure_link_id IS 'The infrastructure link on which the stop is located.';
+
+--
+-- Name: COLUMN scheduled_stop_point.measured_location; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.measured_location IS 'The measured location describes the physical location of the stop. For some stops this describes the location of the pole-mounted flag. A PostGIS PointZ geography in EPSG:4326.';
+
+--
+-- Name: COLUMN scheduled_stop_point.scheduled_stop_point_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.scheduled_stop_point_id IS 'The ID of the scheduled stop point.';
+
+--
 -- Name: COLUMN scheduled_stop_point.timing_place_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -805,6 +884,24 @@ COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_s
      If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
      Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
      appended to the result (it is not inserted into the table).';
+
+--
+-- Name: FUNCTION scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point) IS 'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
+
+--
+-- Name: FUNCTION scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+
+--
+-- Name: TABLE scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TABLE service_pattern.scheduled_stop_point IS 'The scheduled stop points: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:845 . Colloquially known as stops from the perspective of timetable planning.';
 
 --
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -1064,18 +1161,17 @@ ALTER TABLE ONLY service_pattern.vehicle_mode_on_scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_serviced_by_vehicle_mode_pkey PRIMARY KEY (scheduled_stop_point_id, vehicle_mode);
 
 --
--- Name: timing_place timing_place_label_key; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY timing_pattern.timing_place
-    ADD CONSTRAINT timing_place_label_key UNIQUE (label);
-
---
 -- Name: timing_place timing_place_pkey; Type: CONSTRAINT; Schema: timing_pattern; Owner: dbhasura
 --
 
 ALTER TABLE ONLY timing_pattern.timing_place
     ADD CONSTRAINT timing_place_pkey PRIMARY KEY (timing_place_id);
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: infrastructure_network; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA infrastructure_network GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
@@ -1084,10 +1180,22 @@ ALTER TABLE ONLY timing_pattern.timing_place
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT ON TABLES  TO dbimporter;
 
 --
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES  TO dbimporter;
+
+--
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT ON TABLES  TO dbimporter;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: reusable_components; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
@@ -1380,6 +1488,10 @@ $$;
 
 ALTER FUNCTION infrastructure_network.check_infrastructure_link_scheduled_stop_points_direction_trigg() OWNER TO dbhasura;
 
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
 --
 -- Name: find_point_direction_on_link(public.geography, uuid, double precision); Type: FUNCTION; Schema: infrastructure_network; Owner: dbhasura
 --
@@ -1578,6 +1690,21 @@ $$;
 
 
 ALTER FUNCTION internal_utils.prev_day(bound date) OWNER TO dbhasura;
+
+--
+-- Name: prevent_update(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.prevent_update() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RAISE EXCEPTION 'update of table not allowed';
+END;
+$$;
+
+
+ALTER FUNCTION internal_utils.prevent_update() OWNER TO dbhasura;
 
 --
 -- Name: st_closestpoint(public.geography, public.geography); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
@@ -2437,21 +2564,6 @@ $$;
 ALTER FUNCTION journey_pattern.verify_route_journey_pattern_refs(filter_journey_pattern_id uuid, filter_route_id uuid) OWNER TO dbhasura;
 
 --
--- Name: prevent_update(); Type: FUNCTION; Schema: public; Owner: dbhasura
---
-
-CREATE FUNCTION public.prevent_update() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  RAISE EXCEPTION 'update of table not allowed';
-END;
-$$;
-
-
-ALTER FUNCTION public.prevent_update() OWNER TO dbhasura;
-
---
 -- Name: check_line_routes_priorities(); Type: FUNCTION; Schema: route; Owner: dbhasura
 --
 
@@ -3066,12 +3178,6 @@ CREATE INDEX hdb_scheduled_event_status ON hdb_catalog.hdb_scheduled_events USIN
 CREATE UNIQUE INDEX hdb_version_one_row ON hdb_catalog.hdb_version USING btree (((version IS NOT NULL)));
 
 --
--- Name: idx_hdb_catalog_hdb_scheduled_event_invocation_logs; Type: INDEX; Schema: hdb_catalog; Owner: dbhasura
---
-
-CREATE INDEX idx_hdb_catalog_hdb_scheduled_event_invocation_logs ON hdb_catalog.hdb_scheduled_event_invocation_logs USING btree (event_id);
-
---
 -- Name: idx_infrastructure_link_direction; Type: INDEX; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -3250,6 +3356,12 @@ CREATE INDEX scheduled_stop_point_measured_location_idx ON service_pattern.sched
 --
 
 CREATE INDEX scheduled_stop_point_serviced_vehicle_mode_scheduled_stop_p_idx ON service_pattern.vehicle_mode_on_scheduled_stop_point USING btree (vehicle_mode, scheduled_stop_point_id);
+
+--
+-- Name: timing_place_label_idx; Type: INDEX; Schema: timing_pattern; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX timing_place_label_idx ON timing_pattern.timing_place USING btree (label);
 
 --
 -- Name: hdb_catalog; Type: SCHEMA; Schema: -; Owner: dbhasura
@@ -3750,7 +3862,7 @@ CREATE CONSTRAINT TRIGGER check_infrastructure_link_scheduled_stop_points_direct
 -- Name: vehicle_submode_on_infrastructure_link prevent_update_of_vehicle_submode_on_infrastructure_link; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura
 --
 
-CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE UPDATE ON infrastructure_network.vehicle_submode_on_infrastructure_link FOR EACH ROW EXECUTE FUNCTION public.prevent_update();
+CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE UPDATE ON infrastructure_network.vehicle_submode_on_infrastructure_link FOR EACH ROW EXECUTE FUNCTION internal_utils.prevent_update();
 
 --
 -- Name: vehicle_submode_on_infrastructure_link scheduled_stop_point_vehicle_mode_by_infra_link_trigger; Type: TRIGGER; Schema: infrastructure_network; Owner: dbhasura
@@ -3846,7 +3958,7 @@ CREATE CONSTRAINT TRIGGER check_route_line_priorities_trigger AFTER INSERT OR UP
 -- Name: route check_route_validity_is_within_line_validity_trigger; Type: TRIGGER; Schema: route; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER check_route_validity_is_within_line_validity_trigger AFTER INSERT OR UPDATE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION deleted.check_route_validity_is_within_line_validity_1664191395447();
+CREATE CONSTRAINT TRIGGER check_route_validity_is_within_line_validity_trigger AFTER INSERT OR UPDATE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION route.check_route_validity_is_within_line_validity();
 
 --
 -- Name: route queue_verify_infra_link_stop_refs_on_route_delete_trigger; Type: TRIGGER; Schema: route; Owner: dbhasura
@@ -3918,7 +4030,7 @@ CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_tr
 -- Name: vehicle_mode_on_scheduled_stop_point prevent_update_of_vehicle_mode_on_scheduled_stop_point; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPDATE ON service_pattern.vehicle_mode_on_scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION public.prevent_update();
+CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPDATE ON service_pattern.vehicle_mode_on_scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION internal_utils.prevent_update();
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura

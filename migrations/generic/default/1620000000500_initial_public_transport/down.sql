@@ -1,7 +1,0 @@
-DROP SCHEMA IF EXISTS reusable_components CASCADE;
-DROP SCHEMA IF EXISTS infrastructure_network CASCADE;
-DROP SCHEMA IF EXISTS internal_service_pattern CASCADE;
-DROP SCHEMA IF EXISTS service_pattern CASCADE;
-DROP SCHEMA IF EXISTS internal_route CASCADE;
-DROP SCHEMA IF EXISTS route CASCADE;
-DROP SCHEMA IF EXISTS journey_pattern CASCADE;

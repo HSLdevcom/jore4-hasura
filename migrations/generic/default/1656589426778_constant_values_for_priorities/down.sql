@@ -1,1 +1,0 @@
-DROP FUNCTION internal_utils.const_priority_draft;

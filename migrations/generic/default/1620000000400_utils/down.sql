@@ -1,1 +1,0 @@
-DROP SCHEMA IF EXISTS internal_utils CASCADE;

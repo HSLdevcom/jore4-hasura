@@ -1,2 +1,0 @@
-DROP FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point);
-DROP FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point);
