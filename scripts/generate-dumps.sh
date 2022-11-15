@@ -11,8 +11,7 @@ docker exec testdb pg_dump -h localhost -p 5432 -U dbadmin -d jore4e2e --schema-
 docker exec testdb pg_dump -h localhost -p 5432 -U dbadmin -d timetablesdb --schema-only --exclude-schema "deleted" -f /tmp/timetablesdb-dump.sql
 
 # add sorting tool to the container
-docker exec testdb apt-get install pip -y
-docker exec testdb pip install docopt
+docker exec testdb apt-get install python3-minimal python3-docopt -y
 docker exec testdb curl -o /tmp/pgdump-sort.py https://raw.githubusercontent.com/tigra564/pgdump-sort/master/pgdump-sort
 
 # sort the dumps
