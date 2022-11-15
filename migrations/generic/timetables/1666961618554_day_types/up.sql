@@ -1,6 +1,6 @@
 CREATE TABLE service_calendar.day_type_active_on_day_of_week (
   day_type_id uuid REFERENCES service_calendar.day_type (day_type_id) NOT NULL,
-  day_of_week int NOT NULL CHECK (day_of_week >= 1 AND day_of_week <= 7),
+  day_of_week int NOT NULL,
   PRIMARY KEY(day_type_id, day_of_week)
 );
 COMMENT ON TABLE service_calendar.day_type_active_on_day_of_week IS 'Tells on which days of week a particular DAY TYPE is active';

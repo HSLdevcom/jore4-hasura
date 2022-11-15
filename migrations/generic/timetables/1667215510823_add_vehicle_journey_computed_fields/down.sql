@@ -1,2 +1,0 @@
-DROP FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey);
-DROP FUNCTION vehicle_journey.vehicle_journey_end_time(vj vehicle_journey.vehicle_journey);

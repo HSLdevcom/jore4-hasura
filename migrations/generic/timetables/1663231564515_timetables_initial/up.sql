@@ -1,8 +1,5 @@
 -------------------- Journey Pattern --------------------
 
-CREATE SCHEMA journey_pattern;
-COMMENT ON SCHEMA journey_pattern IS 'The journey pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:1:683 ';
-
 CREATE TABLE journey_pattern.journey_pattern_ref (
   journey_pattern_ref_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   journey_pattern_id uuid NOT NULL,
@@ -16,36 +13,30 @@ COMMENT ON COLUMN journey_pattern.journey_pattern_ref.snapshot_timestamp IS 'The
 
 -------------------- Service Pattern --------------------
 
-CREATE SCHEMA service_pattern;
-COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:723 ';
-
 CREATE TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref (
   scheduled_stop_point_in_journey_pattern_ref_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   journey_pattern_ref_id uuid REFERENCES journey_pattern.journey_pattern_ref (journey_pattern_ref_id) NOT NULL,
   scheduled_stop_point_label text NOT NULL,
-  scheduled_stop_point_sequence int NOT NULL,
-  UNIQUE (journey_pattern_ref_id, scheduled_stop_point_sequence)
+  scheduled_stop_point_sequence int NOT NULL
 );
 COMMENT ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Reference the a SCHEDULED STOP POINT within a JOURNEY PATTERN. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:729 ';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.journey_pattern_ref_id IS 'JOURNEY PATTERN to which the SCHEDULED STOP POINT belongs';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.scheduled_stop_point_label IS 'The label of the SCHEDULED STOP POINT';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.scheduled_stop_point_sequence IS 'The order of the SCHEDULED STOP POINT within the JOURNEY PATTERN.';
+CREATE UNIQUE INDEX service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx ON service_pattern.scheduled_stop_point_in_journey_pattern_ref USING btree (journey_pattern_ref_id, scheduled_stop_point_sequence);
 
 -------------------- Service Calendar --------------------
-
-CREATE SCHEMA service_calendar;
-COMMENT ON SCHEMA service_calendar IS 'The service calendar model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:3:294 ';
 
 -- = päivätyyppi, erikoispäivätyyppi. E.g. "Monday-Thursday" or "Christmas day"
 CREATE TABLE service_calendar.day_type (
   day_type_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   label text NOT NULL,
-  name_i18n jsonb NOT NULL,
-  UNIQUE (label)
+  name_i18n jsonb NOT NULL
 );
 COMMENT ON TABLE service_calendar.day_type IS 'A type of day characterised by one or more properties which affect public transport operation. For example: weekday in school holidays. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:3:299 ';
 COMMENT ON COLUMN service_calendar.day_type.label IS 'The label for the DAY TYPE. Used for identifying the DAY TYPE when importing data from Hastus. Includes both basic (e.g. "Monday-Thursday") and special ("Easter Sunday") day types';
 COMMENT ON COLUMN service_calendar.day_type.name_i18n IS 'Human-readable name for the DAY TYPE';
+CREATE UNIQUE INDEX service_calendar_day_type_label_idx ON service_calendar.day_type USING btree (label);
 
 -- basic day types are built-in
 INSERT INTO service_calendar.day_type
@@ -58,9 +49,6 @@ VALUES
   ('0e1855f1-dfca-4900-a118-f608aa07e939','SU','{"fi_FI": "Sunnuntai", "sv_FI": "Söndag", "en_US": "Sunday"}');
 
 -------------------- Vehicle Schedule --------------------
-
-CREATE SCHEMA vehicle_schedule;
-COMMENT ON SCHEMA vehicle_schedule IS 'The vehicle schedule frame adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 -- = liikennöintikausi. E.g. 22KES
 CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
@@ -77,9 +65,6 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERA
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.priority IS 'The priority of the timetable definition. The definition may be overridden by higher priority definitions.';
 
 -------------------- Vehicle Service --------------------
-
-CREATE SCHEMA vehicle_service;
-COMMENT ON SCHEMA vehicle_service IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
 
 CREATE TABLE vehicle_service.vehicle_service (
   vehicle_service_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -99,9 +84,6 @@ COMMENT ON COLUMN vehicle_service.block.vehicle_service_id IS 'The VEHICLE SERVI
 
 -------------------- Vehicle Journey --------------------
 
-CREATE SCHEMA vehicle_journey;
-COMMENT ON SCHEMA vehicle_journey IS 'The vehicle journey model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:824 ';
-
 CREATE TABLE vehicle_journey.vehicle_journey (
   vehicle_journey_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   journey_pattern_ref_id uuid REFERENCES journey_pattern.journey_pattern_ref (journey_pattern_ref_id) NOT NULL,
@@ -113,17 +95,13 @@ COMMENT ON COLUMN vehicle_journey.vehicle_journey.block_id IS 'The BLOCK to whic
 
 -------------------- Passing Times --------------------
 
-CREATE SCHEMA passing_times;
-COMMENT ON SCHEMA passing_times IS 'The passing times model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:939 ';
-
 CREATE TABLE passing_times.timetabled_passing_time (
   timetabled_passing_time_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   vehicle_journey_id uuid REFERENCES vehicle_journey.vehicle_journey (vehicle_journey_id) NOT NULL,
   scheduled_stop_point_in_journey_pattern_ref_id uuid REFERENCES service_pattern.scheduled_stop_point_in_journey_pattern_ref (scheduled_stop_point_in_journey_pattern_ref_id) NOT NULL,
   arrival_time interval NULL,
   departure_time interval NULL,
-  passing_time interval NOT NULL GENERATED ALWAYS AS (coalesce(departure_time, arrival_time)) STORED,
-  CONSTRAINT arrival_or_departure_time_exists CHECK (arrival_time IS NOT NULL OR departure_time IS NOT NULL)
+  passing_time interval NOT NULL GENERATED ALWAYS AS (coalesce(departure_time, arrival_time)) STORED
 );
 COMMENT ON TABLE passing_times.timetabled_passing_time IS 'Long-term planned time data concerning public transport vehicles passing a particular POINT IN JOURNEY PATTERN on a specified VEHICLE JOURNEY for a certain DAY TYPE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:946 ';
 COMMENT ON COLUMN passing_times.timetabled_passing_time.vehicle_journey_id IS 'The VEHICLE JOURNEY to which this TIMETABLED PASSING TIME belongs';

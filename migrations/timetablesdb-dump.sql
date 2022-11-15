@@ -291,13 +291,6 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_pkey PRIMARY KEY (timetabled_passing_time_id);
 
 --
--- Name: day_type day_type_label_key; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_calendar.day_type
-    ADD CONSTRAINT day_type_label_key UNIQUE (label);
-
---
 -- Name: day_type day_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -310,13 +303,6 @@ ALTER TABLE ONLY service_calendar.day_type
 
 ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_pkey PRIMARY KEY (day_type_id, day_of_week);
-
---
--- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journ_journey_pattern_ref_id_schedu_key; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_pattern.scheduled_stop_point_in_journey_pattern_ref
-    ADD CONSTRAINT scheduled_stop_point_in_journ_journey_pattern_ref_id_schedu_key UNIQUE (journey_pattern_ref_id, scheduled_stop_point_sequence);
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pattern_ref_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -463,6 +449,18 @@ $$;
 
 
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
+-- Name: service_calendar_day_type_label_idx; Type: INDEX; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX service_calendar_day_type_label_idx ON service_calendar.day_type USING btree (label);
+
+--
+-- Name: service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx ON service_pattern.scheduled_stop_point_in_journey_pattern_ref USING btree (journey_pattern_ref_id, scheduled_stop_point_sequence);
 
 --
 -- Name: journey_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura

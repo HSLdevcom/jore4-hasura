@@ -1,1 +1,7 @@
-SELECT 'timetables database; before migrate hook; down migration';
+DROP SCHEMA journey_pattern;
+DROP SCHEMA service_pattern;
+DROP SCHEMA service_calendar;
+DROP SCHEMA vehicle_schedule;
+DROP SCHEMA vehicle_service;
+DROP SCHEMA vehicle_journey;
+DROP SCHEMA passing_times;
