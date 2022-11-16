@@ -205,8 +205,8 @@ route_link_traversal AS (
             -- This transformation should result in a metric coordinate system.
             -- E.g. EPSG:4326 is not like that.
             ST_Transform(l.shape::geometry, internal_utils.determine_srid(l.shape)),
-            line_endpoints[1],
-            line_endpoints[2]
+            lower(line_endpoints),
+            upper(line_endpoints)
           )
         )
     END AS distance_in_metres
@@ -223,41 +223,41 @@ route_link_traversal AS (
       WHEN si.route_link_sequence_start = si.route_link_sequence_end THEN
         CASE
           WHEN ilar.is_traversal_forwards THEN
-            ARRAY[
-              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location),
-              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)
-            ]
+            numrange(
+              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)::numeric,
+              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)::numeric,
+              '[]')
           ELSE
-            ARRAY[
-              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location),
-              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)
-            ]
+            numrange(
+              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)::numeric,
+              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)::numeric,
+              '[]')
         END
       WHEN ilar.infrastructure_link_sequence = si.route_link_sequence_start THEN
         CASE
           WHEN ilar.is_traversal_forwards THEN
-            ARRAY[
-              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location),
-              1.0
-            ]
+            numrange(
+              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)::numeric,
+              1.0,
+              '[]')
           ELSE
-            ARRAY[
+            numrange(
               0.0,
-              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)
-            ]
+              internal_utils.ST_LineLocatePoint(l.shape, start_stop_location)::numeric,
+              '[]')
         END
       WHEN ilar.infrastructure_link_sequence = si.route_link_sequence_end THEN
         CASE
           WHEN ilar.is_traversal_forwards THEN
-            ARRAY[
+            numrange(
               0.0,
-              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)
-            ]
+              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)::numeric,
+              '[]')
           ELSE
-            ARRAY[
-              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location),
-              1.0
-            ]
+            numrange(
+              internal_utils.ST_LineLocatePoint(l.shape, end_stop_location)::numeric,
+              1.0,
+              '[]')
         END
       ELSE NULL -- not the first or last link in sequence, will use the estimated length column instead.
     END AS line_endpoints
