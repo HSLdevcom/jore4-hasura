@@ -19,3 +19,14 @@ array_relationships:
         table:
           name: scheduled_stop_point_in_journey_pattern
           schema: journey_pattern
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: array
+        source: timetables
+        table:
+          name: journey_pattern_ref
+          schema: journey_pattern
+    name: journey_pattern_refs
