@@ -1,17 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
-# Merge HSL specific metadata with base metadata
-base_dir=.$1/databases/default/tables
-patch_files=`ls $base_dir/patch/*.yaml | xargs -n 1 basename`
-for patch_file in $patch_files
+set -eu
+
+# Merge HSL-specific metadata with generic metadata
+# 1. If the file with the same name already exists both in the generic and in the HSL metadata,
+# then the HSL version will be merged into the generic one
+# 2. If the file in the HSL metadata does not exist in the generic one, it will be copied
+SOURCE_DIR="$1"
+DESTINATION_DIR="$2"
+
+cd "$SOURCE_DIR"
+for SOURCE_YAML_FILE in `find . -name "*.yaml"`
 do
-  base_path="$base_dir/$patch_file"
-  patch_path="$base_dir/patch/$patch_file"
-  # tables.yaml does not follow common yaml format, so patch using yq fails.
-  # Just append files instead.
-  if [ $patch_file = "tables.yaml" ]; then
-    cat $patch_path >> $base_path
-    continue
+  if [ -f "$DESTINATION_DIR/$SOURCE_YAML_FILE" ]; then
+    # if the file with the same name already exists -> merge them
+    echo "Merging yaml file: $SOURCE_YAML_FILE"
+
+    # note: cannot use yq's ireduce as it requires a base value to be set. If setting
+    # {}, it cannot merge arrays; if setting [], it cannot merge objects
+    PATCH_FILE="$SOURCE_DIR/$SOURCE_YAML_FILE" \
+      yq eval -i '. *+ load(env(PATCH_FILE))' "$DESTINATION_DIR/$SOURCE_YAML_FILE"
+  else
+    # if the file does not exist yet -> copy it
+    echo "Copying yaml file: $SOURCE_YAML_FILE"
+    cp "$SOURCE_DIR/$SOURCE_YAML_FILE" "$DESTINATION_DIR/$SOURCE_YAML_FILE"
   fi
-  yq ea -I 0 -i '. as $item ireduce ({}; . *+ $item )' $base_path $patch_path
 done
