@@ -22,7 +22,8 @@ ON CONFLICT DO NOTHING;
 INSERT INTO vehicle_schedule.vehicle_schedule_frame
   (vehicle_schedule_frame_id, name_i18n, validity_start, validity_end, priority)
 VALUES
-  ('10ed8438-878b-4549-82f4-134127824231', '{"fi_FI": "2022 Syksy - 2022 Kevät", "sv_FI": "2022 Höst - 2022 Vår"}', '2022-08-15', '2023-06-04', 10)
+  ('10ed8438-878b-4549-82f4-134127824231', '{"fi_FI": "2022 Syksy - 2022 Kevät", "sv_FI": "2022 Höst - 2022 Vår"}', '2022-08-15', '2023-06-04', 10),
+  ('e47e46dd-680f-4194-9204-37ae41cfc56c', '{"fi_FI": "2022 Talviloma perjantait", "sv_FI": "2022 Vinterlov fredagar"}', '2022-11-01', '2023-02-28', 20)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO vehicle_service.vehicle_service
@@ -39,7 +40,10 @@ VALUES
   -- vehicle 2 Sat
   ('343dd6a8-a07f-48c9-8e6a-2f7c74a13bac', '61374d2b-5cce-4a7d-b63a-d487f3a05e0d','10ed8438-878b-4549-82f4-134127824231'),
   -- vehicle 2 Sun
-  ('14082ec7-9e64-4d06-8c4b-622af04136b5', '0e1855f1-dfca-4900-a118-f608aa07e939','10ed8438-878b-4549-82f4-134127824231')
+  ('14082ec7-9e64-4d06-8c4b-622af04136b5', '0e1855f1-dfca-4900-a118-f608aa07e939','10ed8438-878b-4549-82f4-134127824231'),
+  -- winter holiday Fridays
+  -- vehicle 1 Fri
+  ('8f247fd1-364f-4faa-961a-905f1b0e45d5', '7176e238-d46e-4583-a567-b836b1ae2589','e47e46dd-680f-4194-9204-37ae41cfc56c')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO vehicle_service.block
