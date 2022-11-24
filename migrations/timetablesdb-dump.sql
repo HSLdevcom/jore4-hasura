@@ -163,6 +163,14 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
 
 --
+-- Name: FUNCTION get_active_day_types_for_date(observation_date date); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) IS 'Finds all the day types that are active on the given observation date.
+There might be multiple filter conditions in the future: day of week, day of year, etc.
+See: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:3:294 ';
+
+--
 -- Name: TABLE day_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -263,6 +271,13 @@ COMMENT ON COLUMN vehicle_service.vehicle_service.day_type_id IS 'The DAY TYPE f
 --
 
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
+
+--
+-- Name: FUNCTION get_vehicle_services_for_date(observation_date date); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.get_vehicle_services_for_date(observation_date date) IS 'Find all vehicle services that are active on the given observation date.
+The results are not filtered by highest priority, that can be done on the UI on demand';
 
 --
 -- Name: TABLE block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -421,6 +436,24 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
 
 --
+-- Name: get_active_day_types_for_date(date); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) RETURNS SETOF service_calendar.day_type
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT dt.*
+    FROM service_calendar.day_type dt
+    -- in the future, day types might have other filter properties apart from "active on day of week", thus using LEFT JOIN
+    LEFT JOIN service_calendar.day_type_active_on_day_of_week dtaodow ON dtaodow.day_type_id = dt.day_type_id
+    -- day types active on the same day of week as the observation date
+    WHERE extract(isodow FROM observation_date) = dtaodow.day_of_week
+$$;
+
+
+ALTER FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) OWNER TO dbhasura;
+
+--
 -- Name: vehicle_journey_end_time(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -449,6 +482,24 @@ $$;
 
 
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
+-- Name: get_vehicle_services_for_date(date); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.get_vehicle_services_for_date(observation_date date) RETURNS SETOF vehicle_service.vehicle_service
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT vs.*
+    FROM vehicle_service.vehicle_service vs
+    JOIN service_calendar.get_active_day_types_for_date(observation_date) dt on vs.day_type_id = dt.day_type_id
+    JOIN vehicle_schedule.vehicle_schedule_frame vsf on vs.vehicle_schedule_frame_id = vsf.vehicle_schedule_frame_id
+    -- match only effective vehicle schedule frames on the given operating day
+    WHERE vsf.validity_start <= observation_date AND observation_date <= vsf.validity_end
+$$;
+
+
+ALTER FUNCTION vehicle_service.get_vehicle_services_for_date(observation_date date) OWNER TO dbhasura;
 
 --
 -- Name: idx_timetabled_passing_time_sspijp_ref; Type: INDEX; Schema: passing_times; Owner: dbhasura

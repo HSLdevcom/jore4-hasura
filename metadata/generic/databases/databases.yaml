@@ -34,3 +34,4 @@
     type_names:
       prefix: timetables_
   tables: "!include timetables/tables/tables.yaml"
+  functions: "!include timetables/functions/functions.yaml"
