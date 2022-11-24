@@ -1,15 +1,15 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
 } from '@datasets/defaultSetup/infrastructure-links';
-import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { InfrastructureLinkProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (infrastructureLinkId: string) => `
   mutation {
@@ -116,7 +116,7 @@ describe('Delete infrastructure link', () => {
           dataset.asDbGeometryObjectArray(
             infrastructureLinks.filter(
               (infrastructureLink) =>
-                infrastructureLink.infrastructure_link_id !=
+                infrastructureLink.infrastructure_link_id !==
                 toBeDeleted.infrastructure_link_id,
             ),
             ['shape'],
@@ -136,7 +136,7 @@ describe('Delete infrastructure link', () => {
         expect.arrayContaining(
           vehicleSubmodeOnInfrastructureLink.filter(
             (vehicleSubMode) =>
-              vehicleSubMode.infrastructure_link_id !=
+              vehicleSubMode.infrastructure_link_id !==
               toBeDeleted.infrastructure_link_id,
           ),
         ),

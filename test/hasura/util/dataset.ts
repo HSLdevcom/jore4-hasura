@@ -1,16 +1,14 @@
-import { Geometry } from 'wkx';
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
-import * as geojson from 'geojson';
+import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
-
-export type GeometryObject = geojson.GeometryObject;
+import { Geometry } from 'wkx';
 
 // define this type just to state our intention
 type ObjectWithGeometryProps<T> = GeometryObject extends T[keyof T]
   ? Record<string, T[keyof T]>
   : never;
 
-function isGeometryObject(object: any): object is GeometryObject {
+function isGeometryObject(object: ExplicitAny): object is GeometryObject {
   return 'coordinates' in object && 'type' in object;
 }
 
@@ -32,7 +30,7 @@ export function asDbGeometryObject<T extends ObjectWithGeometryProps<T>>(
     },
     {},
   );
-  return Object.assign({}, obj, mappedProps);
+  return { ...obj, ...mappedProps };
 }
 
 export function asDbGeometryObjectArray<T extends ObjectWithGeometryProps<T>>(

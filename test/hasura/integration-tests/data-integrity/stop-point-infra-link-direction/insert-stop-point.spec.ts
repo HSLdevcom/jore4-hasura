@@ -1,25 +1,26 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import {
-  LinkDirection,
-  ScheduledStopPoint,
-  ScheduledStopPointProps,
-  VehicleMode,
-} from '@datasets/types';
-import '@util/matchers';
-import { asDbGeometryObjectArray } from '@util/dataset';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
 } from '@datasets/setup';
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  ScheduledStopPointProps,
+  VehicleMode,
+} from '@datasets/types';
+import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const createToBeInserted = (
   infrastructureLinkId: string,
@@ -34,7 +35,7 @@ const createToBeInserted = (
       properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
       type: 'name',
     },
-  } as dataset.GeometryObject,
+  } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
   validity_end: new LocalDate('2060-11-03'),

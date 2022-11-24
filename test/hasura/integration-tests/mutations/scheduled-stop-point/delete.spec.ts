@@ -1,12 +1,8 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
 } from '@datasets/defaultSetup/scheduled-stop-points';
-import '@util/matchers';
 import {
   getPropNameArray,
   getTableConfigArray,
@@ -14,6 +10,10 @@ import {
   setupDb,
 } from '@datasets/setup';
 import { ScheduledStopPointProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeDeleted = scheduledStopPoints[1];
 
@@ -86,7 +86,7 @@ describe('Delete scheduled_stop_point', () => {
         dataset.asDbGeometryObjectArray(
           scheduledStopPoints.filter(
             (scheduledStopPoint) =>
-              scheduledStopPoint.scheduled_stop_point_id !=
+              scheduledStopPoint.scheduled_stop_point_id !==
               toBeDeleted.scheduled_stop_point_id,
           ),
           ['measured_location'],

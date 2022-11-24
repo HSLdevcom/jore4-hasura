@@ -1,13 +1,13 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
-import { Route, RouteProps } from '@datasets/types';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Route, RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 type PartialRouteWithNullableOnLineID = Partial<
   Omit<Route, 'on_line_id'> & { on_line_id: string | null }
@@ -115,7 +115,7 @@ describe('Update route', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           updated,
-          ...routes.filter((route) => route.route_id != updated.route_id),
+          ...routes.filter((route) => route.route_id !== updated.route_id),
         ]),
       );
     });
@@ -125,7 +125,7 @@ describe('Update route', () => {
 
     shouldReturnErrorResponse(
       toBeUpdated,
-      `unexpected null value for type 'uuid'`,
+      "unexpected null value for type 'uuid'",
     );
     shouldNotModifyDatabase(toBeUpdated);
   });

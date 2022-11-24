@@ -1,24 +1,25 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets/defaultSetup/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
 } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
+import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -31,7 +32,7 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
       properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
       type: 'name',
     },
-  } as dataset.GeometryObject,
+  } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
   validity_end: new LocalDate('2060-11-03'),

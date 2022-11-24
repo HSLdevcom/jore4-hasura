@@ -1,12 +1,4 @@
 import {
-  scheduledStopPointInvariants,
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-} from './scheduled-stop-points';
-import { lines } from './lines';
-import { infrastructureLinkAlongRoute, routes } from './routes';
-import { TableLikeConfig } from '@datasets/setup';
-import {
   InfrastructureLinkAlongRouteProps,
   InfrastructureLinkProps,
   JourneyPatternProps,
@@ -22,6 +14,13 @@ import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
 } from './journey-patterns';
+import { lines } from './lines';
+import { infrastructureLinkAlongRoute, routes } from './routes';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+  vehicleModeOnScheduledStopPoint,
+} from './scheduled-stop-points';
 
 export const route116TableConfig: TableLikeConfig[] = [
   {
