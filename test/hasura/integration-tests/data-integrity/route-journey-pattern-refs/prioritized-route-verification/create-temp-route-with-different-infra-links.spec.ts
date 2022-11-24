@@ -1,17 +1,18 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { setupDb } from '@datasets/setup';
 import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
-import {
-  infrastructureLinkAlongTempRouteWithOtherLinks,
-  tempRouteWithOtherLinks,
-} from '@datasets/prioritizedRouteVerification/routes';
 import {
   scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
   scheduledStopPointInTempJourneyPatternWithSameStops,
 } from '@datasets/prioritizedRouteVerification/journey-patterns';
+import {
+  infrastructureLinkAlongTempRouteWithOtherLinks,
+  tempRouteWithOtherLinks,
+} from '@datasets/prioritizedRouteVerification/routes';
+import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { setupDb } from '@datasets/setup';
+import { newLocalDate } from '@util/helpers';
+import '@util/matchers';
+import * as pg from 'pg';
 import {
   insertRoute,
   insertStopPoint,
@@ -23,7 +24,6 @@ import {
   shouldReturnCorrectScheduledStopPointResponse,
   shouldReturnErrorResponse,
 } from './util';
-import { newLocalDate } from '@util/helpers';
 
 describe('Creating a temporary route with different infra links', () => {
   let dbConnectionPool: pg.Pool;
@@ -92,9 +92,9 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       validity_end: newLocalDate(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(),
-        tempRouteWithOtherLinks.validity_end!.getMonth(),
-        tempRouteWithOtherLinks.validity_end!.getDate() - 1,
+        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 
@@ -124,9 +124,9 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       validity_end: newLocalDate(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(),
-        tempRouteWithOtherLinks.validity_end!.getMonth(),
-        tempRouteWithOtherLinks.validity_end!.getDate() + 1,
+        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.getDate() + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 

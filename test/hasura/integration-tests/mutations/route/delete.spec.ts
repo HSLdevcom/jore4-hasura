@@ -1,11 +1,11 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeDeleted = routes[2];
 
@@ -63,7 +63,7 @@ describe('Delete route', () => {
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
-        routes.filter((route) => route.route_id != toBeDeleted.route_id),
+        routes.filter((route) => route.route_id !== toBeDeleted.route_id),
       ),
     );
   });

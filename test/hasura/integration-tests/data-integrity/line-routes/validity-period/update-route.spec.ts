@@ -1,15 +1,15 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
-import { Route, RouteProps } from '@datasets/types';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { expectErrorResponse } from '@util/response';
 import { lines } from '@datasets/defaultSetup/lines';
-import { LocalDate } from 'local-date';
+import { routes } from '@datasets/defaultSetup/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Route, RouteProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
 import { newLocalDate } from '@util/helpers';
+import '@util/matchers';
+import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
   mutation {
@@ -115,7 +115,7 @@ describe('Update route', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           updated,
-          ...routes.filter((route) => route.route_id != updated.route_id),
+          ...routes.filter((item) => item.route_id !== updated.route_id),
         ]),
       );
     });
@@ -151,9 +151,9 @@ describe('Update route', () => {
   describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
       validity_start: newLocalDate(
-        lines[1].validity_start!.getFullYear(),
-        lines[1].validity_start!.getMonth(),
-        lines[1].validity_start!.getDate() - 1,
+        lines[1].validity_start!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        lines[1].validity_start!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        lines[1].validity_start!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 

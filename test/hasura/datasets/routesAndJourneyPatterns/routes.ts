@@ -4,10 +4,9 @@ import {
   Route,
   RouteDirection,
 } from '@datasets/types';
+import { LocalDate } from 'local-date';
 import { infrastructureLinks } from './infrastructure-links';
 import { lines } from './lines';
-import { scheduledStopPoints } from './scheduled-stop-points';
-import { LocalDate } from 'local-date';
 
 export const routes: Route[] = [
   {

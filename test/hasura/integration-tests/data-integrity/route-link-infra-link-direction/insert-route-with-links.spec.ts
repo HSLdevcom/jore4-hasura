@@ -5,7 +5,6 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets/defaultSetup/routes';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
@@ -17,9 +16,9 @@ import {
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const routeToBeInserted: Partial<Route> = {
   ...buildRoute('new route'),

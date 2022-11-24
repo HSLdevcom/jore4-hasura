@@ -1,16 +1,4 @@
 import {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-} from './infrastructure-links';
-import {
-  scheduledStopPointInvariants,
-  scheduledStopPoints,
-  vehicleModeOnScheduledStopPoint,
-} from './scheduled-stop-points';
-import { lines } from './lines';
-import { infrastructureLinkAlongRoute, routes } from './routes';
-import { TableLikeConfig } from '@datasets/setup';
-import {
   InfrastructureLinkAlongRouteProps,
   InfrastructureLinkProps,
   LineProps,
@@ -20,6 +8,17 @@ import {
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
+import {
+  infrastructureLinks,
+  vehicleSubmodeOnInfrastructureLink,
+} from './infrastructure-links';
+import { lines } from './lines';
+import { infrastructureLinkAlongRoute, routes } from './routes';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+  vehicleModeOnScheduledStopPoint,
+} from './scheduled-stop-points';
 
 export const defaultTableConfig: TableLikeConfig[] = [
   {

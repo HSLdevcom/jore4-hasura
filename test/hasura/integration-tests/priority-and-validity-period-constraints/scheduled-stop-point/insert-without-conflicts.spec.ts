@@ -1,19 +1,19 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
 } from '@datasets/types';
+import * as dataset from '@util/dataset';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import '@util/matchers';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -180,7 +180,7 @@ describe('Insert scheduled stop point', () => {
     shouldInsertCorrectRowIntoDatabase(toBeInserted);
   });
 
-  describe('whose validity period does not overlap with other validity period ', () => {
+  describe('whose validity period does not overlap with other validity period', () => {
     const toBeInserted: Partial<ScheduledStopPoint> = {
       located_on_infrastructure_link_id:
         infrastructureLinks[0].infrastructure_link_id,

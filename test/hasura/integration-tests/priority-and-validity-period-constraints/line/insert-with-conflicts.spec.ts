@@ -3,13 +3,12 @@ import { lines } from '@datasets/defaultSetup/lines';
 import { buildLine, buildLocalizedString } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Line, LineProps, VehicleMode } from '@datasets/types';
-import { expect } from '@jest/globals';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {

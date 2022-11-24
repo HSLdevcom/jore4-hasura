@@ -1,14 +1,15 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { setupDb } from '@datasets/setup';
 import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from '@datasets/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithSameLinks,
   tempRouteWithSameLinks,
 } from '@datasets/prioritizedRouteVerification/routes';
-import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from '@datasets/prioritizedRouteVerification/journey-patterns';
+import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { setupDb } from '@datasets/setup';
+import { newLocalDate } from '@util/helpers';
+import '@util/matchers';
+import * as pg from 'pg';
 import {
   insertRoute,
   insertStopPoint,
@@ -18,7 +19,6 @@ import {
   shouldReturnCorrectScheduledStopPointResponse,
   shouldReturnErrorResponse,
 } from './util';
-import { newLocalDate } from '@util/helpers';
 
 describe('Creating a temporary route with different stop order', () => {
   let dbConnectionPool: pg.Pool;
@@ -73,9 +73,9 @@ describe('Creating a temporary route with different stop order', () => {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
       validity_end: newLocalDate(
-        tempRouteWithSameLinks.validity_end!.getFullYear(),
-        tempRouteWithSameLinks.validity_end!.getMonth(),
-        tempRouteWithSameLinks.validity_end!.getDate() - 1,
+        tempRouteWithSameLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithSameLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithSameLinks.validity_end!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
     await insertRoute(

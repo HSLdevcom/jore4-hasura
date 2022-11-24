@@ -1,9 +1,7 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { getPropNameArray, queryTable } from '@datasets/setup';
 import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
 import { scheduledStopPoints } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { getPropNameArray, queryTable } from '@datasets/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
@@ -16,10 +14,12 @@ import {
   VehicleMode,
 } from '@datasets/types';
 import * as dataset from '@util/dataset';
-import * as rp from 'request-promise';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
 import { Response } from 'request';
+import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -135,7 +135,7 @@ const buildCheckInfraLinkStopRefsForStopPointRemovalQuery = (
   const checkInfraLinkStopRefsWithNewScheduledStopPointArgs: CheckInfraLinkStopRefsWithNewScheduledStopPointArgs =
     {
       replace_scheduled_stop_point_id:
-        scheduledStopPoint.scheduled_stop_point_id!,
+        scheduledStopPoint.scheduled_stop_point_id!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       new_located_on_infrastructure_link_id: null,
       new_measured_location: null,
       new_direction: null,
@@ -285,7 +285,7 @@ export const shouldReturnCorrectInsertRouteResponse = (
   route: Partial<Route>,
   infraLinks: Partial<InfrastructureLinkAlongRoute>[],
   scheduledStopPointsInJourneyPattern: Partial<ScheduledStopPointInJourneyPattern>[],
-  response: any,
+  response: ExplicitAny,
 ) => {
   expect(response).toEqual(
     expect.objectContaining({
@@ -310,7 +310,7 @@ export const shouldReturnCorrectInsertRouteResponse = (
 
 export const shouldReturnCorrectReplaceJourneyPatternResponse = (
   route: Partial<Route>,
-  response: any,
+  response: ExplicitAny,
 ) => {
   expect(response).toEqual(
     expect.objectContaining({

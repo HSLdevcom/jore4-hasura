@@ -5,8 +5,8 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from '@datasets/types';
-import { uniqBy } from 'lodash';
 import { LocalDate } from 'local-date';
+import { uniqBy } from 'lodash';
 
 const scheduledStopPointPohjantie: ScheduledStopPoint = {
   scheduled_stop_point_id: '8025166f-27c1-4973-9f07-8b28c5ba3166',

@@ -1,13 +1,13 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import '@util/matchers';
-import { Line, LineProps } from '@datasets/types';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { Line, LineProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (toBeUpdated: Partial<Line>) => `
   mutation {
@@ -101,7 +101,7 @@ describe('Update line', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           updated,
-          ...lines.filter((line) => line.line_id != updated.line_id),
+          ...lines.filter((line) => line.line_id !== updated.line_id),
         ]),
       );
     });

@@ -5,9 +5,9 @@ import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Line, LineProps, VehicleMode } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -129,7 +129,7 @@ describe('Insert line', () => {
     shouldInsertCorrectRowIntoDatabase(toBeInserted);
   });
 
-  describe('whose validity period does not overlap with other validity period ', () => {
+  describe('whose validity period does not overlap with other validity period', () => {
     const toBeInserted: Partial<Line> = {
       ...buildLine('2', VehicleMode.Bus),
       priority: 10,

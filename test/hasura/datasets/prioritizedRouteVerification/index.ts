@@ -1,22 +1,9 @@
 import {
-  infrastructureLinks,
-  vehicleSubmodeOnInfrastructureLink,
-} from './infrastructure-links';
-import {
-  scheduledStopPointInvariants,
-  scheduledStopPoints,
-  scheduledStopPointsWithTempRoute,
-  vehicleModeOnScheduledStopPoint,
-  vehicleModeOnScheduledStopPointWithTempRoute,
-} from './scheduled-stop-points';
-import { lines } from './lines';
-import {
-  infrastructureLinkAlongRoute,
-  infrastructureLinkAlongRouteWithTempRoute,
-  routes,
-  routesWithTempRoute,
-} from './routes';
-import { TableLikeConfig } from '@datasets/setup';
+  journeyPatterns,
+  journeyPatternsWithTempRoute,
+  scheduledStopPointInJourneyPattern,
+  scheduledStopPointInJourneyPatternWithTempRoute,
+} from '@datasets/prioritizedRouteVerification/journey-patterns';
 import {
   InfrastructureLinkAlongRouteProps,
   InfrastructureLinkProps,
@@ -30,11 +17,23 @@ import {
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
 import {
-  journeyPatterns,
-  journeyPatternsWithTempRoute,
-  scheduledStopPointInJourneyPattern,
-  scheduledStopPointInJourneyPatternWithTempRoute,
-} from '@datasets/prioritizedRouteVerification/journey-patterns';
+  infrastructureLinks,
+  vehicleSubmodeOnInfrastructureLink,
+} from './infrastructure-links';
+import { lines } from './lines';
+import {
+  infrastructureLinkAlongRoute,
+  infrastructureLinkAlongRouteWithTempRoute,
+  routes,
+  routesWithTempRoute,
+} from './routes';
+import {
+  scheduledStopPointInvariants,
+  scheduledStopPoints,
+  scheduledStopPointsWithTempRoute,
+  vehicleModeOnScheduledStopPoint,
+  vehicleModeOnScheduledStopPointWithTempRoute,
+} from './scheduled-stop-points';
 
 export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
   {
@@ -109,6 +108,8 @@ export const prioritizedRouteVerificationWithTempRouteTableConfig: TableLikeConf
           return journeyPatternsWithTempRoute;
         case 'journey_pattern.scheduled_stop_point_in_journey_pattern':
           return scheduledStopPointInJourneyPatternWithTempRoute;
+        default:
+          return undefined;
       }
     })();
 
@@ -117,7 +118,6 @@ export const prioritizedRouteVerificationWithTempRouteTableConfig: TableLikeConf
         ...tableLikeConfig,
         data: newData,
       };
-    } else {
-      return tableLikeConfig; // use same data as prioritizedRouteVerification data set
     }
+    return tableLikeConfig; // use same data as prioritizedRouteVerification data set
   });

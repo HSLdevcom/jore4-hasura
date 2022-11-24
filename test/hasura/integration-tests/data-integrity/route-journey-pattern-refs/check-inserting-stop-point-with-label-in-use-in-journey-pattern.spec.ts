@@ -1,8 +1,6 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { route116TableConfig } from '@datasets/route116';
+import { journeyPatterns } from '@datasets/route116/journey-patterns';
 import {
   scheduledStopPoints,
   scheduledStopPointWithSameLabelAndOnSameLink,
@@ -13,28 +11,30 @@ import {
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets/route116/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   JourneyPatternProps,
   ScheduledStopPoint,
 } from '@datasets/types';
 import * as dataset from '@util/dataset';
-import * as rp from 'request-promise';
 import { asDbGeometryObjectArray } from '@util/dataset';
-import { journeyPatterns } from '@datasets/route116/journey-patterns';
+import '@util/matchers';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildQuery = (toBeInserted: Partial<ScheduledStopPoint>) => {
   const checkInfraLinkStopRefsWithNewScheduledStopPointArgs: CheckInfraLinkStopRefsWithNewScheduledStopPointArgs =
     {
       replace_scheduled_stop_point_id: null,
       new_located_on_infrastructure_link_id:
-        toBeInserted.located_on_infrastructure_link_id!,
-      new_measured_location: toBeInserted.measured_location!,
-      new_direction: toBeInserted.direction!,
-      new_label: toBeInserted.label!,
-      new_validity_start: toBeInserted.validity_start!,
-      new_validity_end: toBeInserted.validity_end!,
-      new_priority: toBeInserted.priority!,
+        toBeInserted.located_on_infrastructure_link_id!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_measured_location: toBeInserted.measured_location!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_direction: toBeInserted.direction!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_label: toBeInserted.label!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_validity_start: toBeInserted.validity_start!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_validity_end: toBeInserted.validity_end!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      new_priority: toBeInserted.priority!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     };
 
   return `

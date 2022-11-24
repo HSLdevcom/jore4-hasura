@@ -1,7 +1,4 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { queryTable, setupDb } from '@datasets/setup';
 import { route116TableConfig } from '@datasets/route116';
 import {
   journeyPatterns,
@@ -11,6 +8,9 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets/route116/routes';
+import { queryTable, setupDb } from '@datasets/setup';
+import '@util/matchers';
+import * as pg from 'pg';
 
 describe('Inserting a complicated route', () => {
   let dbConnectionPool: pg.Pool;

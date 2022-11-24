@@ -1,17 +1,15 @@
 import * as config from '@config';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Route, RouteDirection, RouteProps } from '@datasets/types';
-import { expect } from '@jest/globals';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {

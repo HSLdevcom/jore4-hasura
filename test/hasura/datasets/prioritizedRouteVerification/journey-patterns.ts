@@ -103,13 +103,14 @@ export const scheduledStopPointInJourneyPatternWithTempRoute: ScheduledStopPoint
   [
     ...scheduledStopPointInBasicJourneyPattern,
     ...scheduledStopPointInTempJourneyPatternWithSameStops.map(
-      (scheduledStopPointInJourneyPattern) => {
+      (stopInJourneyPattern) => {
         // Create clone the scheduledStopPointInJourneyPattern object and set our custom properties on the clone.
         // Note that we need Object.assign({}, ...) to leave the original object untouched. (If we would
         // modify it, other tests would fail because of that.)
-        return Object.assign({}, scheduledStopPointInJourneyPattern, {
+        return {
+          ...stopInJourneyPattern,
           journey_pattern_id: journeyPatternOnTempRoute.journey_pattern_id,
-        }) as ScheduledStopPointInJourneyPattern;
+        } as ScheduledStopPointInJourneyPattern;
       },
     ),
   ];

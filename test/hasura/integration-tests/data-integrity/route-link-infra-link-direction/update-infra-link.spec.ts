@@ -1,17 +1,17 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   InfrastructureLink,
   InfrastructureLinkProps,
   LinkDirection,
 } from '@datasets/types';
-import '@util/matchers';
+import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (
   infrastructureLinkId: string,
@@ -175,7 +175,7 @@ describe('Update infrastructure link', () => {
                   { ...original, ...toBeUpdated },
                   ...infrastructureLinks.filter(
                     (infrastructureLink) =>
-                      infrastructureLink.infrastructure_link_id !=
+                      infrastructureLink.infrastructure_link_id !==
                       original.infrastructure_link_id,
                   ),
                 ],

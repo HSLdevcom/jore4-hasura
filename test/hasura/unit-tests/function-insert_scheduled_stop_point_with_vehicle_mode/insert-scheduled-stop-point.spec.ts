@@ -1,26 +1,26 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import {
-  LinkDirection,
-  ScheduledStopPoint,
-  VehicleMode,
-} from '@datasets/types';
-import * as db from '@util/db';
-import { LocalDate } from 'local-date';
-import * as dataset from '@util/dataset';
-import {
-  asDbGeometryObject,
-  asDbGeometryObjectArray,
-  asEwkb,
-} from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
-import { queryTable, setupDb } from '@datasets/setup';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets/defaultSetup/scheduled-stop-points';
+import { queryTable, setupDb } from '@datasets/setup';
+import {
+  LinkDirection,
+  ScheduledStopPoint,
+  VehicleMode,
+} from '@datasets/types';
+import {
+  asDbGeometryObject,
+  asDbGeometryObjectArray,
+  asEwkb,
+} from '@util/dataset';
+import * as db from '@util/db';
+import '@util/matchers';
+import { GeometryObject } from 'geojson';
+import { LocalDate } from 'local-date';
+import * as pg from 'pg';
 
 const toBeInserted: ScheduledStopPoint = {
   scheduled_stop_point_id: '81860cb8-6947-4ecb-abbd-0720ada98b40',
@@ -34,7 +34,7 @@ const toBeInserted: ScheduledStopPoint = {
       properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
       type: 'name',
     },
-  } as dataset.GeometryObject,
+  } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
   validity_start: new LocalDate('2036-11-03'),
@@ -123,9 +123,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
   });
 
   it('should insert scheduled_stop_point_invariant row if invariant did not exist yet', async () => {
-    const toBeInsertedWithNonExistingLabel = Object.assign({}, toBeInserted, {
+    const toBeInsertedWithNonExistingLabel = {
+      ...toBeInserted,
       label: 'ThisLabelDoesNotExistYet',
-    });
+    };
 
     await insertScheduledStopPointWithVehicleMode(
       toBeInsertedWithNonExistingLabel,
@@ -148,9 +149,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
   });
 
   it('should not insert scheduled_stop_point_invariant row if invariant did already exist', async () => {
-    const toBeInsertedWithExistingLabel = Object.assign({}, toBeInserted, {
+    const toBeInsertedWithExistingLabel = {
+      ...toBeInserted,
       label: scheduledStopPoints[0].label,
-    });
+    };
 
     await insertScheduledStopPointWithVehicleMode(
       toBeInsertedWithExistingLabel,

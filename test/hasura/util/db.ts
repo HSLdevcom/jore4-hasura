@@ -2,13 +2,14 @@ import { Pool, QueryResult } from 'pg';
 
 class QueryRunner {
   connectionPool: Pool;
-  queries: { query: string; params?: any[] }[] = [];
+
+  queries: { query: string; params?: ExplicitAny[] }[] = [];
 
   constructor(connectionPool: Pool) {
     this.connectionPool = connectionPool;
   }
 
-  query(query: string, params?: any[]) {
+  query(query: string, params?: ExplicitAny[]) {
     this.queries.push({ query, params });
     return this;
   }
@@ -31,19 +32,18 @@ class QueryRunner {
   run = (rollbackOnError?: boolean) =>
     this.connectionPool.connect().then((client) =>
       this.queries
-        .reduce(
-          (promise: Promise<void | QueryResult>, nextQuery) =>
-            promise.then(() => client.query(nextQuery.query, nextQuery.params)),
-          Promise.resolve(),
-        )
+        .reduce((promise: Promise<void | QueryResult>, nextQuery) => {
+          return promise.then(() =>
+            client.query(nextQuery.query, nextQuery.params),
+          );
+        }, Promise.resolve())
         .catch((err) => {
           if (rollbackOnError) {
             return client.query('ROLLBACK').finally(() => {
               throw err;
             });
-          } else {
-            throw err;
           }
+          throw err;
         })
         .finally(() => client.release()),
     );

@@ -1,7 +1,6 @@
 import * as config from '@config';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Route, RouteDirection, RouteProps } from '@datasets/types';
@@ -13,26 +12,26 @@ import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeInserted = (
-  on_line_id: string,
-  validity_start: LocalDate | null,
-  validity_end: LocalDate | null,
+  onLineId: string,
+  validityStart: LocalDate | null,
+  validityEnd: LocalDate | null,
 ): Partial<Route> => ({
   ...buildRoute('new route'),
-  on_line_id,
+  on_line_id: onLineId,
   direction: RouteDirection.Clockwise,
   priority: 30,
-  validity_start,
-  validity_end,
+  validity_start: validityStart,
+  validity_end: validityEnd,
 });
 
 const buildMutation = (
-  on_line_id: string,
-  validity_start: LocalDate | null,
-  validity_end: LocalDate | null,
+  onLineId: string,
+  validityStart: LocalDate | null,
+  validityEnd: LocalDate | null,
 ) => `
   mutation {
     insert_route_route(objects: ${dataset.toGraphQlObject(
-      toBeInserted(on_line_id, validity_start, validity_end),
+      toBeInserted(onLineId, validityStart, validityEnd),
       ['direction'],
     )}) {
       returning {
@@ -54,16 +53,16 @@ describe('Insert route', () => {
   beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnErrorResponse = (
-    on_line_id: string,
-    validity_start: LocalDate | null,
-    validity_end: LocalDate | null,
+    onLineId: string,
+    validityStart: LocalDate | null,
+    validityEnd: LocalDate | null,
   ) =>
     it('should return error response', async () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: buildMutation(on_line_id, validity_start, validity_end),
+            query: buildMutation(onLineId, validityStart, validityEnd),
           },
         })
         .then(
@@ -74,15 +73,15 @@ describe('Insert route', () => {
     });
 
   const shouldNotModifyDatabase = (
-    on_line_id: string,
-    validity_start: LocalDate | null,
-    validity_end: LocalDate | null,
+    onLineId: string,
+    validityStart: LocalDate | null,
+    validityEnd: LocalDate | null,
   ) =>
     it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(on_line_id, validity_start, validity_end),
+          query: buildMutation(onLineId, validityStart, validityEnd),
         },
       });
 
@@ -93,15 +92,15 @@ describe('Insert route', () => {
     });
 
   const shouldReturnCorrectResponse = (
-    on_line_id: string,
-    validity_start: LocalDate | null,
-    validity_end: LocalDate | null,
+    onLineId: string,
+    validityStart: LocalDate | null,
+    validityEnd: LocalDate | null,
   ) =>
     it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(on_line_id, validity_start, validity_end),
+          query: buildMutation(onLineId, validityStart, validityEnd),
         },
       });
 
@@ -112,7 +111,7 @@ describe('Insert route', () => {
               returning: [
                 {
                   ...dataset.asGraphQlDateObject(
-                    toBeInserted(on_line_id, validity_start, validity_end),
+                    toBeInserted(onLineId, validityStart, validityEnd),
                   ),
                   route_id: expect.any(String),
                 },
@@ -129,15 +128,15 @@ describe('Insert route', () => {
     });
 
   const shouldInsertCorrectRowIntoDatabase = (
-    on_line_id: string,
-    validity_start: LocalDate | null,
-    validity_end: LocalDate | null,
+    onLineId: string,
+    validityStart: LocalDate | null,
+    validityEnd: LocalDate | null,
   ) =>
     it('should insert correct row into the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(on_line_id, validity_start, validity_end),
+          query: buildMutation(onLineId, validityStart, validityEnd),
         },
       });
 
@@ -148,7 +147,7 @@ describe('Insert route', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
-            ...toBeInserted(on_line_id, validity_start, validity_end),
+            ...toBeInserted(onLineId, validityStart, validityEnd),
             route_id: expect.any(String),
           },
           ...routes,

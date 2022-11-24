@@ -1,13 +1,13 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
-import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { expectErrorResponse } from '@util/response';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const createCompleteUpdated = (
   toBeUpdated: Partial<ScheduledStopPoint>,
@@ -131,7 +131,7 @@ describe('Update scheduled stop point', () => {
               createCompleteUpdated(toBeUpdated),
               ...scheduledStopPoints.filter(
                 (scheduledStopPoint) =>
-                  scheduledStopPoint.scheduled_stop_point_id !=
+                  scheduledStopPoint.scheduled_stop_point_id !==
                   createCompleteUpdated(toBeUpdated).scheduled_stop_point_id,
               ),
             ],

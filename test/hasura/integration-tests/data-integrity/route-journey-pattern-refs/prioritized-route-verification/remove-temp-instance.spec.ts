@@ -1,18 +1,18 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { setupDb } from '@datasets/setup';
 import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import {
+  scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
+  scheduledStopPointInTempJourneyPatternWithSameStops,
+} from '@datasets/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithOtherLinks,
   tempRouteWithOtherLinks,
 } from '@datasets/prioritizedRouteVerification/routes';
-import {
-  basicJourneyPattern,
-  scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
-  scheduledStopPointInTempJourneyPatternWithSameStops,
-} from '@datasets/prioritizedRouteVerification/journey-patterns';
+import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { setupDb } from '@datasets/setup';
+import '@util/matchers';
+import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
 import {
   checkInfraLinkStopRefsForStopPointRemoval,
   deleteRoute,
@@ -24,7 +24,6 @@ import {
   shouldReturnCorrectReplaceJourneyPatternResponse,
   shouldReturnCorrectScheduledStopPointResponse,
 } from './util';
-import { expectErrorResponse } from '@util/response';
 
 describe('Removing a temporary...', () => {
   let dbConnectionPool: pg.Pool;

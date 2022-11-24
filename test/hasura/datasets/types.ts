@@ -1,19 +1,11 @@
-import { GeometryObject } from '@util/dataset';
+import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
 
-export type PropArray = (
-  | string
-  | {
-      propName: string;
-      isGeoProp: boolean;
-    }
-)[];
-
 export function hasGeoPropSpec<
-  ObjType extends PropArray[number],
+  ObjType extends Property,
   PropType extends PropertyKey,
 >(obj: ObjType): obj is ObjType & Record<PropType, unknown> {
-  return obj.hasOwnProperty('isGeoProp');
+  return Object.prototype.hasOwnProperty.call(obj, 'isGeoProp');
 }
 
 export enum LinkDirection {
@@ -72,7 +64,7 @@ export type InfrastructureLink = {
   external_link_source: string;
   external_link_id: string;
 };
-export const InfrastructureLinkProps: PropArray = [
+export const InfrastructureLinkProps: Property[] = [
   'infrastructure_link_id',
   'direction',
   { propName: 'shape', isGeoProp: true },
@@ -85,7 +77,7 @@ export type VehicleSubmodeOnInfrastructureLink = {
   infrastructure_link_id: string;
   vehicle_submode: VehicleSubmode;
 };
-export const VehicleSubmodeOnInfrastructureLinkProps: PropArray = [
+export const VehicleSubmodeOnInfrastructureLinkProps: Property[] = [
   'infrastructure_link_id',
   'vehicle_submode',
 ];
@@ -93,7 +85,7 @@ export const VehicleSubmodeOnInfrastructureLinkProps: PropArray = [
 export type ScheduledStopPointInvariant = {
   label: string;
 };
-export const ScheduledStopPointInvariantProps: PropArray = ['label'];
+export const ScheduledStopPointInvariantProps: Property[] = ['label'];
 
 export type ScheduledStopPoint = {
   scheduled_stop_point_id: string;
@@ -105,7 +97,7 @@ export type ScheduledStopPoint = {
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
 };
-export const ScheduledStopPointProps: PropArray = [
+export const ScheduledStopPointProps: Property[] = [
   'scheduled_stop_point_id',
   'located_on_infrastructure_link_id',
   'direction',
@@ -120,7 +112,7 @@ export type VehicleModeOnScheduledStopPoint = {
   scheduled_stop_point_id: string;
   vehicle_mode: VehicleMode;
 };
-export const VehicleModeOnScheduledStopPointProps: PropArray = [
+export const VehicleModeOnScheduledStopPointProps: Property[] = [
   'scheduled_stop_point_id',
   'vehicle_mode',
 ];
@@ -146,7 +138,7 @@ export type Route = {
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
 };
-export const RouteProps: PropArray = [
+export const RouteProps: Property[] = [
   'route_id',
   'on_line_id',
   'name_i18n',
@@ -168,7 +160,7 @@ export type InfrastructureLinkAlongRoute = {
   infrastructure_link_sequence: number;
   is_traversal_forwards: boolean;
 };
-export const InfrastructureLinkAlongRouteProps: PropArray = [
+export const InfrastructureLinkAlongRouteProps: Property[] = [
   'route_id',
   'infrastructure_link_id',
   'infrastructure_link_sequence',
@@ -186,7 +178,7 @@ export type Line = {
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
 };
-export const LineProps: PropArray = [
+export const LineProps: Property[] = [
   'line_id',
   'name_i18n',
   'short_name_i18n',
@@ -202,7 +194,7 @@ export type JourneyPattern = {
   journey_pattern_id: string;
   on_route_id: string;
 };
-export const JourneyPatternProps: PropArray = [
+export const JourneyPatternProps: Property[] = [
   'journey_pattern_id',
   'on_route_id',
 ];
@@ -216,7 +208,7 @@ export type ScheduledStopPointInJourneyPattern = {
   via_point_name_i18n?: LocalizedString | null;
   via_point_short_name_i18n?: LocalizedString | null;
 };
-export const ScheduledStopPointInJourneyPatternProps: PropArray = [
+export const ScheduledStopPointInJourneyPatternProps: Property[] = [
   'journey_pattern_id',
   'scheduled_stop_point_label',
   'scheduled_stop_point_sequence',
