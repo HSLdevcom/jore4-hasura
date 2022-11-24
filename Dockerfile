@@ -25,15 +25,19 @@ HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
 # extend the base image to also load hsl specific migrations and metadata
 FROM hasura-generic AS hasura-hsl
 
-# install yq
-ENV YQ_VERSION=v4.2.0 YQ_BINARY=yq_linux_amd64
-RUN curl https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY} --output /usr/bin/yq && \
-  chmod +x /usr/bin/yq
+# install yq from apt-get
+# note: when installing the binary directly from the github release, it did not work correctly
+# also, this should work with the arm architecture too
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+  && add-apt-repository -y ppa:rmescandon/yq \
+  && apt-get install -y yq=4.16.2 \
+  && rm -rf /var/lib/apt/lists/*
 
 # copy hsl-specific migrations and metadata and stitch them together with the generic ones
 COPY ./migrations/hsl "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
-COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}"
-RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}
+COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}/hsl"
+RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}/hsl ${HASURA_GRAPHQL_METADATA_DIR}
 
 # extend the hasura-hsl image to also load some seed data as migrations
 FROM hasura-hsl AS hasura-seed

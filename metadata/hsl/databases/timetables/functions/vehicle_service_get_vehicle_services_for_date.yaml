@@ -1,0 +1,3 @@
+function:
+  name: get_vehicle_services_for_date
+  schema: vehicle_service
