@@ -1,16 +1,16 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { infrastructureLinkAlongRoute } from '@datasets/defaultSetup/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
 } from '@datasets/types';
+import * as dataset from '@util/dataset';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
-import { infrastructureLinkAlongRoute } from '@datasets/defaultSetup/routes';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (
   routeId: string,
@@ -233,8 +233,8 @@ describe('Update route link', () => {
             { ...original, ...toBeUpdated },
             ...infrastructureLinkAlongRoute.filter(
               (infraLinkAlongRoute) =>
-                infraLinkAlongRoute.route_id != original.route_id ||
-                infraLinkAlongRoute.infrastructure_link_sequence !=
+                infraLinkAlongRoute.route_id !== original.route_id ||
+                infraLinkAlongRoute.infrastructure_link_sequence !==
                   original.infrastructure_link_sequence,
             ),
           ]),

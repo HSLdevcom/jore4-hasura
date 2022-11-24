@@ -1,6 +1,6 @@
-import * as pg from 'pg';
-import * as config from '@config';
-import '@util/matchers';
+import { databaseConfig } from '@config';
+import { buildLocalizedString } from '@datasets/factories';
+import { setupDb } from '@datasets/setup';
 import {
   InfrastructureLink,
   InfrastructureLinkProps,
@@ -14,12 +14,12 @@ import {
   ScheduledStopPointInJourneyPatternProps,
   ScheduledStopPointProps,
 } from '@datasets/types';
-import { setupDb } from '@datasets/setup';
-import * as db from '@util/db';
-import { randomUUID } from 'crypto';
-import { buildLocalizedString } from '@datasets/factories';
-import { LocalDate } from 'local-date';
+import { singleQuery } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
+import '@util/matchers';
+import { randomUUID } from 'crypto';
+import { LocalDate } from 'local-date';
+import { Pool } from 'pg';
 
 const defaultRouteLabel = 'route 2';
 const stopLabel = 'stop A';
@@ -77,10 +77,10 @@ const infraLink: Partial<InfrastructureLink> = {
 };
 
 describe('Function maximum_priority_validity_spans should return correct scheduled stop point rows', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnectionPool: Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new Pool(databaseConfig);
   });
 
   afterAll(() => dbConnectionPool.end());
@@ -133,19 +133,17 @@ describe('Function maximum_priority_validity_spans should return correct schedul
       true,
     );
 
-    return await db.singleQuery(
+    return singleQuery(
       dbConnectionPool,
       `SELECT *
        FROM journey_pattern.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel
        }" }', ${
         validityStart !== undefined
-          ? "'" + validityStart.toISOString() + "'"
+          ? `'${validityStart.toISOString()}'`
           : 'NULL'
       }, ${
-        validityEnd !== undefined
-          ? "'" + validityEnd.toISOString() + "'"
-          : 'NULL'
+        validityEnd !== undefined ? `'${validityEnd.toISOString()}'` : 'NULL'
       }, ${upperPriorityLimit !== undefined ? upperPriorityLimit : 'NULL'})`,
     );
   };

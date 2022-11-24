@@ -1,15 +1,15 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
+import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { infrastructureLinkAlongRoute } from '@datasets/routesAndJourneyPatterns/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
 } from '@datasets/types';
 import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { expectErrorResponse } from '@util/response';
-import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
-import { infrastructureLinkAlongRoute } from '@datasets/routesAndJourneyPatterns/routes';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (routeId: string, linkId: string) => `
   mutation {

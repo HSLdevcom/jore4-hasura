@@ -1,19 +1,19 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { queryTable, setupDb } from '@datasets/setup';
 import { prioritizedRouteVerificationWithTempRouteTableConfig } from '@datasets/prioritizedRouteVerification';
-import {
-  insertStopPoint,
-  shouldReturnCorrectScheduledStopPointResponse,
-  shouldReturnErrorResponse,
-} from './util';
 import {
   scheduledStopPointsWithTempRoute,
   tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
 } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { queryTable, setupDb } from '@datasets/setup';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
+import * as pg from 'pg';
+import {
+  insertStopPoint,
+  shouldReturnCorrectScheduledStopPointResponse,
+  shouldReturnErrorResponse,
+} from './util';
 
 describe('Insert scheduled stop point after temp route', () => {
   let dbConnectionPool: pg.Pool;

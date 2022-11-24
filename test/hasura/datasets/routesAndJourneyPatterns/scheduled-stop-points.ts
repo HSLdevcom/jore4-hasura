@@ -1,13 +1,13 @@
 import {
   LinkDirection,
   ScheduledStopPoint,
-  VehicleModeOnScheduledStopPoint,
-  VehicleMode,
   ScheduledStopPointInvariant,
+  VehicleMode,
+  VehicleModeOnScheduledStopPoint,
 } from '@datasets/types';
-import { infrastructureLinks } from './infrastructure-links';
-import { uniqBy } from 'lodash';
 import { LocalDate } from 'local-date';
+import { uniqBy } from 'lodash';
+import { infrastructureLinks } from './infrastructure-links';
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
   {

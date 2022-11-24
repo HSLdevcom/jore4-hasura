@@ -1,33 +1,32 @@
 import * as config from '@config';
 import { lines } from '@datasets/defaultSetup/lines';
 import { routes } from '@datasets/defaultSetup/routes';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
 import { buildRoute } from '@datasets/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Route, RouteDirection, RouteProps } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const toBeInserted = (
-  on_line_id: string | undefined,
+  onLineId: string | undefined,
   priority: number,
 ): Partial<Route> => ({
   ...buildRoute('new route'),
-  on_line_id,
+  on_line_id: onLineId,
   direction: RouteDirection.Clockwise,
   priority,
   validity_start: new LocalDate('2044-05-01'),
   validity_end: new LocalDate('2045-04-30'),
 });
 
-const buildMutation = (on_line_id: string | undefined, priority: number) => `
+const buildMutation = (onLineId: string | undefined, priority: number) => `
   mutation {
     insert_route_route(objects: ${dataset.toGraphQlObject(
-      toBeInserted(on_line_id, priority),
+      toBeInserted(onLineId, priority),
       ['direction'],
     )}) {
       returning {
@@ -49,7 +48,7 @@ describe('Insert route', () => {
   beforeEach(() => setupDb(dbConnectionPool));
 
   const shouldReturnErrorResponse = (
-    on_line_id: string | undefined,
+    onLineId: string | undefined,
     priority: number,
     expectedErrorMsg?: string,
   ) =>
@@ -57,7 +56,7 @@ describe('Insert route', () => {
       await rp
         .post({
           ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(on_line_id, priority) },
+          body: { query: buildMutation(onLineId, priority) },
         })
         .then(
           expectErrorResponse(
@@ -67,13 +66,13 @@ describe('Insert route', () => {
     });
 
   const shouldNotModifyDatabase = (
-    on_line_id: string | undefined,
+    onLineId: string | undefined,
     priority: number,
   ) =>
     it('should not modify the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: buildMutation(on_line_id, priority) },
+        body: { query: buildMutation(onLineId, priority) },
       });
 
       const response = await queryTable(dbConnectionPool, 'route.route');
@@ -83,13 +82,13 @@ describe('Insert route', () => {
     });
 
   const shouldReturnCorrectResponse = (
-    on_line_id: string | undefined,
+    onLineId: string | undefined,
     priority: number,
   ) =>
     it('should return correct response', async () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: buildMutation(on_line_id, priority) },
+        body: { query: buildMutation(onLineId, priority) },
       });
 
       expect(response).toEqual(
@@ -99,7 +98,7 @@ describe('Insert route', () => {
               returning: [
                 {
                   ...dataset.asGraphQlDateObject(
-                    toBeInserted(on_line_id, priority),
+                    toBeInserted(onLineId, priority),
                   ),
                   route_id: expect.any(String),
                 },
@@ -116,13 +115,13 @@ describe('Insert route', () => {
     });
 
   const shouldInsertCorrectRowIntoDatabase = (
-    on_line_id: string | undefined,
+    onLineId: string | undefined,
     priority: number,
   ) =>
     it('should insert correct row into the database', async () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
-        body: { query: buildMutation(on_line_id, priority) },
+        body: { query: buildMutation(onLineId, priority) },
       });
 
       const response = await queryTable(dbConnectionPool, 'route.route');
@@ -132,7 +131,7 @@ describe('Insert route', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
-            ...toBeInserted(on_line_id, priority),
+            ...toBeInserted(onLineId, priority),
             route_id: expect.any(String),
           },
           ...routes,

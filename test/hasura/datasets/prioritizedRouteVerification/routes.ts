@@ -5,9 +5,9 @@ import {
   Route,
   RouteDirection,
 } from '@datasets/types';
+import { LocalDate } from 'local-date';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 import { lines } from './lines';
-import { LocalDate } from 'local-date';
 
 export const basicRoute: Route = {
   route_id: '61bef596-84a0-40ea-b818-423d6b9b1fcf',
@@ -84,9 +84,10 @@ export const infrastructureLinkAlongRouteWithTempRoute: InfrastructureLinkAlongR
         // Create clone the infraLinkAlongRoute object and set our custom properties on the clone.
         // Note that we need Object.assign({}, ...) to leave the original object untouched. (If we would
         // modify it, other tests would fail because of that.)
-        return Object.assign({}, infraLinkAlongRoute, {
+        return {
+          ...infraLinkAlongRoute,
           route_id: tempRouteWithOtherLinks.route_id,
-        }) as InfrastructureLinkAlongRoute;
+        } as InfrastructureLinkAlongRoute;
       },
     ),
   ];

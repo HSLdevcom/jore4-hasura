@@ -5,9 +5,9 @@ import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { Route, RouteProps } from '@datasets/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
-import { LocalDate } from 'local-date';
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: buildLocalizedString('updated route'),
@@ -76,7 +76,9 @@ describe('Update route', () => {
     expect(response.rows).toEqual(
       expect.arrayContaining([
         completeUpdated,
-        ...routes.filter((route) => route.route_id != completeUpdated.route_id),
+        ...routes.filter(
+          (route) => route.route_id !== completeUpdated.route_id,
+        ),
       ]),
     );
   });

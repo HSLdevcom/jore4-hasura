@@ -7,17 +7,18 @@ expect.extend({
         pass: true,
         message: () => `Expected ${value} to be a valid UUID`,
       };
-    } else {
-      return {
-        pass: false,
-        message: () => `Expected ${value} to not be a valid UUID`,
-      };
     }
+    return {
+      pass: false,
+      message: () => `Expected ${value} to not be a valid UUID`,
+    };
   },
 });
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Matchers<R> {
       toBeValidUuid(): CustomMatcherResult;
     }

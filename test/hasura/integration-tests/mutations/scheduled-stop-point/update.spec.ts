@@ -1,13 +1,14 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import * as dataset from '@util/dataset';
 import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
-import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
+import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -19,7 +20,7 @@ const toBeUpdated: Partial<ScheduledStopPoint> = {
       properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
       type: 'name',
     },
-  } as dataset.GeometryObject,
+  } as GeometryObject,
   priority: 30,
   validity_start: new LocalDate('2077-10-22'),
   validity_end: new LocalDate('2079-10-21'),
@@ -95,7 +96,7 @@ describe('Update scheduled_stop_point', () => {
             completeUpdated,
             ...scheduledStopPoints.filter(
               (scheduledStopPoint) =>
-                scheduledStopPoint.scheduled_stop_point_id !=
+                scheduledStopPoint.scheduled_stop_point_id !==
                 completeUpdated.scheduled_stop_point_id,
             ),
           ],

@@ -29,10 +29,11 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     '3c451d12-f912-4f21-a331-573e20410344',
     '231f6797-21f5-404c-8934-e5e180e9d152',
   ].map((stopId, index) => {
-    const label = scheduledStopPoints.find(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { label } = scheduledStopPoints.find(
       (scheduledStopPoint) =>
         scheduledStopPoint.scheduled_stop_point_id === stopId,
-    )!.label;
+    )!;
 
     return {
       journey_pattern_id: journeyPatterns[0].journey_pattern_id,

@@ -1,18 +1,13 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import {
-  Route,
-  RouteDirection,
-  RouteProps,
-  ScheduledStopPoint,
-} from '@datasets/types';
-import { setupDb } from '@datasets/setup';
-import * as db from '@util/db';
-import { randomUUID } from 'crypto';
 import { buildLocalizedString } from '@datasets/factories';
-import { LocalDate } from 'local-date';
+import { setupDb } from '@datasets/setup';
+import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import * as db from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
+import '@util/matchers';
+import { randomUUID } from 'crypto';
+import { LocalDate } from 'local-date';
+import * as pg from 'pg';
 
 const dummyLineId = randomUUID();
 const defaultRouteLabel = 'route 1';
@@ -53,19 +48,17 @@ describe('Function maximum_priority_validity_spans should return correct route r
       true,
     );
 
-    return await db.singleQuery(
+    return db.singleQuery(
       dbConnectionPool,
       `SELECT *
        FROM journey_pattern.maximum_priority_validity_spans('route', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel
        }" }', ${
         validityStart !== undefined
-          ? "'" + validityStart.toISOString() + "'"
+          ? `'${validityStart.toISOString()}'`
           : 'NULL'
       }, ${
-        validityEnd !== undefined
-          ? "'" + validityEnd.toISOString() + "'"
-          : 'NULL'
+        validityEnd !== undefined ? `'${validityEnd.toISOString()}'` : 'NULL'
       }, ${upperPriorityLimit !== undefined ? upperPriorityLimit : 'NULL'})`,
     );
   };

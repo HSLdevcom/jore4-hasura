@@ -37,8 +37,8 @@ jobs:
         with:
           command: 'curl --fail http://localhost:3201/healthz --output /dev/null --silent'
 
-      - name: Run tests
+      - name: Run tests (including linter, prettier, ts:check)
         run: |
           cd test/hasura
           yarn --frozen-lockfile
-          yarn test
+          yarn qa

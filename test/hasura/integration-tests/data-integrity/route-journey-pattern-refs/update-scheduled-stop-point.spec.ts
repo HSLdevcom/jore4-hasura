@@ -1,15 +1,15 @@
-import * as rp from 'request-promise';
-import * as pg from 'pg';
 import * as config from '@config';
-import { ScheduledStopPointProps } from '@datasets/types';
-import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { expectErrorResponse } from '@util/response';
 import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
-import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
 import { infrastructureLinks } from '@datasets/routesAndJourneyPatterns/infrastructure-links';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { ScheduledStopPointProps } from '@datasets/types';
 import * as dataset from '@util/dataset';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
+import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const buildMutation = (
   scheduledStopPointId: string,

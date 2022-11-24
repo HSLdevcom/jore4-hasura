@@ -1,7 +1,4 @@
-import * as pg from 'pg';
 import * as config from '@config';
-import '@util/matchers';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import { route116TableConfig } from '@datasets/route116';
 import {
   scheduledStopPoints,
@@ -13,15 +10,18 @@ import {
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets/route116/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
 import {
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
 } from '@datasets/types';
 import * as dataset from '@util/dataset';
-import * as rp from 'request-promise';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import * as pg from 'pg';
+import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 

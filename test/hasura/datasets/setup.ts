@@ -1,38 +1,19 @@
-import * as pg from 'pg';
-import * as db from '@util/db';
-import { hasGeoPropSpec, PropArray } from '@datasets/types';
-import { asDbGeometryObjectArray } from '@util/dataset';
 import { defaultTableConfig } from '@datasets/defaultSetup';
+import { hasGeoPropSpec } from '@datasets/types';
+import { asDbGeometryObjectArray } from '@util/dataset';
+import * as db from '@util/db';
 import { throwError } from '@util/helpers';
 import { readFileSync } from 'fs';
+import * as pg from 'pg';
 
-export type TableLikeConfigCommonProps = {
-  name: string;
-  props: PropArray;
-};
-
-export type TableConfig = TableLikeConfigCommonProps & {
-  data: Record<string, unknown>[] | string;
-  isView?: never;
-};
-
-export type ViewConfig = TableLikeConfigCommonProps & {
-  data?: never;
-  isView: true;
-};
-
-export type TableLikeConfig = TableConfig | ViewConfig;
-
-export function isTableConfig<ObjType extends TableLikeConfig>(
-  obj: TableLikeConfig,
-): obj is TableConfig {
-  return obj.hasOwnProperty('data');
+export function isTableConfig(obj: TableLikeConfig): obj is TableConfig {
+  return Object.prototype.hasOwnProperty.call(obj, 'data');
 }
 
 export const setupDb = (
   dbConnectionPool: pg.Pool,
   configuration: TableLikeConfig[] = defaultTableConfig,
-  disableTriggers: boolean = false,
+  disableTriggers = false,
 ) => {
   let queryRunner = db.queryRunner(dbConnectionPool);
 
@@ -46,7 +27,7 @@ export const setupDb = (
   tables.forEach((table) => {
     queryRunner = queryRunner.truncate(table.name);
   });
-  tables.forEach((table) => {
+  tables.forEach((table: TableConfig) => {
     const { data, props } = table;
 
     if (typeof data === 'string') {
@@ -92,7 +73,7 @@ export const getTableConfigArray = (
   configuration: TableLikeConfig[] = defaultTableConfig,
 ) => tableNames.map((tableName) => getTableConfig(tableName, configuration));
 
-export const getPropNameArray = (props: PropArray) =>
+export const getPropNameArray = (props: Property[]) =>
   props.map((prop) => (hasGeoPropSpec(prop) ? prop.propName : prop));
 
 export const queryTable = (
