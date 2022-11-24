@@ -1,0 +1,7 @@
+DROP INDEX vehicle_service.idx_vehicle_service_day_type;
+DROP INDEX vehicle_service.idx_vehicle_service_vehicle_schedule_frame;
+DROP INDEX vehicle_service.idx_block_vehicle_service;
+DROP INDEX vehicle_journey.idx_vehicle_journey_block;
+DROP INDEX vehicle_journey.idx_vehicle_journey_journey_pattern_ref;
+DROP INDEX passing_times.idx_timetabled_passing_time_sspijp_ref;
+DROP INDEX passing_times.idx_timetabled_passing_time_vehicle_journey;

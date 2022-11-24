@@ -451,6 +451,18 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
+-- Name: idx_timetabled_passing_time_sspijp_ref; Type: INDEX; Schema: passing_times; Owner: dbhasura
+--
+
+CREATE INDEX idx_timetabled_passing_time_sspijp_ref ON passing_times.timetabled_passing_time USING btree (scheduled_stop_point_in_journey_pattern_ref_id);
+
+--
+-- Name: idx_timetabled_passing_time_vehicle_journey; Type: INDEX; Schema: passing_times; Owner: dbhasura
+--
+
+CREATE INDEX idx_timetabled_passing_time_vehicle_journey ON passing_times.timetabled_passing_time USING btree (vehicle_journey_id);
+
+--
 -- Name: service_calendar_day_type_label_idx; Type: INDEX; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -461,6 +473,36 @@ CREATE UNIQUE INDEX service_calendar_day_type_label_idx ON service_calendar.day_
 --
 
 CREATE UNIQUE INDEX service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx ON service_pattern.scheduled_stop_point_in_journey_pattern_ref USING btree (journey_pattern_ref_id, scheduled_stop_point_sequence);
+
+--
+-- Name: idx_vehicle_journey_block; Type: INDEX; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_journey_block ON vehicle_journey.vehicle_journey USING btree (block_id);
+
+--
+-- Name: idx_vehicle_journey_journey_pattern_ref; Type: INDEX; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_journey_journey_pattern_ref ON vehicle_journey.vehicle_journey USING btree (journey_pattern_ref_id);
+
+--
+-- Name: idx_block_vehicle_service; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE INDEX idx_block_vehicle_service ON vehicle_service.block USING btree (vehicle_service_id);
+
+--
+-- Name: idx_vehicle_service_day_type; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_service_day_type ON vehicle_service.vehicle_service USING btree (day_type_id);
+
+--
+-- Name: idx_vehicle_service_vehicle_schedule_frame; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehicle_service USING btree (vehicle_schedule_frame_id);
 
 --
 -- Name: journey_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
