@@ -143,7 +143,8 @@ BEGIN
     validity_end,
     priority,
     label,
-    direction
+    direction,
+    variant
   ) VALUES (
     NEW.description_i18n,
     NEW.starts_from_scheduled_stop_point_id,
@@ -153,7 +154,8 @@ BEGIN
     NEW.validity_end,
     NEW.priority,
     NEW.label,
-    NEW.direction
+    NEW.direction,
+    NEW.variant
   ) RETURNING route_id INTO NEW.route_id;
   RETURN NEW;
 END;
@@ -195,14 +197,15 @@ BEGIN
     validity_end = NEW.validity_end,
     priority = NEW.priority,
     label = NEW.label,
-    direction = NEW.direction
+    direction = NEW.direction,
+    variant = NEW.variant
   WHERE route_id = OLD.route_id;
   RETURN NEW;
 END;
 $$;
 
 ALTER TABLE ONLY route.route
-    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (label WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (label WITH =, coalesce(variant,-1) WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 ALTER TABLE ONLY route.line
     ADD CONSTRAINT line_unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
@@ -251,3 +254,6 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 DROP TRIGGER IF EXISTS verify_infra_link_stop_refs_on_route_trigger ON route.route;
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_route_trigger AFTER DELETE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
+
+ALTER TABLE route.route
+    ADD CONSTRAINT route_variant_unsigned_check CHECK (variant >= 0);
