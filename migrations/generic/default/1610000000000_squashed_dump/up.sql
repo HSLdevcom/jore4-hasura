@@ -192,6 +192,7 @@ CREATE TABLE route.route (
     validity_end date,
     priority integer NOT NULL,
     label text NOT NULL,
+    variant smallint CHECK (variant >= 0),
     direction text NOT NULL,
     name_i18n jsonb NOT NULL,
     origin_name_i18n jsonb,
@@ -206,8 +207,9 @@ COMMENT ON COLUMN route.route.on_line_id IS 'The line to which this route belong
 COMMENT ON COLUMN route.route.validity_start IS 'The point in time when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
 COMMENT ON COLUMN route.route.validity_end IS 'The point in time from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
 COMMENT ON COLUMN route.route.priority IS 'The priority of the route definition. The definition may be overridden by higher priority definitions.';
-COMMENT ON COLUMN route.route.label IS 'The label of the route definition, label and direction together are unique for a certain priority and validity period.';
-COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition, label and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.label IS 'The label of the route definition, label, variant and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.variant IS 'The variant for route definition, label, variant and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition, label, variant and direction together are unique for a certain priority and validity period.';
 ALTER TABLE ONLY route.route
     ADD CONSTRAINT route_pkey PRIMARY KEY (route_id);
 ALTER TABLE ONLY route.route
