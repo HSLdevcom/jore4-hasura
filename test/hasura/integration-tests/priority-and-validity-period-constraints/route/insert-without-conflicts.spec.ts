@@ -114,6 +114,22 @@ describe('Insert route', () => {
     shouldInsertCorrectRowIntoDatabase(toBeInserted);
   });
 
+  describe('whose validity period conflicts with open validity end but has different variant', () => {
+    const toBeInserted: Partial<Route> = {
+      ...buildRoute('1'),
+      on_line_id: lines[0].line_id,
+      direction: RouteDirection.Northbound,
+      variant: 3,
+      priority: 10,
+      validity_start: new LocalDate('2044-05-02'),
+      validity_end: null,
+    };
+
+    shouldReturnCorrectResponse(toBeInserted);
+
+    shouldInsertCorrectRowIntoDatabase(toBeInserted);
+  });
+
   describe('whose validity period does not conflict with open validity start', () => {
     const toBeInserted: Partial<Route> = {
       ...buildRoute('5'),

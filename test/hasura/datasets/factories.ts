@@ -26,6 +26,7 @@ export const buildLine = (label: string, vehicleMode: VehicleMode) => ({
 
 export const buildRoute = (postfix: string) => ({
   label: `route ${postfix}`,
+  variant: null,
   name_i18n: buildLocalizedString(`route ${postfix}`),
   description_i18n: buildLocalizedString(`description ${postfix}`),
   origin_name_i18n: buildLocalizedString(`origin ${postfix}`),
