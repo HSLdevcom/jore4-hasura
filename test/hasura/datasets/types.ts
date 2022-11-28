@@ -133,6 +133,7 @@ export type Route = {
   destination_name_i18n: LocalizedString;
   destination_short_name_i18n: LocalizedString;
   label: string;
+  variant?: number | null;
   direction: RouteDirection;
   priority: number;
   validity_start: LocalDate | null;
@@ -148,6 +149,7 @@ export const RouteProps: Property[] = [
   'destination_name_i18n',
   'destination_short_name_i18n',
   'label',
+  'variant',
   'direction',
   'priority',
   'validity_start',
