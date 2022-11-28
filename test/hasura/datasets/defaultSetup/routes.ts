@@ -54,6 +54,16 @@ export const routes: Route[] = [
     validity_start: null,
     validity_end: new LocalDate('2044-09-01'),
   },
+  {
+    route_id: '4dadce26-0689-4843-b9fc-1ffb43a35fc1',
+    on_line_id: lines[4].line_id,
+    ...buildRoute('6'),
+    variant: 3,
+    direction: RouteDirection.Westbound,
+    priority: 20,
+    validity_start: null,
+    validity_end: new LocalDate('2044-09-01'),
+  },
 ];
 
 export const infrastructureLinkAlongRoute: InfrastructureLinkAlongRoute[] = [
