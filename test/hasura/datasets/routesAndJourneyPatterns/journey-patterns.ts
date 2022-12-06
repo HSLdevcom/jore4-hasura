@@ -81,7 +81,7 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     },
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
-      scheduled_stop_point_label: scheduledStopPoints[6].label,
+      scheduled_stop_point_label: scheduledStopPoints[0].label,
       scheduled_stop_point_sequence: 100,
       is_used_as_timing_point: true,
       is_loading_time_allowed: false,
@@ -91,8 +91,18 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     },
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
-      scheduled_stop_point_label: scheduledStopPoints[7].label,
+      scheduled_stop_point_label: scheduledStopPoints[6].label,
       scheduled_stop_point_sequence: 200,
+      is_used_as_timing_point: true,
+      is_loading_time_allowed: false,
+      is_via_point: false,
+      via_point_name_i18n: null,
+      via_point_short_name_i18n: null,
+    },
+    {
+      journey_pattern_id: journeyPatterns[2].journey_pattern_id,
+      scheduled_stop_point_label: scheduledStopPoints[7].label,
+      scheduled_stop_point_sequence: 300,
       is_used_as_timing_point: false,
       is_loading_time_allowed: false,
       is_via_point: false,
@@ -102,7 +112,7 @@ export const scheduledStopPointInJourneyPattern: ScheduledStopPointInJourneyPatt
     {
       journey_pattern_id: journeyPatterns[2].journey_pattern_id,
       scheduled_stop_point_label: scheduledStopPoints[8].label,
-      scheduled_stop_point_sequence: 300,
+      scheduled_stop_point_sequence: 400,
       is_used_as_timing_point: true,
       is_loading_time_allowed: false,
       is_via_point: true,
