@@ -60,7 +60,7 @@ export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
   shape: GeometryObject;
-  estimated_length_in_metres: number;
+  estimated_length_in_metres: number | null;
   external_link_source: string;
   external_link_id: string;
 };
