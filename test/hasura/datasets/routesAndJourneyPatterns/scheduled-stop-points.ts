@@ -17,7 +17,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     measured_location: {
       type: 'Point',
-      coordinates: [12.1, 11.2, 0],
+      coordinates: [25.1, 60.4, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -35,7 +35,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [8.1, 7.2, 0],
+      coordinates: [25.5, 60.1, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -53,7 +53,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [10.1, 9.2, 0],
+      coordinates: [25.5, 60.4, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -71,7 +71,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     measured_location: {
       type: 'Point',
-      coordinates: [12.1, 11.2, 0],
+      coordinates: [25.4, 60.6, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -89,7 +89,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     measured_location: {
       type: 'Point',
-      coordinates: [8.1, 7.2, 0],
+      coordinates: [25.7, 60.6, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -107,7 +107,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [10.1, 9.2, 0],
+      coordinates: [25.2, 60.6, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -125,7 +125,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     measured_location: {
       type: 'Point',
-      coordinates: [12.1, 11.2, 0],
+      coordinates: [25.3, 60.4, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -143,7 +143,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [8.1, 7.2, 0],
+      coordinates: [25.7, 60.1, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -161,7 +161,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [10.1, 9.2, 0],
+      coordinates: [25.6, 60.4, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
@@ -179,7 +179,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     measured_location: {
       type: 'Point',
-      coordinates: [8.1, 7.2, 0],
+      coordinates: [25.7, 60.3, 0],
       crs: {
         properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
         type: 'name',
