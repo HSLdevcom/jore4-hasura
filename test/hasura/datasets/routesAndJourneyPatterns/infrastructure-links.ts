@@ -108,7 +108,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
         [25.4, 60.8, 0],
       ],
     },
-    estimated_length_in_metres: 55362,
+    estimated_length_in_metres: null,
     external_link_source: 'digiroad_r',
     external_link_id: '5',
   },
