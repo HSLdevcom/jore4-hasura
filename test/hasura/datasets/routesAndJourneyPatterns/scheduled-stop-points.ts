@@ -200,6 +200,44 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     validity_end: new LocalDate('2032-02-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
+  {
+    scheduled_stop_point_id: '370c55b6-8848-11ed-a1eb-0242ac120002',
+    located_on_infrastructure_link_id:
+      infrastructureLinks[1].infrastructure_link_id,
+    direction: LinkDirection.Forward,
+    measured_location: {
+      type: 'Point',
+      coordinates: [25.6, 60.1, 0],
+      crs: {
+        properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+        type: 'name',
+      },
+    },
+    label: 'stop5X',
+    priority: 10,
+    validity_start: new LocalDate('2035-02-03'),
+    validity_end: null,
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
+  },
+  {
+    scheduled_stop_point_id: '60439d2c-8848-11ed-a1eb-0242ac120002',
+    located_on_infrastructure_link_id:
+      infrastructureLinks[1].infrastructure_link_id,
+    direction: LinkDirection.Forward,
+    measured_location: {
+      type: 'Point',
+      coordinates: [25.7, 60.2, 0],
+      crs: {
+        properties: { name: 'urn:ogc:def:crs:EPSG::4326' },
+        type: 'name',
+      },
+    },
+    label: 'stop6X',
+    priority: 10,
+    validity_start: new LocalDate('2035-02-03'),
+    validity_end: null,
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
+  },
 ];
 
 export const scheduledStopPointInvariants: ScheduledStopPointInvariant[] =
@@ -255,6 +293,14 @@ export const vehicleModeOnScheduledStopPoint: VehicleModeOnScheduledStopPoint[] 
     },
     {
       scheduled_stop_point_id: scheduledStopPoints[9].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[10].scheduled_stop_point_id,
+      vehicle_mode: VehicleMode.Bus,
+    },
+    {
+      scheduled_stop_point_id: scheduledStopPoints[11].scheduled_stop_point_id,
       vehicle_mode: VehicleMode.Bus,
     },
   ];
