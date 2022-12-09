@@ -76,12 +76,4 @@ export const routesAndJourneyPatternsTableConfig: TableLikeConfig[] = [
     data: scheduledStopPointInJourneyPattern,
     props: scheduledStopPointInJourneyPatternProps,
   },
-
-  // views
-  {
-    name: 'service_pattern.scheduled_stop_point',
-    props: scheduledStopPointProps,
-    isView: true,
-  },
-  { name: 'route.route', props: routeProps, isView: true },
 ];
