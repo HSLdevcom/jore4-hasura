@@ -150,7 +150,7 @@ describe('Move scheduled stop point to other infra link', () => {
   });
 
   describe('without conflict', () => {
-    const toBeMoved = scheduledStopPoints[1];
+    const toBeMoved = scheduledStopPoints[8];
     const newInfraLinkId = infrastructureLinks[6].infrastructure_link_id;
     const completeUpdated = {
       ...toBeMoved,
