@@ -14,6 +14,7 @@ const buildMutation = (toBeInserted: Partial<Line>) => `
     insert_route_line(objects: ${dataset.toGraphQlObject(toBeInserted, [
       'primary_vehicle_mode',
       'type_of_line',
+      'transport_target',
     ])}) {
       returning {
         ${getPropNameArray(LineProps).join(',')}

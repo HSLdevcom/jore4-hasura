@@ -56,6 +56,24 @@ export enum TypeOfLine {
   FerryService = 'ferry_service',
 }
 
+export enum TransportTarget {
+  EspooAndKauniainenInternalTraffic = 'espoo_and_kauniainen_internal_traffic',
+  EspooRegionalTraffic = 'espoo_regional_traffic',
+  HelsinkiInternalTraffic = 'helsinki_internal_traffic',
+  KeravaInternalTraffic = 'kerava_internal_traffic',
+  KeravaRegionalTraffic = 'kerava_regional_traffic',
+  KirkkonummiInternalTraffic = 'kirkkonummi_internal_traffic',
+  KirkkonummiRegionalTraffic = 'kirkkonummi_regional_traffic',
+  SipooInternalTraffic = 'sipoo_internal_traffic',
+  SiuntioInternalTraffic = 'siuntio_internal_traffic',
+  SiuntioRegionalTraffic = 'siuntio_regional_traffic',
+  TransverseRegional = 'transverse_regional',
+  TuusulaInternalTraffic = 'tuusula_internal_traffic',
+  TuusulaRegionalTraffic = 'tuusula_regional_traffic',
+  VantaaInternalTraffic = 'vantaa_internal_traffic',
+  VantaaRegionalTraffic = 'vantaa_regional_traffic',
+}
+
 export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
@@ -177,6 +195,7 @@ export type Line = {
   priority: number;
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
+  transport_target: TransportTarget;
 };
 export const LineProps: Property[] = [
   'line_id',
@@ -188,6 +207,7 @@ export const LineProps: Property[] = [
   'priority',
   'validity_start',
   'validity_end',
+  'transport_target',
 ];
 
 export type JourneyPattern = {

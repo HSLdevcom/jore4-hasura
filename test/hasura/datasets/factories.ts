@@ -1,4 +1,9 @@
-import { LocalizedString, TypeOfLine, VehicleMode } from '@datasets/types';
+import {
+  LocalizedString,
+  TransportTarget,
+  TypeOfLine,
+  VehicleMode,
+} from '@datasets/types';
 
 export const buildLocalizedString = (str: string): LocalizedString => ({
   fi_FI: str,
@@ -22,6 +27,7 @@ export const buildLine = (label: string, vehicleMode: VehicleMode) => ({
   short_name_i18n: buildLocalizedString(`line ${label}`),
   primary_vehicle_mode: vehicleMode,
   type_of_line: buildTypeOfLine(vehicleMode),
+  transport_target: TransportTarget.HelsinkiInternalTraffic,
 });
 
 export const buildRoute = (postfix: string) => ({
