@@ -188,6 +188,12 @@ COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and rever
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 --
+-- Name: SCHEMA hsl_route; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA hsl_route IS 'HLS specific route related additions to the base schema.';
+
+--
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -234,6 +240,12 @@ COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Trans
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+--
+-- Name: TABLE transport_target; Type: COMMENT; Schema: hsl_route; Owner: dbhasura
+--
+
+COMMENT ON TABLE hsl_route.transport_target IS 'Transport target, can be used e.g. for cost sharing.';
 
 --
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -1028,6 +1040,13 @@ ALTER TABLE ONLY hdb_catalog.hdb_version
     ADD CONSTRAINT hdb_version_pkey PRIMARY KEY (hasura_uuid);
 
 --
+-- Name: transport_target transport_target_pkey; Type: CONSTRAINT; Schema: hsl_route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY hsl_route.transport_target
+    ADD CONSTRAINT transport_target_pkey PRIMARY KEY (transport_target);
+
+--
 -- Name: direction direction_pkey; Type: CONSTRAINT; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -1342,6 +1361,13 @@ ALTER TABLE ONLY route.infrastructure_link_along_route
 
 ALTER TABLE ONLY route.line
     ADD CONSTRAINT line_primary_vehicle_mode_fkey FOREIGN KEY (primary_vehicle_mode) REFERENCES reusable_components.vehicle_mode(vehicle_mode);
+
+--
+-- Name: line line_transport_target_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.line
+    ADD CONSTRAINT line_transport_target_fkey FOREIGN KEY (transport_target) REFERENCES hsl_route.transport_target(transport_target);
 
 --
 -- Name: line line_type_of_line_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
@@ -3262,6 +3288,12 @@ CREATE INDEX idx_line_primary_vehicle_mode ON route.line USING btree (primary_ve
 CREATE INDEX idx_line_short_name_i18n ON route.line USING gin (short_name_i18n);
 
 --
+-- Name: idx_line_transport_target; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_line_transport_target ON route.line USING btree (transport_target);
+
+--
 -- Name: idx_line_type_of_line; Type: INDEX; Schema: route; Owner: dbhasura
 --
 
@@ -3371,6 +3403,15 @@ CREATE SCHEMA hdb_catalog;
 
 
 ALTER SCHEMA hdb_catalog OWNER TO dbhasura;
+
+--
+-- Name: hsl_route; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA hsl_route;
+
+
+ALTER SCHEMA hsl_route OWNER TO dbhasura;
 
 --
 -- Name: infrastructure_network; Type: SCHEMA; Schema: -; Owner: dbhasura
@@ -3609,6 +3650,17 @@ CREATE TABLE hdb_catalog.hdb_version (
 ALTER TABLE hdb_catalog.hdb_version OWNER TO dbhasura;
 
 --
+-- Name: transport_target; Type: TABLE; Schema: hsl_route; Owner: dbhasura
+--
+
+CREATE TABLE hsl_route.transport_target (
+    transport_target text NOT NULL
+);
+
+
+ALTER TABLE hsl_route.transport_target OWNER TO dbhasura;
+
+--
 -- Name: direction; Type: TABLE; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -3750,7 +3802,8 @@ CREATE TABLE route.line (
     validity_end date,
     priority integer NOT NULL,
     label text NOT NULL,
-    type_of_line text NOT NULL
+    type_of_line text NOT NULL,
+    transport_target text NOT NULL
 );
 
 
