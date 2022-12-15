@@ -125,6 +125,7 @@ describe('Insert scheduled stop point', () => {
       priority: 10,
       validity_start: new LocalDate('2062-01-03'),
       validity_end: new LocalDate('2063-01-02'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -149,6 +150,7 @@ describe('Insert scheduled stop point', () => {
       priority: 30,
       validity_start: new LocalDate('2062-01-03'),
       validity_end: new LocalDate('2063-01-02'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -173,6 +175,7 @@ describe('Insert scheduled stop point', () => {
       priority: 30,
       validity_start: new LocalDate('2064-01-03'),
       validity_end: new LocalDate('2065-01-02'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -197,6 +200,7 @@ describe('Insert scheduled stop point', () => {
       priority: 10,
       validity_start: new LocalDate('2060-01-16'),
       validity_end: new LocalDate('2061-04-30'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -221,6 +225,7 @@ describe('Insert scheduled stop point', () => {
       priority: 20,
       validity_start: new LocalDate('2065-01-05'),
       validity_end: new LocalDate('2065-01-07'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -245,6 +250,7 @@ describe('Insert scheduled stop point', () => {
       priority: 30,
       validity_start: new LocalDate('2063-01-05'),
       validity_end: new LocalDate('2064-01-07'),
+      timing_place_id: null,
     };
 
     shouldReturnCorrectResponse(toBeInserted);

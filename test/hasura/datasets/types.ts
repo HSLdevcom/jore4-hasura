@@ -96,6 +96,7 @@ export type ScheduledStopPoint = {
   priority: number;
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
+  timing_place_id: string | null;
 };
 export const ScheduledStopPointProps: Property[] = [
   'scheduled_stop_point_id',
@@ -106,6 +107,7 @@ export const ScheduledStopPointProps: Property[] = [
   'priority',
   'validity_start',
   'validity_end',
+  'timing_place_id',
 ];
 
 export type VehicleModeOnScheduledStopPoint = {
@@ -205,7 +207,8 @@ export type ScheduledStopPointInJourneyPattern = {
   journey_pattern_id: string;
   scheduled_stop_point_label: string;
   scheduled_stop_point_sequence: number;
-  is_timing_point: boolean;
+  is_used_as_timing_point: boolean;
+  is_loading_time_allowed: boolean;
   is_via_point: boolean;
   via_point_name_i18n?: LocalizedString | null;
   via_point_short_name_i18n?: LocalizedString | null;
@@ -214,7 +217,8 @@ export const ScheduledStopPointInJourneyPatternProps: Property[] = [
   'journey_pattern_id',
   'scheduled_stop_point_label',
   'scheduled_stop_point_sequence',
-  'is_timing_point',
+  'is_used_as_timing_point',
+  'is_loading_time_allowed',
   'is_via_point',
   'via_point_name_i18n',
   'via_point_short_name_i18n',
@@ -230,3 +234,14 @@ export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   new_validity_end: LocalDate | null;
   new_priority: number | null;
 };
+
+export type TimingPatternTimingPlace = {
+  timing_place_id: string;
+  label: string | null;
+  description?: LocalizedString | null;
+};
+export const TimingPatternTimingPlaceProps: Property[] = [
+  'timing_place_id',
+  'label',
+  'description',
+];

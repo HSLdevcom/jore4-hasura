@@ -24,6 +24,7 @@ const toBeUpdated: Partial<ScheduledStopPoint> = {
   priority: 30,
   validity_start: new LocalDate('2077-10-22'),
   validity_end: new LocalDate('2079-10-21'),
+  timing_place_id: null,
 };
 
 const completeUpdated: ScheduledStopPoint = {
