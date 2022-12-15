@@ -20,12 +20,14 @@ const createToBeInserted = (
   journeyPatternId: string,
   scheduledStopPointLabel: string,
   scheduledStopPointSequence: number,
+  isUsedAsTimingPoint = false,
 ): ScheduledStopPointInJourneyPattern => ({
   journey_pattern_id: journeyPatternId,
   scheduled_stop_point_label: scheduledStopPointLabel,
   scheduled_stop_point_sequence: scheduledStopPointSequence,
   is_via_point: false,
-  is_timing_point: false,
+  is_used_as_timing_point: isUsedAsTimingPoint,
+  is_loading_time_allowed: false,
   via_point_name_i18n: null,
   via_point_short_name_i18n: null,
 });
@@ -231,6 +233,22 @@ describe('Insert scheduled stop point into journey pattern', () => {
     shouldReturnCorrectResponse(toBeInserted);
 
     shouldUpdateTheDatabase(toBeInserted);
+  });
+
+  describe('when stop is used as timing point but no timing place exists for the stop', () => {
+    const toBeInserted = createToBeInserted(
+      journeyPatterns[0].journey_pattern_id,
+      scheduledStopPoints[1].label,
+      250,
+      true,
+    );
+
+    shouldReturnErrorResponse(
+      toBeInserted,
+      'scheduled stop point must have a timing place attached if it is used as a timing point in a journey pattern',
+    );
+
+    shouldNotModifyDatabase(toBeInserted);
   });
 
   describe('without conflict', () => {

@@ -11,7 +11,7 @@ import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 
-const buildMutation = (
+const buildChangeInfralinkMutation = (
   scheduledStopPointId: string,
   newInfraLinkId: string,
 ) => `
@@ -21,6 +21,25 @@ const buildMutation = (
       },
       _set: {
         located_on_infrastructure_link_id: "${newInfraLinkId}"
+      }
+    ) {
+      returning {
+        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+      }
+    }
+  }
+`;
+
+const buildChangeTimingPlaceMutation = (
+  scheduledStopPointId: string,
+  newTimingPlaceId: string | null,
+) => `
+  mutation {
+    update_service_pattern_scheduled_stop_point(where: {
+        scheduled_stop_point_id: {_eq: "${scheduledStopPointId}"}
+      },
+      _set: {
+        timing_place_id: ${newTimingPlaceId ? `"${newTimingPlaceId}"` : null}
       }
     ) {
       returning {
@@ -53,7 +72,10 @@ describe('Move scheduled stop point to other infra link', () => {
         .post({
           ...config.hasuraRequestTemplate,
           body: {
-            query: buildMutation(scheduledStopPointId, newInfraLinkId),
+            query: buildChangeInfralinkMutation(
+              scheduledStopPointId,
+              newInfraLinkId,
+            ),
           },
         })
         .then(expectErrorResponse(expectedErrorMsg));
@@ -67,7 +89,10 @@ describe('Move scheduled stop point to other infra link', () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(scheduledStopPointId, newInfraLinkId),
+          query: buildChangeInfralinkMutation(
+            scheduledStopPointId,
+            newInfraLinkId,
+          ),
         },
       });
 
@@ -136,7 +161,7 @@ describe('Move scheduled stop point to other infra link', () => {
       const response = await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(
+          query: buildChangeInfralinkMutation(
             toBeMoved.scheduled_stop_point_id,
             newInfraLinkId,
           ),
@@ -158,7 +183,7 @@ describe('Move scheduled stop point to other infra link', () => {
       await rp.post({
         ...config.hasuraRequestTemplate,
         body: {
-          query: buildMutation(
+          query: buildChangeInfralinkMutation(
             toBeMoved.scheduled_stop_point_id,
             newInfraLinkId,
           ),
@@ -180,6 +205,147 @@ describe('Move scheduled stop point to other infra link', () => {
                 (stopPoint) =>
                   stopPoint.scheduled_stop_point_id !==
                   toBeMoved.scheduled_stop_point_id,
+              ),
+              completeUpdated,
+            ],
+            ['measured_location'],
+          ),
+        ),
+      );
+    });
+  });
+});
+
+describe('Change scheduled stop point timing place', () => {
+  let dbConnectionPool: pg.Pool;
+
+  beforeAll(() => {
+    dbConnectionPool = new pg.Pool(config.databaseConfig);
+  });
+
+  afterAll(() => dbConnectionPool.end());
+
+  beforeEach(() =>
+    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
+  );
+
+  const shouldReturnErrorResponse = (
+    scheduledStopPointId: string,
+    newTimingPlaceId: string | null,
+    expectedErrorMsg: string,
+  ) =>
+    it('should return error response', async () => {
+      await rp
+        .post({
+          ...config.hasuraRequestTemplate,
+          body: {
+            query: buildChangeTimingPlaceMutation(
+              scheduledStopPointId,
+              newTimingPlaceId,
+            ),
+          },
+        })
+        .then(expectErrorResponse(expectedErrorMsg));
+    });
+
+  const shouldNotModifyDatabase = (
+    scheduledStopPointId: string,
+    newTimingPlaceId: string | null,
+  ) =>
+    it('should not modify the database', async () => {
+      await rp.post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildChangeTimingPlaceMutation(
+            scheduledStopPointId,
+            newTimingPlaceId,
+          ),
+        },
+      });
+
+      const response = await queryTable(
+        dbConnectionPool,
+        'service_pattern.scheduled_stop_point',
+        routesAndJourneyPatternsTableConfig,
+      );
+
+      expect(response.rowCount).toEqual(scheduledStopPoints.length);
+      expect(response.rows).toEqual(
+        expect.arrayContaining(
+          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
+        ),
+      );
+    });
+
+  describe("when stop is used as timing point in a journey pattern and stop's timing place is set to null", () => {
+    shouldReturnErrorResponse(
+      scheduledStopPoints[0].scheduled_stop_point_id,
+      null,
+      'scheduled stop point must have a timing place attached if it is used as a timing point in a journey pattern',
+    );
+
+    shouldNotModifyDatabase(
+      scheduledStopPoints[0].scheduled_stop_point_id,
+      null,
+    );
+  });
+
+  describe('when stop is not used as timing point in any journey pattern and timing place is set to null', () => {
+    const toBeChanged = scheduledStopPoints[7];
+    const newTimingPlaceId = null;
+    const completeUpdated = {
+      ...toBeChanged,
+      timing_place_id: newTimingPlaceId,
+    };
+
+    it('should return correct response', async () => {
+      const response = await rp.post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildChangeTimingPlaceMutation(
+            toBeChanged.scheduled_stop_point_id,
+            newTimingPlaceId,
+          ),
+        },
+      });
+
+      expect(response).toEqual(
+        expect.objectContaining({
+          data: {
+            update_service_pattern_scheduled_stop_point: {
+              returning: [dataset.asGraphQlDateObject(completeUpdated)],
+            },
+          },
+        }),
+      );
+    });
+
+    it('should update the database', async () => {
+      await rp.post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildChangeTimingPlaceMutation(
+            toBeChanged.scheduled_stop_point_id,
+            newTimingPlaceId,
+          ),
+        },
+      });
+
+      const response = await queryTable(
+        dbConnectionPool,
+        'service_pattern.scheduled_stop_point',
+        routesAndJourneyPatternsTableConfig,
+      );
+
+      expect(response.rowCount).toEqual(scheduledStopPoints.length);
+      expect(response.rows).toEqual(
+        expect.arrayContaining(
+          asDbGeometryObjectArray(
+            [
+              ...scheduledStopPoints.filter(
+                (stopPoint) =>
+                  stopPoint.scheduled_stop_point_id !==
+                  toBeChanged.scheduled_stop_point_id,
               ),
               completeUpdated,
             ],

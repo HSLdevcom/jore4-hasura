@@ -13,6 +13,7 @@ import {
   ScheduledStopPointInJourneyPatternProps,
   ScheduledStopPointInvariantProps,
   ScheduledStopPointProps,
+  TimingPatternTimingPlaceProps,
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets/types';
@@ -34,6 +35,7 @@ import {
   vehicleModeOnScheduledStopPoint,
   vehicleModeOnScheduledStopPointWithTempRoute,
 } from './scheduled-stop-points';
+import { timingPlaces } from './timing-places';
 
 export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
   {
@@ -45,6 +47,11 @@ export const prioritizedRouteVerificationTableConfig: TableLikeConfig[] = [
     name: 'infrastructure_network.vehicle_submode_on_infrastructure_link',
     data: vehicleSubmodeOnInfrastructureLink,
     props: VehicleSubmodeOnInfrastructureLinkProps,
+  },
+  {
+    name: 'timing_pattern.timing_place',
+    data: timingPlaces,
+    props: TimingPatternTimingPlaceProps,
   },
   {
     name: 'service_pattern.scheduled_stop_point_invariant',

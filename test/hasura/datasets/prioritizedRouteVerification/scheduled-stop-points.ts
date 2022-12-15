@@ -27,6 +27,7 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2025-01-01'),
     validity_end: new LocalDate('2095-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: 'bd29c482-b97d-44e4-89db-666a8f21a6db',
@@ -45,6 +46,7 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2025-01-01'),
     validity_end: new LocalDate('2095-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: 'c8441d63-0825-4765-b889-8d2f9b560ff4',
@@ -63,6 +65,7 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2025-01-01'),
     validity_end: new LocalDate('2095-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '62794519-6d69-4663-b203-2c93051b3a10',
@@ -81,6 +84,7 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2025-01-01'),
     validity_end: new LocalDate('2095-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
 ];
 
@@ -102,6 +106,7 @@ export const tempScheduledStopPointWithConflictingInfraLinkOrder: ScheduledStopP
     priority: 20,
     validity_start: new LocalDate('2054-05-02'),
     validity_end: new LocalDate('2064-05-01'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
 export const tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
@@ -136,6 +141,7 @@ export const tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute: ScheduledS
     priority: 20,
     validity_start: new LocalDate('2054-05-02'),
     validity_end: new LocalDate('2064-05-01'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
 export const scheduledStopPoints = scheduledStopPointsOfBasicJourneyPattern;

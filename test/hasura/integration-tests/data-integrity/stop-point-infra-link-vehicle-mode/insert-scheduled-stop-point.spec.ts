@@ -36,10 +36,12 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
   label: 'inserted stop point',
   priority: 50,
   validity_end: new LocalDate('2060-11-03'),
+  timing_place_id: null,
 };
 
 const insertedDefaultValues: Partial<ScheduledStopPoint> = {
   validity_start: null,
+  timing_place_id: null,
 };
 
 const buildMutation = (vehicleMode?: VehicleMode) => `
