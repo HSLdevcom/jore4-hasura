@@ -39,6 +39,7 @@ const toBeInserted: ScheduledStopPoint = {
   priority: 50,
   validity_start: new LocalDate('2036-11-03'),
   validity_end: new LocalDate('2060-11-03'),
+  timing_place_id: null,
 };
 
 const defaultVehicleMode: VehicleMode = VehicleMode.Bus;

@@ -27,6 +27,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-01-01'),
     validity_end: new LocalDate('2065-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '5be29866-4a74-45f3-9b85-b0717283231b',
@@ -45,6 +46,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
+    timing_place_id: null,
   },
   {
     scheduled_stop_point_id: 'd269d7e7-3ff4-48eb-8a07-3acec1bc349d',
@@ -63,6 +65,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 30,
     validity_start: null,
     validity_end: new LocalDate('2064-01-02'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: 'f150e375-ebe0-448b-a974-cdc2f482268d',
@@ -81,6 +84,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-01-01'),
     validity_end: new LocalDate('2065-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '02eca2f4-743a-4505-99ed-52390970a3d2',
@@ -99,6 +103,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: 'c3101b7f-1bda-4770-82f1-526e977ac3cc',
@@ -117,6 +122,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 20,
     validity_start: null,
     validity_end: new LocalDate('2064-01-02'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '1a794279-266e-4826-b08e-155d7cde4bce',
@@ -135,6 +141,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-01-01'),
     validity_end: new LocalDate('2065-01-31'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '4927238b-9bd9-4f86-bba2-3810a2e97f51',
@@ -153,6 +160,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2035-02-03'),
     validity_end: null,
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '222a0415-ce8c-442c-8e35-d56528bb7e29',
@@ -171,6 +179,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 30,
     validity_start: null,
     validity_end: new LocalDate('2064-01-02'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
     scheduled_stop_point_id: '431ab46f-3271-40bb-ab14-e217813a6a7f',
@@ -189,6 +198,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     priority: 10,
     validity_start: new LocalDate('2030-02-03'),
     validity_end: new LocalDate('2032-02-02'),
+    timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
 ];
 

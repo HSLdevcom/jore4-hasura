@@ -28,7 +28,8 @@ export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourne
       scheduled_stop_point_label:
         scheduledStopPointsOfBasicJourneyPattern[0].label,
       scheduled_stop_point_sequence: 1,
-      is_timing_point: true,
+      is_used_as_timing_point: true,
+      is_loading_time_allowed: false,
       is_via_point: false,
       via_point_name_i18n: null,
       via_point_short_name_i18n: null,
@@ -38,7 +39,8 @@ export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourne
       scheduled_stop_point_label:
         scheduledStopPointsOfBasicJourneyPattern[1].label,
       scheduled_stop_point_sequence: 2,
-      is_timing_point: true,
+      is_used_as_timing_point: true,
+      is_loading_time_allowed: false,
       is_via_point: false,
       via_point_name_i18n: null,
       via_point_short_name_i18n: null,
@@ -48,7 +50,8 @@ export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourne
       scheduled_stop_point_label:
         scheduledStopPointsOfBasicJourneyPattern[2].label,
       scheduled_stop_point_sequence: 3,
-      is_timing_point: true,
+      is_used_as_timing_point: true,
+      is_loading_time_allowed: false,
       is_via_point: false,
       via_point_name_i18n: null,
       via_point_short_name_i18n: null,
@@ -58,7 +61,8 @@ export const scheduledStopPointInBasicJourneyPattern: ScheduledStopPointInJourne
       scheduled_stop_point_label:
         scheduledStopPointsOfBasicJourneyPattern[3].label,
       scheduled_stop_point_sequence: 4,
-      is_timing_point: true,
+      is_used_as_timing_point: true,
+      is_loading_time_allowed: false,
       is_via_point: false,
       via_point_name_i18n: null,
       via_point_short_name_i18n: null,

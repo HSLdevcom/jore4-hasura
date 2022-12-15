@@ -798,4 +798,32 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_sspijp_trigger ON journey_patt
 ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
   ADD CONSTRAINT ck_is_via_point_state CHECK (
     (is_via_point = false AND via_point_name_i18n IS NULL AND via_point_short_name_i18n IS NULL) OR
-    (is_via_point = true AND via_point_name_i18n IS NOT NULL AND via_point_short_name_i18n IS NOT NULL))
+    (is_via_point = true AND via_point_name_i18n IS NOT NULL AND via_point_short_name_i18n IS NOT NULL));
+
+CREATE OR REPLACE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE NOTICE 'journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point()';
+
+  IF EXISTS(
+    SELECT 1
+      FROM journey_pattern.scheduled_stop_point_in_journey_pattern as sspijp
+      JOIN service_pattern.scheduled_stop_point AS ssp ON sspijp.scheduled_stop_point_label = ssp.label
+      WHERE ssp.timing_place_id IS NULL
+        AND sspijp.is_used_as_timing_point = true
+    )
+  THEN
+    RAISE EXCEPTION 'scheduled stop point must have a timing place attached if it is used as a timing point in a journey pattern';
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() IS 'If scheduled stop point in journey pattern is marked to be used as timing point, a timing place must be attached to each instance of the scheduled stop point.';
+
+DROP TRIGGER IF EXISTS scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
+CREATE CONSTRAINT TRIGGER scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger AFTER INSERT OR UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point();
+
+DROP TRIGGER IF EXISTS scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger ON service_pattern.scheduled_stop_point;
+CREATE CONSTRAINT TRIGGER scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point();

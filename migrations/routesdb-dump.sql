@@ -382,10 +382,16 @@ COMMENT ON COLUMN journey_pattern.journey_pattern.journey_pattern_id IS 'The ID 
 COMMENT ON COLUMN journey_pattern.journey_pattern.on_route_id IS 'The ID of the route the journey pattern is on.';
 
 --
--- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+-- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_loading_time_allowed; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_timing_point IS 'Is this scheduled stop point a timing point?';
+COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_loading_time_allowed IS 'Is adding loading time to this scheduled stop point in the journey pattern allowed?';
+
+--
+-- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_used_as_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_used_as_timing_point IS 'Is this scheduled stop point used as a timing point in the journey pattern?';
 
 --
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_via_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -476,6 +482,12 @@ COMMENT ON FUNCTION journey_pattern.maximum_priority_validity_spans(entity_type 
     replace_scheduled_stop_point_id is not null, the stop with that id is left out. If the new_xxx arguments are
     specified, the check is also performed for a stop defined by those arguments, which is not yet present in the
     table data.';
+
+--
+-- Name: FUNCTION scheduled_stop_point_has_timing_place_if_used_as_timing_point(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() IS 'If scheduled stop point in journey pattern is marked to be used as timing point, a timing place must be attached to each instance of the scheduled stop point.';
 
 --
 -- Name: FUNCTION truncate_scheduled_stop_point_in_journey_pattern(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -2501,6 +2513,34 @@ $$;
 ALTER FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_old_ssp_label() OWNER TO dbhasura;
 
 --
+-- Name: scheduled_stop_point_has_timing_place_if_used_as_timing_point(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE NOTICE 'journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point()';
+
+  IF EXISTS(
+    SELECT 1
+      FROM journey_pattern.scheduled_stop_point_in_journey_pattern as sspijp
+      JOIN service_pattern.scheduled_stop_point AS ssp ON sspijp.scheduled_stop_point_label = ssp.label
+      WHERE ssp.timing_place_id IS NULL
+        AND sspijp.is_used_as_timing_point = true
+    )
+  THEN
+    RAISE EXCEPTION 'scheduled stop point must have a timing place attached if it is used as a timing point in a journey pattern';
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() OWNER TO dbhasura;
+
+--
 -- Name: truncate_scheduled_stop_point_in_journey_pattern(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -3693,11 +3733,12 @@ ALTER TABLE journey_pattern.journey_pattern OWNER TO dbhasura;
 CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
     journey_pattern_id uuid NOT NULL,
     scheduled_stop_point_sequence integer NOT NULL,
-    is_timing_point boolean DEFAULT false NOT NULL,
+    is_used_as_timing_point boolean DEFAULT false NOT NULL,
     is_via_point boolean DEFAULT false NOT NULL,
     via_point_name_i18n jsonb,
     via_point_short_name_i18n jsonb,
     scheduled_stop_point_label text NOT NULL,
+    is_loading_time_allowed boolean DEFAULT false NOT NULL,
     CONSTRAINT ck_is_via_point_state CHECK ((((is_via_point = false) AND (via_point_name_i18n IS NULL) AND (via_point_short_name_i18n IS NULL)) OR ((is_via_point = true) AND (via_point_name_i18n IS NOT NULL) AND (via_point_short_name_i18n IS NOT NULL))))
 );
 
@@ -3913,6 +3954,12 @@ CREATE TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger AFTER 
 CREATE TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_update_trigger AFTER UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_journey_pattern_id();
 
 --
+-- Name: scheduled_stop_point_in_journey_pattern scheduled_stop_point_has_timing_place_if_used_as_timing_point_t; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER scheduled_stop_point_has_timing_place_if_used_as_timing_point_t AFTER INSERT OR UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point();
+
+--
 -- Name: scheduled_stop_point_in_journey_pattern verify_infra_link_stop_refs_on_sspijp_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -4013,6 +4060,12 @@ CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_insert_trigger AFTER INS
 --
 
 CREATE TRIGGER queue_verify_infra_link_stop_refs_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_ssp_label();
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_has_timing_place_if_used_as_timing_point_t; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER scheduled_stop_point_has_timing_place_if_used_as_timing_point_t AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point();
 
 --
 -- Name: scheduled_stop_point scheduled_stop_point_vehicle_mode_by_scheduled_stop_point_trigg; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
