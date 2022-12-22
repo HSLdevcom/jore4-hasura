@@ -1,0 +1,2 @@
+ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
+  DROP COLUMN is_regulated_timing_point;
