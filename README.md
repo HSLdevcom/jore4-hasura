@@ -222,17 +222,17 @@ One way to resolve the Hasura metadata conflicts:
    Once you know what should be changed, click Delete all and OK.
 1. Recreate the missing parts of the metadata as explained above.
 
-## Integration tests
+## Integration and unit tests
 
-In order to run the integration tests, follow the following steps:
+In order to run the integration/unit tests, follow the following steps:
 
 1. Make sure you have hasura and its dependencies up and running with `./scripts/start_dependencies.sh`.
 1. Install the required node packages:
    ```
-   cd integration-test
+   cd test/hasura
    yarn install
    ```
-1. Run the tests in the `integration-test`-directory:
+1. Run the tests in the `test/hasura`-directory:
    `yarn test`
 
 ## Migration tests
