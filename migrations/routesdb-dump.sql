@@ -967,16 +967,16 @@ COMMENT ON FUNCTION service_pattern.find_scheduled_stop_point_locations_in_journ
 COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_by_routes(route_ids uuid[], observation_date date) IS 'Get the distances between scheduled stop points (in metres) for the journey/service patterns resolved from the route identifiers.';
 
 --
--- Name: FUNCTION get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: FUNCTION get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date, include_draft_stops boolean); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service pattern.';
+COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date, include_draft_stops boolean) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service pattern.';
 
 --
--- Name: FUNCTION get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: FUNCTION get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service patterns.';
+COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service patterns.';
 
 --
 -- Name: FUNCTION get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -3141,7 +3141,7 @@ FROM (
 ) ids
 JOIN LATERAL (
   SELECT *
-  FROM service_pattern.get_distances_between_stop_points_in_journey_patterns(ids.journey_pattern_ids, observation_date)
+  FROM service_pattern.get_distances_between_stop_points_in_journey_patterns(ids.journey_pattern_ids, observation_date, false)
 ) stop_interval_length USING (route_id)
 ORDER BY journey_pattern_id ASC, stop_interval_sequence ASC
 $$;
@@ -3150,24 +3150,24 @@ $$;
 ALTER FUNCTION service_pattern.get_distances_between_stop_points_by_routes(route_ids uuid[], observation_date date) OWNER TO dbhasura;
 
 --
--- Name: get_distances_between_stop_points_in_journey_pattern(uuid, date); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+-- Name: get_distances_between_stop_points_in_journey_pattern(uuid, date, boolean); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date) RETURNS SETOF service_pattern.distance_between_stops_calculation
+CREATE FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date, include_draft_stops boolean) RETURNS SETOF service_pattern.distance_between_stops_calculation
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 SELECT *
-FROM service_pattern.get_distances_between_stop_points_in_journey_patterns(ARRAY[journey_pattern_id], observation_date)
+FROM service_pattern.get_distances_between_stop_points_in_journey_patterns(ARRAY[journey_pattern_id], observation_date, include_draft_stops)
 $$;
 
 
-ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date) OWNER TO dbhasura;
+ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_pattern(journey_pattern_id uuid, observation_date date, include_draft_stops boolean) OWNER TO dbhasura;
 
 --
--- Name: get_distances_between_stop_points_in_journey_patterns(uuid[], date); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+-- Name: get_distances_between_stop_points_in_journey_patterns(uuid[], date, boolean); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date) RETURNS SETOF service_pattern.distance_between_stops_calculation
+CREATE FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) RETURNS SETOF service_pattern.distance_between_stops_calculation
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH RECURSIVE
@@ -3187,7 +3187,7 @@ scheduled_stop_point_info AS (
   FROM journey_pattern.journey_pattern jp
   JOIN LATERAL (
     SELECT *
-    FROM service_pattern.find_scheduled_stop_point_locations_in_journey_pattern(jp.journey_pattern_id, observation_date, false)
+    FROM service_pattern.find_scheduled_stop_point_locations_in_journey_pattern(jp.journey_pattern_id, observation_date, include_draft_stops)
   ) ssp USING (journey_pattern_id)
   WHERE jp.journey_pattern_id = ANY(journey_pattern_ids)
 ),
@@ -3378,7 +3378,7 @@ ORDER BY route_id, journey_pattern_id, stop_interval_sequence
 $$;
 
 
-ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date) OWNER TO dbhasura;
+ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) OWNER TO dbhasura;
 
 --
 -- Name: get_scheduled_stop_points_with_new(uuid, uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
