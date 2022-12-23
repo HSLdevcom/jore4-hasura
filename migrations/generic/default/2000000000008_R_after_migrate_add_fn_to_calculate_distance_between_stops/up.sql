@@ -93,7 +93,8 @@ IS 'Find location information for scheduled stop points in journey/service patte
 
 CREATE OR REPLACE FUNCTION service_pattern.get_distances_between_stop_points(
   journey_pattern_ids  uuid[],
-  observation_date     date
+  observation_date     date,
+  include_draft_stops  boolean
 )
   RETURNS TABLE (
     journey_pattern_id      uuid,
@@ -124,7 +125,7 @@ scheduled_stop_point_info AS (
   FROM journey_pattern.journey_pattern jp
   JOIN LATERAL (
     SELECT *
-    FROM service_pattern.find_scheduled_stop_point_locations_in_journey_pattern(jp.journey_pattern_id, observation_date, false)
+    FROM service_pattern.find_scheduled_stop_point_locations_in_journey_pattern(jp.journey_pattern_id, observation_date, include_draft_stops)
   ) ssp USING (journey_pattern_id)
   WHERE jp.journey_pattern_id = ANY(journey_pattern_ids)
 ),
@@ -310,13 +311,14 @@ FROM stop_interval
 JOIN stop_interval_distance USING (journey_pattern_id, stop_interval_sequence)
 ORDER BY route_id, journey_pattern_id, stop_interval_sequence
 $$;
-COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points(uuid[], date)
+COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points(uuid[], date, boolean)
 IS 'Get the distances between scheduled stop points (in metres) for the given journey/service patterns.';
 
 
 CREATE OR REPLACE FUNCTION service_pattern.get_distances_between_stop_points(
-  journey_pattern_id  uuid,
-  observation_date    date
+  journey_pattern_id   uuid,
+  observation_date     date,
+  include_draft_stops  boolean
 )
   RETURNS TABLE (
     journey_pattern_id      uuid,
@@ -330,9 +332,9 @@ CREATE OR REPLACE FUNCTION service_pattern.get_distances_between_stop_points(
   PARALLEL SAFE
   LANGUAGE sql AS
 $$
-SELECT * FROM service_pattern.get_distances_between_stop_points(ARRAY[journey_pattern_id], observation_date)
+SELECT * FROM service_pattern.get_distances_between_stop_points(ARRAY[journey_pattern_id], observation_date, include_draft_stops)
 $$;
-COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points(uuid, date)
+COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points(uuid, date, boolean)
 IS 'Get the distances between scheduled stop points (in metres) for the given journey/service pattern.';
 
 
@@ -370,7 +372,7 @@ FROM (
 ) route_info
 JOIN LATERAL (
   SELECT *
-  FROM service_pattern.get_distances_between_stop_points(journey_pattern_ids, observation_date)
+  FROM service_pattern.get_distances_between_stop_points(journey_pattern_ids, observation_date, false)
 ) stop_interval_length USING (route_id)
 ORDER BY journey_pattern_id ASC, stop_interval_sequence ASC
 $$;
