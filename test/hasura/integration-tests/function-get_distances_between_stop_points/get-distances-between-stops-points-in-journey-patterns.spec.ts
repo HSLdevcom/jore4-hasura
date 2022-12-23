@@ -122,12 +122,13 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
     dataset: TableLikeConfig[],
     journeyPatternIds: string[],
     observationDate: LocalDate,
+    includeDraftStopPoints = false,
   ): Promise<Array<StopIntervalLength>> => {
     await setupDb(dbConnectionPool, dataset);
 
     const response = await db.singleQuery(
       dbConnectionPool,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISOString()}'::date)`,
+      `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISOString()}'::date, ${includeDraftStopPoints})`,
     );
 
     return response.rows.map((row) => {
@@ -550,6 +551,54 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
             start_stop_label: 'stop3X',
             end_stop_label: 'stop2X',
             distance_in_metres: 217330.08,
+          },
+        ]),
+      );
+    });
+
+    it('...when draft priority stop point is included when selected so', async () => {
+      const scheduledStopPoints = getScheduledStopPoints(30);
+
+      const response = await getDistancesBetweenStopPoints(
+        getTableDataToBePopulated(scheduledStopPoints),
+        [journeyPatternId],
+        observationDate,
+        true,
+      );
+
+      expect(response.length).toEqual(3);
+
+      expect(response).toEqual(
+        expect.arrayContaining([
+          {
+            journey_pattern_id: journeyPatternId,
+            route_id: routeId,
+            route_priority: 10,
+            observation_date: observationDate,
+            stop_interval_sequence: 1,
+            start_stop_label: 'stop1',
+            end_stop_label: 'stop1X',
+            distance_in_metres: 11021.92,
+          },
+          {
+            journey_pattern_id: journeyPatternId,
+            route_id: routeId,
+            route_priority: 10,
+            observation_date: observationDate,
+            stop_interval_sequence: 2,
+            start_stop_label: 'stop1X',
+            end_stop_label: 'stop3X',
+            distance_in_metres: 25466.08,
+          },
+          {
+            journey_pattern_id: journeyPatternId,
+            route_id: routeId,
+            route_priority: 10,
+            observation_date: observationDate,
+            stop_interval_sequence: 3,
+            start_stop_label: 'stop3X',
+            end_stop_label: 'stop2X',
+            distance_in_metres: 239605.73,
           },
         ]),
       );
