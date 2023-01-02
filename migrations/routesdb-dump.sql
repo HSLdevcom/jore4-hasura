@@ -898,10 +898,10 @@ COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_s
 COMMENT ON FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point) IS 'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
 
 --
--- Name: FUNCTION scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: FUNCTION ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+COMMENT ON FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point) IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
 
 --
 -- Name: TABLE scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -3148,10 +3148,10 @@ $$;
 ALTER FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point) OWNER TO dbhasura;
 
 --
--- Name: scheduled_stop_point_relative_distance_from_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+-- Name: ssp_relative_distance_from_infrastructure_link_start(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) RETURNS double precision
+CREATE FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point) RETURNS double precision
     LANGUAGE sql STABLE
     AS $$
   SELECT
@@ -3161,7 +3161,7 @@ CREATE FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infr
 $$;
 
 
-ALTER FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) OWNER TO dbhasura;
+ALTER FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point) OWNER TO dbhasura;
 
 --
 -- Name: hdb_cron_event_invocation_event_id; Type: INDEX; Schema: hdb_catalog; Owner: dbhasura
