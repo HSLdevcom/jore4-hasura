@@ -166,7 +166,7 @@ CREATE OR REPLACE FUNCTION service_pattern.scheduled_stop_point_closest_point_on
 $$;
 COMMENT ON FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infrastructure_link IS 'The point on the infrastructure link closest to measured_location. A PostGIS PointZ geography in EPSG:4326.';
 
-CREATE OR REPLACE FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link(ssp service_pattern.scheduled_stop_point) RETURNS double precision
+CREATE OR REPLACE FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point) RETURNS double precision
     LANGUAGE sql STABLE
     AS $$
   SELECT
@@ -174,7 +174,7 @@ CREATE OR REPLACE FUNCTION service_pattern.scheduled_stop_point_relative_distanc
   FROM infrastructure_network.infrastructure_link il
   WHERE ssp.located_on_infrastructure_link_id = il.infrastructure_link_id;
 $$;
-COMMENT ON FUNCTION service_pattern.scheduled_stop_point_relative_distance_from_infrastructure_link IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+COMMENT ON FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
     ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));

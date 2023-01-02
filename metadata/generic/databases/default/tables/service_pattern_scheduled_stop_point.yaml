@@ -42,8 +42,8 @@ computed_fields:
       function:
         schema: service_pattern
         name: scheduled_stop_point_closest_point_on_infrastructure_link
-  - name: relative_distance_from_infrastructure_link
+  - name: relative_distance_from_infrastructure_link_start
     definition:
       function:
         schema: service_pattern
-        name: scheduled_stop_point_relative_distance_from_infrastructure_link
+        name: ssp_relative_distance_from_infrastructure_link_start
