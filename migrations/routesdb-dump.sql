@@ -713,13 +713,13 @@ COMMENT ON COLUMN route.route.description_i18n IS 'The description of the route 
 -- Name: COLUMN route.direction; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition, label, variant and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition.';
 
 --
 -- Name: COLUMN route.label; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.label IS 'The label of the route definition, label, variant and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.label IS 'The label of the route definition.';
 
 --
 -- Name: COLUMN route.on_line_id; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -740,6 +740,12 @@ COMMENT ON COLUMN route.route.priority IS 'The priority of the route definition.
 COMMENT ON COLUMN route.route.route_id IS 'The ID of the route.';
 
 --
+-- Name: COLUMN route.unique_label; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.unique_label IS 'Derived from label. Routes are unique for each unique label for a certain direction, priority and validity period';
+
+--
 -- Name: COLUMN route.validity_end; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -755,7 +761,7 @@ COMMENT ON COLUMN route.route.validity_start IS 'The point in time when the rout
 -- Name: COLUMN route.variant; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.variant IS 'The variant for route definition, label, variant and direction together are unique for a certain priority and validity period.';
+COMMENT ON COLUMN route.route.variant IS 'The variant for route definition.';
 
 --
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -1141,7 +1147,7 @@ ALTER TABLE ONLY route.route
 --
 
 ALTER TABLE ONLY route.route
-    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (label WITH =, COALESCE((variant)::integer, '-1'::integer) WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (unique_label WITH =, COALESCE((variant)::integer, '-1'::integer) WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
 --
 -- Name: type_of_line type_of_line_pkey; Type: CONSTRAINT; Schema: route; Owner: dbhasura
@@ -3832,6 +3838,7 @@ CREATE TABLE route.route (
     destination_name_i18n jsonb,
     destination_short_name_i18n jsonb,
     variant smallint,
+    unique_label text GENERATED ALWAYS AS (label) STORED,
     CONSTRAINT route_variant_unsigned_check CHECK ((variant >= 0))
 );
 
