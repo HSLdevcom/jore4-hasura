@@ -175,6 +175,13 @@ You can add HSL specific schema changes by updating files in `migrations/hsl` an
 The folder structure follows the same structure as the original ones. Generic (Transmodel compatible)
 migrations are located in `migrations/generic` and `metadata/generic` respectively.
 
+If you wish to apply HSL migrations in local development environment:
+
+- modify `docker/docker-compose.custom.yml`: set `jore4-hasura` build target to `target: hasura-hsl`
+- stop dependencies and recreate the `testdb` container
+- modify `config.yaml`: change `migrations_directory` to `migrations_directory: migrations/hsl`
+- now you should be able to see and apply the hsl migrations with `hasura migrate` commands
+
 When adding new metadata files, they can be added in the `metadata/hsl` directory in the correct location.
 However, when adding content to existing metadata files, a new file should be created in the
 directory of patched file, inside `/patch` directory located in the directory where the original metadata file is
