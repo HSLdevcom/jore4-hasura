@@ -120,46 +120,7 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION route.delete_route() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  DELETE FROM internal_route.route
-  WHERE route_id = OLD.route_id;
-  RETURN OLD;
-END;
-$$;
 
-CREATE OR REPLACE FUNCTION route.insert_route() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  INSERT INTO internal_route.route (
-    description_i18n,
-    starts_from_scheduled_stop_point_id,
-    ends_at_scheduled_stop_point_id,
-    on_line_id,
-    validity_start,
-    validity_end,
-    priority,
-    label,
-    direction,
-    variant
-  ) VALUES (
-    NEW.description_i18n,
-    NEW.starts_from_scheduled_stop_point_id,
-    NEW.ends_at_scheduled_stop_point_id,
-    NEW.on_line_id,
-    NEW.validity_start,
-    NEW.validity_end,
-    NEW.priority,
-    NEW.label,
-    NEW.direction,
-    NEW.variant
-  ) RETURNING route_id INTO NEW.route_id;
-  RETURN NEW;
-END;
-$$;
 
 CREATE OR REPLACE FUNCTION route.route_shape(route_row route.route) RETURNS public.geography
     LANGUAGE sql STABLE
@@ -180,28 +141,6 @@ CREATE OR REPLACE FUNCTION route.route_shape(route_row route.route) RETURNS publ
         ON (ilar.infrastructure_link_id = il.infrastructure_link_id)
       ) ON (route_row.route_id = ilar.route_id)
     WHERE r.route_id = route_row.route_id;
-$$;
-
-CREATE OR REPLACE FUNCTION route.update_route() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  UPDATE internal_route.route
-  SET
-    route_id = NEW.route_id,
-    description_i18n = NEW.description_i18n,
-    starts_from_scheduled_stop_point_id = NEW.starts_from_scheduled_stop_point_id,
-    ends_at_scheduled_stop_point_id = NEW.ends_at_scheduled_stop_point_id,
-    on_line_id = NEW.on_line_id,
-    validity_start = NEW.validity_start,
-    validity_end = NEW.validity_end,
-    priority = NEW.priority,
-    label = NEW.label,
-    direction = NEW.direction,
-    variant = NEW.variant
-  WHERE route_id = OLD.route_id;
-  RETURN NEW;
-END;
 $$;
 
 ALTER TABLE ONLY route.route
