@@ -44,7 +44,7 @@ export const setupDb = (
         [] as string[],
       );
 
-      queryRunner = queryRunner.insertFromJson(
+      queryRunner.insertFromJson(
         table.name,
         asDbGeometryObjectArray(data, geoProps),
       );
