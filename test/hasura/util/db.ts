@@ -1,3 +1,4 @@
+import { LocalDate } from 'local-date';
 import { Pool, QueryResult } from 'pg';
 
 class QueryRunner {
@@ -16,13 +17,43 @@ class QueryRunner {
 
   truncate = (table: string) => this.query(`TRUNCATE ${table} CASCADE`);
 
-  insertFromJson = (table: string, jsonObjects: Record<string, unknown>[]) =>
-    this.query(
-      `INSERT INTO ${table} ` +
-        `SELECT *
-       FROM jsonb_populate_recordset(NULL::${table}, $1::jsonb)`,
-      [JSON.stringify(jsonObjects)],
-    );
+  insertFromJson = (table: string, jsonObjects: Record<string, unknown>[]) => {
+    const getInsertColumns = (data: Record<string, unknown>) => {
+      return Object.keys(data).join(', ');
+    };
+
+    const getInsertParameterSymbols = (data: Record<string, unknown>) => {
+      return Object.keys(data)
+        .map((value, idx) => {
+          return `$${idx + 1}`;
+        })
+        .join(', ');
+    };
+
+    const getFieldValueForDbInsert = (value: unknown) => {
+      if (value instanceof LocalDate) {
+        return value.toISOString();
+      }
+      return value;
+    };
+
+    const getInsertValues = (data: Record<string, unknown>) => {
+      return Object.values(data).map(getFieldValueForDbInsert);
+    };
+
+    jsonObjects.forEach((jsonObject) => {
+      const columns = getInsertColumns(jsonObject);
+      const parameterSymbols = getInsertParameterSymbols(jsonObject);
+      const values = getInsertValues(jsonObject);
+
+      this.query(
+        `INSERT INTO ${table} (${columns}) VALUES (${parameterSymbols})`,
+        [...values],
+      );
+    });
+
+    return this;
+  };
 
   disableTriggers = (disable: boolean) =>
     this.query(
