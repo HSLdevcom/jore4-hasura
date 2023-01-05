@@ -144,7 +144,7 @@ CREATE OR REPLACE FUNCTION route.route_shape(route_row route.route) RETURNS publ
 $$;
 
 ALTER TABLE ONLY route.route
-    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (unique_label WITH =, coalesce(variant,-1) WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+    ADD CONSTRAINT route_unique_validity_period EXCLUDE USING gist (unique_label WITH =, direction WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 ALTER TABLE ONLY route.line
     ADD CONSTRAINT line_unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
@@ -193,6 +193,3 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 DROP TRIGGER IF EXISTS verify_infra_link_stop_refs_on_route_trigger ON route.route;
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_route_trigger AFTER DELETE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
-
-ALTER TABLE route.route
-    ADD CONSTRAINT route_variant_unsigned_check CHECK (variant >= 0);

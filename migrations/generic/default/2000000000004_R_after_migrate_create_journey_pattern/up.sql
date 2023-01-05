@@ -4,12 +4,12 @@ CREATE OR REPLACE FUNCTION journey_pattern.maximum_priority_validity_spans(entit
 WITH RECURSIVE
   -- collect the entities matching the given parameters
   -- e.g.
-  -- id, validity_start, validity_end, key1, prio
-  -----------------------------------------------
-  --  1,     2020-01-01,   2025-01-01,    A,   10
-  --  2,     2022-01-01,   2027-01-01,    A,   20
+  -- id, validity_start, validity_end, key, prio
+  ----------------------------------------------
+  --  1,     2020-01-01,   2025-01-01,   A,   10
+  --  2,     2022-01-01,   2027-01-01,   A,   20
   entity AS (
-    SELECT r.route_id AS id, r.validity_start, r.validity_end, r.label AS key1, r.variant as key2, r.direction AS key3, r.priority
+    SELECT r.route_id AS id, r.validity_start, r.validity_end, r.label AS key1, r.direction AS key2, r.priority
     FROM route.route r
     WHERE entity_type = 'route'
       AND internal_utils.daterange_closed_upper(r.validity_start, r.validity_end) &&
@@ -22,7 +22,6 @@ WITH RECURSIVE
            ssp.validity_end,
            ssp.label                   AS key1,
            NULL                        AS key2,
-           NULL                        AS key3,
            ssp.priority
     FROM service_pattern.get_scheduled_stop_points_with_new(
            replace_scheduled_stop_point_id,
@@ -50,48 +49,48 @@ WITH RECURSIVE
   ),
   -- form the list of potential validity span boundaries
   -- e.g.
-  -- id, validity_start, is_start, key1, prio
-  -------------------------------------------
-  --  1,     2020-01-01,     true,    A,   10
-  --  1,     2025-01-01,    false,    A,   10
-  --  2,     2022-01-01,     true,    A,   20
-  --  2,     2027-01-01,    false,    A,   20
+  -- id, validity_start, is_start, key, prio
+  ------------------------------------------
+  --  1,     2020-01-01,     true,   A,   10
+  --  1,     2025-01-01,    false,   A,   10
+  --  2,     2022-01-01,     true,   A,   20
+  --  2,     2027-01-01,    false,   A,   20
   boundary AS (
-    SELECT e.validity_start, TRUE AS is_start, e.key1, e.key2, e.key3, e.priority
+    SELECT e.validity_start, TRUE AS is_start, e.key1, e.key2, e.priority
     FROM entity e
     UNION ALL
-    SELECT internal_utils.next_day(e.validity_end), FALSE AS is_start, e.key1, e.key2, e.key3, e.priority
+    SELECT internal_utils.next_day(e.validity_end), FALSE AS is_start, e.key1, e.key2, e.priority
     FROM entity e
   ),
   -- Order the list both ascending and descending, because it has to be traversed both ways below. By traversing the
   -- list in both directions, we can find the validity span boundaries with highest priority without using fifos or
   -- similar.
   -- e.g.
-  -- id, validity_start, is_start, key1, prio, start_order, end_order
-  -------------------------------------------------------------------
-  --  1,     2020-01-01,     true,    A,   10,           1,         4
-  --  2,     2022-01-01,     true,    A,   20,           2,         3
-  --  1,     2025-01-01,    false,    A,   10,           3,         2
-  --  2,     2027-01-01,    false,    A,   20,           4,         1
+  -- id, validity_start, is_start, key, prio, start_order, end_order
+  ------------------------------------------------------------------
+  --  1,     2020-01-01,     true,   A,   10,           1,         4
+  --  2,     2022-01-01,     true,   A,   20,           2,         3
+  --  1,     2025-01-01,    false,   A,   10,           3,         2
+  --  2,     2027-01-01,    false,   A,   20,           4,         1
   ordered_boundary AS (
     SELECT *,
            -- The "validity_start IS NULL" cases have to be interpreted together with "is_start". Depending on the latter value,
            -- "validity_start IS NULL" can mean "negative inf" or "positive inf"
            row_number()
-           OVER (PARTITION BY key1, key2, key3 ORDER BY is_start AND validity_start IS NULL DESC, validity_start ASC)      AS start_order,
+           OVER (PARTITION BY key1, key2 ORDER BY is_start AND validity_start IS NULL DESC, validity_start ASC)      AS start_order,
            row_number()
-           OVER (PARTITION BY key1, key2, key3 ORDER BY NOT is_start AND validity_start IS NULL DESC, validity_start DESC) AS end_order
+           OVER (PARTITION BY key1, key2 ORDER BY NOT is_start AND validity_start IS NULL DESC, validity_start DESC) AS end_order
     FROM boundary
   ),
   -- mark the minimum priority for each row, at which a start validity boundary is relevant (i.e. not overlapped by a higher priority),
   -- traverse the list of boundaries from start to end
   -- e.g.
-  -- id, validity_start, is_start, key1, prio, start_order, end_order, cur_start_priority
-  ---------------------------------------------------------------------------------------
-  --  1,     2020-01-01,     true,    A,   10,           1,         4,                 10
-  --  2,     2022-01-01,     true,    A,   20,           2,         3,                 20
-  --  1,     2025-01-01,    false,    A,   10,           3,         2,                 20
-  --  2,     2027-01-01,    false,    A,   20,           4,         1,                  0
+  -- id, validity_start, is_start, key, prio, start_order, end_order, cur_start_priority
+  --------------------------------------------------------------------------------------
+  --  1,     2020-01-01,     true,   A,   10,           1,         4,                 10
+  --  2,     2022-01-01,     true,   A,   20,           2,         3,                 20
+  --  1,     2025-01-01,    false,   A,   10,           3,         2,                 20
+  --  2,     2027-01-01,    false,   A,   20,           4,         1,                  0
   marked_min_start_priority AS (
     SELECT *, priority AS cur_start_priority
     FROM ordered_boundary
@@ -112,18 +111,17 @@ WITH RECURSIVE
     FROM marked_min_start_priority marked
            JOIN ordered_boundary next_boundary
                 ON next_boundary.start_order = marked.start_order + 1 AND next_boundary.key1 = marked.key1 AND
-                   (next_boundary.key2 = marked.key2 OR next_boundary.key2 IS NULL) AND
-                   (next_boundary.key3 = marked.key3 OR next_boundary.key3 IS NULL)
+                   (next_boundary.key2 = marked.key2 OR next_boundary.key2 IS NULL)
   ),
   -- mark the minimum priority for each row, at which an end validity boundary is relevant (i.e. not overlapped by a higher priority),
   -- traverse the list of boundaries from end to start
   -- e.g.
-  -- id, validity_start, is_start, key1, prio, start_order, end_order, cur_start_priority, cur_end_priority
-  ---------------------------------------------------------------------------------------------------------
-  --  2,     2027-01-01,    false,    A,   20,           4,         1,                  0,               20
-  --  1,     2025-01-01,    false,    A,   10,           3,         2,                 20,               20
-  --  2,     2022-01-01,     true,    A,   20,           2,         3,                 20,                0
-  --  1,     2020-01-01,     true,    A,   10,           1,         4,                 10,               10
+  -- id, validity_start, is_start, key, prio, start_order, end_order, cur_start_priority, cur_end_priority
+  --------------------------------------------------------------------------------------------------------
+  --  2,     2027-01-01,    false,   A,   20,           4,         1,                  0,               20
+  --  1,     2025-01-01,    false,   A,   10,           3,         2,                 20,               20
+  --  2,     2022-01-01,     true,   A,   20,           2,         3,                 20,                0
+  --  1,     2020-01-01,     true,   A,   10,           1,         4,                 10,               10
   marked_min_start_end_priority AS (
     SELECT *, priority AS cur_end_priority
     FROM marked_min_start_priority
@@ -144,22 +142,19 @@ WITH RECURSIVE
     FROM marked_min_start_end_priority marked
            JOIN marked_min_start_priority next_boundary
                 ON next_boundary.end_order = marked.end_order + 1 AND next_boundary.key1 = marked.key1 AND
-                   (next_boundary.key2 = marked.key2 OR next_boundary.key2 IS NULL) AND
-                   (next_boundary.key3 = marked.key3 OR next_boundary.key3 IS NULL)
-
+                   (next_boundary.key2 = marked.key2 OR next_boundary.key2 IS NULL)
   ),
   -- filter only the highest priority boundaries and connect them to form validity spans (with both start and end)
   -- e.g.
-  -- key1, has_next, validity_start, validity_end
-  -----------------------------------------------
-  --    A,     true,     2020-01-01,   2022-01-01
-  --    A,     true,     2022-01-01,   2027-01-01
-  ------A,-----true,-----2025-01-01,--------------- (removed by WHERE clause)
-  --    A,    false,     2027-01-01,         null
+  -- key, has_next, validity_start, validity_end
+  ----------------------------------------------
+  --   A,     true,     2020-01-01,   2022-01-01
+  --   A,     true,     2022-01-01,   2027-01-01
+  -----A,-----true,-----2025-01-01,--------------- (removed by WHERE clause)
+  --   A,    false,     2027-01-01,         null
   reduced_boundary AS (
     SELECT key1,
            key2,
-           key3,
            -- The last row will have has_next = FALSE. This is needed because we cannot rely on validity_end being NULL
            -- in ONLY the last row, since NULL in timestamps depicts infinity.
            lead(TRUE, 1, FALSE) OVER entity_window AS has_next,
@@ -168,21 +163,20 @@ WITH RECURSIVE
     FROM marked_min_start_end_priority
     WHERE priority >= cur_end_priority
       AND priority >= cur_start_priority
-    WINDOW entity_window AS (PARTITION BY key1, key2, key3 ORDER BY start_order)
+    WINDOW entity_window AS (PARTITION BY key1, key2 ORDER BY start_order)
   ),
   -- find the instances which are valid in the validity spans
   -- e.g.
-  -- key1, has_next, validity_start, validity_end, id, priority
-  -------------------------------------------------------------
-  --    A,     true,     2020-01-01,   2022-01-01,  1,       10
-  --    A,     true,     2022-01-01,   2027-01-01,  1,       10
-  --    A,     true,     2022-01-01,   2027-01-01,  2,       20
-  ------A,----false,-----2027-01-01,---------null,--------------- (removed by WHERE clause)
+  -- key, has_next, validity_start, validity_end, id, priority
+  ------------------------------------------------------------
+  --   A,     true,     2020-01-01,   2022-01-01,  1,       10
+  --   A,     true,     2022-01-01,   2027-01-01,  1,       10
+  --   A,     true,     2022-01-01,   2027-01-01,  2,       20
+  -----A,----false,-----2027-01-01,---------null,--------------- (removed by WHERE clause)
   boundary_with_entities AS (
-    SELECT rb.key1, rb.key2, rb.key3, rb.has_next, rb.validity_start, rb.validity_end, e.id, e.priority
+    SELECT rb.key1, rb.key2, rb.has_next, rb.validity_start, rb.validity_end, e.id, e.priority
     FROM reduced_boundary rb
            JOIN entity e ON e.key1 = rb.key1 AND (e.key2 = rb.key2 OR e.key2 IS NULL) AND
-                            (e.key3 = rb.key3 OR e.key3 IS NULL) AND
                             internal_utils.daterange_closed_upper(e.validity_start, e.validity_end) &&
                             internal_utils.daterange_closed_upper(rb.validity_start, rb.validity_end)
     WHERE rb.has_next
@@ -199,7 +193,7 @@ FROM (SELECT id,
              validity_start,
              validity_end,
              priority,
-             max(priority) OVER (PARTITION BY key1, key2, key3, validity_start) AS max_priority
+             max(priority) OVER (PARTITION BY key1, key2, validity_start) AS max_priority
       FROM boundary_with_entities) bwe
 WHERE priority = max_priority
 $$;
@@ -275,7 +269,6 @@ WITH RECURSIVE
   prioritized_route AS (
     SELECT r.route_id,
            r.label,
-           r.variant,
            r.direction,
            r.priority,
            priority_validity_spans.validity_start,
