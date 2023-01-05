@@ -28,6 +28,7 @@ const createToBeInserted = (
   is_via_point: false,
   is_used_as_timing_point: isUsedAsTimingPoint,
   is_loading_time_allowed: false,
+  is_regulated_timing_point: false,
   via_point_name_i18n: null,
   via_point_short_name_i18n: null,
 });
