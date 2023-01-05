@@ -127,6 +127,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
             scheduled_stop_point_sequence: index,
             is_used_as_timing_point: false,
             is_loading_time_allowed: false,
+            is_regulated_timing_point: false,
             is_via_point: false,
           })),
         },

@@ -388,6 +388,12 @@ COMMENT ON COLUMN journey_pattern.journey_pattern.on_route_id IS 'The ID of the 
 COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_loading_time_allowed IS 'Is adding loading time to this scheduled stop point in the journey pattern allowed?';
 
 --
+-- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_regulated_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_regulated_timing_point IS 'Is this stop point passing time regulated so that it cannot be passed before scheduled time?';
+
+--
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_used_as_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -4109,6 +4115,7 @@ CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
     via_point_short_name_i18n jsonb,
     scheduled_stop_point_label text NOT NULL,
     is_loading_time_allowed boolean DEFAULT false NOT NULL,
+    is_regulated_timing_point boolean DEFAULT false NOT NULL,
     CONSTRAINT ck_is_via_point_state CHECK ((((is_via_point = false) AND (via_point_name_i18n IS NULL) AND (via_point_short_name_i18n IS NULL)) OR ((is_via_point = true) AND (via_point_name_i18n IS NOT NULL) AND (via_point_short_name_i18n IS NOT NULL))))
 );
 

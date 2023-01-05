@@ -209,6 +209,7 @@ export type ScheduledStopPointInJourneyPattern = {
   scheduled_stop_point_sequence: number;
   is_used_as_timing_point: boolean;
   is_loading_time_allowed: boolean;
+  is_regulated_timing_point: boolean;
   is_via_point: boolean;
   via_point_name_i18n?: LocalizedString | null;
   via_point_short_name_i18n?: LocalizedString | null;
@@ -219,6 +220,7 @@ export const ScheduledStopPointInJourneyPatternProps: Property[] = [
   'scheduled_stop_point_sequence',
   'is_used_as_timing_point',
   'is_loading_time_allowed',
+  'is_regulated_timing_point',
   'is_via_point',
   'via_point_name_i18n',
   'via_point_short_name_i18n',
