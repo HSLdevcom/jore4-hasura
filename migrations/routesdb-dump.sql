@@ -394,6 +394,12 @@ COMMENT ON COLUMN journey_pattern.journey_pattern.on_route_id IS 'The ID of the 
 COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_loading_time_allowed IS 'Is adding loading time to this scheduled stop point in the journey pattern allowed?';
 
 --
+-- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_regulated_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.is_regulated_timing_point IS 'Is this stop point passing time regulated so that it cannot be passed before scheduled time?';
+
+--
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern.is_used_as_timing_point; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -3056,7 +3062,7 @@ ALTER FUNCTION service_pattern.delete_scheduled_stop_point_label(old_label text)
 -- Name: find_effective_scheduled_stop_points_in_journey_pattern(uuid, date, boolean); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION service_pattern.find_effective_scheduled_stop_points_in_journey_pattern(filter_journey_pattern_id uuid, observation_date date, include_draft_stops boolean) RETURNS TABLE(journey_pattern_id uuid, scheduled_stop_point_sequence integer, is_used_as_timing_point boolean, is_loading_time_allowed boolean, is_via_point boolean, via_point_name_i18n jsonb, via_point_short_name_i18n jsonb, effective_scheduled_stop_point_id uuid)
+CREATE FUNCTION service_pattern.find_effective_scheduled_stop_points_in_journey_pattern(filter_journey_pattern_id uuid, observation_date date, include_draft_stops boolean) RETURNS TABLE(journey_pattern_id uuid, scheduled_stop_point_sequence integer, is_used_as_timing_point boolean, is_loading_time_allowed boolean, is_regulated_timing_point boolean, is_via_point boolean, via_point_name_i18n jsonb, via_point_short_name_i18n jsonb, effective_scheduled_stop_point_id uuid)
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH unambiguous_sspijp AS (
@@ -3080,6 +3086,7 @@ SELECT
   scheduled_stop_point_sequence,
   is_used_as_timing_point,
   is_loading_time_allowed,
+  is_regulated_timing_point,
   is_via_point,
   via_point_name_i18n,
   via_point_short_name_i18n,
@@ -4088,6 +4095,7 @@ CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
     via_point_short_name_i18n jsonb,
     scheduled_stop_point_label text NOT NULL,
     is_loading_time_allowed boolean DEFAULT false NOT NULL,
+    is_regulated_timing_point boolean DEFAULT false NOT NULL,
     CONSTRAINT ck_is_via_point_state CHECK ((((is_via_point = false) AND (via_point_name_i18n IS NULL) AND (via_point_short_name_i18n IS NULL)) OR ((is_via_point = true) AND (via_point_name_i18n IS NOT NULL) AND (via_point_short_name_i18n IS NOT NULL))))
 );
 
