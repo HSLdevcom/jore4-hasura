@@ -1,0 +1,3 @@
+table:
+  name: stop_interval_length
+  schema: service_pattern
