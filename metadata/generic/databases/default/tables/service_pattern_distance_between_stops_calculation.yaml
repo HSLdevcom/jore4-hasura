@@ -1,0 +1,3 @@
+table:
+  name: distance_between_stops_calculation
+  schema: service_pattern

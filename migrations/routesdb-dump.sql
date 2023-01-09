@@ -134,6 +134,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.route TO dbimporter;
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.type_of_line TO dbimporter;
 
 --
+-- Name: TABLE distance_between_stops_calculation; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE service_pattern.distance_between_stops_calculation TO dbimporter;
+
+--
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -835,6 +841,54 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_ilar_trigger ON route.infrastr
    level trigger.';
 
 --
+-- Name: COLUMN distance_between_stops_calculation.distance_in_metres; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.distance_in_metres IS 'The length of the stop interval in metres.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.end_stop_label; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.end_stop_label IS 'The label of the end stop of the stop interval.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.journey_pattern_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.journey_pattern_id IS 'The ID of the journey pattern.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.observation_date; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.observation_date IS 'The observation date for the state of the route related to the journey pattern.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.route_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.route_id IS 'The ID of the route related to the journey pattern.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.route_priority; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.route_priority IS 'The priority of the route related to the journey pattern.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.start_stop_label; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.start_stop_label IS 'The label of the start stop of the stop interval.';
+
+--
+-- Name: COLUMN distance_between_stops_calculation.stop_interval_sequence; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.distance_between_stops_calculation.stop_interval_sequence IS 'The sequence number of the stop interval within the journey pattern.';
+
+--
 -- Name: COLUMN scheduled_stop_point.direction; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -914,6 +968,12 @@ COMMENT ON FUNCTION service_pattern.scheduled_stop_point_closest_point_on_infras
 --
 
 COMMENT ON FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_link_start(ssp service_pattern.scheduled_stop_point) IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
+
+--
+-- Name: TABLE distance_between_stops_calculation; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TABLE service_pattern.distance_between_stops_calculation IS 'A dummy table that models the results of calculating the lengths of stop intervals from the given journey patterns. The table exists due to the limitations of Hasura and there is no intention to insert anything to it.';
 
 --
 -- Name: TABLE scheduled_stop_point; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -1149,6 +1209,13 @@ ALTER TABLE ONLY route.route
 
 ALTER TABLE ONLY route.type_of_line
     ADD CONSTRAINT type_of_line_pkey PRIMARY KEY (type_of_line);
+
+--
+-- Name: distance_between_stops_calculation distance_between_stops_calculation_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.distance_between_stops_calculation
+    ADD CONSTRAINT distance_between_stops_calculation_pkey PRIMARY KEY (journey_pattern_id, route_priority, observation_date, stop_interval_sequence);
 
 --
 -- Name: scheduled_stop_point scheduled_stop_point_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -3081,6 +3148,21 @@ $$;
 ALTER FUNCTION service_pattern.on_update_scheduled_stop_point() OWNER TO dbhasura;
 
 --
+-- Name: prevent_inserting_distance_between_stops_calculation(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.prevent_inserting_distance_between_stops_calculation() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.prevent_inserting_distance_between_stops_calculation() OWNER TO dbhasura;
+
+--
 -- Name: scheduled_stop_point_closest_point_on_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3759,6 +3841,24 @@ CREATE TABLE route.type_of_line (
 ALTER TABLE route.type_of_line OWNER TO dbhasura;
 
 --
+-- Name: distance_between_stops_calculation; Type: TABLE; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TABLE service_pattern.distance_between_stops_calculation (
+    journey_pattern_id uuid NOT NULL,
+    route_id uuid NOT NULL,
+    route_priority integer NOT NULL,
+    observation_date date NOT NULL,
+    stop_interval_sequence integer NOT NULL,
+    start_stop_label text NOT NULL,
+    end_stop_label text NOT NULL,
+    distance_in_metres double precision NOT NULL
+);
+
+
+ALTER TABLE service_pattern.distance_between_stops_calculation OWNER TO dbhasura;
+
+--
 -- Name: scheduled_stop_point; Type: TABLE; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3944,6 +4044,12 @@ CREATE TRIGGER queue_verify_infra_link_stop_refs_on_route_delete_trigger AFTER D
 --
 
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_route_trigger AFTER DELETE ON route.route DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
+
+--
+-- Name: distance_between_stops_calculation prevent_insertion_to_distance_between_stops_calculation; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER prevent_insertion_to_distance_between_stops_calculation BEFORE INSERT ON service_pattern.distance_between_stops_calculation FOR EACH ROW EXECUTE FUNCTION service_pattern.prevent_inserting_distance_between_stops_calculation();
 
 --
 -- Name: scheduled_stop_point check_scheduled_stop_point_infrastructure_link_direction_trigge; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
