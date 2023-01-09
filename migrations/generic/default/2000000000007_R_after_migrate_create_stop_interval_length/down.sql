@@ -1,0 +1,2 @@
+DROP TRIGGER prevent_stop_interval_length_insertion ON service_pattern.stop_interval_length;
+DROP FUNCTION service_pattern.prevent_inserting_stop_interval_length;

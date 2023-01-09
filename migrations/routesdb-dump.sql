@@ -146,6 +146,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_st
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_point_invariant TO dbimporter;
 
 --
+-- Name: TABLE stop_interval_length; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE service_pattern.stop_interval_length TO dbimporter;
+
+--
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1170,6 +1176,13 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point_invariant
     ADD CONSTRAINT scheduled_stop_point_invariant_pkey PRIMARY KEY (label);
+
+--
+-- Name: stop_interval_length stop_interval_length_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.stop_interval_length
+    ADD CONSTRAINT stop_interval_length_pkey PRIMARY KEY (journey_pattern_id, route_priority, observation_date, stop_interval_sequence);
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point scheduled_stop_point_serviced_by_vehicle_mode_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -3172,6 +3185,21 @@ $$;
 ALTER FUNCTION service_pattern.on_update_scheduled_stop_point() OWNER TO dbhasura;
 
 --
+-- Name: prevent_inserting_stop_interval_length(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.prevent_inserting_stop_interval_length() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.prevent_inserting_stop_interval_length() OWNER TO dbhasura;
+
+--
 -- Name: scheduled_stop_point_closest_point_on_infrastructure_link(service_pattern.scheduled_stop_point); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3881,6 +3909,24 @@ CREATE TABLE service_pattern.scheduled_stop_point_invariant (
 ALTER TABLE service_pattern.scheduled_stop_point_invariant OWNER TO dbhasura;
 
 --
+-- Name: stop_interval_length; Type: TABLE; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TABLE service_pattern.stop_interval_length (
+    journey_pattern_id uuid NOT NULL,
+    route_id uuid NOT NULL,
+    route_priority integer NOT NULL,
+    observation_date date NOT NULL,
+    stop_interval_sequence integer NOT NULL,
+    start_stop_label text NOT NULL,
+    end_stop_label text NOT NULL,
+    distance_in_metres double precision NOT NULL
+);
+
+
+ALTER TABLE service_pattern.stop_interval_length OWNER TO dbhasura;
+
+--
 -- Name: vehicle_mode_on_scheduled_stop_point; Type: TABLE; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -4096,6 +4142,12 @@ CREATE TRIGGER service_pattern_update_scheduled_stop_point_trigger BEFORE UPDATE
 --
 
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger AFTER INSERT OR DELETE OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
+
+--
+-- Name: stop_interval_length prevent_stop_interval_length_insertion; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER prevent_stop_interval_length_insertion BEFORE INSERT ON service_pattern.stop_interval_length FOR EACH ROW EXECUTE FUNCTION service_pattern.prevent_inserting_stop_interval_length();
 
 --
 -- Name: vehicle_mode_on_scheduled_stop_point prevent_update_of_vehicle_mode_on_scheduled_stop_point; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
