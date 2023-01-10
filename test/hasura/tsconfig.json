@@ -20,7 +20,9 @@
     "paths": {
       "@config": ["config.ts"],
       "@util/*": ["util/*"],
-      "@datasets/*": ["datasets/*"]
+      "@datasets/*": ["datasets/*"],
+      "@datasets-generic/*": ["datasets/*"],
+      "@datasets-hsl/*": ["hsl/datasets/*"]
     }
   },
   "include": ["**/*.ts"],
