@@ -1,9 +1,9 @@
 import * as config from '@config';
-import { lines } from '@datasets/defaultSetup/lines';
-import { routes } from '@datasets/defaultSetup/routes';
-import { buildRoute } from '@datasets/factories';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import { hslLines } from '@datasets-hsl/defaultSetup/lines';
+import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
+import { buildHslRoute } from '@datasets-hsl/factories';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-hsl/setup';
+import { HslRoute, RouteDirection, HslRouteProps } from '@datasets-hsl/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -15,8 +15,8 @@ const toBeInserted = (
   label: string,
   onLineId: string | undefined,
   variant: number | null,
-): Partial<Route> => ({
-  ...buildRoute(label),
+): Partial<HslRoute> => ({
+  ...buildHslRoute(label),
   on_line_id: onLineId,
   direction: RouteDirection.Westbound,
   variant,
@@ -36,7 +36,7 @@ const buildMutation = (
       ['direction'],
     )}) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(HslRouteProps).join(',')}
       }
     }
   }
@@ -80,8 +80,8 @@ describe('Insert route', () => {
 
       const response = await queryTable(dbConnectionPool, 'route.route');
 
-      expect(response.rowCount).toEqual(routes.length);
-      expect(response.rows).toEqual(expect.arrayContaining(routes));
+      expect(response.rowCount).toEqual(hslRoutes.length);
+      expect(response.rows).toEqual(expect.arrayContaining(hslRoutes));
     });
 
   const shouldReturnCorrectResponse = (
@@ -131,7 +131,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(dbConnectionPool, 'route.route');
 
-      expect(response.rowCount).toEqual(routes.length + 1);
+      expect(response.rowCount).toEqual(hslRoutes.length + 1);
 
       expect(response.rows).toEqual(
         expect.arrayContaining([
@@ -139,23 +139,23 @@ describe('Insert route', () => {
             ...toBeInserted(label, onLineId, variant),
             route_id: expect.any(String),
           },
-          ...routes,
+          ...hslRoutes,
         ]),
       );
     });
 
   describe('variant that does not exist', () => {
-    shouldReturnCorrectResponse('4', lines[1].line_id, 3);
-    shouldInsertCorrectRowIntoDatabase('4', lines[1].line_id, 3);
+    shouldReturnCorrectResponse('4', hslLines[1].line_id, 3);
+    shouldInsertCorrectRowIntoDatabase('4', hslLines[1].line_id, 3);
   });
 
   describe('variant that exists', () => {
-    shouldReturnErrorResponse('6', lines[4].line_id, 3);
-    shouldNotModifyDatabase('6', lines[4].line_id, 3);
+    shouldReturnErrorResponse('6', hslLines[4].line_id, 3);
+    shouldNotModifyDatabase('6', hslLines[4].line_id, 3);
   });
 
   describe('null variant that exists', () => {
-    shouldReturnErrorResponse('4', lines[1].line_id, null);
-    shouldNotModifyDatabase('4', lines[1].line_id, null);
+    shouldReturnErrorResponse('4', hslLines[1].line_id, null);
+    shouldNotModifyDatabase('4', hslLines[1].line_id, null);
   });
 });

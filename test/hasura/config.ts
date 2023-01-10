@@ -10,6 +10,10 @@ export const databaseConfig = {
   password: process.env.POSTGRES_PASSWORD || 'adminpassword',
 };
 
+export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
+export const databaseSchema: HASURA_DATABASE_SCHEMA =
+  (process.env.HASURA_DATABASE_SCHEMA as HASURA_DATABASE_SCHEMA) || 'generic';
+
 export const hasuraApiUri = 'http://localhost:3201/v1/graphql';
 
 export const hasuraRequestTemplate = {
