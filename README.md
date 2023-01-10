@@ -242,6 +242,27 @@ In order to run the integration/unit tests, follow the following steps:
 1. Run the tests in the `test/hasura`-directory:
    `yarn test`
 
+### HSL schema specific tests
+
+HSL schema specific features have their own tests and datasets (which extend the generic dataset).
+Since they require different schema in DB, currently only either generic or hsl tests can be run at a time.
+Selecting if generic or hsl test files should be included in Jest run
+is controlled via `HASURA_DATABASE_SCHEMA` environment variable (values `generic` or `hsl`).
+The variable is set automatically with `test` and `test-hsl` yarn tasks.
+
+HSL tests depend on generic side (= imports data / code from there, eg. for data setup),
+but generic side should be oblivious of the hsl side (= no imports of hsl code to generic side).
+The idea is that if one were ever to want to use only generic side (or extend it with their own),
+they could just take the generic tests and drop the entire hsl folder.
+
+To run HSL specific tests, some manual steps are currently required:
+
+- if dependencies are running, stop them
+- modify `docker/docker-compose.custom.yml`: set `jore4-hasura` build target to `target: hasura-hsl`
+- if testdb has generic schema, clear it: `docker rm testdb --volumes`
+- restart dependencies
+- run the HSL tests with `yarn test-hsl` in `test/hasura` directory
+
 ## Migration tests
 
 To make sure all the up and down migrations work as intended, we are running a CI job to execute these

@@ -4,6 +4,7 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "test": "jest --ci --runInBand",
+    "test-hsl": "HASURA_DATABASE_SCHEMA=hsl yarn test",
     "ts:check": "tsc --noEmit",
     "qa": "yarn lint && yarn prettier:check && yarn ts:check && yarn test"
   },
