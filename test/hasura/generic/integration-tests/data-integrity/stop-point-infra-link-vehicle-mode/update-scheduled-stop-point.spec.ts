@@ -1,8 +1,11 @@
 import * as config from '@config';
-import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { ScheduledStopPoint, ScheduledStopPointProps } from '@datasets/types';
+import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import {
+  ScheduledStopPoint,
+  ScheduledStopPointProps,
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';

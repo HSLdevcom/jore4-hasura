@@ -1,14 +1,14 @@
 import * as config from '@config';
-import { route116TableConfig } from '@datasets/route116';
+import { route116TableConfig } from '@datasets-generic/route116';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
-} from '@datasets/route116/journey-patterns';
+} from '@datasets-generic/route116/journey-patterns';
 import {
   infrastructureLinkAlongRoute,
   routes,
-} from '@datasets/route116/routes';
-import { queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/route116/routes';
+import { queryTable, setupDb } from '@datasets-generic/setup';
 import '@util/matchers';
 import * as pg from 'pg';
 

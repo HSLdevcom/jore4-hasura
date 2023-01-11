@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { route116TableConfig } from '@datasets/route116';
+import { route116TableConfig } from '@datasets-generic/route116';
 import {
   scheduledStopPoints,
   scheduledStopPointWithSameLabelAndOnSameLink,
@@ -9,13 +9,13 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
-} from '@datasets/route116/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/route116/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';

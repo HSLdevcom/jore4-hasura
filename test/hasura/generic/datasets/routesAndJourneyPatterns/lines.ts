@@ -1,5 +1,5 @@
-import { buildLine } from '@datasets/factories';
-import { Line, VehicleMode } from '@datasets/types';
+import { buildLine } from '@datasets-generic/factories';
+import { Line, VehicleMode } from '@datasets-generic/types';
 import { LocalDate } from 'local-date';
 
 export const lines: Line[] = [

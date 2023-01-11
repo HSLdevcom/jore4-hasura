@@ -1,7 +1,7 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import { scheduledStopPoints } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
-import { getPropNameArray, queryTable } from '@datasets/setup';
+import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
+import { scheduledStopPoints } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { getPropNameArray, queryTable } from '@datasets-generic/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
@@ -12,7 +12,7 @@ import {
   ScheduledStopPointInJourneyPattern,
   ScheduledStopPointProps,
   VehicleMode,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';

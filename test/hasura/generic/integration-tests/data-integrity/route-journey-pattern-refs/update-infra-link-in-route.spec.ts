@@ -1,14 +1,14 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import {
   infrastructureLinkAlongRoute,
   routes,
-} from '@datasets/routesAndJourneyPatterns/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/routesAndJourneyPatterns/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
   InfrastructureLinkAlongRouteProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';

@@ -1,5 +1,9 @@
 import { databaseSchema } from '@config';
-import { LocalizedString, TypeOfLine, VehicleMode } from '@datasets/types';
+import {
+  LocalizedString,
+  TypeOfLine,
+  VehicleMode,
+} from '@datasets-generic/types';
 
 export const buildLocalizedString = (str: string): LocalizedString => ({
   fi_FI: str,

@@ -1,6 +1,6 @@
 import { databaseConfig } from '@config';
-import { buildLocalizedString } from '@datasets/factories';
-import { setupDb } from '@datasets/setup';
+import { buildLocalizedString } from '@datasets-generic/factories';
+import { setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLink,
   InfrastructureLinkProps,
@@ -13,7 +13,7 @@ import {
   ScheduledStopPoint,
   ScheduledStopPointInJourneyPatternProps,
   ScheduledStopPointProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import { singleQuery } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
 import '@util/matchers';

@@ -1,15 +1,15 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
-} from '@datasets/routesAndJourneyPatterns/journey-patterns';
-import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
+import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPointInJourneyPattern,
   ScheduledStopPointInJourneyPatternProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';

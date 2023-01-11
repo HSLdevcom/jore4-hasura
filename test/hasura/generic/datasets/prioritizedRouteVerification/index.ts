@@ -3,7 +3,7 @@ import {
   journeyPatternsWithTempRoute,
   scheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternWithTempRoute,
-} from '@datasets/prioritizedRouteVerification/journey-patterns';
+} from '@datasets-generic/prioritizedRouteVerification/journey-patterns';
 import {
   InfrastructureLinkAlongRouteProps,
   InfrastructureLinkProps,
@@ -16,7 +16,7 @@ import {
   TimingPatternTimingPlaceProps,
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,

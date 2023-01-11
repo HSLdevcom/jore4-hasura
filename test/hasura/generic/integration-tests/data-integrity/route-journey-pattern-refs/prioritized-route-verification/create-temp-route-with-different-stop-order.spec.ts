@@ -1,12 +1,12 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
-import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from '@datasets/prioritizedRouteVerification/journey-patterns';
+import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
+import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from '@datasets-generic/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithSameLinks,
   tempRouteWithSameLinks,
-} from '@datasets/prioritizedRouteVerification/routes';
-import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
-import { setupDb } from '@datasets/setup';
+} from '@datasets-generic/prioritizedRouteVerification/routes';
+import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { setupDb } from '@datasets-generic/setup';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import * as pg from 'pg';

@@ -1,8 +1,8 @@
 import * as config from '@config';
-import { lines } from '@datasets/defaultSetup/lines';
-import { buildLine, buildLocalizedString } from '@datasets/factories';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { Line, LineProps, VehicleMode } from '@datasets/types';
+import { lines } from '@datasets-generic/defaultSetup/lines';
+import { buildLine, buildLocalizedString } from '@datasets-generic/factories';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { Line, LineProps, VehicleMode } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';
