@@ -27,12 +27,12 @@ import { timingPlaces } from './timing-places';
 export const route116TableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',
-    data: 'datasets/route116/infrastructure-links.sql',
+    data: 'generic/datasets/route116/infrastructure-links.sql',
     props: InfrastructureLinkProps,
   },
   {
     name: 'infrastructure_network.vehicle_submode_on_infrastructure_link',
-    data: 'datasets/route116/vehicle-submode-on-infrastructure-links.sql',
+    data: 'generic/datasets/route116/vehicle-submode-on-infrastructure-links.sql',
     props: VehicleSubmodeOnInfrastructureLinkProps,
   },
   {
