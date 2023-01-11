@@ -1,4 +1,4 @@
-import { TimingPatternTimingPlace } from '@datasets/types';
+import { TimingPatternTimingPlace } from '@datasets-generic/types';
 
 export const timingPlaces: TimingPatternTimingPlace[] = [
   {

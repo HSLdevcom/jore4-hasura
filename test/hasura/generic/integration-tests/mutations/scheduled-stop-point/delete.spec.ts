@@ -2,14 +2,14 @@ import * as config from '@config';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
-} from '@datasets/defaultSetup/scheduled-stop-points';
+} from '@datasets-generic/defaultSetup/scheduled-stop-points';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
-} from '@datasets/setup';
-import { ScheduledStopPointProps } from '@datasets/types';
+} from '@datasets-generic/setup';
+import { ScheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';

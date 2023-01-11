@@ -10,7 +10,7 @@ import {
   TimingPatternTimingPlaceProps,
   VehicleModeOnScheduledStopPointProps,
   VehicleSubmodeOnInfrastructureLinkProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,

@@ -3,7 +3,7 @@ import {
   LinkDirection,
   VehicleSubmode,
   VehicleSubmodeOnInfrastructureLink,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 
 export const basicRouteInfraLinks: InfrastructureLink[] = [
   {

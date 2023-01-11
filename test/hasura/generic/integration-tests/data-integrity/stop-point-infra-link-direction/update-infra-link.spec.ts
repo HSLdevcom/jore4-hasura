@@ -1,16 +1,16 @@
 import * as config from '@config';
-import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
+import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
-} from '@datasets/setup';
+} from '@datasets-generic/setup';
 import {
   InfrastructureLink,
   InfrastructureLinkProps,
   LinkDirection,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';

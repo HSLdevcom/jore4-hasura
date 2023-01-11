@@ -1,8 +1,8 @@
 import * as config from '@config';
-import { routes } from '@datasets/defaultSetup/routes';
-import { buildLocalizedString } from '@datasets/factories';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { Route, RouteProps } from '@datasets/types';
+import { routes } from '@datasets-generic/defaultSetup/routes';
+import { buildLocalizedString } from '@datasets-generic/factories';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { Route, RouteProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';

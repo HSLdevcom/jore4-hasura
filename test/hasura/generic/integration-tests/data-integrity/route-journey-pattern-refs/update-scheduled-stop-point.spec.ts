@@ -1,9 +1,9 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
-import { infrastructureLinks } from '@datasets/routesAndJourneyPatterns/infrastructure-links';
-import { scheduledStopPoints } from '@datasets/routesAndJourneyPatterns/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { ScheduledStopPointProps } from '@datasets/types';
+import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { infrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
+import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { ScheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';

@@ -1,9 +1,9 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets/routesAndJourneyPatterns';
-import { journeyPatterns } from '@datasets/routesAndJourneyPatterns/journey-patterns';
-import { routes } from '@datasets/routesAndJourneyPatterns/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { JourneyPatternProps } from '@datasets/types';
+import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
+import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { JourneyPatternProps } from '@datasets-generic/types';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';

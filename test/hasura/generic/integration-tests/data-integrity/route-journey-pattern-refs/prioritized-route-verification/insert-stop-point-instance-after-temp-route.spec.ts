@@ -1,11 +1,11 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationWithTempRouteTableConfig } from '@datasets/prioritizedRouteVerification';
+import { prioritizedRouteVerificationWithTempRouteTableConfig } from '@datasets-generic/prioritizedRouteVerification';
 import {
   scheduledStopPointsWithTempRoute,
   tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
-} from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
-import { queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { queryTable, setupDb } from '@datasets-generic/setup';
 import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
