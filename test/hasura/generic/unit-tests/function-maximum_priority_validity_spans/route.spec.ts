@@ -1,7 +1,7 @@
 import * as config from '@config';
-import { buildLocalizedString } from '@datasets/factories';
-import { setupDb } from '@datasets/setup';
-import { Route, RouteDirection, RouteProps } from '@datasets/types';
+import { buildLocalizedString } from '@datasets-generic/factories';
+import { setupDb } from '@datasets-generic/setup';
+import { Route, RouteDirection, RouteProps } from '@datasets-generic/types';
 import * as db from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
 import '@util/matchers';

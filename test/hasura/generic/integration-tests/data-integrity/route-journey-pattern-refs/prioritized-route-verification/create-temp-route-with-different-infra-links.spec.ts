@@ -1,15 +1,15 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets/prioritizedRouteVerification';
+import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
 import {
   scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
   scheduledStopPointInTempJourneyPatternWithSameStops,
-} from '@datasets/prioritizedRouteVerification/journey-patterns';
+} from '@datasets-generic/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithOtherLinks,
   tempRouteWithOtherLinks,
-} from '@datasets/prioritizedRouteVerification/routes';
-import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets/prioritizedRouteVerification/scheduled-stop-points';
-import { setupDb } from '@datasets/setup';
+} from '@datasets-generic/prioritizedRouteVerification/routes';
+import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { setupDb } from '@datasets-generic/setup';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import * as pg from 'pg';

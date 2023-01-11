@@ -1,8 +1,8 @@
 import * as config from '@config';
-import { route116TableConfig } from '@datasets/route116';
-import { routes } from '@datasets/route116/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { RouteProps } from '@datasets/types';
+import { route116TableConfig } from '@datasets-generic/route116';
+import { routes } from '@datasets-generic/route116/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { RouteProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';

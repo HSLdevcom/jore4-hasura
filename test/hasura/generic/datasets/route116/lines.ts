@@ -1,5 +1,5 @@
-import { buildLine, buildLocalizedString } from '@datasets/factories';
-import { Line, VehicleMode } from '@datasets/types';
+import { buildLine, buildLocalizedString } from '@datasets-generic/factories';
+import { Line, VehicleMode } from '@datasets-generic/types';
 
 export const lines: Line[] = [
   {

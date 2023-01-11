@@ -1,5 +1,5 @@
-import { defaultTableConfig } from '@datasets/defaultSetup';
-import { hasGeoPropSpec } from '@datasets/types';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { hasGeoPropSpec } from '@datasets-generic/types';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import * as db from '@util/db';
 import { throwError } from '@util/helpers';

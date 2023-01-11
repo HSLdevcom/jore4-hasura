@@ -1,8 +1,8 @@
-import { scheduledStopPoints } from '@datasets/route116/scheduled-stop-points';
+import { scheduledStopPoints } from '@datasets-generic/route116/scheduled-stop-points';
 import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 
 export const journeyPatterns: JourneyPattern[] = [
   {

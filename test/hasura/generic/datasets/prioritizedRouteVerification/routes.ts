@@ -1,10 +1,10 @@
-import { buildRoute } from '@datasets/factories';
+import { buildRoute } from '@datasets-generic/factories';
 import {
   InfrastructureLinkAlongRoute,
   LinkDirection,
   Route,
   RouteDirection,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import { LocalDate } from 'local-date';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 import { lines } from './lines';
