@@ -1,18 +1,18 @@
 import * as config from '@config';
-import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
-import { lines } from '@datasets/defaultSetup/lines';
+import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { lines } from '@datasets-generic/defaultSetup/lines';
 import {
   infrastructureLinkAlongRoute,
   routes,
-} from '@datasets/defaultSetup/routes';
-import { buildRoute } from '@datasets/factories';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+} from '@datasets-generic/defaultSetup/routes';
+import { buildRoute } from '@datasets-generic/factories';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
   Route,
   RouteDirection,
   RouteProps,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';

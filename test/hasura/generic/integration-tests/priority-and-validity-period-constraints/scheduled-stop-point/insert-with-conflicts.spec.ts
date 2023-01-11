@@ -1,13 +1,13 @@
 import * as config from '@config';
-import { infrastructureLinks } from '@datasets/defaultSetup/infrastructure-links';
-import { scheduledStopPoints } from '@datasets/defaultSetup/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
+import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
   ScheduledStopPointProps,
   VehicleMode,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';

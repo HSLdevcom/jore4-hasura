@@ -1,4 +1,4 @@
-import { Line, VehicleMode } from '@datasets/types';
+import { Line, VehicleMode } from '@datasets-generic/types';
 import { LocalDate } from 'local-date';
 import { buildLine, buildLocalizedString } from '../factories';
 

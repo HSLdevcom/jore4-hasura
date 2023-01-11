@@ -4,7 +4,7 @@ import {
   ScheduledStopPointInvariant,
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import { LocalDate } from 'local-date';
 import { uniqBy } from 'lodash';
 import { infrastructureLinks } from './infrastructure-links';

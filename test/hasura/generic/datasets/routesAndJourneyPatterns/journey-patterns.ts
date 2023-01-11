@@ -1,7 +1,7 @@
 import {
   JourneyPattern,
   ScheduledStopPointInJourneyPattern,
-} from '@datasets/types';
+} from '@datasets-generic/types';
 import { routes } from './routes';
 import { scheduledStopPoints } from './scheduled-stop-points';
 

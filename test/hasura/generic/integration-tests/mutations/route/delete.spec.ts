@@ -1,7 +1,7 @@
 import * as config from '@config';
-import { routes } from '@datasets/defaultSetup/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets/setup';
-import { RouteProps } from '@datasets/types';
+import { routes } from '@datasets-generic/defaultSetup/routes';
+import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
+import { RouteProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
