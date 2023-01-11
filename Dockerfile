@@ -4,7 +4,9 @@ FROM hasura/graphql-engine:v2.16.0-ce.cli-migrations-v3.ubuntu AS hasura-generic
 ENV HASURA_GRAPHQL_EXPERIMENTAL_FEATURES="naming_convention"
 
 EXPOSE 8080
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  software-properties-common \
   curl \
   && rm -rf /var/lib/apt/lists/*
 
@@ -28,9 +30,8 @@ FROM hasura-generic AS hasura-hsl
 # install yq from apt-get
 # note: when installing the binary directly from the github release, it did not work correctly
 # also, this should work with the arm architecture too
-RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
-  && add-apt-repository -y ppa:rmescandon/yq \
+RUN add-apt-repository -y ppa:rmescandon/yq \
+  && apt-get update \
   && apt-get install -y yq=4.16.2 \
   && rm -rf /var/lib/apt/lists/*
 
