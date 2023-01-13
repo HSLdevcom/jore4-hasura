@@ -1,8 +1,8 @@
 import {
   Line as GenericLine,
-  LineProps as GenericLineProps,
+  lineProps as genericLineProps,
   Route as GenericRoute,
-  RouteProps as GenericRouteProps,
+  routeProps as genericRouteProps,
 } from '@datasets-generic/types';
 
 export * from '@datasets-generic/types';
@@ -29,8 +29,8 @@ export type HslLine = GenericLine & {
   transport_target: HslTransportTarget;
 };
 
-export const HslLineProps: Property[] = [
-  ...GenericLineProps,
+export const hslLineProps: Property[] = [
+  ...genericLineProps,
   'transport_target',
 ];
 
@@ -38,4 +38,4 @@ export type HslRoute = GenericRoute & {
   variant?: number | null;
 };
 
-export const HslRouteProps: Property[] = [...GenericRouteProps, 'variant'];
+export const hslRouteProps: Property[] = [...genericRouteProps, 'variant'];

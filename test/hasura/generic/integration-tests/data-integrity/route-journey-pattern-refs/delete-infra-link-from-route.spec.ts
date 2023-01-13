@@ -4,7 +4,7 @@ import { infrastructureLinkAlongRoute } from '@datasets-generic/routesAndJourney
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
-  InfrastructureLinkAlongRouteProps,
+  infrastructureLinkAlongRouteProps,
 } from '@datasets-generic/types';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -20,7 +20,7 @@ const buildMutation = (routeId: string, linkId: string) => `
       }
     }) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
+        ${getPropNameArray(infrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }

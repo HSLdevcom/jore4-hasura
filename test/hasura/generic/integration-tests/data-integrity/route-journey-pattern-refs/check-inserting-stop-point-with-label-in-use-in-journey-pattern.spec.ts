@@ -14,7 +14,7 @@ import {
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
-  JourneyPatternProps,
+  journeyPatternProps,
   ScheduledStopPoint,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
@@ -43,7 +43,7 @@ const buildQuery = (toBeInserted: Partial<ScheduledStopPoint>) => {
       checkInfraLinkStopRefsWithNewScheduledStopPointArgs,
       ['new_direction'],
     )}) {
-      ${getPropNameArray(JourneyPatternProps).join(',')}
+      ${getPropNameArray(journeyPatternProps).join(',')}
     }
   }
 `;

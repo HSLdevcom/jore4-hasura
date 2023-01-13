@@ -3,7 +3,7 @@ import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructu
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLink,
-  InfrastructureLinkProps,
+  infrastructureLinkProps,
   LinkDirection,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
@@ -24,7 +24,7 @@ const buildMutation = (
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}) {
       returning {
-        ${getPropNameArray(InfrastructureLinkProps).join(',')}
+        ${getPropNameArray(infrastructureLinkProps).join(',')}
       }
     }
   }

@@ -3,16 +3,16 @@ import { buildLocalizedString } from '@datasets-generic/factories';
 import { setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLink,
-  InfrastructureLinkProps,
+  infrastructureLinkProps,
   JourneyPattern,
-  JourneyPatternProps,
+  journeyPatternProps,
   LinkDirection,
   Route,
   RouteDirection,
-  RouteProps,
+  routeProps,
   ScheduledStopPoint,
-  ScheduledStopPointInJourneyPatternProps,
-  ScheduledStopPointProps,
+  scheduledStopPointInJourneyPatternProps,
+  scheduledStopPointProps,
 } from '@datasets-generic/types';
 import { singleQuery } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
@@ -98,29 +98,29 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           // infra link is needed, since it is used by the service_pattern.scheduled_stop_point view
           name: 'infrastructure_network.infrastructure_link',
-          props: InfrastructureLinkProps,
+          props: infrastructureLinkProps,
           data: [infraLink],
         },
         {
           name: 'service_pattern.scheduled_stop_point',
-          props: ScheduledStopPointProps,
+          props: scheduledStopPointProps,
           data: stopData,
         },
         // the scheduled stop points are filtered by route label, and because of this we have to
         // establish the connection: route -> journey pattern -> journey pattern in ssp -> ssp
         {
           name: 'route.route',
-          props: RouteProps,
+          props: routeProps,
           data: [route],
         },
         {
           name: 'journey_pattern.journey_pattern',
-          props: JourneyPatternProps,
+          props: journeyPatternProps,
           data: [journeyPattern],
         },
         {
           name: 'journey_pattern.scheduled_stop_point_in_journey_pattern',
-          props: ScheduledStopPointInJourneyPatternProps,
+          props: scheduledStopPointInJourneyPatternProps,
           data: stopData.map((stop, index) => ({
             journey_pattern_id: journeyPattern.journey_pattern_id,
             scheduled_stop_point_label: stop.label,

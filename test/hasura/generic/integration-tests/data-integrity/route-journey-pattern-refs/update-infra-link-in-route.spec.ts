@@ -7,7 +7,7 @@ import {
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
-  InfrastructureLinkAlongRouteProps,
+  infrastructureLinkAlongRouteProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -30,7 +30,7 @@ const buildMutation = (
     _set: ${dataset.toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
+        ${getPropNameArray(infrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }

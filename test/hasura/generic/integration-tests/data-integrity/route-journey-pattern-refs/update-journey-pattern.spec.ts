@@ -3,7 +3,7 @@ import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAnd
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { JourneyPatternProps } from '@datasets-generic/types';
+import { journeyPatternProps } from '@datasets-generic/types';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
@@ -19,7 +19,7 @@ const buildMutation = (journeyPatternId: string, newRouteId: string) => `
       }
     ) {
       returning {
-        ${getPropNameArray(JourneyPatternProps).join(',')}
+        ${getPropNameArray(journeyPatternProps).join(',')}
       }
     }
   }

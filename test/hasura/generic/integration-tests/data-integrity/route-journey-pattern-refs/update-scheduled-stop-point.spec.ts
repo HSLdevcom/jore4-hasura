@@ -3,7 +3,7 @@ import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAnd
 import { infrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { ScheduledStopPointProps } from '@datasets-generic/types';
+import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import '@util/matchers';
@@ -24,7 +24,7 @@ const buildChangeInfralinkMutation = (
       }
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }
@@ -43,7 +43,7 @@ const buildChangeTimingPlaceMutation = (
       }
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }

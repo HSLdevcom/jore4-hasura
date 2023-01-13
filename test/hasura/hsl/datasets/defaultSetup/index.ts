@@ -1,11 +1,11 @@
 import { defaultTableConfig as genericDefaultTableConfig } from '@datasets-generic/defaultSetup';
 import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
-import { HslLineProps, HslRouteProps } from '@datasets-hsl/types';
+import { hslLineProps, hslRouteProps } from '@datasets-hsl/types';
 
 const tableConfigHslOverrides: TableLikeConfig[] = [
-  { name: 'route.line', data: hslLines, props: HslLineProps },
-  { name: 'route.route', data: hslRoutes, props: HslRouteProps },
+  { name: 'route.line', data: hslLines, props: hslLineProps },
+  { name: 'route.route', data: hslRoutes, props: hslRouteProps },
 ];
 
 const hslDefaultTableConfig: TableLikeConfig[] = genericDefaultTableConfig.map(

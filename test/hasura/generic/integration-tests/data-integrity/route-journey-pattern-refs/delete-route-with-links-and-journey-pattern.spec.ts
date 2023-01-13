@@ -2,7 +2,7 @@ import * as config from '@config';
 import { route116TableConfig } from '@datasets-generic/route116';
 import { routes } from '@datasets-generic/route116/routes';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { RouteProps } from '@datasets-generic/types';
+import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
@@ -18,7 +18,7 @@ const mutation = `
       },
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }

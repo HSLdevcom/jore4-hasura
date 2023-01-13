@@ -4,7 +4,7 @@ import {
   vehicleSubmodeOnInfrastructureLink,
 } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { InfrastructureLinkProps } from '@datasets-generic/types';
+import { infrastructureLinkProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -15,7 +15,7 @@ const buildMutation = (infrastructureLinkId: string) => `
   mutation {
     delete_infrastructure_network_infrastructure_link(where: {infrastructure_link_id: {_eq: "${infrastructureLinkId}"}}) {
       returning {
-        ${getPropNameArray(InfrastructureLinkProps).join(',')}
+        ${getPropNameArray(infrastructureLinkProps).join(',')}
       }
     }
   }

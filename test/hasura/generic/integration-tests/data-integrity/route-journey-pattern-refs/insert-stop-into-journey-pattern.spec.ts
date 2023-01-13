@@ -8,7 +8,7 @@ import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPointInJourneyPattern,
-  ScheduledStopPointInJourneyPatternProps,
+  scheduledStopPointInJourneyPatternProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -38,7 +38,7 @@ const buildMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
       toBeInserted,
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointInJourneyPatternProps).join(',')}
+        ${getPropNameArray(scheduledStopPointInJourneyPatternProps).join(',')}
       }
     }
   }

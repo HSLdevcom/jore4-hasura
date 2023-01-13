@@ -2,7 +2,7 @@ import * as config from '@config';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { Route, RouteProps } from '@datasets-generic/types';
+import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -22,7 +22,7 @@ const buildMutation = (toBeUpdated: PartialRouteWithNullableOnLineID) => `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }

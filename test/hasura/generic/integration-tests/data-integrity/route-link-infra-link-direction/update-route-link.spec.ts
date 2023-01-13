@@ -4,7 +4,7 @@ import { infrastructureLinkAlongRoute } from '@datasets-generic/defaultSetup/rou
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
-  InfrastructureLinkAlongRouteProps,
+  infrastructureLinkAlongRouteProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -29,7 +29,7 @@ const buildMutation = (
         'is_traversal_forwards',
       ])}) {
       returning {
-        ${getPropNameArray(InfrastructureLinkAlongRouteProps).join(',')}
+        ${getPropNameArray(infrastructureLinkAlongRouteProps).join(',')}
       }
     }
   }
