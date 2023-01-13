@@ -3,7 +3,7 @@ import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-hsl/setup';
-import { HslRoute, RouteDirection, HslRouteProps } from '@datasets-hsl/types';
+import { HslRoute, RouteDirection, hslRouteProps } from '@datasets-hsl/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -40,7 +40,7 @@ const buildMutation = (
       ['direction'],
     )}) {
       returning {
-        ${getPropNameArray(HslRouteProps).join(',')}
+        ${getPropNameArray(hslRouteProps).join(',')}
       }
     }
   }

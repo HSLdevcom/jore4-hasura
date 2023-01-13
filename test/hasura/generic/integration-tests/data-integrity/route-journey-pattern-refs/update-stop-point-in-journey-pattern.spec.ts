@@ -7,7 +7,7 @@ import {
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPointInJourneyPattern,
-  ScheduledStopPointInJourneyPatternProps,
+  scheduledStopPointInJourneyPatternProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -31,7 +31,7 @@ const buildMutation = (
       _set: ${dataset.toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointInJourneyPatternProps).join(',')}
+        ${getPropNameArray(scheduledStopPointInJourneyPatternProps).join(',')}
       }
     }
   }

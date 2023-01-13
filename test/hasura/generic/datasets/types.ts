@@ -64,7 +64,7 @@ export type InfrastructureLink = {
   external_link_source: string;
   external_link_id: string;
 };
-export const InfrastructureLinkProps: Property[] = [
+export const infrastructureLinkProps: Property[] = [
   'infrastructure_link_id',
   'direction',
   { propName: 'shape', isGeoProp: true },
@@ -77,7 +77,7 @@ export type VehicleSubmodeOnInfrastructureLink = {
   infrastructure_link_id: string;
   vehicle_submode: VehicleSubmode;
 };
-export const VehicleSubmodeOnInfrastructureLinkProps: Property[] = [
+export const vehicleSubmodeOnInfrastructureLinkProps: Property[] = [
   'infrastructure_link_id',
   'vehicle_submode',
 ];
@@ -85,7 +85,7 @@ export const VehicleSubmodeOnInfrastructureLinkProps: Property[] = [
 export type ScheduledStopPointInvariant = {
   label: string;
 };
-export const ScheduledStopPointInvariantProps: Property[] = ['label'];
+export const scheduledStopPointInvariantProps: Property[] = ['label'];
 
 export type ScheduledStopPoint = {
   scheduled_stop_point_id: string;
@@ -98,7 +98,7 @@ export type ScheduledStopPoint = {
   validity_end: LocalDate | null;
   timing_place_id: string | null;
 };
-export const ScheduledStopPointProps: Property[] = [
+export const scheduledStopPointProps: Property[] = [
   'scheduled_stop_point_id',
   'located_on_infrastructure_link_id',
   'direction',
@@ -114,7 +114,7 @@ export type VehicleModeOnScheduledStopPoint = {
   scheduled_stop_point_id: string;
   vehicle_mode: VehicleMode;
 };
-export const VehicleModeOnScheduledStopPointProps: Property[] = [
+export const vehicleModeOnScheduledStopPointProps: Property[] = [
   'scheduled_stop_point_id',
   'vehicle_mode',
 ];
@@ -141,7 +141,7 @@ export type Route = {
   validity_end: LocalDate | null;
 };
 
-export const RouteProps: Property[] = [
+export const routeProps: Property[] = [
   'route_id',
   'on_line_id',
   'name_i18n',
@@ -163,7 +163,7 @@ export type InfrastructureLinkAlongRoute = {
   infrastructure_link_sequence: number;
   is_traversal_forwards: boolean;
 };
-export const InfrastructureLinkAlongRouteProps: Property[] = [
+export const infrastructureLinkAlongRouteProps: Property[] = [
   'route_id',
   'infrastructure_link_id',
   'infrastructure_link_sequence',
@@ -181,7 +181,7 @@ export type Line = {
   validity_start: LocalDate | null;
   validity_end: LocalDate | null;
 };
-export const LineProps: Property[] = [
+export const lineProps: Property[] = [
   'line_id',
   'name_i18n',
   'short_name_i18n',
@@ -197,7 +197,7 @@ export type JourneyPattern = {
   journey_pattern_id: string;
   on_route_id: string;
 };
-export const JourneyPatternProps: Property[] = [
+export const journeyPatternProps: Property[] = [
   'journey_pattern_id',
   'on_route_id',
 ];
@@ -212,7 +212,7 @@ export type ScheduledStopPointInJourneyPattern = {
   via_point_name_i18n?: LocalizedString | null;
   via_point_short_name_i18n?: LocalizedString | null;
 };
-export const ScheduledStopPointInJourneyPatternProps: Property[] = [
+export const scheduledStopPointInJourneyPatternProps: Property[] = [
   'journey_pattern_id',
   'scheduled_stop_point_label',
   'scheduled_stop_point_sequence',
@@ -239,7 +239,7 @@ export type TimingPatternTimingPlace = {
   label: string | null;
   description?: LocalizedString | null;
 };
-export const TimingPatternTimingPlaceProps: Property[] = [
+export const timingPatternTimingPlaceProps: Property[] = [
   'timing_place_id',
   'label',
   'description',

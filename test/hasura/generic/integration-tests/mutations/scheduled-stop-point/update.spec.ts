@@ -4,7 +4,7 @@ import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-st
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPoint,
-  ScheduledStopPointProps,
+  scheduledStopPointProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -46,7 +46,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }

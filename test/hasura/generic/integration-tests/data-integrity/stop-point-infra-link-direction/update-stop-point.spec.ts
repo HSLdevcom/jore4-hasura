@@ -10,7 +10,7 @@ import {
 import {
   LinkDirection,
   ScheduledStopPoint,
-  ScheduledStopPointProps,
+  scheduledStopPointProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { asDbGeometryObjectArray } from '@util/dataset';
@@ -30,7 +30,7 @@ const buildMutation = (
       },
       _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }

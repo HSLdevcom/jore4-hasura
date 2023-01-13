@@ -3,7 +3,7 @@ import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildRoute } from '@datasets-generic/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { Route, RouteDirection, RouteProps } from '@datasets-generic/types';
+import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
@@ -30,7 +30,7 @@ const buildMutation = (onLineId: string | undefined, priority: number) => `
       ['direction'],
     )}) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }

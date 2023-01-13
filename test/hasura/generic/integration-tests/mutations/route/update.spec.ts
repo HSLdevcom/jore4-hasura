@@ -2,7 +2,7 @@ import * as config from '@config';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildLocalizedString } from '@datasets-generic/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { Route, RouteProps } from '@datasets-generic/types';
+import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';
@@ -29,7 +29,7 @@ const mutation = `
       _set: ${dataset.toGraphQlObject(toBeUpdated, ['direction'])}
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }

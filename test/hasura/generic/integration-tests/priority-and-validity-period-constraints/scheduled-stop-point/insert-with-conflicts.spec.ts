@@ -5,7 +5,7 @@ import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
-  ScheduledStopPointProps,
+  scheduledStopPointProps,
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
@@ -32,7 +32,7 @@ const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
       ['direction', 'vehicle_mode'],
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }

@@ -5,12 +5,12 @@ import { getPropNameArray, queryTable } from '@datasets-generic/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
-  JourneyPatternProps,
+  journeyPatternProps,
   Route,
-  RouteProps,
+  routeProps,
   ScheduledStopPoint,
   ScheduledStopPointInJourneyPattern,
-  ScheduledStopPointProps,
+  scheduledStopPointProps,
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
@@ -37,7 +37,7 @@ const buildInsertStopMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
       ['direction', 'vehicle_mode'],
     )}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }
@@ -54,7 +54,7 @@ const buildDeleteStopMutation = (label: string, priority: number) => `
       }
     ) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }
@@ -85,7 +85,7 @@ const buildInsertRouteMutation = (
       ['direction'],
     )}) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }
@@ -100,7 +100,7 @@ const buildReplaceJourneyPatternMutation = (
       where: { on_route_id: { _eq: "${route.route_id}" } }
     ) {
       returning {
-        ${getPropNameArray(JourneyPatternProps).join(',')}
+        ${getPropNameArray(journeyPatternProps).join(',')}
       }
     }
     insert_journey_pattern_journey_pattern(objects: ${dataset.toGraphQlObject({
@@ -111,7 +111,7 @@ const buildReplaceJourneyPatternMutation = (
     })}
     ) {
       returning {
-        ${getPropNameArray(JourneyPatternProps).join(',')}
+        ${getPropNameArray(journeyPatternProps).join(',')}
       }
     }
   }
@@ -123,7 +123,7 @@ const buildDeleteRouteMutation = (routeId: string) => `
       where: { route_id: { _eq: "${routeId}" } }
     ) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }
@@ -151,7 +151,7 @@ const buildCheckInfraLinkStopRefsForStopPointRemovalQuery = (
       checkInfraLinkStopRefsWithNewScheduledStopPointArgs,
       ['new_direction'],
     )}) {
-      ${getPropNameArray(JourneyPatternProps).join(',')}
+      ${getPropNameArray(journeyPatternProps).join(',')}
     }
   }
 `;

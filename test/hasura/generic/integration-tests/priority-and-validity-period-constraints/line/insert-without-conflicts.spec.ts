@@ -2,7 +2,7 @@ import * as config from '@config';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { buildLine, buildLocalizedString } from '@datasets-generic/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
-import { Line, LineProps, VehicleMode } from '@datasets-generic/types';
+import { Line, lineProps, VehicleMode } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';
@@ -16,7 +16,7 @@ const buildMutation = (toBeInserted: Partial<Line>) => `
       'type_of_line',
     ])}) {
       returning {
-        ${getPropNameArray(LineProps).join(',')}
+        ${getPropNameArray(lineProps).join(',')}
       }
     }
   }

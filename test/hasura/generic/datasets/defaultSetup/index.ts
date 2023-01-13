@@ -1,13 +1,13 @@
 import {
-  InfrastructureLinkAlongRouteProps,
-  InfrastructureLinkProps,
-  LineProps,
-  RouteProps,
-  ScheduledStopPointInvariantProps,
-  ScheduledStopPointProps,
-  TimingPatternTimingPlaceProps,
-  VehicleModeOnScheduledStopPointProps,
-  VehicleSubmodeOnInfrastructureLinkProps,
+  infrastructureLinkAlongRouteProps,
+  infrastructureLinkProps,
+  lineProps,
+  routeProps,
+  scheduledStopPointInvariantProps,
+  scheduledStopPointProps,
+  timingPatternTimingPlaceProps,
+  vehicleModeOnScheduledStopPointProps,
+  vehicleSubmodeOnInfrastructureLinkProps,
 } from '@datasets-generic/types';
 import {
   infrastructureLinks,
@@ -26,46 +26,46 @@ export const defaultTableConfig: TableLikeConfig[] = [
   {
     name: 'infrastructure_network.infrastructure_link',
     data: infrastructureLinks,
-    props: InfrastructureLinkProps,
+    props: infrastructureLinkProps,
   },
   {
     name: 'infrastructure_network.vehicle_submode_on_infrastructure_link',
     data: vehicleSubmodeOnInfrastructureLink,
-    props: VehicleSubmodeOnInfrastructureLinkProps,
+    props: vehicleSubmodeOnInfrastructureLinkProps,
   },
   {
     name: 'timing_pattern.timing_place',
     data: timingPlaces,
-    props: TimingPatternTimingPlaceProps,
+    props: timingPatternTimingPlaceProps,
   },
   {
     name: 'service_pattern.scheduled_stop_point_invariant',
     data: scheduledStopPointInvariants,
-    props: ScheduledStopPointInvariantProps,
+    props: scheduledStopPointInvariantProps,
   },
   {
     name: 'service_pattern.scheduled_stop_point',
     data: scheduledStopPoints,
-    props: ScheduledStopPointProps,
+    props: scheduledStopPointProps,
   },
   {
     name: 'service_pattern.vehicle_mode_on_scheduled_stop_point',
     data: vehicleModeOnScheduledStopPoint,
-    props: VehicleModeOnScheduledStopPointProps,
+    props: vehicleModeOnScheduledStopPointProps,
   },
-  { name: 'route.line', data: lines, props: LineProps },
-  { name: 'route.route', data: routes, props: RouteProps },
+  { name: 'route.line', data: lines, props: lineProps },
+  { name: 'route.route', data: routes, props: routeProps },
   {
     name: 'route.infrastructure_link_along_route',
     data: infrastructureLinkAlongRoute,
-    props: InfrastructureLinkAlongRouteProps,
+    props: infrastructureLinkAlongRouteProps,
   },
 
   // views
   {
     name: 'service_pattern.scheduled_stop_point',
-    props: ScheduledStopPointProps,
+    props: scheduledStopPointProps,
     isView: true,
   },
-  { name: 'route.route', props: RouteProps, isView: true },
+  { name: 'route.route', props: routeProps, isView: true },
 ];

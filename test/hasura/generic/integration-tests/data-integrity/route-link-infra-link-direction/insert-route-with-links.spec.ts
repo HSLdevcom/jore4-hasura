@@ -11,7 +11,7 @@ import {
   InfrastructureLinkAlongRoute,
   Route,
   RouteDirection,
-  RouteProps,
+  routeProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
@@ -64,7 +64,7 @@ const buildMutation = (
       ['direction', 'is_traversal_forwards'],
     )}) {
       returning {
-        ${getPropNameArray(RouteProps).join(',')}
+        ${getPropNameArray(routeProps).join(',')}
       }
     }
   }

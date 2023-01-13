@@ -9,7 +9,7 @@ import {
   queryTable,
   setupDb,
 } from '@datasets-generic/setup';
-import { ScheduledStopPointProps } from '@datasets-generic/types';
+import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
@@ -23,7 +23,7 @@ const mutation = `
       toBeDeleted.scheduled_stop_point_id
     }"}}) {
       returning {
-        ${getPropNameArray(ScheduledStopPointProps).join(',')}
+        ${getPropNameArray(scheduledStopPointProps).join(',')}
       }
     }
   }
