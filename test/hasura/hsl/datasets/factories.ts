@@ -2,7 +2,12 @@ import {
   buildLine as buildGenericLine,
   buildRoute as buildGenericRoute,
 } from '@datasets-generic/factories';
-import { HslLine, HslRoute, HslTransportTarget } from '@datasets-hsl/types';
+import {
+  HslLine,
+  LegacyHslMunicipality,
+  HslRoute,
+  HslTransportTarget,
+} from '@datasets-hsl/types';
 
 export type RequiredKeys<T, K extends keyof T> = Required<Pick<T, K>>;
 
@@ -22,6 +27,7 @@ export const buildHslRoute = (
 ): HslRoute => {
   return {
     ...(postfix ? buildGenericRoute(postfix) : {}),
+    legacy_hsl_municipality_code: LegacyHslMunicipality.Helsinki,
     variant: null,
     ...(input || {}),
   } as HslRoute;
