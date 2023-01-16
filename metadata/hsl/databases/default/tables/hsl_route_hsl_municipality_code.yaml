@@ -1,0 +1,11 @@
+table:
+  name: hsl_municipality_code
+  schema: hsl_route
+array_relationships:
+  - name: routes
+    using:
+      foreign_key_constraint_on:
+        column: hsl_municipality_code
+        table:
+          name: route
+          schema: route
