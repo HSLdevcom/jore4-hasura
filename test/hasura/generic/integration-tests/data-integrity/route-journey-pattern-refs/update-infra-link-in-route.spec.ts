@@ -40,7 +40,7 @@ describe('Move infra link to other route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new pg.Pool(config.networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());

@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
 
-export const databaseConfig = {
+export const networkDbConfig = {
   host: 'localhost',
   port: 6432,
   database: process.env.POSTGRES_DB || 'jore4e2e',

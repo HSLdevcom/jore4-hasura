@@ -48,7 +48,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new pg.Pool(config.networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());

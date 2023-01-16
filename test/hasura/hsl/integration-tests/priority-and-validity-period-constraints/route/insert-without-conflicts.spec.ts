@@ -3,7 +3,7 @@ import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
 import { getPropNameArray, queryTable, setupDb } from '@datasets-hsl/setup';
-import { HslRoute, RouteDirection, hslRouteProps } from '@datasets-hsl/types';
+import { HslRoute, hslRouteProps, RouteDirection } from '@datasets-hsl/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';
@@ -26,7 +26,7 @@ describe('Insert route', () => {
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new pg.Pool(config.networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());
