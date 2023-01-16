@@ -35,7 +35,7 @@ export const hslLineProps: Property[] = [
 ];
 
 export type HslRoute = GenericRoute & {
-  variant?: number | null;
+  variant: number | null;
 };
 
 export const hslRouteProps: Property[] = [...genericRouteProps, 'variant'];
