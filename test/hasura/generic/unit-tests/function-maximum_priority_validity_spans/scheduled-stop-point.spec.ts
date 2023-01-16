@@ -1,4 +1,4 @@
-import { databaseConfig } from '@config';
+import { networkDbConfig } from '@config';
 import { buildLocalizedString } from '@datasets-generic/factories';
 import { setupDb } from '@datasets-generic/setup';
 import {
@@ -80,7 +80,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
   let dbConnectionPool: Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new Pool(databaseConfig);
+    dbConnectionPool = new Pool(networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());
