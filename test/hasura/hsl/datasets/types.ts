@@ -34,8 +34,31 @@ export const hslLineProps: Property[] = [
   'transport_target',
 ];
 
+export enum LegacyHslMunicipality {
+  LegacyNotUsed = 'legacy_not_used',
+  Helsinki = 'helsinki',
+  Espoo = 'espoo',
+  TrainOrMetro = 'train_or_metro',
+  Vantaa = 'vantaa',
+  EspoonVantaaRegional = 'espoon_vantaa_regional',
+  KirkkonummiAndSiuntio = 'kirkkonummi_and_siuntio',
+  ULines = 'u_lines',
+  TestingNotUsed = 'testing_not_used',
+  TuusulaKeravaSipoo = 'tuusula_kerava_sipoo',
+}
+
+export type LegacyHslMunicipalityCode = {
+  legacy_hsl_municipality_code: LegacyHslMunicipality;
+  jore3_code: number | null;
+};
+
 export type HslRoute = GenericRoute & {
+  legacy_hsl_municipality_code: LegacyHslMunicipality | null;
   variant: number | null;
 };
 
-export const hslRouteProps: Property[] = [...genericRouteProps, 'variant'];
+export const hslRouteProps: Property[] = [
+  ...genericRouteProps,
+  'legacy_hsl_municipality_code',
+  'variant',
+];

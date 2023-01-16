@@ -1,0 +1,4 @@
+object_relationships:
+  - name: legacyHslMunicipalityCodeByLegacyHslMunicipalityCode
+    using:
+      foreign_key_constraint_on: legacy_hsl_municipality_code
