@@ -1,11 +1,12 @@
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
 
-export function hasGeoPropSpec<
-  ObjType extends Property,
-  PropType extends PropertyKey,
->(obj: ObjType): obj is ObjType & Record<PropType, unknown> {
-  return Object.prototype.hasOwnProperty.call(obj, 'isGeoProp');
+export function isGeoProperty(prop: Property): prop is GeoProperty {
+  return Object.prototype.hasOwnProperty.call(prop, 'isGeoProp');
+}
+
+export function isFileDataSource(data: DataSource): data is FileDataSource {
+  return typeof data === 'string';
 }
 
 export enum LinkDirection {

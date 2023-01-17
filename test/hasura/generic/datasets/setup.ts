@@ -1,5 +1,5 @@
 import { defaultTableConfig } from '@datasets-generic/defaultSetup';
-import { hasGeoPropSpec } from '@datasets-generic/types';
+import { isFileDataSource, isGeoProperty } from '@datasets-generic/types';
 import { asDbGeometryObjectArray } from '@util/dataset';
 import * as db from '@util/db';
 import { throwError } from '@util/helpers';
@@ -30,17 +30,14 @@ export const setupDb = (
   tables.forEach((table: TableConfig) => {
     const { data, props } = table;
 
-    if (typeof data === 'string') {
+    if (isFileDataSource(data)) {
       // data contains the file name from which to load SQL statements
       const fileContent = readFileSync(data, 'utf-8');
       queryRunner = queryRunner.query(fileContent);
     } else {
       // data directly contains the table content array
       const geoProps = props.reduce(
-        (prev, prop) =>
-          hasGeoPropSpec(prop) && prop.isGeoProp
-            ? [...prev, prop.propName]
-            : prev,
+        (prev, prop) => (isGeoProperty(prop) ? [...prev, prop.propName] : prev),
         [] as string[],
       );
 
@@ -74,7 +71,7 @@ export const getTableConfigArray = (
 ) => tableNames.map((tableName) => getTableConfig(tableName, configuration));
 
 export const getPropNameArray = (props: Property[]) =>
-  props.map((prop) => (hasGeoPropSpec(prop) ? prop.propName : prop));
+  props.map((prop) => (isGeoProperty(prop) ? prop.propName : prop));
 
 export const queryTable = (
   dbConnectionPool: pg.Pool,
