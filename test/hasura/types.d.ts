@@ -2,12 +2,11 @@
 type ExplicitAny = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 // descriptor for a Hasura object's field
-type Property =
-  | string
-  | {
-      propName: string;
-      isGeoProp: boolean;
-    };
+type GeoProperty = {
+  propName: string;
+  isGeoProp: boolean;
+};
+type Property = string | GeoProperty;
 
 type PropArray = Property[];
 
@@ -16,8 +15,11 @@ type TableLikeConfigCommonProps = {
   props: Property[];
 };
 
+type JsonDataSource = Record<string, unknown>[];
+type FileDataSource = string;
+type DataSource = JsonDataSource | FileDataSource;
 type TableConfig = TableLikeConfigCommonProps & {
-  data: Record<string, unknown>[] | string;
+  data: DataSource;
   isView?: never;
 };
 
