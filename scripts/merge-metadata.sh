@@ -6,6 +6,8 @@ set -eu
 # 1. If the file with the same name already exists both in the generic and in the HSL metadata,
 # then the HSL version will be merged into the generic one
 # 2. If the file in the HSL metadata does not exist in the generic one, it will be copied
+#
+# Note: these need to be absolute paths.
 SOURCE_DIR="$1"
 DESTINATION_DIR="$2"
 
