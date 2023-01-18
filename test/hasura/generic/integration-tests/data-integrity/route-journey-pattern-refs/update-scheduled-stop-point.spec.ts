@@ -5,7 +5,7 @@ import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/
 import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
@@ -104,9 +104,7 @@ describe('Move scheduled stop point to other infra link', () => {
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
-        expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        ),
+        expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
       );
     });
 
@@ -199,17 +197,14 @@ describe('Move scheduled stop point to other infra link', () => {
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          asDbGeometryObjectArray(
-            [
-              ...scheduledStopPoints.filter(
-                (stopPoint) =>
-                  stopPoint.scheduled_stop_point_id !==
-                  toBeMoved.scheduled_stop_point_id,
-              ),
-              completeUpdated,
-            ],
-            ['measured_location'],
-          ),
+          serializeMatcherInputs([
+            ...scheduledStopPoints.filter(
+              (stopPoint) =>
+                stopPoint.scheduled_stop_point_id !==
+                toBeMoved.scheduled_stop_point_id,
+            ),
+            completeUpdated,
+          ]),
         ),
       );
     });
@@ -271,9 +266,7 @@ describe('Change scheduled stop point timing place', () => {
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
-        expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        ),
+        expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
       );
     });
 
@@ -340,17 +333,14 @@ describe('Change scheduled stop point timing place', () => {
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          asDbGeometryObjectArray(
-            [
-              ...scheduledStopPoints.filter(
-                (stopPoint) =>
-                  stopPoint.scheduled_stop_point_id !==
-                  toBeChanged.scheduled_stop_point_id,
-              ),
-              completeUpdated,
-            ],
-            ['measured_location'],
-          ),
+          serializeMatcherInputs([
+            ...scheduledStopPoints.filter(
+              (stopPoint) =>
+                stopPoint.scheduled_stop_point_id !==
+                toBeChanged.scheduled_stop_point_id,
+            ),
+            completeUpdated,
+          ]),
         ),
       );
     });

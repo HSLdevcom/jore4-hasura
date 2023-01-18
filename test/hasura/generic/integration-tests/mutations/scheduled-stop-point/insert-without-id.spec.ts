@@ -117,17 +117,14 @@ describe('Insert scheduled_stop_point', () => {
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
-        dataset.asDbGeometryObjectArray(
-          [
-            {
-              ...toBeInserted,
-              ...insertedDefaultValues,
-              scheduled_stop_point_id: expect.any(String),
-            },
-            ...scheduledStopPoints,
-          ],
-          ['measured_location'],
-        ),
+        dataset.serializeMatcherInputs([
+          {
+            ...toBeInserted,
+            ...insertedDefaultValues,
+            scheduled_stop_point_id: expect.any(String),
+          },
+          ...scheduledStopPoints,
+        ]),
       ),
     );
 

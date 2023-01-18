@@ -29,3 +29,6 @@ type ViewConfig = TableLikeConfigCommonProps & {
 };
 
 type TableLikeConfig = TableConfig | ViewConfig;
+
+// using ExplicitAny instead of unknown so that also interface types would be compatible
+type PlainObject = Record<string, ExplicitAny>;

@@ -7,7 +7,7 @@ import {
   LinkDirection,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
@@ -76,9 +76,7 @@ describe('Update infrastructure link', () => {
 
         expect(response.rowCount).toEqual(infrastructureLinks.length);
         expect(response.rows).toEqual(
-          expect.arrayContaining(
-            asDbGeometryObjectArray(infrastructureLinks, ['shape']),
-          ),
+          expect.arrayContaining(serializeMatcherInputs(infrastructureLinks)),
         );
       });
 
@@ -170,17 +168,14 @@ describe('Update infrastructure link', () => {
 
           expect(response.rows).toEqual(
             expect.arrayContaining(
-              dataset.asDbGeometryObjectArray(
-                [
-                  { ...original, ...toBeUpdated },
-                  ...infrastructureLinks.filter(
-                    (infrastructureLink) =>
-                      infrastructureLink.infrastructure_link_id !==
-                      original.infrastructure_link_id,
-                  ),
-                ],
-                ['shape'],
-              ),
+              dataset.serializeMatcherInputs([
+                { ...original, ...toBeUpdated },
+                ...infrastructureLinks.filter(
+                  (infrastructureLink) =>
+                    infrastructureLink.infrastructure_link_id !==
+                    original.infrastructure_link_id,
+                ),
+              ]),
             ),
           );
         });

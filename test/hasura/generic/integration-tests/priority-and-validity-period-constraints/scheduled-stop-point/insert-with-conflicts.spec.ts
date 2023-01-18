@@ -9,7 +9,7 @@ import {
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { LocalDate } from 'local-date';
@@ -75,9 +75,7 @@ describe('Insert scheduled stop point', () => {
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
       expect(response.rows).toEqual(
-        expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        ),
+        expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
       );
     });
 

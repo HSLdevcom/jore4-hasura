@@ -58,7 +58,7 @@ describe('Delete infrastructure link', () => {
       expect(infraLinkResponse.rowCount).toEqual(infrastructureLinks.length);
       expect(infraLinkResponse.rows).toEqual(
         expect.arrayContaining(
-          dataset.asDbGeometryObjectArray(infrastructureLinks, ['shape']),
+          dataset.serializeMatcherInputs(infrastructureLinks),
         ),
       );
 
@@ -113,13 +113,12 @@ describe('Delete infrastructure link', () => {
 
       expect(infraLinkResponse.rows).toEqual(
         expect.arrayContaining(
-          dataset.asDbGeometryObjectArray(
+          dataset.serializeMatcherInputs(
             infrastructureLinks.filter(
               (infrastructureLink) =>
                 infrastructureLink.infrastructure_link_id !==
                 toBeDeleted.infrastructure_link_id,
             ),
-            ['shape'],
           ),
         ),
       );

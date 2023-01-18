@@ -18,7 +18,7 @@ import {
   ScheduledStopPoint,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
@@ -75,9 +75,7 @@ describe('Checking inserting a stop point with a label in use in a journey patte
 
       expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
       expect(stopResponse.rows).toEqual(
-        expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        ),
+        expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
       );
     });
 

@@ -83,13 +83,12 @@ describe('Delete scheduled_stop_point', () => {
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
-        dataset.asDbGeometryObjectArray(
+        dataset.serializeMatcherInputs(
           scheduledStopPoints.filter(
             (scheduledStopPoint) =>
               scheduledStopPoint.scheduled_stop_point_id !==
               toBeDeleted.scheduled_stop_point_id,
           ),
-          ['measured_location'],
         ),
       ),
     );
