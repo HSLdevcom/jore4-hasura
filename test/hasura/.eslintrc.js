@@ -95,5 +95,6 @@ module.exports = {
       },
     ],
     'jest/expect-expect': 'off', // most of the tests call the assertions through an external function
+    'no-plusplus': 'off', // useful for for loops
   },
 };

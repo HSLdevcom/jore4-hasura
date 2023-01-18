@@ -16,7 +16,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new pg.Pool(config.networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());
@@ -87,7 +87,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
       `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISOString()}'::date)`,
     );
 
-    return response.rows.map((row) => {
+    return response.rows.map((row: ExplicitAny) => {
       // Round the distances to two decimal places.
       return {
         ...row,

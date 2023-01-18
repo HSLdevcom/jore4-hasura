@@ -81,9 +81,7 @@ describe('Update scheduled stop point', () => {
 
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          dataset.asDbGeometryObjectArray(scheduledStopPoints, [
-            'measured_location',
-          ]),
+          dataset.serializeMatcherInputs(scheduledStopPoints),
         ),
       );
     });
@@ -129,17 +127,14 @@ describe('Update scheduled stop point', () => {
 
       expect(response.rows).toEqual(
         expect.arrayContaining(
-          dataset.asDbGeometryObjectArray(
-            [
-              createCompleteUpdated(toBeUpdated),
-              ...scheduledStopPoints.filter(
-                (scheduledStopPoint) =>
-                  scheduledStopPoint.scheduled_stop_point_id !==
-                  createCompleteUpdated(toBeUpdated).scheduled_stop_point_id,
-              ),
-            ],
-            ['measured_location'],
-          ),
+          dataset.serializeMatcherInputs([
+            createCompleteUpdated(toBeUpdated),
+            ...scheduledStopPoints.filter(
+              (scheduledStopPoint) =>
+                scheduledStopPoint.scheduled_stop_point_id !==
+                createCompleteUpdated(toBeUpdated).scheduled_stop_point_id,
+            ),
+          ]),
         ),
       );
     });
