@@ -183,15 +183,14 @@ If you wish to apply HSL migrations in local development environment:
 - now you should be able to see and apply the hsl migrations with `hasura migrate` commands
 
 When adding new metadata files, they can be added in the `metadata/hsl` directory in the correct location.
-However, when adding content to existing metadata files, a new file should be created in the
-directory of patched file, inside `/patch` directory located in the directory where the original metadata file is
-(`/metadata/hsl/databases/detault/tables/patch`). The patch file's name should match the name of the file to
-be patched. The added file should only contain the new lines to be added.
+These will be merged with the generic metadata when starting up the HSL Docker container.
+See the merge script `scripts/merge-metadata.sh` for details.
 
-For example, to add a new HSL specific relationship to `route_line` table, a new file should be created. The original
-file to be patched would be `/metadata/hsl/databases/detault/tables/route_line.yaml`.
+For example, to add a new HSL specific relationship to `route_line` table, a new file should be created.
+The original file to be patched would be `/metadata/hsl/databases/detault/tables/route_line.yaml`.
 
-`/metadata/hsl/databases/detault/tables/patch/route_line.yaml`:
+Patch file:
+`/metadata/hsl/databases/detault/tables/route_line.yaml`:
 
 ```
 object_relationships:
