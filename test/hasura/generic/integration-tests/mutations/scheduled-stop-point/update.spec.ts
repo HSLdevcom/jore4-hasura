@@ -95,17 +95,14 @@ describe('Update scheduled_stop_point', () => {
 
     expect(response.rows).toEqual(
       expect.arrayContaining(
-        dataset.asDbGeometryObjectArray(
-          [
-            completeUpdated,
-            ...scheduledStopPoints.filter(
-              (scheduledStopPoint) =>
-                scheduledStopPoint.scheduled_stop_point_id !==
-                completeUpdated.scheduled_stop_point_id,
-            ),
-          ],
-          ['measured_location'],
-        ),
+        dataset.serializeMatcherInputs([
+          completeUpdated,
+          ...scheduledStopPoints.filter(
+            (scheduledStopPoint) =>
+              scheduledStopPoint.scheduled_stop_point_id !==
+              completeUpdated.scheduled_stop_point_id,
+          ),
+        ]),
       ),
     );
   });

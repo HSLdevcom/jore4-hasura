@@ -13,7 +13,7 @@ import {
   scheduledStopPointProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
@@ -95,9 +95,7 @@ describe('Update scheduled stop point', () => {
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
         expect(response.rows).toEqual(
-          expect.arrayContaining(
-            asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-          ),
+          expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
         );
       });
 
@@ -224,17 +222,14 @@ describe('Update scheduled stop point', () => {
 
           expect(response.rows).toEqual(
             expect.arrayContaining(
-              dataset.asDbGeometryObjectArray(
-                [
-                  { ...original, ...toBeUpdated },
-                  ...scheduledStopPoints.filter(
-                    (scheduledStopPoint) =>
-                      scheduledStopPoint.scheduled_stop_point_id !==
-                      original.scheduled_stop_point_id,
-                  ),
-                ],
-                ['measured_location'],
-              ),
+              dataset.serializeMatcherInputs([
+                { ...original, ...toBeUpdated },
+                ...scheduledStopPoints.filter(
+                  (scheduledStopPoint) =>
+                    scheduledStopPoint.scheduled_stop_point_id !==
+                    original.scheduled_stop_point_id,
+                ),
+              ]),
             ),
           );
         });

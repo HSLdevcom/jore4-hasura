@@ -3,46 +3,61 @@ import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
 import { Geometry } from 'wkx';
 
-// define this type just to state our intention
-type ObjectWithGeometryProps<T> = GeometryObject extends T[keyof T]
-  ? Record<string, T[keyof T]>
-  : never;
-
 function isGeometryObject(object: ExplicitAny): object is GeometryObject {
-  return 'coordinates' in object && 'type' in object;
+  return (
+    // it's a valid object
+    object !== undefined &&
+    object !== null &&
+    typeof object === 'object' &&
+    // it has "type" and "coordinates" attributes
+    Object.prototype.hasOwnProperty.call(object, 'coordinates') &&
+    Object.prototype.hasOwnProperty.call(object, 'type')
+  );
 }
 
 export const asEwkb = (geoJson: GeometryObject) =>
   // postgresql uses upper case characters in its hex format
   Geometry.parseGeoJSON(geoJson).toEwkb().toString('hex').toUpperCase();
 
-export function asDbGeometryObject<T extends ObjectWithGeometryProps<T>>(
-  obj: T,
-  geographyProps: string[],
-): Record<string, unknown> {
-  const mappedProps: { [propName: string]: string } = geographyProps.reduce(
-    (mapped, prop) => {
-      const value = obj[prop];
-      if (!isGeometryObject(value)) {
-        throw new Error(`Property ${prop} is not a GeometryObject`);
-      }
-      return { ...mapped, [prop]: asEwkb(value) };
-    },
-    {},
-  );
-  return { ...obj, ...mappedProps };
-}
+type SerializerFunction = (value: unknown) => unknown;
 
-export function asDbGeometryObjectArray<T extends ObjectWithGeometryProps<T>>(
-  objectArray: T[],
-  geographyProps?: string[],
-) {
-  // Map the values of the specified geographyProps properties to EWKB in order
-  // to be able to use the returned JSON as jsonb in postgresql.
-  return geographyProps
-    ? objectArray.map((member) => asDbGeometryObject(member, geographyProps))
-    : objectArray;
-}
+export const serializePlainObject = (
+  obj: PlainObject,
+  serializerFn: SerializerFunction,
+) => {
+  const serializedEntries = Object.entries(obj).map((entry) => {
+    const [key, value] = entry;
+    return [key, serializerFn(value)];
+  });
+  return Object.fromEntries(serializedEntries);
+};
+
+// serializes values sent to SQL INSERT INTO commands
+export const serializeInsertValue: SerializerFunction = (value: unknown) => {
+  if (value instanceof LocalDate) {
+    return value.toISOString();
+  }
+  if (isGeometryObject(value)) {
+    return asEwkb(value);
+  }
+  return value;
+};
+export const serializeInsertInput = (jsonObject: PlainObject) => {
+  return serializePlainObject(jsonObject, serializeInsertValue);
+};
+
+// serializes values used in jest test matchers
+export const serializeMatcherValue: SerializerFunction = (value: unknown) => {
+  if (isGeometryObject(value)) {
+    return asEwkb(value);
+  }
+  return value;
+};
+export const serializeMatcherInput = (input: PlainObject) => {
+  return serializePlainObject(input, serializeMatcherValue);
+};
+export const serializeMatcherInputs = (inputs: PlainObject[]) =>
+  inputs.map(serializeMatcherInput);
 
 export const toGraphQlObject = (
   obj: { [propName: string]: unknown },

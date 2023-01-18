@@ -17,7 +17,7 @@ import {
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import * as pg from 'pg';
@@ -87,9 +87,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
 
       expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
       expect(stopResponse.rows).toEqual(
-        expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        ),
+        expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
       );
     });
 
@@ -143,12 +141,10 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
-            ...asDbGeometryObject(toBeInserted, ['measured_location']),
+            ...serializeMatcherInput(toBeInserted),
             scheduled_stop_point_id: expect.any(String),
           },
-          ...asDbGeometryObjectArray(scheduledStopPoints, [
-            'measured_location',
-          ]),
+          ...serializeMatcherInputs(scheduledStopPoints),
         ]),
       );
     });

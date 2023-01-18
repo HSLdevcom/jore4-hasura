@@ -9,7 +9,7 @@ import {
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';
@@ -98,12 +98,10 @@ describe('Insert scheduled stop point', () => {
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
-            ...asDbGeometryObject(toBeInserted, ['measured_location']),
+            ...serializeMatcherInput(toBeInserted),
             scheduled_stop_point_id: expect.any(String),
           },
-          ...asDbGeometryObjectArray(scheduledStopPoints, [
-            'measured_location',
-          ]),
+          ...serializeMatcherInputs(scheduledStopPoints),
         ]),
       );
     });

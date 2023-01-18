@@ -13,7 +13,7 @@ import {
   VehicleMode,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { GeometryObject } from 'geojson';
@@ -106,9 +106,7 @@ describe('Insert scheduled stop point', () => {
 
         expect(stopPointResponse.rowCount).toEqual(scheduledStopPoints.length);
         expect(stopPointResponse.rows).toEqual(
-          expect.arrayContaining(
-            asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-          ),
+          expect.arrayContaining(serializeMatcherInputs(scheduledStopPoints)),
         );
 
         const vehicleModeResponse = await queryTable(
@@ -204,17 +202,14 @@ describe('Insert scheduled stop point', () => {
 
         expect(stopPointResponse.rows).toEqual(
           expect.arrayContaining(
-            dataset.asDbGeometryObjectArray(
-              [
-                {
-                  ...toBeInserted,
-                  ...insertedDefaultValues,
-                  scheduled_stop_point_id: expect.any(String),
-                },
-                ...scheduledStopPoints,
-              ],
-              ['measured_location'],
-            ),
+            dataset.serializeMatcherInputs([
+              {
+                ...toBeInserted,
+                ...insertedDefaultValues,
+                scheduled_stop_point_id: expect.any(String),
+              },
+              ...scheduledStopPoints,
+            ]),
           ),
         );
 
