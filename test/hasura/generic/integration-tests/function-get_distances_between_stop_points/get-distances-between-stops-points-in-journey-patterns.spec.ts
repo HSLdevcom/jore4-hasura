@@ -21,7 +21,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   let dbConnectionPool: pg.Pool;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.databaseConfig);
+    dbConnectionPool = new pg.Pool(config.networkDbConfig);
   });
 
   afterAll(() => dbConnectionPool.end());
@@ -131,7 +131,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
       `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISOString()}'::date, ${includeDraftStopPoints})`,
     );
 
-    return response.rows.map((row) => {
+    return response.rows.map((row: ExplicitAny) => {
       // Round the distances to two decimal places.
       return {
         ...row,

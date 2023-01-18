@@ -12,9 +12,9 @@ import {
   VehicleMode,
 } from '@datasets-generic/types';
 import {
-  asDbGeometryObject,
-  asDbGeometryObjectArray,
   asEwkb,
+  serializeMatcherInput,
+  serializeMatcherInputs,
 } from '@util/dataset';
 import * as db from '@util/db';
 import '@util/matchers';
@@ -91,8 +91,8 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     expect(response.rows).toEqual(
       expect.arrayContaining([
-        ...asDbGeometryObjectArray(scheduledStopPoints, ['measured_location']),
-        asDbGeometryObject(toBeInserted, ['measured_location']),
+        ...serializeMatcherInputs(scheduledStopPoints),
+        serializeMatcherInput(toBeInserted),
       ]),
     );
   });

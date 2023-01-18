@@ -6,7 +6,7 @@ import {
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
 } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
 import { queryTable, setupDb } from '@datasets-generic/setup';
-import { asDbGeometryObject, asDbGeometryObjectArray } from '@util/dataset';
+import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import * as pg from 'pg';
 import {
@@ -54,9 +54,7 @@ describe('Insert scheduled stop point after temp route', () => {
       );
       expect(stopResponse.rows).toEqual(
         expect.arrayContaining(
-          asDbGeometryObjectArray(scheduledStopPointsWithTempRoute, [
-            'measured_location',
-          ]),
+          serializeMatcherInputs(scheduledStopPointsWithTempRoute),
         ),
       );
     });
@@ -91,15 +89,12 @@ describe('Insert scheduled stop point after temp route', () => {
       expect(stopResponse.rows).toEqual(
         expect.arrayContaining([
           {
-            ...asDbGeometryObject(
+            ...serializeMatcherInput(
               tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
-              ['measured_location'],
             ),
             scheduled_stop_point_id: expect.any(String),
           },
-          ...asDbGeometryObjectArray(scheduledStopPointsWithTempRoute, [
-            'measured_location',
-          ]),
+          ...serializeMatcherInputs(scheduledStopPointsWithTempRoute),
         ]),
       );
     });

@@ -1,8 +1,9 @@
 import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { isFileDataSource, isGeoProperty } from '@datasets-generic/types';
-import { asDbGeometryObjectArray } from '@util/dataset';
+import { serializeInsertInput } from '@util/dataset';
 import * as db from '@util/db';
 import { throwError } from '@util/helpers';
+import { promiseSequence } from '@util/promise';
 import { readFileSync } from 'fs';
 import * as pg from 'pg';
 
@@ -10,52 +11,49 @@ export function isTableConfig(obj: TableLikeConfig): obj is TableConfig {
   return Object.prototype.hasOwnProperty.call(obj, 'data');
 }
 
-export const setupDb = (
-  dbConnectionPool: pg.Pool,
+export const setupDb = async (
+  conn: db.DbConnection,
   configuration: TableLikeConfig[] = defaultTableConfig,
   disableTriggers = false,
 ) => {
-  let queryRunner = db.queryRunner(dbConnectionPool);
-
+  // disable triggers before transaction on demand
   if (disableTriggers) {
-    queryRunner = queryRunner.disableTriggers(true);
+    await db.disableTriggers(conn, true);
   }
 
-  queryRunner = queryRunner.query('BEGIN');
-  const tables = configuration.filter(isTableConfig);
+  // run inserts in transaction
+  await db.getKnex().transaction(
+    async (trx) => {
+      const tables = configuration.filter(isTableConfig);
 
-  tables.forEach((table) => {
-    queryRunner = queryRunner.truncate(table.name);
-  });
-  tables.forEach((table: TableConfig) => {
-    const { data, props } = table;
-
-    if (isFileDataSource(data)) {
-      // data contains the file name from which to load SQL statements
-      const fileContent = readFileSync(data, 'utf-8');
-      queryRunner = queryRunner.query(fileContent);
-    } else {
-      // data directly contains the table content array
-      const geoProps = props.reduce(
-        (prev, prop) => (isGeoProperty(prop) ? [...prev, prop.propName] : prev),
-        [] as string[],
+      // truncate all tables present in config
+      await promiseSequence(
+        tables.map((table) => db.truncate(trx, table.name)),
       );
 
-      queryRunner = queryRunner.insertFromJson(
-        table.name,
-        asDbGeometryObjectArray(data, geoProps),
+      // insert data to tables present in config
+      await promiseSequence(
+        tables.map((table) => {
+          const { data } = table;
+
+          if (isFileDataSource(data)) {
+            // data contains the file name from which to load SQL statements
+            const fileContent = readFileSync(data, 'utf-8');
+            return db.singleQuery(trx, fileContent);
+          }
+
+          const serializedData = data.map(serializeInsertInput);
+          return db.batchInsert(trx, table.name, serializedData);
+        }),
       );
-    }
-  });
+    },
+    { connection: conn },
+  );
 
-  queryRunner = queryRunner.query('COMMIT');
-
+  // reenable triggers after transaction
   if (disableTriggers) {
-    // re-enable triggers in case we disabled them above
-    queryRunner = queryRunner.disableTriggers(false);
+    await db.disableTriggers(conn, false);
   }
-
-  return queryRunner.run(true);
 };
 
 export const getTableConfig = (

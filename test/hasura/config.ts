@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
+import { ConnectionConfig } from 'pg';
 
 dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
 
-export const networkDbConfig = {
+export const networkDbConfig: ConnectionConfig = {
   host: 'localhost',
   port: 6432,
   database: process.env.POSTGRES_DB || 'jore4e2e',
