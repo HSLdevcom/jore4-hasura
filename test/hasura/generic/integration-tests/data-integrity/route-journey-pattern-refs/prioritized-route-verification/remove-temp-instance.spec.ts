@@ -9,9 +9,9 @@ import {
   tempRouteWithOtherLinks,
 } from '@datasets-generic/prioritizedRouteVerification/routes';
 import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
-import { setupDb } from '@datasets-generic/setup';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { setupDb } from '@util/setup';
 import * as pg from 'pg';
 import {
   checkInfraLinkStopRefsForStopPointRemoval,

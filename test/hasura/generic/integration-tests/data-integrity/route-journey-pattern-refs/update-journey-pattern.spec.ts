@@ -2,10 +2,10 @@ import * as config from '@config';
 import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { journeyPatternProps } from '@datasets-generic/types';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

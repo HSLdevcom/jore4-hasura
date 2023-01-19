@@ -1,13 +1,13 @@
 import * as config from '@config';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPoint,
   scheduledStopPointProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';

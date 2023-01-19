@@ -1,12 +1,6 @@
 import * as config from '@config';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
-  getPropNameArray,
-  getTableConfigArray,
-  queryTable,
-  setupDb,
-} from '@datasets-generic/setup';
-import {
   InfrastructureLink,
   infrastructureLinkProps,
   LinkDirection,
@@ -15,6 +9,12 @@ import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import {
+  getPropNameArray,
+  getTableConfigArray,
+  queryTable,
+  setupDb,
+} from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

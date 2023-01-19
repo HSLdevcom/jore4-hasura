@@ -8,8 +8,8 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets-generic/route116/routes';
-import { queryTable, setupDb } from '@datasets-generic/setup';
 import '@util/matchers';
+import { queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 
 describe('Inserting a complicated route', () => {

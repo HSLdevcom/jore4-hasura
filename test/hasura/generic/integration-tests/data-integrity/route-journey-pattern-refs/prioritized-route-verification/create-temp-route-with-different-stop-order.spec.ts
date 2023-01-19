@@ -6,9 +6,9 @@ import {
   tempRouteWithSameLinks,
 } from '@datasets-generic/prioritizedRouteVerification/routes';
 import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
-import { setupDb } from '@datasets-generic/setup';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
+import { setupDb } from '@util/setup';
 import * as pg from 'pg';
 import {
   insertRoute,

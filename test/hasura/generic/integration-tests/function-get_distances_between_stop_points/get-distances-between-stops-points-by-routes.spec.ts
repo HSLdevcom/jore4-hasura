@@ -2,13 +2,13 @@ import * as config from '@config';
 import { routesAndJourneyPatternsTableConfig as baseTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { scheduledStopPoints as sourceScheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
-import { setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPoint,
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from '@datasets-generic/types';
 import * as db from '@util/db';
+import { setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 

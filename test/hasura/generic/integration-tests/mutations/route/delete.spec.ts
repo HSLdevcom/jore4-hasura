@@ -1,9 +1,9 @@
 import * as config from '@config';
 import { routes } from '@datasets-generic/defaultSetup/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 
