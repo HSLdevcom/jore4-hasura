@@ -3,7 +3,6 @@ import { routesAndJourneyPatternsTableConfig as baseTableConfig } from '@dataset
 import { infrastructureLinks as sourceInfrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { scheduledStopPoints as sourceScheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
-import { setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLink,
   ScheduledStopPoint,
@@ -13,6 +12,7 @@ import {
   VehicleSubmodeOnInfrastructureLink,
 } from '@datasets-generic/types';
 import * as db from '@util/db';
+import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';

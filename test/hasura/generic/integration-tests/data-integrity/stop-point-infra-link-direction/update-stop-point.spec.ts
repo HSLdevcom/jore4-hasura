@@ -2,12 +2,6 @@ import * as config from '@config';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
 import {
-  getPropNameArray,
-  getTableConfigArray,
-  queryTable,
-  setupDb,
-} from '@datasets-generic/setup';
-import {
   LinkDirection,
   ScheduledStopPoint,
   scheduledStopPointProps,
@@ -16,6 +10,12 @@ import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import {
+  getPropNameArray,
+  getTableConfigArray,
+  queryTable,
+  setupDb,
+} from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

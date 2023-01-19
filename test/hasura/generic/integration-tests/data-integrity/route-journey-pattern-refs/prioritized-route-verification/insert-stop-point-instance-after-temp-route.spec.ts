@@ -5,9 +5,9 @@ import {
   tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
 } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
-import { queryTable, setupDb } from '@datasets-generic/setup';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
+import { queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import {
   insertStopPoint,

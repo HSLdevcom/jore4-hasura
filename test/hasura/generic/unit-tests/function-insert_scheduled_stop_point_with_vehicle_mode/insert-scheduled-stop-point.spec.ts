@@ -5,7 +5,6 @@ import {
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
-import { queryTable, setupDb } from '@datasets-generic/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -18,6 +17,7 @@ import {
 } from '@util/dataset';
 import * as db from '@util/db';
 import '@util/matchers';
+import { queryTable, setupDb } from '@util/setup';
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';

@@ -4,7 +4,6 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets-generic/routesAndJourneyPatterns/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
@@ -12,6 +11,7 @@ import {
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

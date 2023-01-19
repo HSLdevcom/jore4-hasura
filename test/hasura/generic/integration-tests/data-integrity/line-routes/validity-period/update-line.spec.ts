@@ -1,10 +1,10 @@
 import * as config from '@config';
 import { lines } from '@datasets-generic/defaultSetup/lines';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { Line, lineProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';

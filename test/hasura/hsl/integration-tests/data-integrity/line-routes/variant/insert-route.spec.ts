@@ -1,12 +1,13 @@
 import * as config from '@config';
+import { defaultTableConfig as hslDefaultTableConfig } from '@datasets-hsl/defaultSetup';
 import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-hsl/setup';
 import { HslRoute, hslRouteProps, RouteDirection } from '@datasets-hsl/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
@@ -55,7 +56,7 @@ describe('Insert route', () => {
 
   afterAll(() => dbConnectionPool.end());
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnectionPool, hslDefaultTableConfig));
 
   const shouldReturnErrorResponse = (
     label: string,

@@ -5,7 +5,6 @@ import {
   scheduledStopPointInJourneyPattern,
 } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
@@ -13,6 +12,7 @@ import {
 import * as dataset from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

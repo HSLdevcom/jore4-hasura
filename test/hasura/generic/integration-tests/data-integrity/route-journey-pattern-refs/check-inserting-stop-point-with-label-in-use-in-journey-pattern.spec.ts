@@ -11,7 +11,6 @@ import {
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets-generic/route116/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   journeyPatternProps,
@@ -20,6 +19,7 @@ import {
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

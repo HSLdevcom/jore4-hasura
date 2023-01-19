@@ -1,10 +1,10 @@
 import * as config from '@config';
 import { route116TableConfig } from '@datasets-generic/route116';
 import { routes } from '@datasets-generic/route116/routes';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

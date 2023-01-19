@@ -2,12 +2,12 @@ import * as config from '@config';
 import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import { infrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

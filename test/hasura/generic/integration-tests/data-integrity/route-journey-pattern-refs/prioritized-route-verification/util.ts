@@ -1,7 +1,6 @@
 import * as config from '@config';
 import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
 import { scheduledStopPoints } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
-import { getPropNameArray, queryTable } from '@datasets-generic/setup';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
@@ -17,6 +16,7 @@ import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { getPropNameArray, queryTable } from '@util/setup';
 import * as pg from 'pg';
 import { Response } from 'request';
 import * as rp from 'request-promise';

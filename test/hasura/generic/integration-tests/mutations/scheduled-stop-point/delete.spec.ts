@@ -3,15 +3,15 @@ import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { scheduledStopPointProps } from '@datasets-generic/types';
+import * as dataset from '@util/dataset';
+import '@util/matchers';
 import {
   getPropNameArray,
   getTableConfigArray,
   queryTable,
   setupDb,
-} from '@datasets-generic/setup';
-import { scheduledStopPointProps } from '@datasets-generic/types';
-import * as dataset from '@util/dataset';
-import '@util/matchers';
+} from '@util/setup';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
 

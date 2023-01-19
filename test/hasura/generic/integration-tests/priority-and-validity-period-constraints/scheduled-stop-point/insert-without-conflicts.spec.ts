@@ -1,7 +1,6 @@
 import * as config from '@config';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
-import { getPropNameArray, queryTable, setupDb } from '@datasets-generic/setup';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -11,6 +10,7 @@ import {
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import '@util/matchers';
+import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as pg from 'pg';
 import * as rp from 'request-promise';
