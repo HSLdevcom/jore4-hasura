@@ -2,6 +2,13 @@ table:
   name: legacy_hsl_municipality_code
   schema: hsl_route
 array_relationships:
+  - name: lines
+    using:
+      foreign_key_constraint_on:
+        column: legacy_hsl_municipality_code
+        table:
+          name: line
+          schema: route
   - name: routes
     using:
       foreign_key_constraint_on:

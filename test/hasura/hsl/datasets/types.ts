@@ -26,11 +26,13 @@ export enum HslTransportTarget {
 }
 
 export type HslLine = GenericLine & {
+  legacy_hsl_municipality_code: LegacyHslMunicipality;
   transport_target: HslTransportTarget;
 };
 
 export const hslLineProps: Property[] = [
   ...genericLineProps,
+  'legacy_hsl_municipality_code',
   'transport_target',
 ];
 
