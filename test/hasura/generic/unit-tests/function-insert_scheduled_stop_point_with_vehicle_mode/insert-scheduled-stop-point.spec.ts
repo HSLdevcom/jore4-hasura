@@ -1,4 +1,5 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
   scheduledStopPointInvariants,
@@ -16,11 +17,11 @@ import {
   serializeMatcherInputs,
 } from '@util/dataset';
 import * as db from '@util/db';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 
 const toBeInserted: ScheduledStopPoint = {
   scheduled_stop_point_id: '81860cb8-6947-4ecb-abbd-0720ada98b40',
@@ -45,22 +46,22 @@ const toBeInserted: ScheduledStopPoint = {
 const defaultVehicleMode: VehicleMode = VehicleMode.Bus;
 
 describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const insertScheduledStopPointWithVehicleMode = async (
     scheduledStopPoint: ScheduledStopPoint,
     vehicleMode: VehicleMode,
   ) =>
     db.singleQuery(
-      dbConnectionPool,
+      dbConnection,
       `SELECT internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(
         '${scheduledStopPoint.scheduled_stop_point_id}'::uuid,
         '${asEwkb(
@@ -83,7 +84,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
     );
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point',
     );
 
@@ -104,7 +105,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
     );
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.vehicle_mode_on_scheduled_stop_point',
     );
 
@@ -135,7 +136,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
     );
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point_invariant',
     );
 
@@ -161,7 +162,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
     );
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point_invariant',
     );
 

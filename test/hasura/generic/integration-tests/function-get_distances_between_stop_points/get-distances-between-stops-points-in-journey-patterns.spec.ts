@@ -12,19 +12,19 @@ import {
   VehicleSubmodeOnInfrastructureLink,
 } from '@datasets-generic/types';
 import * as db from '@util/db';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 
 describe('Function service_pattern.get_distances_between_stop_points_in_journey_patterns', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   // Nullify estimated lengths for all infrastructure links.
   const baseInfrastructureLinks: InfrastructureLink[] =
@@ -124,10 +124,10 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
     observationDate: LocalDate,
     includeDraftStopPoints = false,
   ): Promise<Array<StopIntervalLength>> => {
-    await setupDb(dbConnectionPool, dataset);
+    await setupDb(dbConnection, dataset);
 
     const response = await db.singleQuery(
-      dbConnectionPool,
+      dbConnection,
       `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISOString()}'::date, ${includeDraftStopPoints})`,
     );
 

@@ -1,4 +1,5 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import {
@@ -13,11 +14,11 @@ import {
   routeProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const routeToBeInserted: Partial<Route> = {
@@ -71,15 +72,15 @@ const buildMutation = (
 `;
 
 describe('Insert route with links', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   describe("containing a link whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -109,13 +110,13 @@ describe('Insert route with links', () => {
           body: { query: buildMutation(linksToBeInserted) },
         });
 
-        const routeResponse = await queryTable(dbConnectionPool, 'route.route');
+        const routeResponse = await queryTable(dbConnection, 'route.route');
 
         expect(routeResponse.rowCount).toEqual(routes.length);
         expect(routeResponse.rows).toEqual(expect.arrayContaining(routes));
 
         const infraLinksResponse = await queryTable(
-          dbConnectionPool,
+          dbConnection,
           'route.infrastructure_link_along_route',
         );
 
@@ -190,7 +191,7 @@ describe('Insert route with links', () => {
           body: { query: buildMutation(linksToBeInserted) },
         });
 
-        const routeResponse = await queryTable(dbConnectionPool, 'route.route');
+        const routeResponse = await queryTable(dbConnection, 'route.route');
 
         expect(routeResponse.rowCount).toEqual(routes.length + 1);
         expect(routeResponse.rows).toEqual(
@@ -204,7 +205,7 @@ describe('Insert route with links', () => {
         );
 
         const infraLinksResponse = await queryTable(
-          dbConnectionPool,
+          dbConnection,
           'route.infrastructure_link_along_route',
         );
 

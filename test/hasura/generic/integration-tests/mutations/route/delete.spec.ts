@@ -1,10 +1,11 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeDeleted = routes[2];
@@ -24,15 +25,15 @@ const mutation = `
 `;
 
 describe('Delete route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -57,7 +58,7 @@ describe('Delete route', () => {
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnectionPool, 'route.route');
+    const response = await queryTable(dbConnection, 'route.route');
 
     expect(response.rowCount).toEqual(routes.length - 1);
 

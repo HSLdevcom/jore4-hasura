@@ -1,14 +1,15 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
 } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { infrastructureLinkProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (infrastructureLinkId: string) => `
@@ -22,15 +23,15 @@ const buildMutation = (infrastructureLinkId: string) => `
 `;
 
 describe('Delete infrastructure link', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   describe('which is referenced by a scheduled stop point', () => {
     const toBeDeleted = infrastructureLinks[0];
@@ -51,7 +52,7 @@ describe('Delete infrastructure link', () => {
       });
 
       const infraLinkResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'infrastructure_network.infrastructure_link',
       );
 
@@ -63,7 +64,7 @@ describe('Delete infrastructure link', () => {
       );
 
       const vehicleSubModeResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
       );
 
@@ -103,7 +104,7 @@ describe('Delete infrastructure link', () => {
       });
 
       const infraLinkResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'infrastructure_network.infrastructure_link',
       );
 
@@ -124,7 +125,7 @@ describe('Delete infrastructure link', () => {
       );
 
       const vehicleSubModeResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
       );
 

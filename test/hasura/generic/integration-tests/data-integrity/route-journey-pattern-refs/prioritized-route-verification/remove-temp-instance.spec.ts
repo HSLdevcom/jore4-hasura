@@ -9,10 +9,10 @@ import {
   tempRouteWithOtherLinks,
 } from '@datasets-generic/prioritizedRouteVerification/routes';
 import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { setupDb } from '@util/setup';
-import * as pg from 'pg';
 import {
   checkInfraLinkStopRefsForStopPointRemoval,
   deleteRoute,
@@ -26,16 +26,16 @@ import {
 } from './util';
 
 describe('Removing a temporary...', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, prioritizedRouteVerificationTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationTableConfig),
   );
 
   it('...route should fail if the underlying basic route is in conflict with the stop points', async () => {

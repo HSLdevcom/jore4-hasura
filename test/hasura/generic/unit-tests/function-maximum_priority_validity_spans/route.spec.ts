@@ -2,12 +2,12 @@ import * as config from '@config';
 import { buildLocalizedString } from '@datasets-generic/factories';
 import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
 import * as db from '@util/db';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 
 const dummyLineId = randomUUID();
 const defaultRouteLabel = 'route 1';
@@ -21,13 +21,13 @@ const defaultCommonRouteProps = {
 };
 
 describe('Function maximum_priority_validity_spans should return correct route rows', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   const getMaximumPriorityValiditySpansOfRoutes = async (
     routeData: Partial<Route>[],
@@ -37,7 +37,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
     upperPriorityLimit?: number,
   ) => {
     await setupDb(
-      dbConnectionPool,
+      dbConnection,
       [
         {
           name: 'route.route',
@@ -49,7 +49,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
     );
 
     return db.singleQuery(
-      dbConnectionPool,
+      dbConnection,
       `SELECT *
        FROM journey_pattern.maximum_priority_validity_spans('route', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel

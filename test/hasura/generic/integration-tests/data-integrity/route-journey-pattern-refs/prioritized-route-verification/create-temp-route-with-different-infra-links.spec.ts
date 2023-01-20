@@ -9,10 +9,10 @@ import {
   tempRouteWithOtherLinks,
 } from '@datasets-generic/prioritizedRouteVerification/routes';
 import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
-import * as pg from 'pg';
 import {
   insertRoute,
   insertStopPoint,
@@ -26,23 +26,23 @@ import {
 } from './util';
 
 describe('Creating a temporary route with different infra links', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, prioritizedRouteVerificationTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationTableConfig),
   );
 
   it('should fail when inserting the conflicting stop first', async () => {
     await insertStopPoint(
       tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
     ).then(shouldReturnErrorResponse);
-    await shouldNotModifyScheduledStopPointsInDatabase(dbConnectionPool);
+    await shouldNotModifyScheduledStopPointsInDatabase(dbConnection);
   });
 
   it('should succeed when inserting the route before the conflicting stop', async () => {
@@ -70,7 +70,7 @@ describe('Creating a temporary route with different infra links', () => {
       ),
     );
     await shouldInsertScheduledStopPointCorrectlyIntoDatabase(
-      dbConnectionPool,
+      dbConnection,
       tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
     );
 
@@ -116,7 +116,7 @@ describe('Creating a temporary route with different infra links', () => {
     await insertStopPoint(
       tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
     ).then(shouldReturnErrorResponse);
-    await shouldNotModifyScheduledStopPointsInDatabase(dbConnectionPool);
+    await shouldNotModifyScheduledStopPointsInDatabase(dbConnection);
   });
 
   it('should fail when inserting a temp route with a validity time longer than that of the the stop', async () => {
@@ -154,7 +154,7 @@ describe('Creating a temporary route with different infra links', () => {
       ),
     );
     await shouldInsertScheduledStopPointCorrectlyIntoDatabase(
-      dbConnectionPool,
+      dbConnection,
       tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
     );
 

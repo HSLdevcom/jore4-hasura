@@ -1,12 +1,13 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { Line, lineProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (line: Line, toBeUpdated: Partial<Line>) => `
@@ -33,15 +34,15 @@ const completeUpdated = (line: Line, toBeUpdated: Partial<Line>) => ({
 });
 
 describe('Update line', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnErrorResponse = (line: Line, toBeUpdated: Partial<Line>) =>
     it('should return error response', async () => {
@@ -64,7 +65,7 @@ describe('Update line', () => {
         body: { query: buildMutation(line, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.line');
+      const response = await queryTable(dbConnection, 'route.line');
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));
@@ -103,7 +104,7 @@ describe('Update line', () => {
         body: { query: buildMutation(line, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.line');
+      const response = await queryTable(dbConnection, 'route.line');
 
       const updated = completeUpdated(line, toBeUpdated);
 

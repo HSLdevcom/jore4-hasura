@@ -1,13 +1,14 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { buildLine, buildLocalizedString } from '@datasets-generic/factories';
 import { Line, lineProps, VehicleMode } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
@@ -24,15 +25,15 @@ const buildMutation = (toBeInserted: Partial<Line>) => `
 `;
 
 describe('Insert line', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnErrorResponse = (toBeInserted: Partial<Line>) =>
     it('should return error response', async () => {
@@ -51,7 +52,7 @@ describe('Insert line', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.line');
+      const response = await queryTable(dbConnection, 'route.line');
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));
