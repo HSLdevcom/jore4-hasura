@@ -83,7 +83,11 @@ describe('Insert route', () => {
         body: { query: buildMutation(label, onLineId, variant) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        'route.route',
+        hslDefaultTableConfig,
+      );
 
       expect(response.rowCount).toEqual(hslRoutes.length);
       expect(response.rows).toEqual(expect.arrayContaining(hslRoutes));
@@ -134,7 +138,11 @@ describe('Insert route', () => {
         body: { query: buildMutation(label, onLineId, variant) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        'route.route',
+        hslDefaultTableConfig,
+      );
 
       expect(response.rowCount).toEqual(hslRoutes.length + 1);
 
