@@ -9,10 +9,10 @@ import {
   infrastructureLinkAlongRouteProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (
@@ -37,17 +37,15 @@ const buildMutation = (
 `;
 
 describe('Move infra link to other route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   describe('when there is a stop on the link', () => {
     const toBeMoved = infrastructureLinkAlongRoute[0];
@@ -88,7 +86,7 @@ describe('Move infra link to other route', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'route.infrastructure_link_along_route',
         routesAndJourneyPatternsTableConfig,
       );
@@ -147,7 +145,7 @@ describe('Move infra link to other route', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'route.infrastructure_link_along_route',
         routesAndJourneyPatternsTableConfig,
       );

@@ -6,9 +6,9 @@ import {
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
 } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import {
   insertStopPoint,
   shouldReturnCorrectScheduledStopPointResponse,
@@ -16,19 +16,16 @@ import {
 } from './util';
 
 describe('Insert scheduled stop point after temp route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(
-      dbConnectionPool,
-      prioritizedRouteVerificationWithTempRouteTableConfig,
-    ),
+    setupDb(dbConnection, prioritizedRouteVerificationWithTempRouteTableConfig),
   );
 
   describe("when stop order is conflicting with basic route's other validity span's stop order", () => {
@@ -44,7 +41,7 @@ describe('Insert scheduled stop point after temp route', () => {
       );
 
       const stopResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         prioritizedRouteVerificationWithTempRouteTableConfig,
       );
@@ -78,7 +75,7 @@ describe('Insert scheduled stop point after temp route', () => {
       );
 
       const stopResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         prioritizedRouteVerificationWithTempRouteTableConfig,
       );

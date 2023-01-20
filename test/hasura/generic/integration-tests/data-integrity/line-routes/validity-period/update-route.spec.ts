@@ -1,14 +1,15 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
@@ -32,15 +33,15 @@ const completeUpdated = (route: Route, toBeUpdated: Partial<Route>) => ({
 });
 
 describe('Update route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnErrorResponse = (
     route: Route,
@@ -66,7 +67,7 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.route');
+      const response = await queryTable(dbConnection, 'route.route');
 
       expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(expect.arrayContaining(routes));
@@ -107,7 +108,7 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.route');
+      const response = await queryTable(dbConnection, 'route.route');
 
       const updated = completeUpdated(route, toBeUpdated);
 

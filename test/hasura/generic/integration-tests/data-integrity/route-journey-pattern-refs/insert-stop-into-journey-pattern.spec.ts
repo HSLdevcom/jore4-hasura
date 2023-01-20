@@ -10,10 +10,10 @@ import {
   scheduledStopPointInJourneyPatternProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const createToBeInserted = (
@@ -46,17 +46,15 @@ const buildMutation = (toBeInserted: ScheduledStopPointInJourneyPattern) => `
 `;
 
 describe('Insert scheduled stop point into journey pattern', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   const shouldReturnErrorResponse = (
     toBeInserted: ScheduledStopPointInJourneyPattern,
@@ -81,7 +79,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'journey_pattern.scheduled_stop_point_in_journey_pattern',
         routesAndJourneyPatternsTableConfig,
       );
@@ -124,7 +122,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'journey_pattern.scheduled_stop_point_in_journey_pattern',
         routesAndJourneyPatternsTableConfig,
       );

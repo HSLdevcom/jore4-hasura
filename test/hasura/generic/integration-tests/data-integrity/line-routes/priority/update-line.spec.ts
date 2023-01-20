@@ -1,12 +1,13 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { Line, lineProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (toBeUpdated: Partial<Line>) => `
@@ -33,15 +34,15 @@ const completeUpdated = (toBeUpdated: Partial<Line>) => ({
 });
 
 describe('Update line', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnErrorResponse = (toBeUpdated: Partial<Line>) =>
     it('should return error response', async () => {
@@ -60,7 +61,7 @@ describe('Update line', () => {
         body: { query: buildMutation(toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.line');
+      const response = await queryTable(dbConnection, 'route.line');
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));
@@ -93,7 +94,7 @@ describe('Update line', () => {
         body: { query: buildMutation(toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.line');
+      const response = await queryTable(dbConnection, 'route.line');
 
       const updated = completeUpdated(toBeUpdated);
 

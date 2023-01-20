@@ -5,7 +5,7 @@ import * as db from '@util/db';
 import { throwError } from '@util/helpers';
 import { promiseSequence } from '@util/promise';
 import { readFileSync } from 'fs';
-import * as pg from 'pg';
+import { DbConnection } from './db';
 
 export function isTableConfig(obj: TableLikeConfig): obj is TableConfig {
   return Object.prototype.hasOwnProperty.call(obj, 'data');
@@ -13,7 +13,7 @@ export function isTableConfig(obj: TableLikeConfig): obj is TableConfig {
 
 export const setupDb = async (
   conn: db.DbConnection,
-  configuration: TableLikeConfig[] = defaultTableConfig,
+  configuration: TableLikeConfig[],
   disableTriggers = false,
 ) => {
   // disable triggers before transaction on demand
@@ -72,12 +72,12 @@ export const getPropNameArray = (props: Property[]) =>
   props.map((prop) => (isGeoProperty(prop) ? prop.propName : prop));
 
 export const queryTable = (
-  dbConnectionPool: pg.Pool,
+  dbConnection: DbConnection,
   tableName: string,
   configuration: TableLikeConfig[] = defaultTableConfig,
 ) =>
   db.singleQuery(
-    dbConnectionPool,
+    dbConnection,
     `
       SELECT ${getPropNameArray(
         getTableConfig(tableName, configuration).props,

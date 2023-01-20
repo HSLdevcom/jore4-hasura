@@ -17,10 +17,10 @@ import {
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
@@ -46,15 +46,15 @@ const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
 `;
 
 describe('Inserting a stop point with a label in use in a journey pattern', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool, route116TableConfig));
+  beforeEach(() => setupDb(dbConnection, route116TableConfig));
 
   const shouldReturnErrorResponse = (
     toBeInserted: Partial<ScheduledStopPoint>,
@@ -80,7 +80,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
       });
 
       const stopResponse = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         route116TableConfig,
       );
@@ -132,7 +132,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
       );
 

@@ -1,4 +1,5 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
 import {
@@ -6,11 +7,11 @@ import {
   scheduledStopPointProps,
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
@@ -53,15 +54,15 @@ const mutation = `
 `;
 
 describe('Update scheduled_stop_point', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -87,7 +88,7 @@ describe('Update scheduled_stop_point', () => {
     });
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point',
     );
 

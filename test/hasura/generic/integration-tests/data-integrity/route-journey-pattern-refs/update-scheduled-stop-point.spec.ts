@@ -5,10 +5,10 @@ import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildChangeInfralinkMutation = (
@@ -50,17 +50,15 @@ const buildChangeTimingPlaceMutation = (
 `;
 
 describe('Move scheduled stop point to other infra link', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   const shouldReturnErrorResponse = (
     scheduledStopPointId: string,
@@ -97,7 +95,7 @@ describe('Move scheduled stop point to other infra link', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         routesAndJourneyPatternsTableConfig,
       );
@@ -189,7 +187,7 @@ describe('Move scheduled stop point to other infra link', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         routesAndJourneyPatternsTableConfig,
       );
@@ -212,17 +210,15 @@ describe('Move scheduled stop point to other infra link', () => {
 });
 
 describe('Change scheduled stop point timing place', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   const shouldReturnErrorResponse = (
     scheduledStopPointId: string,
@@ -259,7 +255,7 @@ describe('Change scheduled stop point timing place', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         routesAndJourneyPatternsTableConfig,
       );
@@ -325,7 +321,7 @@ describe('Change scheduled stop point timing place', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
         routesAndJourneyPatternsTableConfig,
       );

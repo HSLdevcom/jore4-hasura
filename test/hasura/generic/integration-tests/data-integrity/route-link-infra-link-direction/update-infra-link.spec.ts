@@ -1,4 +1,5 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
   InfrastructureLink,
@@ -7,10 +8,10 @@ import {
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (
@@ -31,15 +32,15 @@ const buildMutation = (
 `;
 
 describe('Update infrastructure link', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   describe("whose direction conflicts with a route link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -70,7 +71,7 @@ describe('Update infrastructure link', () => {
         });
 
         const response = await queryTable(
-          dbConnectionPool,
+          dbConnection,
           'infrastructure_network.infrastructure_link',
         );
 
@@ -160,7 +161,7 @@ describe('Update infrastructure link', () => {
           });
 
           const response = await queryTable(
-            dbConnectionPool,
+            dbConnection,
             'infrastructure_network.infrastructure_link',
           );
 

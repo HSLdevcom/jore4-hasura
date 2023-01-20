@@ -1,4 +1,5 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
 import {
@@ -9,10 +10,10 @@ import {
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
@@ -38,15 +39,15 @@ const buildMutation = (toBeInserted: Partial<ScheduledStopPoint>) => `
 `;
 
 describe('Insert scheduled stop point', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnCorrectResponse = (
     toBeInserted: Partial<ScheduledStopPoint>,
@@ -89,7 +90,7 @@ describe('Insert scheduled stop point', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'service_pattern.scheduled_stop_point',
       );
 

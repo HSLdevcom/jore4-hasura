@@ -8,24 +8,24 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets-generic/route116/routes';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 
 describe('Inserting a complicated route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool, route116TableConfig));
+  beforeEach(() => setupDb(dbConnection, route116TableConfig));
 
   it('should create the route correctly in the database', async () => {
     const routeResponse = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'route.route',
       route116TableConfig,
     );
@@ -34,7 +34,7 @@ describe('Inserting a complicated route', () => {
     expect(routeResponse.rows).toEqual(expect.arrayContaining(routes));
 
     const infrastructureLinkAlongRouteResponse = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'route.infrastructure_link_along_route',
       route116TableConfig,
     );
@@ -49,7 +49,7 @@ describe('Inserting a complicated route', () => {
 
   it('should create the journey pattern correctly in the database', async () => {
     const journeyPatternResponse = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'journey_pattern.journey_pattern',
       route116TableConfig,
     );
@@ -60,7 +60,7 @@ describe('Inserting a complicated route', () => {
     );
 
     const scheduledStopPointInJourneyPatternResponse = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'journey_pattern.scheduled_stop_point_in_journey_pattern',
       route116TableConfig,
     );

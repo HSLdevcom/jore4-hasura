@@ -8,18 +8,18 @@ import {
   VehicleModeOnScheduledStopPoint,
 } from '@datasets-generic/types';
 import * as db from '@util/db';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 
 describe('Function service_pattern.get_distances_between_stop_points_by_routes', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   // Reset all scheduled stop point priorities.
   const baseScheduledStopPoints: ScheduledStopPoint[] =
@@ -80,10 +80,10 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
     routeIds: string[],
     observationDate: LocalDate,
   ): Promise<Array<StopIntervalLength>> => {
-    await setupDb(dbConnectionPool, dataset);
+    await setupDb(dbConnection, dataset);
 
     const response = await db.singleQuery(
-      dbConnectionPool,
+      dbConnection,
       `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISOString()}'::date)`,
     );
 

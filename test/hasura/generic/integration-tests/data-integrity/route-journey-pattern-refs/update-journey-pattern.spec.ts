@@ -3,10 +3,10 @@ import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAnd
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
 import { journeyPatternProps } from '@datasets-generic/types';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (journeyPatternId: string, newRouteId: string) => `
@@ -26,17 +26,15 @@ const buildMutation = (journeyPatternId: string, newRouteId: string) => `
 `;
 
 describe('Move journey pattern to other route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   const shouldReturnErrorMessage = (
     journeyPatternId: string,
@@ -67,7 +65,7 @@ describe('Move journey pattern to other route', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'journey_pattern.journey_pattern',
         routesAndJourneyPatternsTableConfig,
       );
@@ -138,7 +136,7 @@ describe('Move journey pattern to other route', () => {
       });
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'journey_pattern.journey_pattern',
         routesAndJourneyPatternsTableConfig,
       );

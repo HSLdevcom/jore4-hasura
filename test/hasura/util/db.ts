@@ -1,10 +1,22 @@
 import knex, { Knex } from 'knex';
-import { Pool } from 'pg';
+import { ConnectionConfig, Pool } from 'pg';
 
 export type DbConnection = Pool | Knex.Transaction;
 export function isTransaction(conn: DbConnection): conn is Knex.Transaction {
   return Object.prototype.hasOwnProperty.call(conn, 'commit');
 }
+
+export const createDbConnection = (config: ConnectionConfig) =>
+  new Pool(config);
+
+// otherwise the db connection (pg.Pool) and transaction (Knex.Transaction) are transparent
+// when used in queries, but can only use pg.Pool instance when closing the connection
+export const closeDbConnection = (conn: DbConnection) => {
+  if (isTransaction(conn)) {
+    throw new Error('Cannot close db connection using a transaction reference');
+  }
+  return conn.end();
+};
 
 // initializes a knex query builder instance (without a connection)
 // useage: getKnex().raw('SELECT * FROM...').connection(connectionPool)
