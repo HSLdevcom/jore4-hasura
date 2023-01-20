@@ -16,6 +16,7 @@ export const buildHslLine = (
 ) => {
   return {
     ...buildGenericLine(input.label, input.primary_vehicle_mode),
+    legacy_hsl_municipality_code: LegacyHslMunicipalityCodeId.Helsinki,
     transport_target: HslTransportTarget.HelsinkiInternalTraffic,
     ...input,
   } as HslLine;
