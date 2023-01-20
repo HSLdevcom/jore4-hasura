@@ -13,13 +13,17 @@ import {
   scheduledStopPointInJourneyPatternProps,
   scheduledStopPointProps,
 } from '@datasets-generic/types';
-import { singleQuery } from '@util/db';
+import {
+  closeDbConnection,
+  createDbConnection,
+  DbConnection,
+  singleQuery,
+} from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { LocalDate } from 'local-date';
-import { Pool } from 'pg';
 
 const defaultRouteLabel = 'route 2';
 const stopLabel = 'stop A';
@@ -77,13 +81,13 @@ const infraLink: Partial<InfrastructureLink> = {
 };
 
 describe('Function maximum_priority_validity_spans should return correct scheduled stop point rows', () => {
-  let dbConnectionPool: Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new Pool(networkDbConfig);
+    dbConnection = createDbConnection(networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   const getMaximumPriorityValiditySpansOfStops = async (
     stopData: Partial<ScheduledStopPoint>[],
@@ -93,7 +97,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     upperPriorityLimit?: number,
   ) => {
     await setupDb(
-      dbConnectionPool,
+      dbConnection,
       [
         {
           // infra link is needed, since it is used by the service_pattern.scheduled_stop_point view
@@ -136,7 +140,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     );
 
     return singleQuery(
-      dbConnectionPool,
+      dbConnection,
       `SELECT *
        FROM journey_pattern.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel

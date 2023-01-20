@@ -5,10 +5,10 @@ import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
 } from '@datasets-generic/types';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (routeId: string, linkId: string) => `
@@ -27,17 +27,15 @@ const buildMutation = (routeId: string, linkId: string) => `
 `;
 
 describe('Delete infra link from route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() =>
-    setupDb(dbConnectionPool, routesAndJourneyPatternsTableConfig),
-  );
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
 
   const postHasuraRequest = (toBeRemoved: InfrastructureLinkAlongRoute) =>
     rp.post({
@@ -65,7 +63,7 @@ describe('Delete infra link from route', () => {
       await postHasuraRequest(toBeRemoved);
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'route.infrastructure_link_along_route',
         routesAndJourneyPatternsTableConfig,
       );
@@ -98,7 +96,7 @@ describe('Delete infra link from route', () => {
       await postHasuraRequest(toBeRemoved);
 
       const response = await queryTable(
-        dbConnectionPool,
+        dbConnection,
         'route.infrastructure_link_along_route',
         routesAndJourneyPatternsTableConfig,
       );

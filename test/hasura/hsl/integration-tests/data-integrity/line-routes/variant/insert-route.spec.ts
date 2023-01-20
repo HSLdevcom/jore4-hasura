@@ -5,11 +5,11 @@ import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
 import { HslRoute, hslRouteProps, RouteDirection } from '@datasets-hsl/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeInserted = (
@@ -48,15 +48,15 @@ const buildMutation = (
 `;
 
 describe('Insert route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool, hslDefaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, hslDefaultTableConfig));
 
   const shouldReturnErrorResponse = (
     label: string,
@@ -83,7 +83,7 @@ describe('Insert route', () => {
         body: { query: buildMutation(label, onLineId, variant) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.route');
+      const response = await queryTable(dbConnection, 'route.route');
 
       expect(response.rowCount).toEqual(hslRoutes.length);
       expect(response.rows).toEqual(expect.arrayContaining(hslRoutes));
@@ -134,7 +134,7 @@ describe('Insert route', () => {
         body: { query: buildMutation(label, onLineId, variant) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.route');
+      const response = await queryTable(dbConnection, 'route.route');
 
       expect(response.rowCount).toEqual(hslRoutes.length + 1);
 

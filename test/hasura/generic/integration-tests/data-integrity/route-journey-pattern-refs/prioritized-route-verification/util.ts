@@ -14,10 +14,10 @@ import {
 } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
+import { DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable } from '@util/setup';
-import * as pg from 'pg';
 import { Response } from 'request';
 import * as rp from 'request-promise';
 
@@ -223,10 +223,10 @@ export const shouldReturnErrorResponse = expectErrorResponse(
 );
 
 export const shouldNotModifyScheduledStopPointsInDatabase = async (
-  dbConnectionPool: pg.Pool,
+  dbConnection: DbConnection,
 ) => {
   const stopResponse = await queryTable(
-    dbConnectionPool,
+    dbConnection,
     'service_pattern.scheduled_stop_point',
     prioritizedRouteVerificationTableConfig,
   );
@@ -258,11 +258,11 @@ export const shouldReturnCorrectScheduledStopPointResponse = (
 };
 
 export const shouldInsertScheduledStopPointCorrectlyIntoDatabase = async (
-  dbConnectionPool: pg.Pool,
+  dbConnection: DbConnection,
   toBeInserted: Partial<ScheduledStopPoint>,
 ) => {
   const response = await queryTable(
-    dbConnectionPool,
+    dbConnection,
     'service_pattern.scheduled_stop_point',
   );
 

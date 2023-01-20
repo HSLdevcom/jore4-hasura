@@ -6,10 +6,10 @@ import {
   tempRouteWithSameLinks,
 } from '@datasets-generic/prioritizedRouteVerification/routes';
 import { tempScheduledStopPointWithConflictingInfraLinkOrder } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
-import * as pg from 'pg';
 import {
   insertRoute,
   insertStopPoint,
@@ -21,23 +21,23 @@ import {
 } from './util';
 
 describe('Creating a temporary route with different stop order', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnectionPool, prioritizedRouteVerificationTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationTableConfig),
   );
 
   it('should fail when inserting the conflicting stop first', async () => {
     await insertStopPoint(
       tempScheduledStopPointWithConflictingInfraLinkOrder,
     ).then(shouldReturnErrorResponse);
-    await shouldNotModifyScheduledStopPointsInDatabase(dbConnectionPool);
+    await shouldNotModifyScheduledStopPointsInDatabase(dbConnection);
   });
 
   it('should succeed when inserting the route before the conflicting stop', async () => {
@@ -63,7 +63,7 @@ describe('Creating a temporary route with different stop order', () => {
       ),
     );
     await shouldInsertScheduledStopPointCorrectlyIntoDatabase(
-      dbConnectionPool,
+      dbConnection,
       tempScheduledStopPointWithConflictingInfraLinkOrder,
     );
   });
@@ -94,6 +94,6 @@ describe('Creating a temporary route with different stop order', () => {
     await insertStopPoint(
       tempScheduledStopPointWithConflictingInfraLinkOrder,
     ).then(shouldReturnErrorResponse);
-    await shouldNotModifyScheduledStopPointsInDatabase(dbConnectionPool);
+    await shouldNotModifyScheduledStopPointsInDatabase(dbConnection);
   });
 });

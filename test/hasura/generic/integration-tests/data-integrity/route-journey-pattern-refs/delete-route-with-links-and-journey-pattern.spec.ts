@@ -3,9 +3,9 @@ import { route116TableConfig } from '@datasets-generic/route116';
 import { routes } from '@datasets-generic/route116/routes';
 import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeDeleted = routes[0];
@@ -25,15 +25,15 @@ const mutation = `
 `;
 
 describe('Delete route with infra links and journey pattern', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool, route116TableConfig));
+  beforeEach(() => setupDb(dbConnection, route116TableConfig));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -58,7 +58,7 @@ describe('Delete route with infra links and journey pattern', () => {
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnectionPool, 'route.route');
+    const response = await queryTable(dbConnection, 'route.route');
 
     expect(response.rowCount).toEqual(routes.length - 1);
 

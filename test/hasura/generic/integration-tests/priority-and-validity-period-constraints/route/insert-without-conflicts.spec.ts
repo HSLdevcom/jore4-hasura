@@ -1,13 +1,14 @@
 import * as config from '@config';
+import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildRoute } from '@datasets-generic/factories';
 import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
@@ -23,15 +24,15 @@ const buildMutation = (toBeInserted: Partial<Route>) => `
 `;
 
 describe('Insert route', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnectionPool));
+  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
 
   const shouldReturnCorrectResponse = (toBeInserted: Partial<Route>) =>
     it('should return correct response', async () => {
@@ -68,7 +69,7 @@ describe('Insert route', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnectionPool, 'route.route');
+      const response = await queryTable(dbConnection, 'route.route');
 
       expect(response.rowCount).toEqual(routes.length + 1);
 

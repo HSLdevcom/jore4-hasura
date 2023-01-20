@@ -5,6 +5,7 @@ import {
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
+import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import {
   getPropNameArray,
@@ -12,7 +13,6 @@ import {
   queryTable,
   setupDb,
 } from '@util/setup';
-import * as pg from 'pg';
 import * as rp from 'request-promise';
 
 const toBeDeleted = scheduledStopPoints[1];
@@ -30,17 +30,17 @@ const mutation = `
 `;
 
 describe('Delete scheduled_stop_point', () => {
-  let dbConnectionPool: pg.Pool;
+  let dbConnection: DbConnection;
 
   beforeAll(() => {
-    dbConnectionPool = new pg.Pool(config.networkDbConfig);
+    dbConnection = createDbConnection(config.networkDbConfig);
   });
 
-  afterAll(() => dbConnectionPool.end());
+  afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
     setupDb(
-      dbConnectionPool,
+      dbConnection,
       getTableConfigArray([
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
@@ -75,7 +75,7 @@ describe('Delete scheduled_stop_point', () => {
     });
 
     const response = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point',
     );
 
@@ -94,7 +94,7 @@ describe('Delete scheduled_stop_point', () => {
     );
 
     const stopPointInvariantResponse = await queryTable(
-      dbConnectionPool,
+      dbConnection,
       'service_pattern.scheduled_stop_point_invariant',
     );
 
