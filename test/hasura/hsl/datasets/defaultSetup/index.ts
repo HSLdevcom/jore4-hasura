@@ -8,8 +8,8 @@ const tableConfigHslOverrides: TableLikeConfig[] = [
   { name: 'route.route', data: hslRoutes, props: hslRouteProps },
 ];
 
-const hslDefaultTableConfig: TableLikeConfig[] = genericDefaultTableConfig.map(
-  (genericTableConfigEntry) => {
+export const hslDefaultTableConfig: TableLikeConfig[] =
+  genericDefaultTableConfig.map((genericTableConfigEntry) => {
     const override = tableConfigHslOverrides.find(
       (hslConfigEntry) =>
         genericTableConfigEntry.name === hslConfigEntry.name &&
@@ -17,7 +17,4 @@ const hslDefaultTableConfig: TableLikeConfig[] = genericDefaultTableConfig.map(
     );
 
     return override || genericTableConfigEntry;
-  },
-);
-
-export const defaultTableConfig = hslDefaultTableConfig;
+  });

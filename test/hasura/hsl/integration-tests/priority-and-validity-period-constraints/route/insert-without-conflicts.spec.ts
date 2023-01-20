@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { defaultTableConfig as hslDefaultTableConfig } from '@datasets-hsl/defaultSetup';
+import { hslDefaultTableConfig } from '@datasets-hsl/defaultSetup';
 import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
