@@ -71,7 +71,11 @@ describe('Insert route', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        'route.route',
+        hslDefaultTableConfig,
+      );
 
       expect(response.rowCount).toEqual(hslRoutes.length + 1);
 
