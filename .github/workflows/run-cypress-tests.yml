@@ -1,0 +1,98 @@
+name: Run tests after new commit
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      ui_version:
+        description:
+          Version of ui to use (docker image tag). Leave empty for default
+          version.
+        required: false
+        default: ''
+      hasura_version:
+        description:
+          Version of hasura to use (docker image tag). Leave empty for default
+          version.
+        required: false
+        default: ''
+      auth_version:
+        description:
+          Version of auth to use (docker image tag). Leave empty for default
+          version.
+        required: false
+        default: ''
+      mbtiles_version:
+        description:
+          Version of mbtiles server to use (docker image tag). Leave empty for
+          default version.
+        required: false
+        default: ''
+      jore3importer_version:
+        description:
+          Version of jore3importer to use (docker image tag). Leave empty for
+          default version.
+        required: false
+        default: ''
+      testdb_version:
+        description:
+          Version of testdb to use (docker image tag). Leave empty for default
+          version.
+        required: false
+        default: ''
+      mssqltestdb_version:
+        description:
+          Version of mssqltestdb to use (docker image tag). Leave empty for
+          default version.
+        required: false
+        default: ''
+      mapmatching_version:
+        description:
+          Version of map matching service to use (docker image tag). Leave empty
+          for default version.
+        required: false
+        default: ''
+
+jobs:
+  run_e2e_tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: Extract repository metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          ui_version: ${{ github.event.inputs.ui_version }}
+          hasura_version: ${{ github.event.inputs.hasura_version }}
+          auth_version: ${{ github.event.inputs.auth_version }}
+          mbtiles_version: ${{ github.event.inputs.mbtiles_version }}
+          jore3importer_version: ${{ github.event.inputs.jore3importer_version }}
+          testdb_version: ${{ github.event.inputs.testdb_version }}
+          mssqltestdb_version: ${{ github.event.inputs.mssqltestdb_version }}
+          mapmatching_version: ${{ github.event.inputs.mapmatching_version }}
+
+      - name: Run the the docker image containing the cypress tests
+        run: |
+          # pin the just-built version of the cypress image
+          export CYPRESS_DOCKER_IMAGE="$CYPRESS_IMAGE_NAME:$COMMIT_ID"
+
+          # run the e2e tests from the docker image
+          # note: need to explicitly name the container here to be able to reference it later
+          docker-compose -f ./docker/docker-compose.cypress.yml run --name cypress jore4-cypress yarn test:e2e
+
+      - name: Retrieve test reports from container
+        if: always()
+        run: |
+          docker cp cypress:/e2e/cypress/reports ${{ github.workspace }}/cypress/ || echo "No reports"
+
+      - name: Upload test reports as an artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-docker-reports
+          path: |
+            ${{ github.workspace }}/cypress/reports
