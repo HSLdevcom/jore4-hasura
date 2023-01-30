@@ -156,3 +156,34 @@ jobs:
       # Running the all migrations down and up to make sure that they all work as intended
       - name: Run migration tests for both network and timetables databases
         run: ./scripts/test-migrations.sh
+
+  run_integration_tests:
+    needs: push_to_registry
+    name: Run hasura integration tests
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        include:
+          - imagePrefix: 'generic-'
+            testCommand: 'yarn qa' # includes linter, prettier and ts:check as well
+          - imagePrefix: 'hsl-'
+            testCommand: 'yarn test-hsl' # only runs the tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: start e2e env
+        uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
+        with:
+          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
+
+      - name: Run integration tests
+        run: |
+          cd test/hasura
+          yarn --frozen-lockfile
+          ${{ matrix.testCommand }}

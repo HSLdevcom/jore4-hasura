@@ -19,26 +19,3 @@ jobs:
       - name: Run tests
         run: |
           ./test/docker-image/string-interpolation/test.sh
-
-  run_integration_tests:
-    name: Run hasura tests
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up dependencies
-        run: |
-          ./scripts/start_dependencies.sh -d
-
-      - name: Verify that hasura is up and running
-        uses: HSLdevcom/jore4-tools/github-actions/healthcheck@healthcheck-v1
-        with:
-          command: 'curl --fail http://localhost:3201/healthz --output /dev/null --silent'
-
-      - name: Run tests (including linter, prettier, ts:check)
-        run: |
-          cd test/hasura
-          yarn --frozen-lockfile
-          yarn qa
