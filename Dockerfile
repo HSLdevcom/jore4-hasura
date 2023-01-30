@@ -4,8 +4,17 @@ FROM hasura/graphql-engine:v2.16.0-ce.cli-migrations-v3.ubuntu AS hasura-generic
 ENV HASURA_GRAPHQL_EXPERIMENTAL_FEATURES="naming_convention"
 
 EXPOSE 8080
-RUN apt-get update && apt-get install -y \
+
+# installing these dependencies take a long time, so they're moved to their own layer in the beginning
+# install yq from apt-get
+# note: when installing the binary directly from the github release, it did not work correctly
+# also, this should work with the arm architecture too
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
   curl \
+  software-properties-common \
+  && add-apt-repository -y ppa:rmescandon/yq \
+  && apt-get install -y yq=4.16.2 \
   && rm -rf /var/lib/apt/lists/*
 
 ENV HASURA_GRAPHQL_MIGRATIONS_DIR="/hasura-migrations"
@@ -24,15 +33,6 @@ HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
 
 # extend the base image to also load hsl specific migrations and metadata
 FROM hasura-generic AS hasura-hsl
-
-# install yq from apt-get
-# note: when installing the binary directly from the github release, it did not work correctly
-# also, this should work with the arm architecture too
-RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
-  && add-apt-repository -y ppa:rmescandon/yq \
-  && apt-get install -y yq=4.16.2 \
-  && rm -rf /var/lib/apt/lists/*
 
 # copy hsl-specific migrations and metadata and stitch them together with the generic ones
 COPY ./migrations/hsl "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
