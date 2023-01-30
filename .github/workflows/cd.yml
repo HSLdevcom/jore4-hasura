@@ -19,9 +19,6 @@ jobs:
       - name: Extract metadata to env variables
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
-      - name: Pull previous image to support caching
-        run: docker pull $IMAGE_NAME:generic || >&2 echo "Previous image not found"
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
@@ -42,24 +39,24 @@ jobs:
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-generic \
-            --cache-from=$IMAGE_NAME:generic \
-            -t $IMAGE_NAME:generic-$COMMIT_ID \
+            --cache-from type=registry,ref=$IMAGE_NAME:generic \
+            --tag $IMAGE_NAME:generic-$COMMIT_ID \
             .
 
           docker buildx build \
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-hsl \
-            --cache-from=$IMAGE_NAME:generic \
-            -t $IMAGE_NAME:hsl-$COMMIT_ID \
+            --cache-from type=registry,ref=$IMAGE_NAME:hsl \
+            --tag $IMAGE_NAME:hsl-$COMMIT_ID \
             .
 
           docker buildx build \
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-seed \
-            --cache-from=$IMAGE_NAME:latest \
-            -t $IMAGE_NAME:seed-$COMMIT_ID \
+            --cache-from type=registry,ref=$IMAGE_NAME:seed \
+            --tag $IMAGE_NAME:seed-$COMMIT_ID \
             .
 
       - name: Build and push :latest tag to Docker Hub
@@ -69,24 +66,24 @@ jobs:
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-generic \
-            --cache-from=$IMAGE_NAME:generic \
-            -t $IMAGE_NAME:generic \
+            --cache-to type=registry,ref=$IMAGE_NAME:generic,mode=max \
+            --tag $IMAGE_NAME:generic \
             .
 
           docker buildx build \
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-hsl \
-            --cache-from=$IMAGE_NAME:generic \
-            -t $IMAGE_NAME:latest \
+            --cache-to type=registry,ref=$IMAGE_NAME:hsl,mode=max \
+            --tag $IMAGE_NAME:latest \
             .
 
           docker buildx build \
             --push \
             --platform linux/amd64,linux/arm64 \
             --target hasura-seed \
-            --cache-from=$IMAGE_NAME:latest \
-            -t $IMAGE_NAME:seed-data \
+            --cache-to type=registry,ref=$IMAGE_NAME:seed,mode=max \
+            --tag $IMAGE_NAME:seed-data \
             .
 
   run_dump_tests:
