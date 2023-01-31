@@ -33,13 +33,16 @@ BEGIN
       FROM information_schema.triggers
       WHERE
         trigger_schema IN (
+          -- Generic schemas.
         'infrastructure_network',
         'internal_service_pattern',
         'internal_utils',
         'journey_pattern',
         'reusable_components',
         'route',
-        'service_pattern'
+        'service_pattern',
+        -- HSL specific schemas.
+        'hsl_route'
     ) UNION (
       -- TRUNCATE triggers
       SELECT
@@ -52,6 +55,7 @@ BEGIN
       WHERE
         t.tgtype = 32 AND -- TRUNCATE triggers only
         n.nspname IN (
+          -- Generic schemas.
         'infrastructure_network',
         'internal_service_pattern',
         'internal_utils',
@@ -59,7 +63,9 @@ BEGIN
         'reusable_components',
         'route',
         'service_pattern',
-        'timing_pattern'
+        'timing_pattern',
+        -- HSL specific schemas.
+        'hsl_route'
       )
     ))
   LOOP
@@ -88,6 +94,7 @@ BEGIN
       -- c = check constraint, f = foreign key constraint, p = primary key constraint, u = unique constraint, t = constraint trigger, x = exclusion constraint
       c.contype IN ('c', 'u', 't', 'x') AND
       n.nspname IN (
+      -- Generic schemas.
       'infrastructure_network',
       'internal_service_pattern',
       'internal_utils',
@@ -95,7 +102,9 @@ BEGIN
       'reusable_components',
       'route',
       'service_pattern',
-      'timing_pattern'
+      'timing_pattern',
+      -- HSL specific schemas.
+      'hsl_route'
     ))
   LOOP
     RAISE NOTICE 'Dropping constraint: %.%.%', constraint_record.schema_name, constraint_record.table_name, constraint_record.constraint_name;
@@ -123,6 +132,7 @@ BEGIN
       E'\n')
   FROM pg_proc
   WHERE pronamespace IN (
+    -- Note: only generic schemas here. HSL schemas might not exist yet so can't reference them here.
     'infrastructure_network'::regnamespace,
     'internal_service_pattern'::regnamespace,
     'internal_utils'::regnamespace,
