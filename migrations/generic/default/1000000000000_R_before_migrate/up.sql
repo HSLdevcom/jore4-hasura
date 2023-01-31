@@ -15,11 +15,14 @@ COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Tra
 CREATE SCHEMA IF NOT EXISTS timing_pattern;
 COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:703 ';
 
+-- Create functions for dropping triggers, constraints and functions.
+
 -- drop all triggers in jore4 schemas
 -- note: information_schema.triggers is missing TRUNCATE triggers
 -- note2: pg_catalog.pg_triggers contains the TRUNCATE triggers but many other things too
 -- so here we combine a bit of both
-DO $$
+CREATE OR REPLACE FUNCTION drop_triggers(target_schemas text[]) RETURNS void
+AS $$
 DECLARE
   trigger_record RECORD;
 BEGIN
@@ -32,15 +35,8 @@ BEGIN
         trigger_name
       FROM information_schema.triggers
       WHERE
-        trigger_schema IN (
-        'infrastructure_network',
-        'internal_service_pattern',
-        'internal_utils',
-        'journey_pattern',
-        'reusable_components',
-        'route',
-        'service_pattern'
-    ) UNION (
+        trigger_schema = ANY(target_schemas)
+    UNION (
       -- TRUNCATE triggers
       SELECT
         n.nspname as schema_name,
@@ -51,17 +47,9 @@ BEGIN
         JOIN pg_namespace n on c.relnamespace = n.oid
       WHERE
         t.tgtype = 32 AND -- TRUNCATE triggers only
-        n.nspname IN (
-        'infrastructure_network',
-        'internal_service_pattern',
-        'internal_utils',
-        'journey_pattern',
-        'reusable_components',
-        'route',
-        'service_pattern',
-        'timing_pattern'
-      )
-    ))
+        n.nspname = ANY(target_schemas)
+    )
+  )
   LOOP
     -- note: if the same trigger function is executed e.g. both on INSERT and UPDATE, there are two rows with the same trigger name
     -- This results in the DROP command being executed twice below, thus we use IF EXISTS here
@@ -69,10 +57,12 @@ BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS ' || quote_ident(trigger_record.trigger_name) || ' ON ' || quote_ident(trigger_record.schema_name) || '.' || quote_ident(trigger_record.table_name) || ';';
   END LOOP;
 END;
-$$;
+$$
+LANGUAGE plpgsql;
 
 -- dropping all constrains in jore4 schemas (except for primary and foreign key constraints)
-DO $$
+CREATE OR REPLACE FUNCTION drop_constraints(target_schemas text[]) RETURNS void
+AS $$
 DECLARE
   constraint_record RECORD;
 BEGIN
@@ -87,25 +77,19 @@ BEGIN
     WHERE
       -- c = check constraint, f = foreign key constraint, p = primary key constraint, u = unique constraint, t = constraint trigger, x = exclusion constraint
       c.contype IN ('c', 'u', 't', 'x') AND
-      n.nspname IN (
-      'infrastructure_network',
-      'internal_service_pattern',
-      'internal_utils',
-      'journey_pattern',
-      'reusable_components',
-      'route',
-      'service_pattern',
-      'timing_pattern'
-    ))
+      n.nspname = ANY(target_schemas)
+  )
   LOOP
     RAISE NOTICE 'Dropping constraint: %.%.%', constraint_record.schema_name, constraint_record.table_name, constraint_record.constraint_name;
     EXECUTE 'ALTER TABLE ' || quote_ident(constraint_record.schema_name) || '.' || quote_ident(constraint_record.table_name) || ' DROP CONSTRAINT ' || quote_ident(constraint_record.constraint_name) || ';';
   END LOOP;
 END;
-$$;
+$$
+LANGUAGE plpgsql;
 
 -- drop all functions in jore4 schemas
-DO $$
+CREATE OR REPLACE FUNCTION drop_functions(target_schemas text[]) RETURNS void
+AS $$
 DECLARE
   sql_command text;
 BEGIN
@@ -122,16 +106,7 @@ BEGIN
         oid::regprocedure),
       E'\n')
   FROM pg_proc
-  WHERE pronamespace IN (
-    'infrastructure_network'::regnamespace,
-    'internal_service_pattern'::regnamespace,
-    'internal_utils'::regnamespace,
-    'journey_pattern'::regnamespace,
-    'reusable_components'::regnamespace,
-    'route'::regnamespace,
-    'service_pattern'::regnamespace,
-    'timing_pattern'::regnamespace
-  );
+  WHERE pronamespace = ANY(target_schemas::regnamespace[]);
 
   IF sql_command IS NOT NULL THEN
     EXECUTE sql_command;
@@ -139,4 +114,22 @@ BEGIN
     RAISE NOTICE 'No functions found';
   END IF;
 END;
-$$;
+$$
+LANGUAGE plpgsql;
+
+-- Apply the drop functions to all of our schemas.
+
+SELECT
+  drop_triggers(schema_names),
+  drop_constraints(schema_names),
+  drop_functions(schema_names)
+FROM (VALUES (ARRAY[
+  'infrastructure_network',
+  'internal_service_pattern',
+  'internal_utils',
+  'journey_pattern',
+  'reusable_components',
+  'route',
+  'service_pattern',
+  'timing_pattern'
+])) AS t (schema_names);
