@@ -2713,6 +2713,121 @@ $$;
 ALTER FUNCTION journey_pattern.verify_route_journey_pattern_refs(filter_journey_pattern_id uuid, filter_route_id uuid) OWNER TO dbhasura;
 
 --
+-- Name: drop_constraints(text[]); Type: FUNCTION; Schema: public; Owner: dbhasura
+--
+
+CREATE FUNCTION public.drop_constraints(target_schemas text[]) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  constraint_record RECORD;
+BEGIN
+  FOR constraint_record IN (
+    SELECT
+      n.nspname as schema_name,
+      t.relname as table_name,
+      c.conname as constraint_name
+    FROM pg_constraint c
+      JOIN pg_class t on c.conrelid = t.oid
+      JOIN pg_namespace n on t.relnamespace = n.oid
+    WHERE
+      -- c = check constraint, f = foreign key constraint, p = primary key constraint, u = unique constraint, t = constraint trigger, x = exclusion constraint
+      c.contype IN ('c', 'u', 't', 'x') AND
+      n.nspname = ANY(target_schemas)
+  )
+  LOOP
+    RAISE NOTICE 'Dropping constraint: %.%.%', constraint_record.schema_name, constraint_record.table_name, constraint_record.constraint_name;
+    EXECUTE 'ALTER TABLE ' || quote_ident(constraint_record.schema_name) || '.' || quote_ident(constraint_record.table_name) || ' DROP CONSTRAINT ' || quote_ident(constraint_record.constraint_name) || ';';
+  END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION public.drop_constraints(target_schemas text[]) OWNER TO dbhasura;
+
+--
+-- Name: drop_functions(text[]); Type: FUNCTION; Schema: public; Owner: dbhasura
+--
+
+CREATE FUNCTION public.drop_functions(target_schemas text[]) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  sql_command text;
+BEGIN
+  SELECT INTO sql_command
+    string_agg(
+      format('DROP %s %s;',
+        CASE prokind
+          WHEN 'f' THEN 'FUNCTION'
+          WHEN 'a' THEN 'AGGREGATE'
+          WHEN 'p' THEN 'PROCEDURE'
+          WHEN 'w' THEN 'FUNCTION'
+          ELSE NULL
+        END,
+        oid::regprocedure),
+      E'\n')
+  FROM pg_proc
+  WHERE pronamespace = ANY(target_schemas::regnamespace[]);
+
+  IF sql_command IS NOT NULL THEN
+    EXECUTE sql_command;
+  ELSE
+    RAISE NOTICE 'No functions found';
+  END IF;
+END;
+$$;
+
+
+ALTER FUNCTION public.drop_functions(target_schemas text[]) OWNER TO dbhasura;
+
+--
+-- Name: drop_triggers(text[]); Type: FUNCTION; Schema: public; Owner: dbhasura
+--
+
+CREATE FUNCTION public.drop_triggers(target_schemas text[]) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  trigger_record RECORD;
+BEGIN
+  FOR trigger_record IN
+    (
+      -- CRUD triggers
+      SELECT
+        trigger_schema AS schema_name,
+        event_object_table AS table_name,
+        trigger_name
+      FROM information_schema.triggers
+      WHERE
+        trigger_schema = ANY(target_schemas)
+    UNION (
+      -- TRUNCATE triggers
+      SELECT
+        n.nspname as schema_name,
+        c.relname as table_name,
+        t.tgname AS trigger_name
+      FROM pg_trigger t
+        JOIN pg_class c on t.tgrelid = c.oid
+        JOIN pg_namespace n on c.relnamespace = n.oid
+      WHERE
+        t.tgtype = 32 AND -- TRUNCATE triggers only
+        n.nspname = ANY(target_schemas)
+    )
+  )
+  LOOP
+    -- note: if the same trigger function is executed e.g. both on INSERT and UPDATE, there are two rows with the same trigger name
+    -- This results in the DROP command being executed twice below, thus we use IF EXISTS here
+    RAISE NOTICE 'Dropping trigger: %.%.%', trigger_record.schema_name, trigger_record.table_name, trigger_record.trigger_name;
+    EXECUTE 'DROP TRIGGER IF EXISTS ' || quote_ident(trigger_record.trigger_name) || ' ON ' || quote_ident(trigger_record.schema_name) || '.' || quote_ident(trigger_record.table_name) || ';';
+  END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION public.drop_triggers(target_schemas text[]) OWNER TO dbhasura;
+
+--
 -- Name: check_line_routes_priorities(); Type: FUNCTION; Schema: route; Owner: dbhasura
 --
 
