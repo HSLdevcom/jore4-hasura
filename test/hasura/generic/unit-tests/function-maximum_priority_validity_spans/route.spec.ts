@@ -1,6 +1,6 @@
 import * as config from '@config';
 import { buildLocalizedString } from '@datasets-generic/factories';
-import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
+import { Route, RouteDirection } from '@datasets-generic/types';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
@@ -41,7 +41,6 @@ describe('Function maximum_priority_validity_spans should return correct route r
       [
         {
           name: 'route.route',
-          props: routeProps,
           data: routeData,
         },
       ],

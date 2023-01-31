@@ -1,14 +1,16 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import {
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
 } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { infrastructureLinkProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -31,7 +33,7 @@ describe('Delete infrastructure link', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe('which is referenced by a scheduled stop point', () => {
     const toBeDeleted = infrastructureLinks[0];
@@ -53,7 +55,10 @@ describe('Delete infrastructure link', () => {
 
       const infraLinkResponse = await queryTable(
         dbConnection,
-        'infrastructure_network.infrastructure_link',
+        findTableSchema(
+          genericNetworkDbSchema,
+          'infrastructure_network.infrastructure_link',
+        ),
       );
 
       expect(infraLinkResponse.rowCount).toEqual(infrastructureLinks.length);
@@ -65,7 +70,10 @@ describe('Delete infrastructure link', () => {
 
       const vehicleSubModeResponse = await queryTable(
         dbConnection,
-        'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        findTableSchema(
+          genericNetworkDbSchema,
+          'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        ),
       );
 
       expect(vehicleSubModeResponse.rowCount).toEqual(
@@ -105,7 +113,10 @@ describe('Delete infrastructure link', () => {
 
       const infraLinkResponse = await queryTable(
         dbConnection,
-        'infrastructure_network.infrastructure_link',
+        findTableSchema(
+          genericNetworkDbSchema,
+          'infrastructure_network.infrastructure_link',
+        ),
       );
 
       expect(infraLinkResponse.rowCount).toEqual(
@@ -126,7 +137,10 @@ describe('Delete infrastructure link', () => {
 
       const vehicleSubModeResponse = await queryTable(
         dbConnection,
-        'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        findTableSchema(
+          genericNetworkDbSchema,
+          'infrastructure_network.vehicle_submode_on_infrastructure_link',
+        ),
       );
 
       expect(vehicleSubModeResponse.rowCount).toEqual(

@@ -2,16 +2,11 @@ import { networkDbConfig } from '@config';
 import { buildLocalizedString } from '@datasets-generic/factories';
 import {
   InfrastructureLink,
-  infrastructureLinkProps,
   JourneyPattern,
-  journeyPatternProps,
   LinkDirection,
   Route,
   RouteDirection,
-  routeProps,
   ScheduledStopPoint,
-  scheduledStopPointInJourneyPatternProps,
-  scheduledStopPointProps,
 } from '@datasets-generic/types';
 import {
   closeDbConnection,
@@ -102,29 +97,24 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           // infra link is needed, since it is used by the service_pattern.scheduled_stop_point view
           name: 'infrastructure_network.infrastructure_link',
-          props: infrastructureLinkProps,
           data: [infraLink],
         },
         {
           name: 'service_pattern.scheduled_stop_point',
-          props: scheduledStopPointProps,
           data: stopData,
         },
         // the scheduled stop points are filtered by route label, and because of this we have to
         // establish the connection: route -> journey pattern -> journey pattern in ssp -> ssp
         {
           name: 'route.route',
-          props: routeProps,
           data: [route],
         },
         {
           name: 'journey_pattern.journey_pattern',
-          props: journeyPatternProps,
           data: [journeyPattern],
         },
         {
           name: 'journey_pattern.scheduled_stop_point_in_journey_pattern',
-          props: scheduledStopPointInJourneyPatternProps,
           data: stopData.map((stop, index) => ({
             journey_pattern_id: journeyPattern.journey_pattern_id,
             scheduled_stop_point_label: stop.label,

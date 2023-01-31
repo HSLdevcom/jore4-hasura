@@ -1,10 +1,11 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
 } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
@@ -13,6 +14,7 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -54,7 +56,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorResponse = (
     toBeInserted: ScheduledStopPointInJourneyPattern,
@@ -80,8 +82,10 @@ describe('Insert scheduled stop point into journey pattern', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.scheduled_stop_point_in_journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'journey_pattern.scheduled_stop_point_in_journey_pattern',
+        ),
       );
 
       expect(response.rowCount).toEqual(
@@ -123,8 +127,10 @@ describe('Insert scheduled stop point into journey pattern', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.scheduled_stop_point_in_journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'journey_pattern.scheduled_stop_point_in_journey_pattern',
+        ),
       );
 
       expect(response.rowCount).toEqual(

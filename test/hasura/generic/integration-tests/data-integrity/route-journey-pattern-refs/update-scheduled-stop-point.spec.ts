@@ -1,13 +1,15 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import { infrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -58,7 +60,7 @@ describe('Move scheduled stop point to other infra link', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorResponse = (
     scheduledStopPointId: string,
@@ -96,8 +98,10 @@ describe('Move scheduled stop point to other infra link', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -188,8 +192,10 @@ describe('Move scheduled stop point to other infra link', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -218,7 +224,7 @@ describe('Change scheduled stop point timing place', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorResponse = (
     scheduledStopPointId: string,
@@ -256,8 +262,10 @@ describe('Change scheduled stop point timing place', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -322,8 +330,10 @@ describe('Change scheduled stop point timing place', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);

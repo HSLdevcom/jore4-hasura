@@ -1,6 +1,7 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLink,
   infrastructureLinkProps,
@@ -11,6 +12,7 @@ import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -40,7 +42,7 @@ describe('Update infrastructure link', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe("whose direction conflicts with a route link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -72,7 +74,10 @@ describe('Update infrastructure link', () => {
 
         const response = await queryTable(
           dbConnection,
-          'infrastructure_network.infrastructure_link',
+          findTableSchema(
+            genericNetworkDbSchema,
+            'infrastructure_network.infrastructure_link',
+          ),
         );
 
         expect(response.rowCount).toEqual(infrastructureLinks.length);
@@ -162,7 +167,10 @@ describe('Update infrastructure link', () => {
 
           const response = await queryTable(
             dbConnection,
-            'infrastructure_network.infrastructure_link',
+            findTableSchema(
+              genericNetworkDbSchema,
+              'infrastructure_network.infrastructure_link',
+            ),
           );
 
           expect(response.rowCount).toEqual(infrastructureLinks.length);
