@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
+import { prioritizedRouteVerificationTableData } from '@datasets-generic/prioritizedRouteVerification';
 import {
   scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
   scheduledStopPointInTempJourneyPatternWithSameStops,
@@ -35,7 +35,7 @@ describe('Removing a temporary...', () => {
   afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnection, prioritizedRouteVerificationTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationTableData),
   );
 
   it('...route should fail if the underlying basic route is in conflict with the stop points', async () => {

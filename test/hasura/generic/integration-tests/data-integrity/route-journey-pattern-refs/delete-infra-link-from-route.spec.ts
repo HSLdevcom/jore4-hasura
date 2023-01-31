@@ -1,6 +1,7 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import { infrastructureLinkAlongRoute } from '@datasets-generic/routesAndJourneyPatterns/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
@@ -35,7 +36,7 @@ describe('Delete infra link from route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const postHasuraRequest = (toBeRemoved: InfrastructureLinkAlongRoute) =>
     rp.post({
@@ -64,8 +65,7 @@ describe('Delete infra link from route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'route.infrastructure_link_along_route',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema['route.infrastructure_link_along_route'],
       );
 
       expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
@@ -97,8 +97,7 @@ describe('Delete infra link from route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'route.infrastructure_link_along_route',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema['route.infrastructure_link_along_route'],
       );
 
       expect(response.rowCount).toEqual(

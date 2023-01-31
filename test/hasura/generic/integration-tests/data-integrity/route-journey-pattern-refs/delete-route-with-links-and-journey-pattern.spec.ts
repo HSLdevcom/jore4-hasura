@@ -1,6 +1,7 @@
 import * as config from '@config';
 import { route116TableConfig } from '@datasets-generic/route116';
 import { routes } from '@datasets-generic/route116/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -58,7 +59,10 @@ describe('Delete route with infra links and journey pattern', () => {
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnection, 'route.route');
+    const response = await queryTable(
+      dbConnection,
+      genericNetworkDbSchema['route.route'],
+    );
 
     expect(response.rowCount).toEqual(routes.length - 1);
 

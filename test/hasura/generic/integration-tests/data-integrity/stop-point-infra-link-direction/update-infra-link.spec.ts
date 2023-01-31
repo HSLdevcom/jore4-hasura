@@ -1,5 +1,7 @@
 import * as config from '@config';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLink,
   infrastructureLinkProps,
@@ -11,8 +13,8 @@ import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import {
+  getPartialTableData,
   getPropNameArray,
-  getTableConfigArray,
   queryTable,
   setupDb,
 } from '@util/setup';
@@ -47,7 +49,7 @@ describe('Update infrastructure link', () => {
   beforeEach(() =>
     setupDb(
       dbConnection,
-      getTableConfigArray([
+      getPartialTableData(defaultGenericNetworkDbData, [
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
         'service_pattern.scheduled_stop_point_invariant',
@@ -89,7 +91,7 @@ describe('Update infrastructure link', () => {
 
         const response = await queryTable(
           dbConnection,
-          'infrastructure_network.infrastructure_link',
+          genericNetworkDbSchema['infrastructure_network.infrastructure_link'],
         );
 
         expect(response.rowCount).toEqual(infrastructureLinks.length);
@@ -179,7 +181,9 @@ describe('Update infrastructure link', () => {
 
           const response = await queryTable(
             dbConnection,
-            'infrastructure_network.infrastructure_link',
+            genericNetworkDbSchema[
+              'infrastructure_network.infrastructure_link'
+            ],
           );
 
           expect(response.rowCount).toEqual(infrastructureLinks.length);

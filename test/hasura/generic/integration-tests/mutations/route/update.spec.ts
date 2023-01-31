@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildLocalizedString } from '@datasets-generic/factories';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -45,7 +46,7 @@ describe('Update route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -70,7 +71,10 @@ describe('Update route', () => {
       body: { query: mutation },
     });
 
-    const response = await queryTable(dbConnection, 'route.route');
+    const response = await queryTable(
+      dbConnection,
+      genericNetworkDbSchema['route.route'],
+    );
 
     expect(response.rowCount).toEqual(routes.length);
 

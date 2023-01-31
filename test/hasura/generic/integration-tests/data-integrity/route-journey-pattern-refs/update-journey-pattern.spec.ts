@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { journeyPatternProps } from '@datasets-generic/types';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
@@ -34,7 +35,7 @@ describe('Move journey pattern to other route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorMessage = (
     journeyPatternId: string,
@@ -66,8 +67,7 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema['journey_pattern.journey_pattern'],
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);
@@ -137,8 +137,7 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema['journey_pattern.journey_pattern'],
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);

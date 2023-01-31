@@ -1,6 +1,7 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLink,
   infrastructureLinkProps,
@@ -40,7 +41,7 @@ describe('Update infrastructure link', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe("whose direction conflicts with a route link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -72,7 +73,7 @@ describe('Update infrastructure link', () => {
 
         const response = await queryTable(
           dbConnection,
-          'infrastructure_network.infrastructure_link',
+          genericNetworkDbSchema['infrastructure_network.infrastructure_link'],
         );
 
         expect(response.rowCount).toEqual(infrastructureLinks.length);
@@ -162,7 +163,9 @@ describe('Update infrastructure link', () => {
 
           const response = await queryTable(
             dbConnection,
-            'infrastructure_network.infrastructure_link',
+            genericNetworkDbSchema[
+              'infrastructure_network.infrastructure_link'
+            ],
           );
 
           expect(response.rowCount).toEqual(infrastructureLinks.length);
