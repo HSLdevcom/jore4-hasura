@@ -1,13 +1,15 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationWithTempRouteTableConfig } from '@datasets-generic/prioritizedRouteVerification';
+import { prioritizedRouteVerificationWithTempRouteTableData } from '@datasets-generic/prioritizedRouteVerification';
 import {
   scheduledStopPointsWithTempRoute,
   tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
 } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import { queryTable, setupDb } from '@util/setup';
 import {
   insertStopPoint,
@@ -25,7 +27,7 @@ describe('Insert scheduled stop point after temp route', () => {
   afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnection, prioritizedRouteVerificationWithTempRouteTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationWithTempRouteTableData),
   );
 
   describe("when stop order is conflicting with basic route's other validity span's stop order", () => {
@@ -42,8 +44,10 @@ describe('Insert scheduled stop point after temp route', () => {
 
       const stopResponse = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        prioritizedRouteVerificationWithTempRouteTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(stopResponse.rowCount).toEqual(
@@ -76,8 +80,10 @@ describe('Insert scheduled stop point after temp route', () => {
 
       const stopResponse = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        prioritizedRouteVerificationWithTempRouteTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(stopResponse.rowCount).toEqual(

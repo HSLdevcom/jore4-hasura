@@ -1,12 +1,14 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildRoute } from '@datasets-generic/factories';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
@@ -32,7 +34,7 @@ describe('Insert route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnCorrectResponse = (toBeInserted: Partial<Route>) =>
     it('should return correct response', async () => {
@@ -69,7 +71,10 @@ describe('Insert route', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        findTableSchema(genericNetworkDbSchema, 'route.route'),
+      );
 
       expect(response.rowCount).toEqual(routes.length + 1);
 

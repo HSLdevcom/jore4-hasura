@@ -8,8 +8,10 @@ import {
   infrastructureLinkAlongRoute,
   routes,
 } from '@datasets-generic/route116/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import { queryTable, setupDb } from '@util/setup';
 
 describe('Inserting a complicated route', () => {
@@ -26,8 +28,7 @@ describe('Inserting a complicated route', () => {
   it('should create the route correctly in the database', async () => {
     const routeResponse = await queryTable(
       dbConnection,
-      'route.route',
-      route116TableConfig,
+      findTableSchema(genericNetworkDbSchema, 'route.route'),
     );
 
     expect(routeResponse.rowCount).toEqual(routes.length);
@@ -35,8 +36,10 @@ describe('Inserting a complicated route', () => {
 
     const infrastructureLinkAlongRouteResponse = await queryTable(
       dbConnection,
-      'route.infrastructure_link_along_route',
-      route116TableConfig,
+      findTableSchema(
+        genericNetworkDbSchema,
+        'route.infrastructure_link_along_route',
+      ),
     );
 
     expect(infrastructureLinkAlongRouteResponse.rowCount).toEqual(
@@ -50,8 +53,10 @@ describe('Inserting a complicated route', () => {
   it('should create the journey pattern correctly in the database', async () => {
     const journeyPatternResponse = await queryTable(
       dbConnection,
-      'journey_pattern.journey_pattern',
-      route116TableConfig,
+      findTableSchema(
+        genericNetworkDbSchema,
+        'journey_pattern.journey_pattern',
+      ),
     );
 
     expect(journeyPatternResponse.rowCount).toEqual(journeyPatterns.length);
@@ -61,8 +66,10 @@ describe('Inserting a complicated route', () => {
 
     const scheduledStopPointInJourneyPatternResponse = await queryTable(
       dbConnection,
-      'journey_pattern.scheduled_stop_point_in_journey_pattern',
-      route116TableConfig,
+      findTableSchema(
+        genericNetworkDbSchema,
+        'journey_pattern.scheduled_stop_point_in_journey_pattern',
+      ),
     );
 
     expect(scheduledStopPointInJourneyPatternResponse.rowCount).toEqual(

@@ -1,11 +1,13 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { routes } from '@datasets-generic/routesAndJourneyPatterns/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { journeyPatternProps } from '@datasets-generic/types';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -34,7 +36,7 @@ describe('Move journey pattern to other route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorMessage = (
     journeyPatternId: string,
@@ -66,8 +68,10 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'journey_pattern.journey_pattern',
+        ),
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);
@@ -137,8 +141,10 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'journey_pattern.journey_pattern',
+        ),
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);

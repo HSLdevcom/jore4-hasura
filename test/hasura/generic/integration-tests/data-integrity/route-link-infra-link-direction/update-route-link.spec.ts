@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { infrastructureLinkAlongRoute } from '@datasets-generic/defaultSetup/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
@@ -10,6 +11,7 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -45,7 +47,7 @@ describe('Update route link', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe("whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -91,7 +93,10 @@ describe('Update route link', () => {
 
         const response = await queryTable(
           dbConnection,
-          'route.infrastructure_link_along_route',
+          findTableSchema(
+            genericNetworkDbSchema,
+            'route.infrastructure_link_along_route',
+          ),
         );
 
         expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
@@ -224,7 +229,10 @@ describe('Update route link', () => {
 
         const response = await queryTable(
           dbConnection,
-          'route.infrastructure_link_along_route',
+          findTableSchema(
+            genericNetworkDbSchema,
+            'route.infrastructure_link_along_route',
+          ),
         );
 
         expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);

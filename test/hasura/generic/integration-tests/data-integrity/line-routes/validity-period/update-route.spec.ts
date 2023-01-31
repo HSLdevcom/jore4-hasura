@@ -1,13 +1,15 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newLocalDate } from '@util/helpers';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
@@ -41,7 +43,7 @@ describe('Update route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (
     route: Route,
@@ -67,7 +69,10 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        findTableSchema(genericNetworkDbSchema, 'route.route'),
+      );
 
       expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(expect.arrayContaining(routes));
@@ -108,7 +113,10 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        findTableSchema(genericNetworkDbSchema, 'route.route'),
+      );
 
       const updated = completeUpdated(route, toBeUpdated);
 

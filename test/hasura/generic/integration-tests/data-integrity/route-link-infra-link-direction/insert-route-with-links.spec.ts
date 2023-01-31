@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import {
@@ -7,6 +7,7 @@ import {
   routes,
 } from '@datasets-generic/defaultSetup/routes';
 import { buildRoute } from '@datasets-generic/factories';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   InfrastructureLinkAlongRoute,
   Route,
@@ -17,6 +18,7 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
@@ -80,7 +82,7 @@ describe('Insert route with links', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe("containing a link whose direction conflicts with its infrastructure link's direction", () => {
     const shouldReturnErrorResponse = (
@@ -110,14 +112,20 @@ describe('Insert route with links', () => {
           body: { query: buildMutation(linksToBeInserted) },
         });
 
-        const routeResponse = await queryTable(dbConnection, 'route.route');
+        const routeResponse = await queryTable(
+          dbConnection,
+          findTableSchema(genericNetworkDbSchema, 'route.route'),
+        );
 
         expect(routeResponse.rowCount).toEqual(routes.length);
         expect(routeResponse.rows).toEqual(expect.arrayContaining(routes));
 
         const infraLinksResponse = await queryTable(
           dbConnection,
-          'route.infrastructure_link_along_route',
+          findTableSchema(
+            genericNetworkDbSchema,
+            'route.infrastructure_link_along_route',
+          ),
         );
 
         expect(infraLinksResponse.rowCount).toEqual(
@@ -191,7 +199,10 @@ describe('Insert route with links', () => {
           body: { query: buildMutation(linksToBeInserted) },
         });
 
-        const routeResponse = await queryTable(dbConnection, 'route.route');
+        const routeResponse = await queryTable(
+          dbConnection,
+          findTableSchema(genericNetworkDbSchema, 'route.route'),
+        );
 
         expect(routeResponse.rowCount).toEqual(routes.length + 1);
         expect(routeResponse.rows).toEqual(
@@ -206,7 +217,10 @@ describe('Insert route with links', () => {
 
         const infraLinksResponse = await queryTable(
           dbConnection,
-          'route.infrastructure_link_along_route',
+          findTableSchema(
+            genericNetworkDbSchema,
+            'route.infrastructure_link_along_route',
+          ),
         );
 
         expect(infraLinksResponse.rowCount).toEqual(

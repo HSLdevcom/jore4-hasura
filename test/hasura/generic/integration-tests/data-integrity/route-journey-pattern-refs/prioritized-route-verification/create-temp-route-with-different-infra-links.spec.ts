@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
+import { prioritizedRouteVerificationTableData } from '@datasets-generic/prioritizedRouteVerification';
 import {
   scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
   scheduledStopPointInTempJourneyPatternWithSameStops,
@@ -35,7 +35,7 @@ describe('Creating a temporary route with different infra links', () => {
   afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() =>
-    setupDb(dbConnection, prioritizedRouteVerificationTableConfig),
+    setupDb(dbConnection, prioritizedRouteVerificationTableData),
   );
 
   it('should fail when inserting the conflicting stop first', async () => {

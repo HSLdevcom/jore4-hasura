@@ -1,18 +1,12 @@
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
 import { isFileDataSource, isGeoProperty } from '@datasets-generic/types';
 import { serializeInsertInput } from '@util/dataset';
 import * as db from '@util/db';
-import { throwError } from '@util/helpers';
 import { promiseSequence } from '@util/promise';
 import { readFileSync } from 'fs';
 
-export function isTableConfig(obj: TableLikeConfig): obj is TableConfig {
-  return Object.prototype.hasOwnProperty.call(obj, 'data');
-}
-
-export const setupDb = async (
+export const setupDb = async <TTableName extends string>(
   conn: db.DbConnection,
-  configuration: TableLikeConfig[],
+  tableData: TableData<TTableName>[],
   disableTriggers = false,
 ) => {
   // disable triggers before transaction on demand
@@ -23,16 +17,14 @@ export const setupDb = async (
   // run inserts in transaction
   await db.getKnex().transaction(
     async (trx) => {
-      const tables = configuration.filter(isTableConfig);
-
       // truncate all tables present in config
       await promiseSequence(
-        tables.map((table) => db.truncate(trx, table.name)),
+        tableData.map((table) => db.truncate(trx, table.name)),
       );
 
       // insert data to tables present in config
       await promiseSequence(
-        tables.map((table) => {
+        tableData.map((table) => {
           const { data } = table;
 
           if (isFileDataSource(data)) {
@@ -55,32 +47,22 @@ export const setupDb = async (
   }
 };
 
-export const getTableConfig = (
-  tableName: string,
-  configuration: TableLikeConfig[] = defaultTableConfig,
-) =>
-  configuration.find((table) => table.name === tableName) ??
-  throwError(`no configuration found for table ${tableName}`);
-
-export const getTableConfigArray = (
-  tableNames: string[],
-  configuration: TableLikeConfig[] = defaultTableConfig,
-) => tableNames.map((tableName) => getTableConfig(tableName, configuration));
+export const getPartialTableData = <TTableName extends string>(
+  tableData: TableData<TTableName>[],
+  tableNames: TTableName[],
+) => tableData.filter((item) => tableNames.includes(item.name));
 
 export const getPropNameArray = (props: Property[]) =>
   props.map((prop) => (isGeoProperty(prop) ? prop.propName : prop));
 
-export const queryTable = (
+export const queryTable = <TTableName extends string>(
   dbConnection: db.DbConnection,
-  tableName: string,
-  configuration: TableLikeConfig[] = defaultTableConfig,
+  tableSchema: TableSchema<TTableName>,
 ) =>
   db.singleQuery(
     dbConnection,
     `
-      SELECT ${getPropNameArray(
-        getTableConfig(tableName, configuration).props,
-      ).join(',')}
-      FROM ${tableName}
+      SELECT ${getPropNameArray(tableSchema.props).join(',')}
+      FROM ${tableSchema.name}
     `,
   );

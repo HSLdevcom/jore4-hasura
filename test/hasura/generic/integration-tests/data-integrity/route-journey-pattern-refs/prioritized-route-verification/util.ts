@@ -1,6 +1,6 @@
 import * as config from '@config';
-import { prioritizedRouteVerificationTableConfig } from '@datasets-generic/prioritizedRouteVerification';
 import { scheduledStopPoints } from '@datasets-generic/prioritizedRouteVerification/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
@@ -17,6 +17,7 @@ import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable } from '@util/setup';
 import { Response } from 'request';
 import * as rp from 'request-promise';
@@ -227,8 +228,10 @@ export const shouldNotModifyScheduledStopPointsInDatabase = async (
 ) => {
   const stopResponse = await queryTable(
     dbConnection,
-    'service_pattern.scheduled_stop_point',
-    prioritizedRouteVerificationTableConfig,
+    findTableSchema(
+      genericNetworkDbSchema,
+      'service_pattern.scheduled_stop_point',
+    ),
   );
 
   expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
@@ -263,7 +266,10 @@ export const shouldInsertScheduledStopPointCorrectlyIntoDatabase = async (
 ) => {
   const response = await queryTable(
     dbConnection,
-    'service_pattern.scheduled_stop_point',
+    findTableSchema(
+      genericNetworkDbSchema,
+      'service_pattern.scheduled_stop_point',
+    ),
   );
 
   expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);

@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { hslDefaultTableConfig } from '@datasets-hsl/defaultSetup';
+import { defaultHslNetworkDbData } from '@datasets-hsl/defaultSetup';
 import { hslLines } from '@datasets-hsl/defaultSetup/lines';
 import { hslRoutes } from '@datasets-hsl/defaultSetup/routes';
 import { buildHslRoute } from '@datasets-hsl/factories';
@@ -8,7 +8,9 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
+import { hslNetworkDbSchema } from 'hsl/schema';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
 
@@ -56,7 +58,7 @@ describe('Insert route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, hslDefaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultHslNetworkDbData));
 
   const shouldReturnErrorResponse = (
     label: string,
@@ -85,8 +87,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'route.route',
-        hslDefaultTableConfig,
+        findTableSchema(hslNetworkDbSchema, 'route.route'),
       );
 
       expect(response.rowCount).toEqual(hslRoutes.length);
@@ -140,8 +141,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(
         dbConnection,
-        'route.route',
-        hslDefaultTableConfig,
+        findTableSchema(hslNetworkDbSchema, 'route.route'),
       );
 
       expect(response.rowCount).toEqual(hslRoutes.length + 1);

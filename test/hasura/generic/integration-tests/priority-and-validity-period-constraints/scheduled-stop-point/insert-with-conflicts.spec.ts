@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -13,6 +14,7 @@ import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
@@ -48,7 +50,7 @@ describe('Insert scheduled stop point', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (
     toBeInserted: Partial<ScheduledStopPoint>,
@@ -71,7 +73,10 @@ describe('Insert scheduled stop point', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);

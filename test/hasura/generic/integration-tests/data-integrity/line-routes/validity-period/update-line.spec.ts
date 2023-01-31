@@ -1,11 +1,13 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Line, lineProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { LocalDate } from 'local-date';
 import * as rp from 'request-promise';
@@ -42,7 +44,7 @@ describe('Update line', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (line: Line, toBeUpdated: Partial<Line>) =>
     it('should return error response', async () => {
@@ -65,7 +67,10 @@ describe('Update line', () => {
         body: { query: buildMutation(line, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.line');
+      const response = await queryTable(
+        dbConnection,
+        findTableSchema(genericNetworkDbSchema, 'route.line'),
+      );
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));
@@ -104,7 +109,10 @@ describe('Update line', () => {
         body: { query: buildMutation(line, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.line');
+      const response = await queryTable(
+        dbConnection,
+        findTableSchema(genericNetworkDbSchema, 'route.line'),
+      );
 
       const updated = completeUpdated(line, toBeUpdated);
 

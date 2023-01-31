@@ -1,15 +1,18 @@
 import * as config from '@config';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { scheduledStopPointProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import {
+  getPartialTableData,
   getPropNameArray,
-  getTableConfigArray,
   queryTable,
   setupDb,
 } from '@util/setup';
@@ -41,7 +44,7 @@ describe('Delete scheduled_stop_point', () => {
   beforeEach(() =>
     setupDb(
       dbConnection,
-      getTableConfigArray([
+      getPartialTableData(defaultGenericNetworkDbData, [
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
         'service_pattern.scheduled_stop_point_invariant',
@@ -76,7 +79,10 @@ describe('Delete scheduled_stop_point', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.scheduled_stop_point',
+      ),
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length - 1);
@@ -95,7 +101,10 @@ describe('Delete scheduled_stop_point', () => {
 
     const stopPointInvariantResponse = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point_invariant',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.scheduled_stop_point_invariant',
+      ),
     );
 
     expect(stopPointInvariantResponse.rowCount).toEqual(

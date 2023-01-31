@@ -11,6 +11,7 @@ import {
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets-generic/route116/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   journeyPatternProps,
@@ -20,6 +21,7 @@ import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import * as rp from 'request-promise';
 
@@ -69,8 +71,10 @@ describe('Checking inserting a stop point with a label in use in a journey patte
 
       const stopResponse = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        route116TableConfig,
+        findTableSchema(
+          genericNetworkDbSchema,
+          'service_pattern.scheduled_stop_point',
+        ),
       );
 
       expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);

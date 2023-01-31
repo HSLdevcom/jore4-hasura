@@ -1,11 +1,12 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
   vehicleModeOnScheduledStopPoint,
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -19,6 +20,7 @@ import {
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
+import { findTableSchema } from '@util/schema';
 import { queryTable, setupDb } from '@util/setup';
 import { GeometryObject } from 'geojson';
 import { LocalDate } from 'local-date';
@@ -54,7 +56,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const insertScheduledStopPointWithVehicleMode = async (
     scheduledStopPoint: ScheduledStopPoint,
@@ -85,7 +87,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.scheduled_stop_point',
+      ),
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -106,7 +111,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.vehicle_mode_on_scheduled_stop_point',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.vehicle_mode_on_scheduled_stop_point',
+      ),
     );
 
     expect(response.rowCount).toEqual(
@@ -137,7 +145,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point_invariant',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.scheduled_stop_point_invariant',
+      ),
     );
 
     expect(response.rowCount).toEqual(scheduledStopPointInvariants.length + 1);
@@ -163,7 +174,10 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point_invariant',
+      findTableSchema(
+        genericNetworkDbSchema,
+        'service_pattern.scheduled_stop_point_invariant',
+      ),
     );
 
     expect(response.rowCount).toEqual(scheduledStopPointInvariants.length);

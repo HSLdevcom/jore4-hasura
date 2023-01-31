@@ -8,27 +8,19 @@ type GeoProperty = {
 };
 type Property = string | GeoProperty;
 
-type PropArray = Property[];
-
-type TableLikeConfigCommonProps = {
-  name: string;
+type TableSchema<TTableName extends readonly string> = {
+  name: TTableName;
   props: Property[];
 };
 
 type JsonDataSource = Record<string, unknown>[];
 type FileDataSource = string;
 type DataSource = JsonDataSource | FileDataSource;
-type TableConfig = TableLikeConfigCommonProps & {
+
+type TableData<TTableName extends readonly string> = {
+  name: TTableName;
   data: DataSource;
-  isView?: never;
 };
-
-type ViewConfig = TableLikeConfigCommonProps & {
-  data?: never;
-  isView: true;
-};
-
-type TableLikeConfig = TableConfig | ViewConfig;
 
 // using ExplicitAny instead of unknown so that also interface types would be compatible
 type PlainObject = Record<string, ExplicitAny>;
