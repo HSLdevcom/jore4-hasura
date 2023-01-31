@@ -10,6 +10,7 @@ import {
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
 } from '@datasets-generic/route116/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   ScheduledStopPoint,
   scheduledStopPointProps,
@@ -81,8 +82,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
 
       const stopResponse = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
-        route116TableConfig,
+        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
       );
 
       expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
@@ -133,7 +133,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
+        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);

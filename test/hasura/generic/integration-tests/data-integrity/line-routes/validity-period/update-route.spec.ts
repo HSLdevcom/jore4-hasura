@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Route, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -41,7 +42,7 @@ describe('Update route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (
     route: Route,
@@ -67,7 +68,10 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        genericNetworkDbSchema['route.route'],
+      );
 
       expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(expect.arrayContaining(routes));
@@ -108,7 +112,10 @@ describe('Update route', () => {
         body: { query: buildMutation(route, toBeUpdated) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        genericNetworkDbSchema['route.route'],
+      );
 
       const updated = completeUpdated(route, toBeUpdated);
 

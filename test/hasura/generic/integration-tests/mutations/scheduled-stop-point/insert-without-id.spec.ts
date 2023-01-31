@@ -1,10 +1,11 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import {
   scheduledStopPointInvariants,
   scheduledStopPoints,
 } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -72,7 +73,7 @@ describe('Insert scheduled_stop_point', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -111,7 +112,7 @@ describe('Insert scheduled_stop_point', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point',
+      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -131,7 +132,7 @@ describe('Insert scheduled_stop_point', () => {
 
     const stopPointInvariantResponse = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point_invariant',
+      genericNetworkDbSchema['service_pattern.scheduled_stop_point_invariant'],
     );
 
     expect(stopPointInvariantResponse.rowCount).toEqual(

@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { buildLine, buildLocalizedString } from '@datasets-generic/factories';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Line, lineProps, VehicleMode } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -33,7 +34,7 @@ describe('Insert line', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (toBeInserted: Partial<Line>) =>
     it('should return error response', async () => {
@@ -52,7 +53,10 @@ describe('Insert line', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnection, 'route.line');
+      const response = await queryTable(
+        dbConnection,
+        genericNetworkDbSchema['route.line'],
+      );
 
       expect(response.rowCount).toEqual(lines.length);
       expect(response.rows).toEqual(expect.arrayContaining(lines));

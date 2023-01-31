@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   ScheduledStopPoint,
   scheduledStopPointProps,
@@ -62,7 +63,7 @@ describe('Update scheduled_stop_point', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   it('should return correct response', async () => {
     const response = await rp.post({
@@ -89,7 +90,7 @@ describe('Update scheduled_stop_point', () => {
 
     const response = await queryTable(
       dbConnection,
-      'service_pattern.scheduled_stop_point',
+      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length);

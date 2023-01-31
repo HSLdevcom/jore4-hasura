@@ -1,7 +1,8 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   ScheduledStopPoint,
   scheduledStopPointProps,
@@ -46,7 +47,7 @@ describe('Update scheduled stop point', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   describe('with infra link id referencing link with incompatible sub mode "generic_ferry"', () => {
     const toBeUpdated: Partial<ScheduledStopPoint> = {
@@ -75,7 +76,7 @@ describe('Update scheduled stop point', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
+        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -121,7 +122,7 @@ describe('Update scheduled stop point', () => {
 
       const response = await queryTable(
         dbConnection,
-        'service_pattern.scheduled_stop_point',
+        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);

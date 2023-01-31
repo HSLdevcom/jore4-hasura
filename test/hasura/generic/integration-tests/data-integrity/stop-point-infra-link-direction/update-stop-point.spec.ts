@@ -1,6 +1,8 @@
 import * as config from '@config';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { infrastructureLinks } from '@datasets-generic/defaultSetup/infrastructure-links';
 import { scheduledStopPoints } from '@datasets-generic/defaultSetup/scheduled-stop-points';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -12,8 +14,8 @@ import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import {
+  getPartialTableData,
   getPropNameArray,
-  getTableConfigArray,
   queryTable,
   setupDb,
 } from '@util/setup';
@@ -48,7 +50,7 @@ describe('Update scheduled stop point', () => {
   beforeEach(() =>
     setupDb(
       dbConnection,
-      getTableConfigArray([
+      getPartialTableData(defaultGenericNetworkDbData, [
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
         'service_pattern.scheduled_stop_point_invariant',
@@ -90,7 +92,7 @@ describe('Update scheduled stop point', () => {
 
         const response = await queryTable(
           dbConnection,
-          'service_pattern.scheduled_stop_point',
+          genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -215,7 +217,7 @@ describe('Update scheduled stop point', () => {
 
           const response = await queryTable(
             dbConnection,
-            'service_pattern.scheduled_stop_point',
+            genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
           );
 
           expect(response.rowCount).toEqual(scheduledStopPoints.length);

@@ -1,8 +1,9 @@
 import * as config from '@config';
-import { defaultTableConfig } from '@datasets-generic/defaultSetup';
+import { defaultGenericNetworkDbData } from '@datasets-generic/defaultSetup';
 import { lines } from '@datasets-generic/defaultSetup/lines';
 import { routes } from '@datasets-generic/defaultSetup/routes';
 import { buildRoute } from '@datasets-generic/factories';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import { Route, RouteDirection, routeProps } from '@datasets-generic/types';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -33,7 +34,7 @@ describe('Insert route', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultTableConfig));
+  beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   const shouldReturnErrorResponse = (toBeInserted: Partial<Route>) =>
     it('should return error response', async () => {
@@ -52,7 +53,10 @@ describe('Insert route', () => {
         body: { query: buildMutation(toBeInserted) },
       });
 
-      const response = await queryTable(dbConnection, 'route.route');
+      const response = await queryTable(
+        dbConnection,
+        genericNetworkDbSchema['route.route'],
+      );
 
       expect(response.rowCount).toEqual(routes.length);
       expect(response.rows).toEqual(expect.arrayContaining(routes));

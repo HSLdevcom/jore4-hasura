@@ -1,8 +1,9 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig as baseTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData as baseTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
 import { infrastructureLinks as sourceInfrastructureLinks } from '@datasets-generic/routesAndJourneyPatterns/infrastructure-links';
 import { journeyPatterns } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
 import { scheduledStopPoints as sourceScheduledStopPoints } from '@datasets-generic/routesAndJourneyPatterns/scheduled-stop-points';
+import { GenericNetworkDbTables } from '@datasets-generic/schema';
 import {
   InfrastructureLink,
   ScheduledStopPoint,
@@ -47,7 +48,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   const getTableDataToBePopulated = (
     scheduledStopPoints: ScheduledStopPoint[] = baseScheduledStopPoints,
     infrastructureLinks: InfrastructureLink[] = baseInfrastructureLinks,
-  ): TableLikeConfig[] => {
+  ): TableData<GenericNetworkDbTables>[] => {
     const tableConfig = [...baseTableConfig];
 
     const scheduledStopPointsIndex = baseTableConfig.findIndex((elem) => {
@@ -119,7 +120,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   };
 
   const getDistancesBetweenStopPoints = async (
-    dataset: TableLikeConfig[],
+    dataset: TableData<GenericNetworkDbTables>[],
     journeyPatternIds: string[],
     observationDate: LocalDate,
     includeDraftStopPoints = false,

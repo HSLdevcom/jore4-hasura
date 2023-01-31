@@ -1,9 +1,10 @@
 import * as config from '@config';
-import { routesAndJourneyPatternsTableConfig } from '@datasets-generic/routesAndJourneyPatterns';
+import { routesAndJourneyPatternsTableData } from '@datasets-generic/routesAndJourneyPatterns';
 import {
   journeyPatterns,
   scheduledStopPointInJourneyPattern,
 } from '@datasets-generic/routesAndJourneyPatterns/journey-patterns';
+import { genericNetworkDbSchema } from '@datasets-generic/schema';
 import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
@@ -46,7 +47,7 @@ describe('Update scheduled stop point in journey pattern', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableConfig));
+  beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const shouldReturnErrorResponse = (
     scheduledStopPoint: ScheduledStopPointInJourneyPattern,
@@ -86,8 +87,9 @@ describe('Update scheduled stop point in journey pattern', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.scheduled_stop_point_in_journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema[
+          'journey_pattern.scheduled_stop_point_in_journey_pattern'
+        ],
       );
 
       expect(response.rowCount).toEqual(
@@ -176,8 +178,9 @@ describe('Update scheduled stop point in journey pattern', () => {
 
       const response = await queryTable(
         dbConnection,
-        'journey_pattern.scheduled_stop_point_in_journey_pattern',
-        routesAndJourneyPatternsTableConfig,
+        genericNetworkDbSchema[
+          'journey_pattern.scheduled_stop_point_in_journey_pattern'
+        ],
       );
 
       expect(response.rowCount).toEqual(
