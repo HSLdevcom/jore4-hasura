@@ -1,8 +1,3 @@
-CREATE SCHEMA hsl_route;
-COMMENT ON SCHEMA
-  hsl_route IS
-  'HSL specific route related additions to the base schema.';
-
 CREATE TABLE hsl_route.transport_target (
   transport_target text PRIMARY KEY
 );
