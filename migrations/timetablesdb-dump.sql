@@ -50,6 +50,12 @@ COMMENT ON SCHEMA journey_pattern IS 'The journey pattern model adapted from Tra
 COMMENT ON SCHEMA passing_times IS 'The passing times model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:939 ';
 
 --
+-- Name: SCHEMA route; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA route IS 'The route model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:416';
+
+--
 -- Name: SCHEMA service_calendar; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -102,6 +108,12 @@ COMMENT ON COLUMN journey_pattern.journey_pattern_ref.observation_timestamp IS '
 --
 
 COMMENT ON COLUMN journey_pattern.journey_pattern_ref.snapshot_timestamp IS 'The timestamp when the snapshot was taken';
+
+--
+-- Name: COLUMN journey_pattern_ref.type_of_line; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.journey_pattern_ref.type_of_line IS 'The type of line (GTFS route type): https://developers.google.com/transit/gtfs/reference/extended-route-types';
 
 --
 -- Name: TABLE journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -211,6 +223,18 @@ COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.time
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
 
 --
+-- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.type_of_line.type_of_line IS 'GTFS route type: https://developers.google.com/transit/gtfs/reference/extended-route-types';
+
+--
+-- Name: TABLE type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON TABLE route.type_of_line IS 'Type of line. https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:424';
+
+--
 -- Name: COLUMN day_type.label; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -235,6 +259,48 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
 
 --
+-- Name: COLUMN substitute_operating_day_by_line_type.begin_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_datetime IS 'Calculated timestamp for the instant from which the substituting public transit comes into effect.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.begin_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_time IS 'The time from which the substituting public transit comes into effect. If NULL, the substitution is in effect from the start of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys prior to this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys before this time are operated as usual.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.end_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_datetime IS 'Calculated timestamp for the instant (exclusive) until which the substituting public transit is in effect.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.end_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_time IS 'The time (exclusive) until which the substituting public transit is valid. If NULL, the substitution is in effect until the end of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys starting from this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys starting from this time are operated as usual.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.substitute_day_of_week; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.substitute_day_of_week IS 'The ISO day of week (1=Monday, ... , 7=Sunday) of the day type used as the basis for operating day substitution. A NULL value indicates that there is no public transit at all, i.e. no vehicle journeys are operated within the given time period.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.superseded_date; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.superseded_date IS 'The date of operating day being superseded.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.type_of_line; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.type_of_line IS 'The type of line this substitute operating day is bound to.';
+
+--
 -- Name: FUNCTION operating_day_end_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -257,6 +323,12 @@ COMMENT ON TABLE service_calendar.day_type IS 'A type of day characterised by on
 --
 
 COMMENT ON TABLE service_calendar.day_type_active_on_day_of_week IS 'Tells on which days of week a particular DAY TYPE is active';
+
+--
+-- Name: TABLE substitute_operating_day_by_line_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON TABLE service_calendar.substitute_operating_day_by_line_type IS 'Models substitute public transit as (1) a reference day or (2) indicating that public transit does not occur on certain date. Substitute operating days are always bound to a type of line.';
 
 --
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern_ref.journey_pattern_ref_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -485,6 +557,13 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_pkey PRIMARY KEY (timetabled_passing_time_id);
 
 --
+-- Name: type_of_line type_of_line_pkey; Type: CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.type_of_line
+    ADD CONSTRAINT type_of_line_pkey PRIMARY KEY (type_of_line);
+
+--
 -- Name: day_type day_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -497,6 +576,27 @@ ALTER TABLE ONLY service_calendar.day_type
 
 ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_pkey PRIMARY KEY (day_type_id, day_of_week);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_no_timespan_overlap; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_no_timespan_overlap EXCLUDE USING gist (type_of_line WITH =, tstzrange(begin_datetime, end_datetime) WITH &&);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_pkey PRIMARY KEY (substitute_operating_day_by_line_type_id);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_unique_dow; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_unique_dow EXCLUDE USING gist (type_of_line WITH =, superseded_date WITH =, COALESCE(substitute_day_of_week, 0) WITH <>);
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pattern_ref_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -566,6 +666,13 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 --
+-- Name: journey_pattern_ref journey_pattern_ref_type_of_line_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY journey_pattern.journey_pattern_ref
+    ADD CONSTRAINT journey_pattern_ref_type_of_line_fkey FOREIGN KEY (type_of_line) REFERENCES route.type_of_line(type_of_line);
+
+--
 -- Name: timetabled_passing_time timetabled_passing_time_scheduled_stop_point_in_journey_pa_fkey; Type: FK CONSTRAINT; Schema: passing_times; Owner: dbhasura
 --
 
@@ -585,6 +692,13 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
 
 ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_day_type_id_fkey FOREIGN KEY (day_type_id) REFERENCES service_calendar.day_type(day_type_id);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_type_of_line_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_type_of_line_fkey FOREIGN KEY (type_of_line) REFERENCES route.type_of_line(type_of_line);
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pat_journey_pattern_ref_id_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -968,6 +1082,12 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
+-- Name: journey_pattern_ref_type_of_line; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE INDEX journey_pattern_ref_type_of_line ON journey_pattern.journey_pattern_ref USING btree (type_of_line);
+
+--
 -- Name: idx_timetabled_passing_time_sspijp_ref; Type: INDEX; Schema: passing_times; Owner: dbhasura
 --
 
@@ -1055,6 +1175,15 @@ CREATE SCHEMA passing_times;
 ALTER SCHEMA passing_times OWNER TO dbhasura;
 
 --
+-- Name: route; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA route;
+
+
+ALTER SCHEMA route OWNER TO dbhasura;
+
+--
 -- Name: service_calendar; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -1116,7 +1245,8 @@ CREATE TABLE journey_pattern.journey_pattern_ref (
     journey_pattern_ref_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     journey_pattern_id uuid NOT NULL,
     observation_timestamp timestamp with time zone NOT NULL,
-    snapshot_timestamp timestamp with time zone NOT NULL
+    snapshot_timestamp timestamp with time zone NOT NULL,
+    type_of_line text
 );
 
 
@@ -1139,6 +1269,17 @@ CREATE TABLE passing_times.timetabled_passing_time (
 
 
 ALTER TABLE passing_times.timetabled_passing_time OWNER TO dbhasura;
+
+--
+-- Name: type_of_line; Type: TABLE; Schema: route; Owner: dbhasura
+--
+
+CREATE TABLE route.type_of_line (
+    type_of_line text NOT NULL
+);
+
+
+ALTER TABLE route.type_of_line OWNER TO dbhasura;
 
 --
 -- Name: day_type; Type: TABLE; Schema: service_calendar; Owner: dbhasura
@@ -1165,6 +1306,28 @@ CREATE TABLE service_calendar.day_type_active_on_day_of_week (
 
 
 ALTER TABLE service_calendar.day_type_active_on_day_of_week OWNER TO dbhasura;
+
+--
+-- Name: substitute_operating_day_by_line_type; Type: TABLE; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE TABLE service_calendar.substitute_operating_day_by_line_type (
+    substitute_operating_day_by_line_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    type_of_line text NOT NULL,
+    superseded_date date NOT NULL,
+    substitute_day_of_week integer,
+    begin_time interval,
+    end_time interval,
+    timezone text DEFAULT internal_utils.default_timezone() NOT NULL,
+    begin_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(begin_time, service_calendar.operating_day_start_time()) + superseded_date))) STORED NOT NULL,
+    end_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(end_time, service_calendar.operating_day_end_time()) + superseded_date))) STORED NOT NULL,
+    CONSTRAINT substitute_operating_day_by_line_type_valid_begin_time CHECK (((begin_time >= service_calendar.operating_day_start_time()) AND (begin_time < COALESCE(end_time, service_calendar.operating_day_end_time())))),
+    CONSTRAINT substitute_operating_day_by_line_type_valid_dow CHECK (((substitute_day_of_week >= 1) AND (substitute_day_of_week <= 7))),
+    CONSTRAINT substitute_operating_day_by_line_type_valid_end_time CHECK (((end_time > COALESCE(begin_time, service_calendar.operating_day_start_time())) AND (end_time <= service_calendar.operating_day_end_time())))
+);
+
+
+ALTER TABLE service_calendar.substitute_operating_day_by_line_type OWNER TO dbhasura;
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref; Type: TABLE; Schema: service_pattern; Owner: dbhasura
