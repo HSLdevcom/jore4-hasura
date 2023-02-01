@@ -1,4 +1,5 @@
 -- create schemas if they don't yet exist, because the drop function below reference them
+CREATE SCHEMA IF NOT EXISTS route;
 CREATE SCHEMA IF NOT EXISTS journey_pattern;
 COMMENT ON SCHEMA journey_pattern IS 'The journey pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:1:683 ';
 CREATE SCHEMA IF NOT EXISTS service_pattern;
