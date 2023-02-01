@@ -1,4 +1,5 @@
 DROP SCHEMA journey_pattern;
+DROP SCHEMA route;
 DROP SCHEMA service_pattern;
 DROP SCHEMA service_calendar;
 DROP SCHEMA vehicle_schedule;
