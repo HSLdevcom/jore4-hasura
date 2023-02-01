@@ -1,0 +1,2 @@
+ALTER TABLE service_calendar.substitute_operating_day DROP CONSTRAINT substitute_operating_day_is_no_traffic_valid;
+ALTER TABLE service_calendar.substitute_operating_day DROP CONSTRAINT substitute_operating_day_no_timespan_overlap;
