@@ -24,8 +24,10 @@ export const upsertList = <TItem extends ExplicitAny>(
 
   // these items do exist in the original list, they are replaced
   const replacedItems = originalItems.reduce<TItem[]>((sum, currentItem) => {
-    const replacedItem = upsertItems.find(valueFunction);
-    return [...sum, replacedItem ?? currentItem];
+    const replacedItem = upsertItems.find(
+      (item) => valueFunction(item) === valueFunction(currentItem),
+    );
+    return [...sum, replacedItem || currentItem];
   }, []);
 
   // append the new items after the replaced items
