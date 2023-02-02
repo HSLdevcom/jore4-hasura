@@ -6,9 +6,14 @@ dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
 export const networkDbConfig: ConnectionConfig = {
   host: 'localhost',
   port: 6432,
-  database: process.env.POSTGRES_DB || 'jore4e2e',
-  user: process.env.POSTGRES_USER || 'dbadmin',
-  password: process.env.POSTGRES_PASSWORD || 'adminpassword',
+  database: 'jore4e2e',
+  user: 'dbadmin',
+  password: 'adminpassword',
+};
+
+export const timetablesDbConfig: ConnectionConfig = {
+  ...networkDbConfig,
+  database: 'timetablesdb',
 };
 
 export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
