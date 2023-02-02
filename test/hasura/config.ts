@@ -11,6 +11,14 @@ export const networkDbConfig: ConnectionConfig = {
   password: process.env.POSTGRES_PASSWORD || 'adminpassword',
 };
 
+export const timetablesDbConfig: ConnectionConfig = {
+  host: 'localhost',
+  port: 6432,
+  database: process.env.TIMETABLES_DB || 'timetablesdb',
+  user: process.env.POSTGRES_USER || 'dbadmin',
+  password: process.env.POSTGRES_PASSWORD || 'adminpassword',
+};
+
 export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
 export const databaseSchema: HASURA_DATABASE_SCHEMA =
   (process.env.HASURA_DATABASE_SCHEMA as HASURA_DATABASE_SCHEMA) || 'generic';
