@@ -69,3 +69,7 @@ export const queryTable = <TTableName extends string>(
       FROM ${tableSchema.name}
     `,
   );
+
+export const buildPropNameArray = <TTableName extends string>(
+  tableSchema: TableSchema<TTableName>,
+) => getPropNameArray(tableSchema.props).join(',');
