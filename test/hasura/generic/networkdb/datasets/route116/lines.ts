@@ -1,7 +1,5 @@
-import {
-  buildLine,
-  buildLocalizedString,
-} from 'generic/networkdb/datasets/factories';
+import { buildLocalizedString } from '@util/dataset';
+import { buildLine } from 'generic/networkdb/datasets/factories';
 import { Line, VehicleMode } from 'generic/networkdb/datasets/types';
 
 export const lines: Line[] = [

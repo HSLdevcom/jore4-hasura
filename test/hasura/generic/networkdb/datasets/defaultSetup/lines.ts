@@ -1,6 +1,7 @@
+import { buildLocalizedString } from '@util/dataset';
 import { Line, VehicleMode } from 'generic/networkdb/datasets/types';
 import { LocalDate } from 'local-date';
-import { buildLine, buildLocalizedString } from '../factories';
+import { buildLine } from '../factories';
 
 export const lines: Line[] = [
   {

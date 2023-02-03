@@ -120,12 +120,6 @@ export const vehicleModeOnScheduledStopPointProps: Property[] = [
   'vehicle_mode',
 ];
 
-export type Languages = 'fi_FI' | 'sv_FI';
-
-export type LocalizedString = {
-  [index in Languages]: string;
-};
-
 export type Route = {
   route_id: string;
   on_line_id: string;

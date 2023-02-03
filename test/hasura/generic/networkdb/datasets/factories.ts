@@ -1,13 +1,5 @@
-import {
-  LocalizedString,
-  TypeOfLine,
-  VehicleMode,
-} from 'generic/networkdb/datasets/types';
-
-export const buildLocalizedString = (str: string): LocalizedString => ({
-  fi_FI: str,
-  sv_FI: `${str} SV`,
-});
+import { buildLocalizedString } from '@util/dataset';
+import { TypeOfLine, VehicleMode } from 'generic/networkdb/datasets/types';
 
 export const buildTypeOfLine = (vehicleMode: VehicleMode) => {
   switch (vehicleMode) {

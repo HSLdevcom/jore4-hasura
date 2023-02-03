@@ -1,4 +1,5 @@
 import { networkDbConfig } from '@config';
+import { buildLocalizedString } from '@util/dataset';
 import {
   closeDbConnection,
   createDbConnection,
@@ -9,7 +10,6 @@ import { nextDay, prevDay } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
-import { buildLocalizedString } from 'generic/networkdb/datasets/factories';
 import {
   InfrastructureLink,
   JourneyPattern,
