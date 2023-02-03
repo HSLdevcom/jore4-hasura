@@ -1,18 +1,12 @@
 import differenceBy from 'lodash/differenceBy';
 
+// TODO: convenience function to support multiple data structures. Remove if proven unnecessary
 export const findTableSchema = <TTableName extends string>(
-  tableSchemas: TableSchema<TTableName>[],
+  tableSchemas: TableSchemaMap<TTableName>,
   tableName: TTableName,
-) => {
-  const foundSchema = tableSchemas.find(
-    (tableSchema) => tableSchema.name === tableName,
-  );
-  if (!foundSchema) {
-    throw new Error(`Cannot find table schema with name '${tableName}'!`);
-  }
-  return foundSchema;
-};
+) => tableSchemas[tableName];
 
+// TODO: convenience function to support merging two lists. Remove if proven unnecessary
 export type ValueFunction<TItem> = (item: TItem) => ExplicitAny;
 export const mergeLists = <TItem extends ExplicitAny>(
   originalItems: TItem[],

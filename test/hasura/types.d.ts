@@ -12,6 +12,10 @@ type TableSchema<TTableName extends readonly string> = {
   name: TTableName;
   props: Property[];
 };
+type TableSchemaMap<TTableName extends readonly string> = Record<
+  TTableName,
+  TableSchema<TTableName>
+>;
 
 type JsonDataSource = Record<string, unknown>[];
 type FileDataSource = string;
