@@ -3,25 +3,19 @@ import {
   genericNetworkDbTables,
 } from '@datasets-generic/schema';
 import { hslLineProps, hslRouteProps } from '@datasets-hsl/types';
-import { mergeLists } from '@util/schema';
 
-export const hslNetworkDbTables = [
-  ...genericNetworkDbTables,
-  'hsl_route.transport_target',
-] as const;
+// extend with hsl data model tables on demand
+export const hslNetworkDbTables = [...genericNetworkDbTables] as const;
 export type HslNetworkDbTables = typeof hslNetworkDbTables[number];
 
-export const hslNetworkDbSchema: TableSchema<HslNetworkDbTables>[] = mergeLists(
-  genericNetworkDbSchema,
-  [
-    {
-      name: 'route.line',
-      props: hslLineProps,
-    },
-    {
-      name: 'route.route',
-      props: hslRouteProps,
-    },
-  ],
-  (tableSchema) => tableSchema.name,
-);
+export const hslNetworkDbSchema: TableSchemaMap<HslNetworkDbTables> = {
+  ...genericNetworkDbSchema,
+  'route.line': {
+    name: 'route.line',
+    props: hslLineProps,
+  },
+  'route.route': {
+    name: 'route.route',
+    props: hslRouteProps,
+  },
+};
