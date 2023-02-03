@@ -1,8 +1,11 @@
-import { isFileDataSource, isGeoProperty } from '@datasets-generic/types';
 import { serializeInsertInput } from '@util/dataset';
 import * as db from '@util/db';
 import { promiseSequence } from '@util/promise';
 import { readFileSync } from 'fs';
+import {
+  isFileDataSource,
+  isGeoProperty,
+} from 'generic/networkdb/datasets/types';
 
 export const setupDb = async <TTableName extends string>(
   conn: db.DbConnection,
