@@ -19,9 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@config": ["config.ts"],
-      "@util/*": ["util/*"],
-      "@datasets-generic/*": ["generic/datasets/*"],
-      "@datasets-hsl/*": ["hsl/datasets/*"]
+      "@util/*": ["util/*"]
     }
   },
   "include": ["**/*.ts"],
