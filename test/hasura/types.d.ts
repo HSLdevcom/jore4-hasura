@@ -1,6 +1,8 @@
 // Trick for preventing linter warnings in places where any is needed as type
 type ExplicitAny = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
+type UUID = string;
+
 // descriptor for a Hasura object's field
 type GeoProperty = {
   propName: string;
@@ -30,3 +32,8 @@ type TableData<TTableName extends readonly string> = {
 
 // using ExplicitAny instead of unknown so that also interface types would be compatible
 type PlainObject = Record<string, ExplicitAny>;
+
+type Languages = 'fi_FI' | 'sv_FI';
+type LocalizedString = {
+  [index in Languages]: string;
+};

@@ -81,3 +81,8 @@ export const asGraphQlDateObject = (obj: { [propName: string]: unknown }) =>
       [prop]: value instanceof LocalDate ? value.toISOString() : value,
     };
   }, {});
+
+export const buildLocalizedString = (str: string): LocalizedString => ({
+  fi_FI: str,
+  sv_FI: `${str} SV`,
+});

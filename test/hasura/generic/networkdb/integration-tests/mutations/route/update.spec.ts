@@ -1,11 +1,11 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
+import { buildLocalizedString } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import '@util/matchers';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
 import { routes } from 'generic/networkdb/datasets/defaultSetup/routes';
-import { buildLocalizedString } from 'generic/networkdb/datasets/factories';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Route, routeProps } from 'generic/networkdb/datasets/types';
 import { LocalDate } from 'local-date';
