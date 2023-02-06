@@ -25,7 +25,7 @@ export const genericNetworkDbTables = [
   'journey_pattern.journey_pattern',
   'journey_pattern.scheduled_stop_point_in_journey_pattern',
 ] as const;
-export type GenericNetworkDbTables = typeof genericNetworkDbTables[number];
+export type GenericNetworkDbTables = (typeof genericNetworkDbTables)[number];
 
 export const genericNetworkDbSchema: TableSchemaMap<GenericNetworkDbTables> = {
   'infrastructure_network.infrastructure_link': {

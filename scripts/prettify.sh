@@ -2,4 +2,4 @@
 
 set -eu
 
-npx prettier@2.4.1 --write .
+npx prettier@2.8.3 --write .

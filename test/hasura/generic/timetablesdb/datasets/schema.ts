@@ -4,7 +4,7 @@ export const genericTimetablesDbTables = [
   'vehicle_schedule.vehicle_schedule_frame',
 ] as const;
 export type GenericTimetablesDbTables =
-  typeof genericTimetablesDbTables[number];
+  (typeof genericTimetablesDbTables)[number];
 
 export const genericTimetablesDbSchema: TableSchemaMap<GenericTimetablesDbTables> =
   {
