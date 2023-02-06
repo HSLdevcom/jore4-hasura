@@ -9,10 +9,8 @@ import {
   LegacyHslMunicipality,
 } from 'hsl/networkdb/datasets/types';
 
-export type RequiredKeys<T, K extends keyof T> = Required<Pick<T, K>>;
-
 export const buildHslLine = (
-  input: RequiredKeys<HslLine, 'label' | 'primary_vehicle_mode'>,
+  input: RequiredKeys<Partial<HslLine>, 'label' | 'primary_vehicle_mode'>,
 ) => {
   return {
     ...buildGenericLine(input.label, input.primary_vehicle_mode),

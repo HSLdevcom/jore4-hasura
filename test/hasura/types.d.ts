@@ -37,3 +37,6 @@ type Languages = 'fi_FI' | 'sv_FI';
 type LocalizedString = {
   [index in Languages]: string;
 };
+
+// makes the K keys within the T object required, leaves the rest as-is
+type RequiredKeys<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
