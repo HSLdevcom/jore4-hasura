@@ -22,7 +22,7 @@
     "local-date": "^2.0.6",
     "lodash": "^4.17.21",
     "pg": "^8.7.1",
-    "prettier": "^2.4.1",
+    "prettier": "^2.8.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "ts-jest": "^27.0.5",
