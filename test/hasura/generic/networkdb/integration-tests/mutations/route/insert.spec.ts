@@ -13,7 +13,7 @@ import {
   RouteDirection,
   routeProps,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const toBeInserted: Partial<Route> = {
@@ -21,8 +21,8 @@ const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
   direction: RouteDirection.Clockwise,
   priority: 40,
-  validity_start: new LocalDate('2044-05-01'),
-  validity_end: new LocalDate('2045-04-30'),
+  validity_start: DateTime.fromISO('2044-05-01'),
+  validity_end: DateTime.fromISO('2045-04-30'),
 };
 
 const mutation = `

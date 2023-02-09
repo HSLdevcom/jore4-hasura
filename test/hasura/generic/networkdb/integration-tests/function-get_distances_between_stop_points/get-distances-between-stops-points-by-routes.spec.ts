@@ -11,7 +11,7 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 describe('Function service_pattern.get_distances_between_stop_points_by_routes', () => {
   let dbConnection: DbConnection;
@@ -79,13 +79,13 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
   const getDistancesBetweenStopPoints = async (
     dataset: TableData<GenericNetworkDbTables>[],
     routeIds: string[],
-    observationDate: LocalDate,
+    observationDate: DateTime,
   ): Promise<Array<StopIntervalLength>> => {
     await setupDb(dbConnection, dataset);
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISOString()}'::date)`,
+      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISODate()}'::date)`,
     );
 
     return response.rows.map((row: ExplicitAny) => {
@@ -104,7 +104,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
     const routeId = journeyPattern.on_route_id;
     const routeId2 = journeyPattern2.on_route_id;
 
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     const response = await getDistancesBetweenStopPoints(
       getTableDataToBePopulated(),

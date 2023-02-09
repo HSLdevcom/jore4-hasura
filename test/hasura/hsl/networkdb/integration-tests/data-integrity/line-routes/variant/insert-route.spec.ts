@@ -14,7 +14,7 @@ import {
   hslRouteProps,
   RouteDirection,
 } from 'hsl/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const toBeInserted = (
@@ -28,8 +28,8 @@ const toBeInserted = (
       direction: RouteDirection.Westbound,
       variant,
       priority: 20,
-      validity_start: new LocalDate('2044-05-01'),
-      validity_end: new LocalDate('2045-04-30'),
+      validity_start: DateTime.fromISO('2044-05-01'),
+      validity_end: DateTime.fromISO('2045-04-30'),
     },
     label,
   );

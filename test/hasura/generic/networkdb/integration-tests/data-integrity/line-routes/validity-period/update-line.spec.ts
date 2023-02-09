@@ -8,7 +8,7 @@ import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultS
 import { lines } from 'generic/networkdb/datasets/defaultSetup/lines';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Line, lineProps } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const buildMutation = (line: Line, toBeUpdated: Partial<Line>) => `
@@ -125,21 +125,21 @@ describe('Update line', () => {
     });
 
   describe('with a fixed validity start time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: new LocalDate('2045-03-02') };
+    const toBeUpdated = { validity_start: DateTime.fromISO('2045-03-02') };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_end: new LocalDate('2044-08-01') };
+    const toBeUpdated = { validity_end: DateTime.fromISO('2044-08-01') };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: new LocalDate('2043-03-02') };
+    const toBeUpdated = { validity_start: DateTime.fromISO('2043-03-02') };
 
     shouldReturnCorrectResponse(lines[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(lines[1], toBeUpdated);

@@ -4,7 +4,7 @@ import {
   LegacyHslMunicipality,
   RouteDirection,
 } from 'hsl/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import { buildHslRoute } from '../factories';
 import { hslLines } from './lines';
 
@@ -20,7 +20,7 @@ export const hslRoutes: HslRoute[] = genericRoutes
         direction: RouteDirection.Westbound,
         priority: 20,
         validity_start: null,
-        validity_end: new LocalDate('2044-09-01'),
+        validity_end: DateTime.fromISO('2044-09-01'),
       },
       '6',
     ),

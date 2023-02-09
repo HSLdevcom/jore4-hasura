@@ -4,7 +4,7 @@ import {
   Route,
   RouteDirection,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 export const routes: Route[] = [
   {
@@ -14,8 +14,8 @@ export const routes: Route[] = [
     description_i18n: null,
     direction: RouteDirection.Inbound,
     priority: 10,
-    validity_start: new LocalDate('2054-05-01'),
-    validity_end: new LocalDate('2074-04-30'),
+    validity_start: DateTime.fromISO('2054-05-01'),
+    validity_end: DateTime.fromISO('2074-04-30'),
   },
 ];
 

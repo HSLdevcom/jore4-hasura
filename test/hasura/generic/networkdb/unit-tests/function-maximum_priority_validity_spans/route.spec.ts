@@ -7,7 +7,7 @@ import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { Route, RouteDirection } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 const dummyLineId = randomUUID();
 const defaultRouteLabel = 'route 1';
@@ -32,8 +32,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
   const getMaximumPriorityValiditySpansOfRoutes = async (
     routeData: Partial<Route>[],
     routeLabel?: string,
-    validityStart?: LocalDate,
-    validityEnd?: LocalDate,
+    validityStart?: DateTime,
+    validityEnd?: DateTime,
     upperPriorityLimit?: number,
   ) => {
     await setupDb(
@@ -53,11 +53,9 @@ describe('Function maximum_priority_validity_spans should return correct route r
        FROM journey_pattern.maximum_priority_validity_spans('route', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel
        }" }', ${
-        validityStart !== undefined
-          ? `'${validityStart.toISOString()}'`
-          : 'NULL'
+        validityStart !== undefined ? `'${validityStart.toISODate()}'` : 'NULL'
       }, ${
-        validityEnd !== undefined ? `'${validityEnd.toISOString()}'` : 'NULL'
+        validityEnd !== undefined ? `'${validityEnd.toISODate()}'` : 'NULL'
       }, ${upperPriorityLimit !== undefined ? upperPriorityLimit : 'NULL'})`,
     );
   };
@@ -72,10 +70,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const earlierRouteId = randomUUID();
     const laterRouteId = randomUUID();
 
-    const earlierRouteValidityStart = new LocalDate('2020-01-04');
-    const earlierRouteValidityEnd = new LocalDate('2021-04-04');
-    const laterRouteValidityStart = new LocalDate('2024-01-04');
-    const laterRouteValidityEnd = new LocalDate('2025-04-04');
+    const earlierRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const earlierRouteValidityEnd = DateTime.fromISO('2021-04-04');
+    const laterRouteValidityStart = DateTime.fromISO('2024-01-04');
+    const laterRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -122,10 +120,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const earlierRouteId = randomUUID();
     const laterRouteId = randomUUID();
 
-    const earlierRouteValidityStart = new LocalDate('2020-01-04');
-    const earlierRouteValidityEnd = new LocalDate('2021-04-04');
+    const earlierRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const earlierRouteValidityEnd = DateTime.fromISO('2021-04-04');
     const laterRouteValidityStart = nextDay(earlierRouteValidityEnd);
-    const laterRouteValidityEnd = new LocalDate('2025-04-04');
+    const laterRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -170,10 +168,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const earlierLowerPrioRouteId = randomUUID();
     const laterHigherPrioRouteId = randomUUID();
 
-    const earlierLowerPrioRouteValidityStart = new LocalDate('2020-01-04');
-    const earlierLowerPrioRouteValidityEnd = new LocalDate('2024-04-04');
-    const laterHigherPrioRouteValidityStart = new LocalDate('2021-04-05');
-    const laterHigherPrioRouteValidityEnd = new LocalDate('2025-04-04');
+    const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
+    const laterHigherPrioRouteValidityStart = DateTime.fromISO('2021-04-05');
+    const laterHigherPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -222,10 +220,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const earlierLowerPrioRouteId = randomUUID();
     const laterHigherPrioRouteId = randomUUID();
 
-    const earlierLowerPrioRouteValidityStart = new LocalDate('2020-01-04');
-    const earlierLowerPrioRouteValidityEnd = new LocalDate('2024-04-04');
-    const laterHigherPrioRouteValidityStart = new LocalDate('2023-04-05');
-    const laterHigherPrioRouteValidityEnd = new LocalDate('2025-04-04');
+    const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
+    const laterHigherPrioRouteValidityStart = DateTime.fromISO('2023-04-05');
+    const laterHigherPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -247,8 +245,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const response = await getMaximumPriorityValiditySpansOfRoutes(
       routeData,
       undefined,
-      new LocalDate('2021-02-03'),
-      new LocalDate('2022-04-05'),
+      DateTime.fromISO('2021-02-03'),
+      DateTime.fromISO('2022-04-05'),
     );
 
     expect(response.rowCount).toEqual(1);
@@ -277,10 +275,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const earlierLowerPrioRouteId = randomUUID();
     const laterHigherPrioRouteId = randomUUID();
 
-    const earlierLowerPrioRouteValidityStart = new LocalDate('2020-01-04');
-    const earlierLowerPrioRouteValidityEnd = new LocalDate('2024-04-04');
-    const laterHigherPrioRouteValidityStart = new LocalDate('2021-04-05');
-    const laterHigherPrioRouteValidityEnd = new LocalDate('2025-04-04');
+    const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
+    const laterHigherPrioRouteValidityStart = DateTime.fromISO('2021-04-05');
+    const laterHigherPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -325,10 +323,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const lowerPrioRouteId = randomUUID();
     const higherPrioRouteId = randomUUID();
 
-    const lowerPrioRouteValidityStart = new LocalDate('2020-01-04');
-    const lowerPrioRouteValidityEnd = new LocalDate('2025-04-04');
-    const higherPrioRouteValidityStart = new LocalDate('2022-04-05');
-    const higherPrioRouteValidityEnd = new LocalDate('2024-04-04');
+    const lowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
+    const lowerPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
+    const higherPrioRouteValidityStart = DateTime.fromISO('2022-04-05');
+    const higherPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -382,10 +380,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const lowerPrioRouteId = randomUUID();
     const higherPrioRouteId = randomUUID();
 
-    const lowerPrioRouteValidityStart = new LocalDate('2022-01-04');
-    const lowerPrioRouteValidityEnd = new LocalDate('2024-04-04');
-    const higherPrioRouteValidityStart = new LocalDate('2020-04-05');
-    const higherPrioRouteValidityEnd = new LocalDate('2025-04-04');
+    const lowerPrioRouteValidityStart = DateTime.fromISO('2022-01-04');
+    const lowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
+    const higherPrioRouteValidityStart = DateTime.fromISO('2020-04-05');
+    const higherPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {
@@ -429,10 +427,10 @@ describe('Function maximum_priority_validity_spans should return correct route r
     const lowerPrioRouteId = randomUUID();
     const higherPrioRouteId = randomUUID();
 
-    const lowerPrioRouteValidityStart = new LocalDate('2022-01-04');
-    const lowerPrioRouteValidityEnd = new LocalDate('2024-04-04');
-    const higherPrioRouteValidityStart = new LocalDate('2020-04-05');
-    const higherPrioRouteValidityEnd = new LocalDate('2025-04-04');
+    const lowerPrioRouteValidityStart = DateTime.fromISO('2022-01-04');
+    const lowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
+    const higherPrioRouteValidityStart = DateTime.fromISO('2020-04-05');
+    const higherPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
       {

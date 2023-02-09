@@ -1,4 +1,4 @@
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 export type UUID = string;
 
@@ -13,8 +13,8 @@ export enum TimetablePriority {
 export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
   name_i18n: LocalizedString;
-  validity_start: LocalDate | null;
-  validity_end: LocalDate | null;
+  validity_start: DateTime | null;
+  validity_end: DateTime | null;
   priority: TimetablePriority;
 };
 

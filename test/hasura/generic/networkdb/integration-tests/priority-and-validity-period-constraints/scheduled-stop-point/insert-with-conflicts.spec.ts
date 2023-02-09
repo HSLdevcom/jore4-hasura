@@ -15,7 +15,7 @@ import {
   scheduledStopPointProps,
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
@@ -96,8 +96,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop2',
       priority: 20,
-      validity_start: new LocalDate('2062-01-03'),
-      validity_end: new LocalDate('2063-01-02'),
+      validity_start: DateTime.fromISO('2062-01-03'),
+      validity_end: DateTime.fromISO('2063-01-02'),
       timing_place_id: null,
     };
 
@@ -121,8 +121,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 10,
-      validity_start: new LocalDate('2065-01-16'),
-      validity_end: new LocalDate('2065-04-30'),
+      validity_start: DateTime.fromISO('2065-01-16'),
+      validity_end: DateTime.fromISO('2065-04-30'),
       timing_place_id: null,
     };
 
@@ -146,8 +146,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 10,
-      validity_start: new LocalDate('2065-01-05'),
-      validity_end: new LocalDate('2065-01-07'),
+      validity_start: DateTime.fromISO('2065-01-05'),
+      validity_end: DateTime.fromISO('2065-01-07'),
       timing_place_id: null,
     };
 

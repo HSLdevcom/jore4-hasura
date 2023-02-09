@@ -1,5 +1,5 @@
 import { GeometryObject } from 'geojson';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 export function isGeoProperty(prop: Property): prop is GeoProperty {
   return Object.prototype.hasOwnProperty.call(prop, 'isGeoProp');
@@ -95,8 +95,8 @@ export type ScheduledStopPoint = {
   measured_location: GeometryObject;
   label: string;
   priority: number;
-  validity_start: LocalDate | null;
-  validity_end: LocalDate | null;
+  validity_start: DateTime | null;
+  validity_end: DateTime | null;
   timing_place_id: string | null;
 };
 export const scheduledStopPointProps: Property[] = [
@@ -132,8 +132,8 @@ export type Route = {
   label: string;
   direction: RouteDirection;
   priority: number;
-  validity_start: LocalDate | null;
-  validity_end: LocalDate | null;
+  validity_start: DateTime | null;
+  validity_end: DateTime | null;
 };
 
 export const routeProps: Property[] = [
@@ -173,8 +173,8 @@ export type Line = {
   label: string;
   type_of_line: TypeOfLine;
   priority: number;
-  validity_start: LocalDate | null;
-  validity_end: LocalDate | null;
+  validity_start: DateTime | null;
+  validity_end: DateTime | null;
 };
 export const lineProps: Property[] = [
   'line_id',
@@ -226,8 +226,8 @@ export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   new_measured_location: GeometryObject | null;
   new_direction: LinkDirection | null;
   new_label: string | null;
-  new_validity_start: LocalDate | null;
-  new_validity_end: LocalDate | null;
+  new_validity_start: DateTime | null;
+  new_validity_end: DateTime | null;
   new_priority: number | null;
 };
 

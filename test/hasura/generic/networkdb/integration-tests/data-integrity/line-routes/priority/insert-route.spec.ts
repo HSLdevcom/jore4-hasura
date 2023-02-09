@@ -14,7 +14,7 @@ import {
   RouteDirection,
   routeProps,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const toBeInserted = (
@@ -25,8 +25,8 @@ const toBeInserted = (
   on_line_id: onLineId,
   direction: RouteDirection.Clockwise,
   priority,
-  validity_start: new LocalDate('2044-05-01'),
-  validity_end: new LocalDate('2045-04-30'),
+  validity_start: DateTime.fromISO('2044-05-01'),
+  validity_end: DateTime.fromISO('2045-04-30'),
 });
 
 const buildMutation = (onLineId: string | undefined, priority: number) => `

@@ -1,6 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newLocalDate } from '@util/helpers';
+import { newDateTime } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
@@ -91,10 +91,10 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooShortValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: newLocalDate(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      validity_end: newDateTime(
+        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 
@@ -123,10 +123,10 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooLongValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: newLocalDate(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getDate() + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      validity_end: newDateTime(
+        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.day + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 

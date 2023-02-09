@@ -22,7 +22,7 @@ import {
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
 import { GeometryObject } from 'geojson';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 const toBeInserted: ScheduledStopPoint = {
   scheduled_stop_point_id: '81860cb8-6947-4ecb-abbd-0720ada98b40',
@@ -39,8 +39,8 @@ const toBeInserted: ScheduledStopPoint = {
   } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
-  validity_start: new LocalDate('2036-11-03'),
-  validity_end: new LocalDate('2060-11-03'),
+  validity_start: DateTime.fromISO('2036-11-03'),
+  validity_end: DateTime.fromISO('2060-11-03'),
   timing_place_id: null,
 };
 
@@ -71,8 +71,8 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
         '${scheduledStopPoint.located_on_infrastructure_link_id}'::uuid,
         '${scheduledStopPoint.direction}'::text,
         '${scheduledStopPoint.label}'::text,
-        '${scheduledStopPoint.validity_start?.toISOString()}'::date,
-        '${scheduledStopPoint.validity_end?.toISOString()}'::date,
+        '${scheduledStopPoint.validity_start?.toISODate()}'::date,
+        '${scheduledStopPoint.validity_end?.toISODate()}'::date,
         ${scheduledStopPoint.priority}::int,
         '${vehicleMode}'::text
       )`,
