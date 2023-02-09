@@ -5,7 +5,15 @@ export function throwError(msg: string): never {
 }
 
 export const newDateTime = (year: number, month: number, date: number) => {
-  return DateTime.local(year, month, date);
+  const newDate = DateTime.local(year, month, date);
+
+  if (!newDate.isValid) {
+    throwError(
+      `Could not build valid DateTime with input ${year}-${month}-${date}: ${newDate.invalidReason}, ${newDate.invalidExplanation}`,
+    );
+  }
+
+  return newDate;
 };
 
 export const nextDay = (date: DateTime) => {

@@ -1,6 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newDateTime } from '@util/helpers';
+import { prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from 'generic/networkdb/datasets/prioritizedRouteVerification/journey-patterns';
@@ -71,11 +71,8 @@ describe('Creating a temporary route with different stop order', () => {
     const tempRouteWithSameLinksAndTooShortValidityTime = {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
-      validity_end: newDateTime(
-        tempRouteWithSameLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithSameLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithSameLinks.validity_end!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      ),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      validity_end: prevDay(tempRouteWithSameLinks.validity_end!),
     };
     await insertRoute(
       tempRouteWithSameLinksAndTooShortValidityTime,
