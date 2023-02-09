@@ -9,6 +9,7 @@
     "qa": "yarn lint && yarn prettier:check && yarn ts:check && yarn test"
   },
   "dependencies": {
+    "@jest/globals": "^29.4.2",
     "@types/geojson": "1.0.6",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.181",
