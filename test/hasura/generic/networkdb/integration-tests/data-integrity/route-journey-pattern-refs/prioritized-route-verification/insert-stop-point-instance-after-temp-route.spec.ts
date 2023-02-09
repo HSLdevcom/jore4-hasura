@@ -1,7 +1,6 @@
 import * as config from '@config';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
 import { prioritizedRouteVerificationWithTempRouteTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {

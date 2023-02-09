@@ -1,7 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newDateTime } from '@util/helpers';
-import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {

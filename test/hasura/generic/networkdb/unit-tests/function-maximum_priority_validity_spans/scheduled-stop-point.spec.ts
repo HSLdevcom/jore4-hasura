@@ -7,7 +7,6 @@ import {
   singleQuery,
 } from '@util/db';
 import { nextDay, prevDay } from '@util/helpers';
-import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import {
