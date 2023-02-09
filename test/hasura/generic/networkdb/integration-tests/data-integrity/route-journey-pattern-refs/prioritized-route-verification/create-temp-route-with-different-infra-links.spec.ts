@@ -92,9 +92,9 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       validity_end: newDateTime(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 
@@ -124,9 +124,9 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       validity_end: newDateTime(
-        tempRouteWithOtherLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.getDate() + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        tempRouteWithOtherLinks.validity_end!.day + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 

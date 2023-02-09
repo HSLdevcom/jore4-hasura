@@ -35,7 +35,7 @@ export const serializePlainObject = (
 // serializes values sent to SQL INSERT INTO commands
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
   if (value instanceof DateTime) {
-    return value.toISOString();
+    return value.toISODate();
   }
   if (isGeometryObject(value)) {
     return asEwkb(value);
@@ -78,7 +78,7 @@ export const asGraphQlDateObject = (obj: { [propName: string]: unknown }) =>
     return {
       ...mapped,
       // format dates YYYY-MM-DD
-      [prop]: value instanceof DateTime ? value.toISOString() : value,
+      [prop]: value instanceof DateTime ? value.toISODate() : value,
     };
   }, {});
 

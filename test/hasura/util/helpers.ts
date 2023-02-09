@@ -5,21 +5,13 @@ export function throwError(msg: string): never {
 }
 
 export const newDateTime = (year: number, month: number, date: number) => {
-  const newDate = DateTime.fromISO();
-  newDate.setFullYear(year);
-  newDate.setMonth(month);
-  newDate.setDate(date);
-  return newDate;
+  return DateTime.local(year, month, date);
 };
 
 export const nextDay = (date: DateTime) => {
-  const next = DateTime.fromISO(date);
-  next.setDate(next.getDate() + 1);
-  return next;
+  return date.plus({ day: 1 });
 };
 
 export const prevDay = (date: DateTime) => {
-  const next = DateTime.fromISO(date);
-  next.setDate(next.getDate() - 1);
-  return next;
+  return date.minus({ day: 1 });
 };

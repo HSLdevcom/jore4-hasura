@@ -159,9 +159,9 @@ describe('Update route', () => {
   describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
       validity_start: newDateTime(
-        lines[1].validity_start!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        lines[1].validity_start!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        lines[1].validity_start!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        lines[1].validity_start!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        lines[1].validity_start!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        lines[1].validity_start!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
       ),
     };
 

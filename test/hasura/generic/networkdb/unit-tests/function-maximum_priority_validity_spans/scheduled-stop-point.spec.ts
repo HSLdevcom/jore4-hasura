@@ -135,11 +135,9 @@ describe('Function maximum_priority_validity_spans should return correct schedul
        FROM journey_pattern.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
          routeLabel !== undefined ? routeLabel : defaultRouteLabel
        }" }', ${
-        validityStart !== undefined
-          ? `'${validityStart.toISOString()}'`
-          : 'NULL'
+        validityStart !== undefined ? `'${validityStart.toISODate()}'` : 'NULL'
       }, ${
-        validityEnd !== undefined ? `'${validityEnd.toISOString()}'` : 'NULL'
+        validityEnd !== undefined ? `'${validityEnd.toISODate()}'` : 'NULL'
       }, ${upperPriorityLimit !== undefined ? upperPriorityLimit : 'NULL'})`,
     );
   };

@@ -85,7 +85,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISOString()}'::date)`,
+      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISODate()}'::date)`,
     );
 
     return response.rows.map((row: ExplicitAny) => {

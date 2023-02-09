@@ -71,8 +71,8 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
         '${scheduledStopPoint.located_on_infrastructure_link_id}'::uuid,
         '${scheduledStopPoint.direction}'::text,
         '${scheduledStopPoint.label}'::text,
-        '${scheduledStopPoint.validity_start?.toISOString()}'::date,
-        '${scheduledStopPoint.validity_end?.toISOString()}'::date,
+        '${scheduledStopPoint.validity_start?.toISODate()}'::date,
+        '${scheduledStopPoint.validity_end?.toISODate()}'::date,
         ${scheduledStopPoint.priority}::int,
         '${vehicleMode}'::text
       )`,
