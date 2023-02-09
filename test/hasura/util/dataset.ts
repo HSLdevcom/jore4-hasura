@@ -1,6 +1,6 @@
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
 import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { Geometry } from 'wkx';
 
 function isGeometryObject(object: ExplicitAny): object is GeometryObject {
@@ -36,6 +36,9 @@ export const serializePlainObject = (
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
   if (value instanceof DateTime) {
     return value.toISODate();
+  }
+  if (value instanceof Duration) {
+    return value.toString();
   }
   if (isGeometryObject(value)) {
     return asEwkb(value);
