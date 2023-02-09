@@ -1,6 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newDateTime } from '@util/helpers';
+import { nextDay, prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {
@@ -90,11 +90,8 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooShortValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: newDateTime(
-        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      ),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      validity_end: prevDay(tempRouteWithOtherLinks.validity_end!),
     };
 
     // insert temp route and journey pattern without conflicting stop label
@@ -122,11 +119,8 @@ describe('Creating a temporary route with different infra links', () => {
     const tempRouteWithOtherLinksAndTooLongValidityTime = {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
-      validity_end: newDateTime(
-        tempRouteWithOtherLinks.validity_end!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        tempRouteWithOtherLinks.validity_end!.day + 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      ),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      validity_end: nextDay(tempRouteWithOtherLinks.validity_end!),
     };
 
     // insert temp route and journey pattern without conflicting stop label

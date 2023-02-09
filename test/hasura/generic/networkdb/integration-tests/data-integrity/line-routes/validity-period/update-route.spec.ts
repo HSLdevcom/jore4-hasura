@@ -1,7 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newDateTime } from '@util/helpers';
+import { prevDay } from '@util/helpers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
@@ -157,11 +157,8 @@ describe('Update route', () => {
 
   describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
-      validity_start: newDateTime(
-        lines[1].validity_start!.year, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        lines[1].validity_start!.month, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        lines[1].validity_start!.day - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      ),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      validity_start: prevDay(lines[1].validity_start!),
     };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
