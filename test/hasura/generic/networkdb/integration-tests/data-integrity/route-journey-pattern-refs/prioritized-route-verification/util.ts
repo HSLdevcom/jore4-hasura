@@ -2,7 +2,6 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { DbConnection } from '@util/db';
-import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable } from '@util/setup';
 import { scheduledStopPoints } from 'generic/networkdb/datasets/prioritizedRouteVerification/scheduled-stop-points';

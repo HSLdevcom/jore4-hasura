@@ -1,7 +1,6 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import '@util/matchers';
 import {
   getPartialTableData,
   getPropNameArray,

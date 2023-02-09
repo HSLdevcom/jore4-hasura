@@ -2,7 +2,6 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { newDateTime } from '@util/helpers';
-import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';

@@ -1,6 +1,5 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
 import { route116TableConfig } from 'generic/networkdb/datasets/route116';
 import {

@@ -6,7 +6,6 @@ import {
 } from '@util/dataset';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import '@util/matchers';
 import { queryTable, setupDb } from '@util/setup';
 import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
 import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
