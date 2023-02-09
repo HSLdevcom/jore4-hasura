@@ -11,7 +11,7 @@ const baseConfig = {
   },
   moduleDirectories: ['node_modules', '<rootDir>'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
-  setupFilesAfterEnv: ['./jest/matchers.ts'],
+  setupFilesAfterEnv: ['./jest/matchers.ts', './jest/testers.ts'],
   testTimeout: 30000,
 };
 const genericConfig = {
