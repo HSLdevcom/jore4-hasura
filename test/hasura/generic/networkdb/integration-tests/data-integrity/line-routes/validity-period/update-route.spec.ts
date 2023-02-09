@@ -1,7 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newLocalDate } from '@util/helpers';
+import { newDateTime } from '@util/helpers';
 import '@util/matchers';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
@@ -10,7 +10,7 @@ import { lines } from 'generic/networkdb/datasets/defaultSetup/lines';
 import { routes } from 'generic/networkdb/datasets/defaultSetup/routes';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Route, routeProps } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
@@ -129,21 +129,21 @@ describe('Update route', () => {
     });
 
   describe('with a fixed validity start time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_start: new LocalDate('2040-03-02') };
+    const toBeUpdated = { validity_start: DateTime.fromISO('2040-03-02') };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_end: new LocalDate('2046-08-01') };
+    const toBeUpdated = { validity_end: DateTime.fromISO('2046-08-01') };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time within the validity time of the line', () => {
-    const toBeUpdated = { validity_start: new LocalDate('2044-12-02') };
+    const toBeUpdated = { validity_start: DateTime.fromISO('2044-12-02') };
 
     shouldReturnCorrectResponse(routes[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(routes[1], toBeUpdated);
@@ -158,7 +158,7 @@ describe('Update route', () => {
 
   describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
-      validity_start: newLocalDate(
+      validity_start: newDateTime(
         lines[1].validity_start!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
         lines[1].validity_start!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
         lines[1].validity_start!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion

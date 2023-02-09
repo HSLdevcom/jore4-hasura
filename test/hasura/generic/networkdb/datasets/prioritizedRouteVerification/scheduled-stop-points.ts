@@ -5,8 +5,8 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
 import { uniqBy } from 'lodash';
+import { DateTime } from 'luxon';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 
 export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
@@ -25,8 +25,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: new LocalDate('2025-01-01'),
-    validity_end: new LocalDate('2095-01-31'),
+    validity_start: DateTime.fromISO('2025-01-01'),
+    validity_end: DateTime.fromISO('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -44,8 +44,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop2',
     priority: 10,
-    validity_start: new LocalDate('2025-01-01'),
-    validity_end: new LocalDate('2095-01-31'),
+    validity_start: DateTime.fromISO('2025-01-01'),
+    validity_end: DateTime.fromISO('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -63,8 +63,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: new LocalDate('2025-01-01'),
-    validity_end: new LocalDate('2095-01-31'),
+    validity_start: DateTime.fromISO('2025-01-01'),
+    validity_end: DateTime.fromISO('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -82,8 +82,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop4',
     priority: 10,
-    validity_start: new LocalDate('2025-01-01'),
-    validity_end: new LocalDate('2095-01-31'),
+    validity_start: DateTime.fromISO('2025-01-01'),
+    validity_end: DateTime.fromISO('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
 ];
@@ -104,16 +104,16 @@ export const tempScheduledStopPointWithConflictingInfraLinkOrder: ScheduledStopP
     },
     label: 'stop2',
     priority: 20,
-    validity_start: new LocalDate('2054-05-02'),
-    validity_end: new LocalDate('2064-05-01'),
+    validity_start: DateTime.fromISO('2054-05-02'),
+    validity_end: DateTime.fromISO('2064-05-01'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
 export const tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
   {
     ...tempScheduledStopPointWithConflictingInfraLinkOrder,
-    validity_start: new LocalDate('2065-05-02'),
-    validity_end: new LocalDate('2073-05-01'),
+    validity_start: DateTime.fromISO('2065-05-02'),
+    validity_end: DateTime.fromISO('2073-05-01'),
   };
 
 export const tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
@@ -139,8 +139,8 @@ export const tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute: ScheduledS
     },
     label: 'stop2',
     priority: 20,
-    validity_start: new LocalDate('2054-05-02'),
-    validity_end: new LocalDate('2064-05-01'),
+    validity_start: DateTime.fromISO('2054-05-02'),
+    validity_end: DateTime.fromISO('2064-05-01'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
@@ -148,7 +148,7 @@ export const scheduledStopPoints = scheduledStopPointsOfBasicJourneyPattern;
 export const scheduledStopPointsWithTempRoute = [
   ...scheduledStopPointsOfBasicJourneyPattern.map((scheduledStopPoint) => ({
     ...scheduledStopPoint,
-    validity_end: new LocalDate('2062-05-01'),
+    validity_end: DateTime.fromISO('2062-05-01'),
   })),
   tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
 ];

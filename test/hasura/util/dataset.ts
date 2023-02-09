@@ -1,6 +1,6 @@
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
 import { GeometryObject } from 'geojson';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import { Geometry } from 'wkx';
 
 function isGeometryObject(object: ExplicitAny): object is GeometryObject {
@@ -34,7 +34,7 @@ export const serializePlainObject = (
 
 // serializes values sent to SQL INSERT INTO commands
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
-  if (value instanceof LocalDate) {
+  if (value instanceof DateTime) {
     return value.toISOString();
   }
   if (isGeometryObject(value)) {
@@ -78,7 +78,7 @@ export const asGraphQlDateObject = (obj: { [propName: string]: unknown }) =>
     return {
       ...mapped,
       // format dates YYYY-MM-DD
-      [prop]: value instanceof LocalDate ? value.toISOString() : value,
+      [prop]: value instanceof DateTime ? value.toISOString() : value,
     };
   }, {});
 

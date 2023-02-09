@@ -20,7 +20,7 @@ import {
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
 import { GeometryObject } from 'geojson';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
@@ -37,7 +37,7 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
   } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
-  validity_end: new LocalDate('2060-11-03'),
+  validity_end: DateTime.fromISO('2060-11-03'),
   timing_place_id: null,
 };
 

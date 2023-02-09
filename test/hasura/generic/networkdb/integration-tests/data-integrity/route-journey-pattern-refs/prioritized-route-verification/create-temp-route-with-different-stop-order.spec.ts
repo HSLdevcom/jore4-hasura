@@ -1,6 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { newLocalDate } from '@util/helpers';
+import { newDateTime } from '@util/helpers';
 import '@util/matchers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
@@ -72,7 +72,7 @@ describe('Creating a temporary route with different stop order', () => {
     const tempRouteWithSameLinksAndTooShortValidityTime = {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
-      validity_end: newLocalDate(
+      validity_end: newDateTime(
         tempRouteWithSameLinks.validity_end!.getFullYear(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
         tempRouteWithSameLinks.validity_end!.getMonth(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
         tempRouteWithSameLinks.validity_end!.getDate() - 1, // eslint-disable-line @typescript-eslint/no-non-null-assertion

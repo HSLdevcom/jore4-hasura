@@ -13,7 +13,7 @@ import {
   hslRouteProps,
   RouteDirection,
 } from 'hsl/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<HslRoute>) => `
@@ -101,7 +101,7 @@ describe('Insert route', () => {
         direction: RouteDirection.Northbound,
         variant: 3,
         priority: 10,
-        validity_start: new LocalDate('2044-05-02'),
+        validity_start: DateTime.fromISO('2044-05-02'),
         validity_end: null,
       },
       '6',
