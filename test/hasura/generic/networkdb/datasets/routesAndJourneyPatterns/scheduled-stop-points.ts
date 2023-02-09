@@ -5,8 +5,8 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
 import { uniqBy } from 'lodash';
+import { DateTime } from 'luxon';
 import { infrastructureLinks } from './infrastructure-links';
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
@@ -25,8 +25,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: new LocalDate('2035-01-01'),
-    validity_end: new LocalDate('2065-01-31'),
+    validity_start: DateTime.fromISO('2035-01-01'),
+    validity_end: DateTime.fromISO('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -44,7 +44,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: new LocalDate('2035-02-03'),
+    validity_start: DateTime.fromISO('2035-02-03'),
     validity_end: null,
     timing_place_id: null,
   },
@@ -64,7 +64,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2',
     priority: 30,
     validity_start: null,
-    validity_end: new LocalDate('2064-01-02'),
+    validity_end: DateTime.fromISO('2064-01-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -82,8 +82,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopX',
     priority: 10,
-    validity_start: new LocalDate('2035-01-01'),
-    validity_end: new LocalDate('2065-01-31'),
+    validity_start: DateTime.fromISO('2035-01-01'),
+    validity_end: DateTime.fromISO('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -101,7 +101,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopY',
     priority: 10,
-    validity_start: new LocalDate('2035-02-03'),
+    validity_start: DateTime.fromISO('2035-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
@@ -121,7 +121,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stopZ',
     priority: 20,
     validity_start: null,
-    validity_end: new LocalDate('2064-01-02'),
+    validity_end: DateTime.fromISO('2064-01-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -139,8 +139,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1X',
     priority: 10,
-    validity_start: new LocalDate('2035-01-01'),
-    validity_end: new LocalDate('2065-01-31'),
+    validity_start: DateTime.fromISO('2035-01-01'),
+    validity_end: DateTime.fromISO('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -158,7 +158,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3X',
     priority: 10,
-    validity_start: new LocalDate('2035-02-03'),
+    validity_start: DateTime.fromISO('2035-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
@@ -178,7 +178,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2X',
     priority: 30,
     validity_start: null,
-    validity_end: new LocalDate('2064-01-02'),
+    validity_end: DateTime.fromISO('2064-01-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -196,8 +196,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop4X',
     priority: 10,
-    validity_start: new LocalDate('2030-02-03'),
-    validity_end: new LocalDate('2032-02-02'),
+    validity_start: DateTime.fromISO('2030-02-03'),
+    validity_end: DateTime.fromISO('2032-02-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -215,7 +215,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop5X',
     priority: 10,
-    validity_start: new LocalDate('2035-02-03'),
+    validity_start: DateTime.fromISO('2035-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
@@ -234,7 +234,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop6X',
     priority: 10,
-    validity_start: new LocalDate('2035-02-03'),
+    validity_start: DateTime.fromISO('2035-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },

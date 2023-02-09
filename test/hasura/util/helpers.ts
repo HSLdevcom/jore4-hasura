@@ -1,25 +1,17 @@
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 export function throwError(msg: string): never {
   throw new Error(msg);
 }
 
-export const newLocalDate = (year: number, month: number, date: number) => {
-  const newDate = new LocalDate();
-  newDate.setFullYear(year);
-  newDate.setMonth(month);
-  newDate.setDate(date);
-  return newDate;
+export const newDateTime = (year: number, month: number, date: number) => {
+  return DateTime.local(year, month, date);
 };
 
-export const nextDay = (date: LocalDate) => {
-  const next = new LocalDate(date);
-  next.setDate(next.getDate() + 1);
-  return next;
+export const nextDay = (date: DateTime) => {
+  return date.plus({ day: 1 });
 };
 
-export const prevDay = (date: LocalDate) => {
-  const next = new LocalDate(date);
-  next.setDate(next.getDate() - 1);
-  return next;
+export const prevDay = (date: DateTime) => {
+  return date.minus({ day: 1 });
 };

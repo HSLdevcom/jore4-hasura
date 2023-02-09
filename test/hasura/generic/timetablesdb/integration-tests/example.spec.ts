@@ -2,7 +2,7 @@ import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import { post } from 'request-promise';
 import { defaultGenericTimetablesDbData } from '../datasets/defaultSetup';
 import { vehicleScheduleFrames } from '../datasets/defaultSetup/vehicle-schedules-frames';
@@ -14,8 +14,8 @@ const toBeInserted: Partial<VehicleScheduleFrame> = {
   ...buildVehicleScheduleFrame({
     vehicle_schedule_frame_id: '7e587ab7-a610-4d05-840d-8b5292b80322',
     name: 'Frame 1',
-    validity_start: new LocalDate('2022-12-01'),
-    validity_end: new LocalDate('2023-02-28'),
+    validity_start: DateTime.fromISO('2022-12-01'),
+    validity_end: DateTime.fromISO('2023-02-28'),
   }),
 };
 

@@ -5,7 +5,7 @@ import {
   Route,
   RouteDirection,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 import { lines } from './lines';
 
@@ -15,8 +15,8 @@ export const basicRoute: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 10,
-  validity_start: new LocalDate('2044-05-02'),
-  validity_end: new LocalDate('2074-05-01'),
+  validity_start: DateTime.fromISO('2044-05-02'),
+  validity_end: DateTime.fromISO('2074-05-01'),
 };
 
 export const tempRouteWithSameLinks: Route = {
@@ -25,8 +25,8 @@ export const tempRouteWithSameLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: new LocalDate('2054-05-02'),
-  validity_end: new LocalDate('2064-05-01'),
+  validity_start: DateTime.fromISO('2054-05-02'),
+  validity_end: DateTime.fromISO('2064-05-01'),
 };
 
 export const tempRouteWithOtherLinks: Route = {
@@ -35,8 +35,8 @@ export const tempRouteWithOtherLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: new LocalDate('2054-05-02'),
-  validity_end: new LocalDate('2064-05-01'),
+  validity_start: DateTime.fromISO('2054-05-02'),
+  validity_end: DateTime.fromISO('2064-05-01'),
 };
 
 export const routes: Route[] = [basicRoute];

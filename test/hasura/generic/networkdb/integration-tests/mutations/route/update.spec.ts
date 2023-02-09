@@ -8,13 +8,13 @@ import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultS
 import { routes } from 'generic/networkdb/datasets/defaultSetup/routes';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Route, routeProps } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import * as rp from 'request-promise';
 
 const toBeUpdated: Partial<Route> = {
   description_i18n: buildLocalizedString('updated route'),
   priority: 50,
-  validity_end: new LocalDate('2045-03-31'),
+  validity_end: DateTime.fromISO('2045-03-31'),
 };
 
 const completeUpdated: Route = {

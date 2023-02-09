@@ -1,5 +1,5 @@
 import { buildLocalizedString } from '@util/dataset';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 import { TimetablePriority, VehicleScheduleFrame } from './types';
 
 // can set either name_i18n (-> leave as is) or name (-> make i18n version)
@@ -21,8 +21,8 @@ export const buildVehicleScheduleFrame = (
     EntityName,
 ) => {
   const vehicleFrame = {
-    validity_start: new LocalDate('2020-01-01'),
-    validity_end: new LocalDate('2050-12-31'),
+    validity_start: DateTime.fromISO('2020-01-01'),
+    validity_end: DateTime.fromISO('2050-12-31'),
     priority: TimetablePriority.Standard,
     ...frame,
     name_i18n: buildName(frame),

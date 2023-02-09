@@ -16,7 +16,7 @@ import {
   VehicleSubmode,
   VehicleSubmodeOnInfrastructureLink,
 } from 'generic/networkdb/datasets/types';
-import { LocalDate } from 'local-date';
+import { DateTime } from 'luxon';
 
 describe('Function service_pattern.get_distances_between_stop_points_in_journey_patterns', () => {
   let dbConnection: DbConnection;
@@ -122,14 +122,14 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   const getDistancesBetweenStopPoints = async (
     dataset: TableData<GenericNetworkDbTables>[],
     journeyPatternIds: string[],
-    observationDate: LocalDate,
+    observationDate: DateTime,
     includeDraftStopPoints = false,
   ): Promise<Array<StopIntervalLength>> => {
     await setupDb(dbConnection, dataset);
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISOString()}'::date, ${includeDraftStopPoints})`,
+      `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toISODate()}'::date, ${includeDraftStopPoints})`,
     );
 
     return response.rows.map((row: ExplicitAny) => {
@@ -146,7 +146,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
     const journeyPatternId = journeyPattern.journey_pattern_id;
     const routeId = journeyPattern.on_route_id;
 
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     const response = await getDistancesBetweenStopPoints(
       getTableDataToBePopulated(),
@@ -199,7 +199,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
     const journeyPatternId = journeyPattern.journey_pattern_id;
     const journeyPatternId2 = journeyPattern2.journey_pattern_id;
 
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     const response = await getDistancesBetweenStopPoints(
       getTableDataToBePopulated(),
@@ -266,7 +266,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   });
 
   describe('test correct handling of link vs. stop point directionality', () => {
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     it('...case 1', async () => {
       const journeyPattern = journeyPatterns[4];
@@ -348,7 +348,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
   });
 
   describe('test that multiple stop points are allocated for correct traversals of single infrastructure link', () => {
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     it('...when traversing the link forwards', async () => {
       const journeyPattern = journeyPatterns[7];
@@ -461,7 +461,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
       return scheduledStopPoints;
     };
 
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     it('...when higher priority stop point overrides the one with lower priority', async () => {
       const scheduledStopPoints = getScheduledStopPoints(20);
@@ -627,7 +627,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
       return infrastructureLinks;
     };
 
-    const observationDate = new LocalDate('2044-05-02');
+    const observationDate = DateTime.fromISO('2044-05-02');
 
     it('...when single stop point resides along a link with estimated length', async () => {
       const response = await getDistancesBetweenStopPoints(
