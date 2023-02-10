@@ -2,7 +2,6 @@ import * as config from '@config';
 import { buildLocalizedString } from '@util/dataset';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { nextDay, prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { Route, RouteDirection } from 'generic/networkdb/datasets/types';
@@ -121,7 +120,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
 
     const earlierRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierRouteValidityEnd = DateTime.fromISO('2021-04-04');
-    const laterRouteValidityStart = nextDay(earlierRouteValidityEnd);
+    const laterRouteValidityStart = earlierRouteValidityEnd.plus({ day: 1 });
     const laterRouteValidityEnd = DateTime.fromISO('2025-04-04');
 
     const routeData: Partial<Route>[] = [
@@ -178,7 +177,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
         route_id: earlierLowerPrioRouteId,
         priority: 10,
         validity_start: earlierLowerPrioRouteValidityStart,
-        validity_end: prevDay(earlierLowerPrioRouteValidityEnd),
+        validity_end: earlierLowerPrioRouteValidityEnd.minus({ day: 1 }),
       },
       {
         ...defaultCommonRouteProps,
@@ -198,7 +197,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
         {
           id: earlierLowerPrioRouteId,
           validity_start: earlierLowerPrioRouteValidityStart,
-          validity_end: prevDay(laterHigherPrioRouteValidityStart), // sic
+          validity_end: laterHigherPrioRouteValidityStart.minus({ day: 1 }), // sic
         },
         {
           id: laterHigherPrioRouteId,
@@ -353,7 +352,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
         {
           id: lowerPrioRouteId,
           validity_start: lowerPrioRouteValidityStart,
-          validity_end: prevDay(higherPrioRouteValidityStart),
+          validity_end: higherPrioRouteValidityStart.minus({ day: 1 }),
         },
         {
           id: higherPrioRouteId,
@@ -362,7 +361,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
         },
         {
           id: lowerPrioRouteId,
-          validity_start: nextDay(higherPrioRouteValidityEnd),
+          validity_start: higherPrioRouteValidityEnd.plus({ day: 1 }),
           validity_end: lowerPrioRouteValidityEnd,
         },
       ]),

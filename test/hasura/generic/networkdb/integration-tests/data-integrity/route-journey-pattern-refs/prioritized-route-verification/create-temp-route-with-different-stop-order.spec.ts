@@ -1,6 +1,5 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from 'generic/networkdb/datasets/prioritizedRouteVerification/journey-patterns';
@@ -72,7 +71,7 @@ describe('Creating a temporary route with different stop order', () => {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      validity_end: prevDay(tempRouteWithSameLinks.validity_end!),
+      validity_end: tempRouteWithSameLinks.validity_end!.minus({ day: 1 }),
     };
     await insertRoute(
       tempRouteWithSameLinksAndTooShortValidityTime,
