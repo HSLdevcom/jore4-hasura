@@ -6,7 +6,6 @@ import {
   DbConnection,
   singleQuery,
 } from '@util/db';
-import { nextDay, prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import {
@@ -203,7 +202,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
 
     const earlierStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierStopValidityEnd = DateTime.fromISO('2021-04-05');
-    const laterStopValidityStart = nextDay(earlierStopValidityEnd);
+    const laterStopValidityStart = earlierStopValidityEnd.plus({ day: 1 });
     const laterStopValidityEnd = DateTime.fromISO('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
@@ -280,7 +279,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           id: earlierLowerPrioStopId,
           validity_start: earlierLowerPrioStopValidityStart,
-          validity_end: prevDay(laterHigherPrioStopValidityStart), // sic
+          validity_end: laterHigherPrioStopValidityStart.minus({ day: 1 }), // sic
         },
         {
           id: laterHigherPrioStopId,
@@ -428,7 +427,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           id: lowerPrioStopId,
           validity_start: lowerPrioStopValidityStart,
-          validity_end: prevDay(higherPrioStopValidityStart),
+          validity_end: higherPrioStopValidityStart.minus({ day: 1 }),
         },
         {
           id: higherPrioStopId,
@@ -437,7 +436,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         },
         {
           id: lowerPrioStopId,
-          validity_start: nextDay(higherPrioStopValidityEnd),
+          validity_start: higherPrioStopValidityEnd.plus({ day: 1 }),
           validity_end: lowerPrioStopValidityEnd,
         },
       ]),

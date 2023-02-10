@@ -1,6 +1,5 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { nextDay, prevDay } from '@util/helpers';
 import { setupDb } from '@util/setup';
 import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {
@@ -91,7 +90,7 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      validity_end: prevDay(tempRouteWithOtherLinks.validity_end!),
+      validity_end: tempRouteWithOtherLinks.validity_end!.minus({ day: 1 }),
     };
 
     // insert temp route and journey pattern without conflicting stop label
@@ -120,7 +119,7 @@ describe('Creating a temporary route with different infra links', () => {
       ...tempRouteWithOtherLinks,
       validity_start: tempRouteWithOtherLinks.validity_start,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      validity_end: nextDay(tempRouteWithOtherLinks.validity_end!),
+      validity_end: tempRouteWithOtherLinks.validity_end!.plus({ day: 1 }),
     };
 
     // insert temp route and journey pattern without conflicting stop label
