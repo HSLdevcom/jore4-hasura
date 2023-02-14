@@ -1,7 +1,11 @@
 import * as dotenv from 'dotenv';
+import { Settings } from 'luxon';
 import { ConnectionConfig } from 'pg';
 
 dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
+
+// Configure Luxon.
+Settings.throwOnInvalid = true; // Invalid dates are too easy to miss otherwise.
 
 export const networkDbConfig: ConnectionConfig = {
   host: '127.0.0.1',
