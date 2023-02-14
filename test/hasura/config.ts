@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import { Knex } from 'knex';
 import { Settings } from 'luxon';
 import { ConnectionConfig } from 'pg';
 
@@ -18,6 +19,11 @@ export const networkDbConfig: ConnectionConfig = {
 export const timetablesDbConfig: ConnectionConfig = {
   ...networkDbConfig,
   database: 'timetablesdb',
+};
+
+export const knexConfig: Knex.Config = {
+  client: 'pg',
+  debug: false /* toggle to console log all queries = lots of spam */,
 };
 
 export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
