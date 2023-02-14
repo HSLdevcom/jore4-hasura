@@ -1,3 +1,4 @@
+import { knexConfig } from '@config';
 import knex, { Knex } from 'knex';
 import { ConnectionConfig, Pool } from 'pg';
 
@@ -21,7 +22,9 @@ export const closeDbConnection = (conn: DbConnection) => {
 // initializes a knex query builder instance (without a connection)
 // useage: getKnex().raw('SELECT * FROM...').connection(connectionPool)
 export const getKnex = () => {
-  return knex({ client: 'pg' });
+  const k = knex(knexConfig);
+
+  return k;
 };
 
 export const executeKnexQuery = <T = ExplicitAny>(
