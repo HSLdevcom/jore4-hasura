@@ -205,6 +205,12 @@ COMMENT ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.block_id IS 'The BLOCK to which this VEHICLE JOURNEY belongs';
 
 --
+-- Name: COLUMN vehicle_journey.journey_name; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_name IS 'Journey name.';
+
+--
 -- Name: COLUMN vehicle_journey.journey_pattern_ref_id; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -247,16 +253,52 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPE
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 --
+-- Name: COLUMN block.end_timing_place; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.end_timing_place IS 'Timing place on the end of the route';
+
+--
+-- Name: COLUMN block.finishing_duration; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.finishing_duration IS 'Finishing time after end.';
+
+--
+-- Name: COLUMN block.preparing_duration; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.preparing_duration IS 'Preparation time before start.';
+
+--
+-- Name: COLUMN block.start_timing_place; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.start_timing_place IS 'Timing place on the beginning of the route.';
+
+--
 -- Name: COLUMN block.vehicle_service_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON COLUMN vehicle_service.block.vehicle_service_id IS 'The VEHICLE SERVICE to which this BLOCK belongs.';
 
 --
+-- Name: COLUMN block.vehicle_type; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.vehicle_type IS 'Vehicle type.';
+
+--
 -- Name: COLUMN vehicle_service.day_type_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON COLUMN vehicle_service.vehicle_service.day_type_id IS 'The DAY TYPE for the VEHICLE SERVICE.';
+
+--
+-- Name: COLUMN vehicle_service.name_i18n; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle service.';
 
 --
 -- Name: COLUMN vehicle_service.vehicle_schedule_frame_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -645,7 +687,8 @@ ALTER TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref OWNER TO
 CREATE TABLE vehicle_journey.vehicle_journey (
     vehicle_journey_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     journey_pattern_ref_id uuid NOT NULL,
-    block_id uuid NOT NULL
+    block_id uuid NOT NULL,
+    journey_name text
 );
 
 
@@ -672,7 +715,12 @@ ALTER TABLE vehicle_schedule.vehicle_schedule_frame OWNER TO dbhasura;
 
 CREATE TABLE vehicle_service.block (
     block_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    vehicle_service_id uuid NOT NULL
+    vehicle_service_id uuid NOT NULL,
+    start_timing_place text,
+    end_timing_place text,
+    preparing_duration smallint,
+    finishing_duration smallint,
+    vehicle_type smallint
 );
 
 
@@ -685,7 +733,8 @@ ALTER TABLE vehicle_service.block OWNER TO dbhasura;
 CREATE TABLE vehicle_service.vehicle_service (
     vehicle_service_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     day_type_id uuid NOT NULL,
-    vehicle_schedule_frame_id uuid NOT NULL
+    vehicle_schedule_frame_id uuid NOT NULL,
+    name_i18n jsonb
 );
 
 
