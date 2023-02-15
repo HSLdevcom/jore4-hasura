@@ -139,6 +139,24 @@ COMMENT ON COLUMN passing_times.timetabled_passing_time.vehicle_journey_id IS 'T
 COMMENT ON TABLE passing_times.timetabled_passing_time IS 'Long-term planned time data concerning public transport vehicles passing a particular POINT IN JOURNEY PATTERN on a specified VEHICLE JOURNEY for a certain DAY TYPE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:946 ';
 
 --
+-- Name: COLUMN vehicle_type.description_i18n; Type: COMMENT; Schema: reusable_components; Owner: dbhasura
+--
+
+COMMENT ON COLUMN reusable_components.vehicle_type.description_i18n IS 'Description of the vehicle type.';
+
+--
+-- Name: COLUMN vehicle_type.label; Type: COMMENT; Schema: reusable_components; Owner: dbhasura
+--
+
+COMMENT ON COLUMN reusable_components.vehicle_type.label IS 'Label of the vehicle type.';
+
+--
+-- Name: TABLE vehicle_type; Type: COMMENT; Schema: reusable_components; Owner: dbhasura
+--
+
+COMMENT ON TABLE reusable_components.vehicle_type IS 'The VEHICLE entity is used to describe the physical public transport vehicles available for short-term planning of operations and daily assignment (in contrast to logical vehicles considered for resource planning of operations and daily assignment (in contrast to logical vehicles cplanning). Each VEHICLE shall be classified as of a particular VEHICLE TYPE.';
+
+--
 -- Name: COLUMN day_type.label; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -205,16 +223,52 @@ COMMENT ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.block_id IS 'The BLOCK to which this VEHICLE JOURNEY belongs';
 
 --
+-- Name: COLUMN vehicle_journey.journey_name_i18n; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_name_i18n IS 'Name that user can give to the vehicle journey.';
+
+--
 -- Name: COLUMN vehicle_journey.journey_pattern_ref_id; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_pattern_ref_id IS 'The JOURNEY PATTERN on which the VEHICLE JOURNEY travels';
 
 --
+-- Name: COLUMN vehicle_journey.journey_type; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_type IS 'STANDARD | DRY_RUN | SERVICE_JOURNEY';
+
+--
+-- Name: COLUMN vehicle_journey.layover_time; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.layover_time IS 'Layover time. 95% of the journeys should arrive to the terminal within journey time + recovery time so that they would be ready to start next journey in time.';
+
+--
+-- Name: COLUMN vehicle_journey.turnaround_time; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.turnaround_time IS 'Turnaround time. Means the time it takes to move vehicle to the starting stop and pick up the passengers.';
+
+--
+-- Name: TABLE journey_type; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON TABLE vehicle_journey.journey_type IS 'Enum table for defining allowed journey types.';
+
+--
 -- Name: TABLE vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
 COMMENT ON TABLE vehicle_journey.vehicle_journey IS 'The planned movement of a public transport vehicle on a DAY TYPE from the start point to the end point of a JOURNEY PATTERN on a specified ROUTE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:831 ';
+
+--
+-- Name: COLUMN vehicle_schedule_frame.label; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.label IS 'Label for the vehicle schedule frame. Comes from BookingRecord vsc_name field from Hastus.';
 
 --
 -- Name: COLUMN vehicle_schedule_frame.name_i18n; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -247,16 +301,40 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPE
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 --
+-- Name: COLUMN block.finishing_time; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.finishing_time IS 'Finishing time after end of vehicle service block.';
+
+--
+-- Name: COLUMN block.preparing_time; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.preparing_time IS 'Preparation time before start of vehicle service block.';
+
+--
 -- Name: COLUMN block.vehicle_service_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON COLUMN vehicle_service.block.vehicle_service_id IS 'The VEHICLE SERVICE to which this BLOCK belongs.';
 
 --
+-- Name: COLUMN block.vehicle_type; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.block.vehicle_type IS 'Reference to resuable_components.vehicle_type.';
+
+--
 -- Name: COLUMN vehicle_service.day_type_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON COLUMN vehicle_service.vehicle_service.day_type_id IS 'The DAY TYPE for the VEHICLE SERVICE.';
+
+--
+-- Name: COLUMN vehicle_service.name_i18n; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle service.';
 
 --
 -- Name: COLUMN vehicle_service.vehicle_schedule_frame_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -291,6 +369,13 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_pkey PRIMARY KEY (timetabled_passing_time_id);
 
 --
+-- Name: vehicle_type vehicle_type_pkey; Type: CONSTRAINT; Schema: reusable_components; Owner: dbhasura
+--
+
+ALTER TABLE ONLY reusable_components.vehicle_type
+    ADD CONSTRAINT vehicle_type_pkey PRIMARY KEY (vehicle_type_id);
+
+--
 -- Name: day_type day_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -310,6 +395,13 @@ ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point_in_journey_pattern_ref
     ADD CONSTRAINT scheduled_stop_point_in_journey_pattern_ref_pkey PRIMARY KEY (scheduled_stop_point_in_journey_pattern_ref_id);
+
+--
+-- Name: journey_type journey_type_pkey; Type: CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_journey.journey_type
+    ADD CONSTRAINT journey_type_pkey PRIMARY KEY (type);
 
 --
 -- Name: vehicle_journey vehicle_journey_pkey; Type: CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
@@ -400,11 +492,25 @@ ALTER TABLE ONLY vehicle_journey.vehicle_journey
     ADD CONSTRAINT vehicle_journey_journey_pattern_ref_id_fkey FOREIGN KEY (journey_pattern_ref_id) REFERENCES journey_pattern.journey_pattern_ref(journey_pattern_ref_id);
 
 --
+-- Name: vehicle_journey vehicle_journey_journey_type_fkey; Type: FK CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_journey.vehicle_journey
+    ADD CONSTRAINT vehicle_journey_journey_type_fkey FOREIGN KEY (journey_type) REFERENCES vehicle_journey.journey_type(type);
+
+--
 -- Name: block block_vehicle_service_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
 --
 
 ALTER TABLE ONLY vehicle_service.block
     ADD CONSTRAINT block_vehicle_service_id_fkey FOREIGN KEY (vehicle_service_id) REFERENCES vehicle_service.vehicle_service(vehicle_service_id);
+
+--
+-- Name: block vehicle_type_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_service.block
+    ADD CONSTRAINT vehicle_type_fkey FOREIGN KEY (vehicle_type) REFERENCES reusable_components.vehicle_type(vehicle_type_id);
 
 --
 -- Name: vehicle_service vehicle_service_day_type_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
@@ -523,6 +629,15 @@ CREATE SCHEMA passing_times;
 ALTER SCHEMA passing_times OWNER TO dbhasura;
 
 --
+-- Name: reusable_components; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA reusable_components;
+
+
+ALTER SCHEMA reusable_components OWNER TO dbhasura;
+
+--
 -- Name: service_calendar; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -599,6 +714,19 @@ CREATE TABLE passing_times.timetabled_passing_time (
 ALTER TABLE passing_times.timetabled_passing_time OWNER TO dbhasura;
 
 --
+-- Name: vehicle_type; Type: TABLE; Schema: reusable_components; Owner: dbhasura
+--
+
+CREATE TABLE reusable_components.vehicle_type (
+    vehicle_type_id uuid NOT NULL,
+    label text NOT NULL,
+    description_i18n jsonb
+);
+
+
+ALTER TABLE reusable_components.vehicle_type OWNER TO dbhasura;
+
+--
 -- Name: day_type; Type: TABLE; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -639,13 +767,28 @@ CREATE TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref (
 ALTER TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref OWNER TO dbhasura;
 
 --
+-- Name: journey_type; Type: TABLE; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE TABLE vehicle_journey.journey_type (
+    type text NOT NULL
+);
+
+
+ALTER TABLE vehicle_journey.journey_type OWNER TO dbhasura;
+
+--
 -- Name: vehicle_journey; Type: TABLE; Schema: vehicle_journey; Owner: dbhasura
 --
 
 CREATE TABLE vehicle_journey.vehicle_journey (
     vehicle_journey_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     journey_pattern_ref_id uuid NOT NULL,
-    block_id uuid NOT NULL
+    block_id uuid NOT NULL,
+    journey_name_i18n jsonb,
+    turnaround_time interval,
+    layover_time interval,
+    journey_type text DEFAULT 'STANDARD'::text NOT NULL
 );
 
 
@@ -657,10 +800,11 @@ ALTER TABLE vehicle_journey.vehicle_journey OWNER TO dbhasura;
 
 CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     vehicle_schedule_frame_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name_i18n jsonb NOT NULL,
+    name_i18n jsonb,
     validity_start date,
     validity_end date,
-    priority integer NOT NULL
+    priority integer NOT NULL,
+    label text
 );
 
 
@@ -672,7 +816,10 @@ ALTER TABLE vehicle_schedule.vehicle_schedule_frame OWNER TO dbhasura;
 
 CREATE TABLE vehicle_service.block (
     block_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    vehicle_service_id uuid NOT NULL
+    vehicle_service_id uuid NOT NULL,
+    preparing_time interval,
+    finishing_time interval,
+    vehicle_type uuid
 );
 
 
@@ -685,7 +832,8 @@ ALTER TABLE vehicle_service.block OWNER TO dbhasura;
 CREATE TABLE vehicle_service.vehicle_service (
     vehicle_service_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     day_type_id uuid NOT NULL,
-    vehicle_schedule_frame_id uuid NOT NULL
+    vehicle_schedule_frame_id uuid NOT NULL,
+    name_i18n jsonb
 );
 
 
