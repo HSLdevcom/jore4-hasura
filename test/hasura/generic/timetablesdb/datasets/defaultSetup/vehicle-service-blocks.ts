@@ -1,7 +1,7 @@
 import { VehicleServiceBlock } from '../types';
 import { vehicleServicesByName } from './vehicle-services';
 
-export const vehicleServiceBlocksByName: Record<string, VehicleServiceBlock> = {
+export const vehicleServiceBlocksByName = {
   // Vehicle 1 Mon-Fri
   v1MonFri: {
     block_id: '882e131f-3622-4da4-8adb-5104625a4290',
@@ -18,4 +18,6 @@ export const vehicleServiceBlocksByName: Record<string, VehicleServiceBlock> = {
     vehicle_service_id: vehicleServicesByName.v1Sun.vehicle_service_id,
   },
 };
-export const vehicleServiceBlocks = Object.values(vehicleServiceBlocksByName);
+export const vehicleServiceBlocks: VehicleServiceBlock[] = Object.values(
+  vehicleServiceBlocksByName,
+);

@@ -3,10 +3,7 @@ import { TimetabledPassingTimes } from '../types';
 import { scheduledStopPointsInJourneyPatternRefByName } from './stop-points';
 import { vehicleJourneysByName } from './vehicle-journeys';
 
-export const timetabledPassingTimesByName: Record<
-  string,
-  TimetabledPassingTimes
-> = {
+export const timetabledPassingTimesByName = {
   // Journey 1, outbound.
   v1MonFriJourney1Stop1: {
     timetabled_passing_time_id: 'd39fd0a9-b05f-4389-a392-90e1610eda87',
@@ -172,6 +169,6 @@ export const timetabledPassingTimesByName: Record<
         .scheduled_stop_point_in_journey_pattern_ref_id,
   },
 };
-export const timetabledPassingTimes = Object.values(
+export const timetabledPassingTimes: TimetabledPassingTimes[] = Object.values(
   timetabledPassingTimesByName,
 );

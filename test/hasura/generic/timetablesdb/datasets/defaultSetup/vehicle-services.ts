@@ -2,7 +2,7 @@ import { VehicleService } from '../types';
 import { defaultDayTypeIds } from './day-types';
 import { vehicleScheduleFramesByName } from './vehicle-schedules-frames';
 
-export const vehicleServicesByName: Record<string, VehicleService> = {
+export const vehicleServicesByName = {
   // vehicle 1, Mon-Fri
   v1MonFri: {
     vehicle_service_id: 'b97684d1-e5cc-4c8a-959d-cc7461c60225',
@@ -25,4 +25,6 @@ export const vehicleServicesByName: Record<string, VehicleService> = {
       vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
   },
 };
-export const vehicleServices = Object.values(vehicleServicesByName);
+export const vehicleServices: VehicleService[] = Object.values(
+  vehicleServicesByName,
+);

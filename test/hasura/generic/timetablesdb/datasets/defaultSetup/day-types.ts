@@ -1,5 +1,5 @@
 // These are populated in mirations.
-export const defaultDayTypeIds: Record<string, UUID> = {
+export const defaultDayTypeIds = {
   MONDAY_THURSDAY: '6781bd06-08cf-489e-a2bb-be9a07b15752',
   MONDAY_FRIDAY: '38853b0d-ec36-4110-b4bc-f53218c6cdcd',
   MONDAY: 'd3dfb71f-8ee1-41fd-ad49-c4968c043290',

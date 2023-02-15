@@ -9,10 +9,7 @@ import { journeyPatternRefsByName } from './journey-pattern-refs';
 
 const { route123Outbound, route123Inbound } = journeyPatternRefsByName;
 
-export const scheduledStopPointsInJourneyPatternRefByName: Record<
-  string,
-  ScheduledStopInJourneyPatternRef
-> = {
+export const scheduledStopPointsInJourneyPatternRefByName = {
   route123OutboundStop1: {
     scheduled_stop_point_in_journey_pattern_ref_id:
       '4d31a026-d8b7-4aae-a196-79980bf870cc',
@@ -71,6 +68,6 @@ export const scheduledStopPointsInJourneyPatternRefByName: Record<
     journey_pattern_ref_id: route123Inbound.journey_pattern_ref_id,
   },
 };
-export const scheduledStopPointsInJourneyPatternRef = Object.values(
-  scheduledStopPointsInJourneyPatternRefByName,
-);
+
+export const scheduledStopPointsInJourneyPatternRef: ScheduledStopInJourneyPatternRef[] =
+  Object.values(scheduledStopPointsInJourneyPatternRefByName);

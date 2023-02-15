@@ -41,7 +41,6 @@ export const genericTimetablesDbSchema: TableSchemaMap<GenericTimetablesDbTables
       name: 'vehicle_schedule.vehicle_schedule_frame',
       props: vehicleScheduleFrameProps,
     },
-
     'vehicle_service.block': {
       name: 'vehicle_service.block',
       props: vehicleServiceProps,

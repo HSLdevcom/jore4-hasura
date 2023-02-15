@@ -2,7 +2,7 @@ import { VehicleJourney } from '../types';
 import { journeyPatternRefsByName } from './journey-pattern-refs';
 import { vehicleServiceBlocksByName } from './vehicle-service-blocks';
 
-export const vehicleJourneysByName: Record<string, VehicleJourney> = {
+export const vehicleJourneysByName = {
   v1MonFriJourney1: {
     vehicle_journey_id: '1c1a897e-e355-4e39-9731-3478fe7236fb',
     block_id: vehicleServiceBlocksByName.v1MonFri.block_id,
@@ -28,4 +28,6 @@ export const vehicleJourneysByName: Record<string, VehicleJourney> = {
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
   },
 };
-export const vehicleJourneys = Object.values(vehicleJourneysByName);
+export const vehicleJourneys: VehicleJourney[] = Object.values(
+  vehicleJourneysByName,
+);
