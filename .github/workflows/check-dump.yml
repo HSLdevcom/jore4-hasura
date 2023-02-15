@@ -18,7 +18,7 @@ jobs:
       - name: start e2e env
         uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
         with:
-          hasura_version: '$IMAGE_NAME:generic-$COMMIT_ID'
+          hasura_version: '${{ env.IMAGE_NAME }}:generic-${{ env.COMMIT_ID }}'
 
       - name: Generate database dumps
         run: ./scripts/generate-dumps.sh
@@ -32,7 +32,7 @@ jobs:
       - name: Restart the hasura container to rerun the repeatable migrations
         uses: HSLdevcom/jore4-flux/github-actions/setup-e2e-environment@setup-e2e-environment-v1
         with:
-          hasura_version: '$IMAGE_NAME:generic-$COMMIT_ID'
+          hasura_version: '${{ env.IMAGE_NAME }}:generic-${{ env.COMMIT_ID }}'
 
       - name: Generate database dumps again, this time after the repeatable migrations
         run: ./scripts/generate-dumps.sh
