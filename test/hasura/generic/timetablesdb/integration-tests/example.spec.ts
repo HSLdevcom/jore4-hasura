@@ -13,6 +13,7 @@ import { VehicleScheduleFrame } from '../datasets/types';
 const toBeInserted: Partial<VehicleScheduleFrame> = {
   ...buildVehicleScheduleFrame({
     vehicle_schedule_frame_id: '7e587ab7-a610-4d05-840d-8b5292b80322',
+    label: 'Label 1',
     name: 'Frame 1',
     validity_start: DateTime.fromISO('2022-12-01'),
     validity_end: DateTime.fromISO('2023-02-28'),

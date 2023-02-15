@@ -24,6 +24,7 @@ export const buildVehicleScheduleFrame = (
     validity_start: DateTime.fromISO('2020-01-01'),
     validity_end: DateTime.fromISO('2050-12-31'),
     priority: TimetablePriority.Standard,
+    label: buildName(frame).fi_FI,
     ...frame,
     name_i18n: buildName(frame),
   };

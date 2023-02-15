@@ -20,10 +20,10 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO vehicle_schedule.vehicle_schedule_frame
-  (vehicle_schedule_frame_id, name_i18n, validity_start, validity_end, priority)
+  (vehicle_schedule_frame_id, name_i18n, validity_start, validity_end, priority, booking_label)
 VALUES
-  ('10ed8438-878b-4549-82f4-134127824231', '{"fi_FI": "2022 Syksy - 2022 Kevät", "sv_FI": "2022 Höst - 2022 Vår"}', '2022-08-15', '2023-06-04', 10),
-  ('e47e46dd-680f-4194-9204-37ae41cfc56c', '{"fi_FI": "2022 Talviloma perjantait", "sv_FI": "2022 Vinterlov fredagar"}', '2022-11-01', '2023-02-28', 20)
+  ('10ed8438-878b-4549-82f4-134127824231', '{"fi_FI": "2022 Syksy - 2022 Kevät", "sv_FI": "2022 Höst - 2022 Vår"}', '2022-08-15', '2023-06-04', 10, '2022 Syksy - 2022 Kevät'),
+  ('e47e46dd-680f-4194-9204-37ae41cfc56c', '{"fi_FI": "2022 Talviloma perjantait", "sv_FI": "2022 Vinterlov fredagar"}', '2022-11-01', '2023-02-28', 20, '2022 Talviloma perjantait')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO vehicle_service.vehicle_service

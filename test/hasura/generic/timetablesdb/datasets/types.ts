@@ -12,6 +12,7 @@ export enum TimetablePriority {
 
 export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
+  label: string;
   name_i18n: LocalizedString;
   validity_start: DateTime | null;
   validity_end: DateTime | null;
@@ -20,6 +21,7 @@ export type VehicleScheduleFrame = {
 
 export const vehicleScheduleFrameProps: Property[] = [
   'vehicle_schedule_frame_id',
+  'label',
   'name_i18n',
   'validity_start',
   'validity_end',
