@@ -315,4 +315,26 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
     expectNoErrors(response);
   });
+
+  it('should trigger validationon scheulded stop point in journey pattern ref modifications', async () => {
+    const testStopPoint =
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop2;
+
+    const updateQuery = buildUpdateStopPointsMutation([
+      buildPartialUpdateStopPointMutation(
+        'update_sp',
+        testStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
+        {
+          scheduled_stop_point_sequence:
+            testStopPoint.scheduled_stop_point_sequence + 10,
+        },
+      ),
+    ]);
+
+    const response = await postUpdateQuery(updateQuery);
+
+    expectErrorResponse(
+      'passing times and their matching stop points must be in same order',
+    )(response);
+  });
 });
