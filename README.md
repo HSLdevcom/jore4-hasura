@@ -286,7 +286,7 @@ using the [pgdump-sort](https://github.com/tigra564/pgdump-sort) tool.
 
 These dumps are generated within the testdb docker container to assure version compatibility and to
 avoid unnecessary changes in git. To generate the dumps, execute `./scripts/generate-dumps.sh` while
-the latest version of the generic hasura container is running (`./scripts/start-dependencies.sh`).
+the latest version of the generic hasura container is running (`./scripts/start_dependencies.sh`).
 
 Note that CI also checks that the dumps are up-to-date.
 
