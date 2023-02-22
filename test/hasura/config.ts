@@ -4,7 +4,7 @@ import { ConnectionConfig } from 'pg';
 dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
 
 export const networkDbConfig: ConnectionConfig = {
-  host: 'localhost',
+  host: '127.0.0.1',
   port: 6432,
   database: 'jore4e2e',
   user: 'dbadmin',
@@ -20,7 +20,7 @@ export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
 export const databaseSchema: HASURA_DATABASE_SCHEMA =
   (process.env.HASURA_DATABASE_SCHEMA as HASURA_DATABASE_SCHEMA) || 'generic';
 
-export const hasuraApiUri = 'http://localhost:3201/v1/graphql';
+export const hasuraApiUri = 'http://127.0.0.1:3201/v1/graphql';
 
 export const hasuraRequestTemplate = {
   uri: hasuraApiUri,
