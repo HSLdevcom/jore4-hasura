@@ -32,6 +32,12 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 --
+-- Name: SCHEMA internal_utils; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA internal_utils IS 'General utilities';
+
+--
 -- Name: SCHEMA journey_pattern; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -72,6 +78,12 @@ COMMENT ON SCHEMA vehicle_schedule IS 'The vehicle schedule frame adapted from T
 --
 
 COMMENT ON SCHEMA vehicle_service IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
+
+--
+-- Name: FUNCTION const_default_timezone(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_utils.const_default_timezone() IS 'Get the default timezone of service calendar.';
 
 --
 -- Name: COLUMN journey_pattern_ref.journey_pattern_id; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -221,6 +233,18 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 --
 
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
+
+--
+-- Name: FUNCTION const_operating_day_end_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.const_operating_day_end_time() IS 'Get the (exclusive) end time of operating day.';
+
+--
+-- Name: FUNCTION const_operating_day_start_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.const_operating_day_start_time() IS 'Get the (inclusive) start time of operating day.';
 
 --
 -- Name: TABLE day_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
@@ -619,6 +643,19 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
 
 --
+-- Name: const_default_timezone(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_default_timezone() RETURNS text
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT 'Europe/Helsinki'
+$$;
+
+
+ALTER FUNCTION internal_utils.const_default_timezone() OWNER TO dbhasura;
+
+--
 -- Name: create_validate_passing_times_sequence_queue_temp_tables(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
 --
 
@@ -851,6 +888,32 @@ $$;
 ALTER FUNCTION passing_times.validate_passing_time_sequences() OWNER TO dbhasura;
 
 --
+-- Name: const_operating_day_end_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.const_operating_day_end_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '28:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.const_operating_day_end_time() OWNER TO dbhasura;
+
+--
+-- Name: const_operating_day_start_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.const_operating_day_start_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '04:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.const_operating_day_start_time() OWNER TO dbhasura;
+
+--
 -- Name: queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -963,6 +1026,15 @@ CREATE INDEX idx_vehicle_service_day_type ON vehicle_service.vehicle_service USI
 --
 
 CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehicle_service USING btree (vehicle_schedule_frame_id);
+
+--
+-- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA internal_utils;
+
+
+ALTER SCHEMA internal_utils OWNER TO dbhasura;
 
 --
 -- Name: journey_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
