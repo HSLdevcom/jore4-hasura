@@ -13,6 +13,8 @@ CREATE SCHEMA IF NOT EXISTS vehicle_journey;
 COMMENT ON SCHEMA vehicle_journey IS 'The vehicle journey model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:824 ';
 CREATE SCHEMA IF NOT EXISTS passing_times;
 COMMENT ON SCHEMA passing_times IS 'The passing times model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:939 ';
+CREATE SCHEMA IF NOT EXISTS internal_utils;
+COMMENT ON SCHEMA internal_utils IS 'General utilities';
 
 -- drop all triggers in jore4 schemas
 -- note: information_schema.triggers is missing TRUNCATE triggers
@@ -32,13 +34,14 @@ BEGIN
       FROM information_schema.triggers
       WHERE
         trigger_schema IN (
+          'internal_utils',
           'journey_pattern',
-          'service_pattern',
+          'passing_times',
           'service_calendar',
-          'vehicle_schedule',
-          'vehicle_service',
+          'service_pattern',
           'vehicle_journey',
-          'passing_times'
+          'vehicle_schedule',
+          'vehicle_service'
     ) UNION (
       -- TRUNCATE triggers
       SELECT
@@ -51,13 +54,14 @@ BEGIN
       WHERE
         t.tgtype = 32 AND -- TRUNCATE triggers only
         n.nspname IN (
+          'internal_utils',
           'journey_pattern',
-          'service_pattern',
+          'passing_times',
           'service_calendar',
-          'vehicle_schedule',
-          'vehicle_service',
+          'service_pattern',
           'vehicle_journey',
-          'passing_times'
+          'vehicle_schedule',
+          'vehicle_service'
       )
     ))
   LOOP
@@ -86,13 +90,14 @@ BEGIN
       -- c = check constraint, f = foreign key constraint, p = primary key constraint, u = unique constraint, t = constraint trigger, x = exclusion constraint
       c.contype IN ('c', 'u', 't', 'x') AND
       n.nspname IN (
+        'internal_utils',
         'journey_pattern',
-        'service_pattern',
+        'passing_times',
         'service_calendar',
-        'vehicle_schedule',
-        'vehicle_service',
+        'service_pattern',
         'vehicle_journey',
-        'passing_times'
+        'vehicle_schedule',
+        'vehicle_service'
     ))
   LOOP
     RAISE NOTICE 'Dropping constraint: %.%.%', constraint_record.schema_name, constraint_record.table_name, constraint_record.constraint_name;
@@ -120,13 +125,14 @@ BEGIN
       E'\n')
   FROM pg_proc
   WHERE pronamespace IN (
+    'internal_utils'::regnamespace,
     'journey_pattern'::regnamespace,
-    'service_pattern'::regnamespace,
+    'passing_times'::regnamespace,
     'service_calendar'::regnamespace,
-    'vehicle_schedule'::regnamespace,
-    'vehicle_service'::regnamespace,
+    'service_pattern'::regnamespace,
     'vehicle_journey'::regnamespace,
-    'passing_times'::regnamespace
+    'vehicle_schedule'::regnamespace,
+    'vehicle_service'::regnamespace
   )
   AND provolatile NOT IN ('i');
 
