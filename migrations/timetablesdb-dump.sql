@@ -31,11 +31,6 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
 --
 -- Name: SCHEMA journey_pattern; Type: COMMENT; Schema: -; Owner: dbhasura
 --
@@ -161,6 +156,29 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 --
 
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
+
+--
+-- Name: FUNCTION default_timezone(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.default_timezone() IS 'Get the default timezone of service calendar.';
+
+--
+-- Name: FUNCTION operating_day_end_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.operating_day_end_time() IS 'Get the (exclusive) end time of operating day.';
+
+--
+-- Name: FUNCTION operating_day_start_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.operating_day_start_time() IS 'Get the (inclusive) start time of operating day.';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
 -- Name: TABLE day_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
@@ -419,6 +437,45 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+--
+-- Name: default_timezone(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.default_timezone() RETURNS text
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT 'Europe/Helsinki'
+$$;
+
+
+ALTER FUNCTION service_calendar.default_timezone() OWNER TO dbhasura;
+
+--
+-- Name: operating_day_end_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.operating_day_end_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '28:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.operating_day_end_time() OWNER TO dbhasura;
+
+--
+-- Name: operating_day_start_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.operating_day_start_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '04:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.operating_day_start_time() OWNER TO dbhasura;
 
 --
 -- Name: vehicle_journey_end_time(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
