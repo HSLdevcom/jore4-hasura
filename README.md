@@ -114,6 +114,23 @@ will start using different indexes and the previous numbers become obsolete.
 
 Reset your stats with `SELECT pg_stat_reset();`
 
+#### Debugging trigger performance
+
+Data validation relies largely on triggers, which can get heavy to run with large amounts of data.
+EXPLAIN ANALYZE can't normally be used for optimizing these because query plans retrieved with it do not include triggered functions.
+
+To get execution plans for triggered functions you need to turn on auto explain with nested statement logging.
+This can be done by running following queries in DB console:
+
+```sql
+LOAD 'auto_explain';
+SET auto_explain.log_min_duration = 0;
+SET auto_explain.log_analyze = TRUE;
+SET auto_explain.log_nested_statements = TRUE;
+```
+
+After this the EXPLAIN output from all queries including their triggers will be printed to testdb log.
+
 ### Change the Hasura API
 
 To change what to expose, to whom and how in the API served by Hasura, you need to modify the metadata of Hasura.
