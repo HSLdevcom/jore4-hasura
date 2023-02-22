@@ -7,7 +7,7 @@ ALTER TABLE passing_times.timetabled_passing_time
     (arrival_time <= departure_time)
   );
 
-CREATE OR REPLACE FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[])
+CREATE OR REPLACE FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[], filter_journey_pattern_ref_ids uuid[])
 RETURNS TABLE(vehicle_journey_id uuid, first_passing_time_id uuid, last_passing_time_id uuid, stop_order_is_valid boolean)
   LANGUAGE sql STABLE PARALLEL SAFE
 AS $$
@@ -22,6 +22,7 @@ WITH RECURSIVE
     FROM passing_times.timetabled_passing_time tpt
     JOIN service_pattern.scheduled_stop_point_in_journey_pattern_ref ssp USING (scheduled_stop_point_in_journey_pattern_ref_id)
     WHERE vehicle_journey_id = ANY(filter_vehicle_journey_ids)
+    OR journey_pattern_ref_id = ANY(filter_journey_pattern_ref_ids)
   ),
   -- Try to go through passing times in sequence order,
   -- and mark if the passing times are in matching order.
@@ -66,23 +67,31 @@ SELECT
   stop_order_is_valid
 FROM stop_point_order_validity JOIN first_last_passing_times USING (vehicle_journey_id)
 $$;
-COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[]) IS '
-  Returns information on the vehicle journey passing time sequence and its validity:
+COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[], filter_journey_pattern_ref_ids uuid[]) IS '
+  For vehicle journey passing time sequences in given vehicle journeys and/or journey patterns,
+  returns information on the sequence and its validity:
   id of the vehicle journey, ids of first and last passing times in the sequence,
   and whether all passing times for the vehicle journey are in stop point sequence order, that is,
   in same order by passing_time as their corresponding stop points (scheduled_stop_point_in_journey_pattern_ref).';
 
-CREATE OR REPLACE FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_table() RETURNS void
+CREATE OR REPLACE FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_tables() RETURNS void
     LANGUAGE sql PARALLEL SAFE
     AS $$
+
   CREATE TEMP TABLE IF NOT EXISTS updated_vehicle_journey
   (
     vehicle_journey_id UUID UNIQUE
   )
-    ON COMMIT DELETE ROWS;
+  ON COMMIT DELETE ROWS;
+
+  CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_ref
+  (
+    journey_pattern_ref_id UUID UNIQUE
+  )
+  ON COMMIT DELETE ROWS;
   $$;
-COMMENT ON FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_table()
-IS 'Create the temp table used to enqueue validation of the changed vehicle journeys from statement-level triggers';
+COMMENT ON FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_tables()
+IS 'Create the temp tables used to enqueue validation of the changed vehicle journeys and journey pattern refs from statement-level triggers';
 
 CREATE OR REPLACE FUNCTION passing_times.passing_times_sequence_already_validated() RETURNS boolean
     LANGUAGE plpgsql
@@ -109,7 +118,7 @@ CREATE OR REPLACE FUNCTION passing_times.queue_validate_passing_times_sequence_b
 BEGIN
   -- RAISE NOTICE 'passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()';
 
-  PERFORM passing_times.create_validate_passing_times_sequence_queue_temp_table();
+  PERFORM passing_times.create_validate_passing_times_sequence_queue_temp_tables();
 
   INSERT INTO updated_vehicle_journey (vehicle_journey_id)
   SELECT DISTINCT vehicle_journey_id
@@ -122,6 +131,25 @@ $$;
 COMMENT ON FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()
 IS 'Queue modified vehicle journeys for passing time sequence validation which is performed at the end of transaction.';
 
+CREATE OR REPLACE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE NOTICE 'service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()';
+
+  PERFORM passing_times.create_validate_passing_times_sequence_queue_temp_tables();
+
+  INSERT INTO updated_journey_pattern_ref (journey_pattern_ref_id)
+  SELECT DISTINCT journey_pattern_ref_id
+  FROM new_table
+  ON CONFLICT DO NOTHING;
+
+  RETURN NULL;
+END;
+$$;
+COMMENT ON FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()
+IS 'Queue modified journey pattern refs for passing time sequence validation which is performed at the end of transaction.';
+
 CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -130,15 +158,22 @@ DECLARE
 BEGIN
   -- RAISE NOTICE 'passing_times.validate_passing_time_sequences()';
 
+  -- Retrieve all the vehicle_journey_ids and journey_pattern_ref_ids
+  -- from the queues and perform the validation for all included passing times.
   FOR row_validation_data IN (
     WITH filter_vehicle_journey_ids AS (
-      SELECT array_agg(DISTINCT updated_vehicle_journey.vehicle_journey_id) AS ids
+      SELECT array_agg(DISTINCT vehicle_journey_id) AS ids
       FROM updated_vehicle_journey
+    ),
+    filter_journey_pattern_ref_ids AS (
+      SELECT array_agg(DISTINCT journey_pattern_ref_id) AS ids
+      FROM updated_journey_pattern_ref
     )
 
     SELECT *
     FROM passing_times.get_passing_time_order_validity_data(
-      (SELECT ids FROM filter_vehicle_journey_ids)
+      (SELECT ids FROM filter_vehicle_journey_ids),
+      (SELECT ids FROM filter_journey_pattern_ref_ids)
     )
 
     JOIN passing_times.timetabled_passing_time USING (vehicle_journey_id)
@@ -199,7 +234,7 @@ IS 'Perform validation of all passing time sequences that have been added to the
 -- 1. queue_validate_passing_times_sequence_on_pt_update_trigger (or insert_trigger: these need to be separate because PostgreSQL doesn't accept INSERT OR UPDATE here)
 -- * note that this is NOT DEFERRABLE (default)
 -- --> calls queue_validate_passing_times_sequence_by_vehicle_journey_id:
--- * creates queue table if needed ( create_validate_passing_times_sequence_queue_temp_table )
+-- * creates queue tables if needed ( passing_times.create_validate_passing_times_sequence_queue_temp_table )
 -- * this queues vehicle journeys to be validated by inserting their ids to the queue temp table, no actual validation performed yet.
 -- 2. validate_passing_times_sequence_trigger
 -- * checked at end of transaction (INITIALLY DEFERRED).
@@ -237,5 +272,36 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   WHEN (NOT passing_times.passing_times_sequence_already_validated())
   EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
+    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
+  AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  REFERENCING NEW TABLE AS new_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
+  AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  REFERENCING NEW TABLE AS new_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
+  AFTER UPDATE OR INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW
+  WHEN (NOT passing_times.passing_times_sequence_already_validated())
+  EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
