@@ -101,7 +101,7 @@ BEGIN
 END;
 $$;
 
--- drop all functions in jore4 schemas
+-- drop all functions in jore4 schemas which are not declared as immutable
 DO $$
 DECLARE
   sql_command text;
@@ -127,7 +127,8 @@ BEGIN
     'vehicle_service'::regnamespace,
     'vehicle_journey'::regnamespace,
     'passing_times'::regnamespace
-  );
+  )
+  AND provolatile NOT IN ('i');
 
   IF sql_command IS NOT NULL THEN
     EXECUTE sql_command;
