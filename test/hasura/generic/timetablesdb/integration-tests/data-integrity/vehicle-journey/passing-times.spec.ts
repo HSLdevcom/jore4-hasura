@@ -410,4 +410,65 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
     )(response);
   });
+
+  it('should trigger validation on scheduled stop point in journey pattern ref update and fail an invalid sequence', async () => {
+    const testStopPoint =
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop2;
+    const nextStopPoint =
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop3;
+
+    const updateQuery = buildUpdateStopPointsMutation([
+      buildPartialUpdateStopPointMutation(
+        'dummy_update_to_bypass_unique_constraint',
+        nextStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
+        {
+          scheduled_stop_point_sequence:
+            nextStopPoint.scheduled_stop_point_sequence + 10,
+        },
+      ),
+      buildPartialUpdateStopPointMutation(
+        'update_sp2',
+        testStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
+        {
+          scheduled_stop_point_sequence:
+            testStopPoint.scheduled_stop_point_sequence + 1,
+        },
+      ),
+      buildPartialUpdateStopPointMutation(
+        'update_sp3',
+        nextStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
+        {
+          scheduled_stop_point_sequence:
+            nextStopPoint.scheduled_stop_point_sequence - 1,
+        },
+      ),
+    ]);
+
+    const response = await postQuery(updateQuery);
+
+    expectErrorResponse(
+      'passing times and their matching stop points must be in same order',
+    )(response);
+  });
+
+  it('should trigger validation on scheduled stop point in journey pattern ref update and pass a valid sequence', async () => {
+    // Last stop. Incrementing sequence just results in a gap, which is fine.
+    const testStopPoint =
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop4;
+
+    const updateQuery = buildUpdateStopPointsMutation([
+      buildPartialUpdateStopPointMutation(
+        'update_sp',
+        testStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
+        {
+          scheduled_stop_point_sequence:
+            testStopPoint.scheduled_stop_point_sequence + 10,
+        },
+      ),
+    ]);
+
+    const response = await postQuery(updateQuery);
+
+    expectNoErrors(response);
+  });
 });
