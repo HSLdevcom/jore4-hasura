@@ -122,7 +122,7 @@ BEGIN
 
   INSERT INTO updated_vehicle_journey (vehicle_journey_id)
   SELECT DISTINCT vehicle_journey_id
-  FROM new_table
+  FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
   ON CONFLICT DO NOTHING;
 
   RETURN NULL;
@@ -247,7 +247,7 @@ IS 'Perform validation of all passing time sequences that have been added to the
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
   AFTER UPDATE ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
@@ -257,11 +257,21 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on upd
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
   AFTER INSERT ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
+  AFTER DELETE ON passing_times.timetabled_passing_time
+  REFERENCING OLD TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
 
 DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time;
