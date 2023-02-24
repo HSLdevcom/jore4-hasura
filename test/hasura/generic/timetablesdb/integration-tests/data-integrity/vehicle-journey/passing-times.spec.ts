@@ -47,6 +47,19 @@ mutation {
 }
 `;
 
+  const buildDeletePassingTimeMutation = (timetabledPassingTimeId: UUID) => `
+mutation {
+  timetables {
+    timetables_delete_passing_times_timetabled_passing_time_by_pk(
+      timetabled_passing_time_id: "${timetabledPassingTimeId}"
+    ) {
+      ${buildPropNameArray(
+        genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
+      )}
+    }
+  }
+}
+  `;
 
   const buildInsertOnePassingTimeMutation = (
     toInsert: Partial<TimetabledPassingTime>,
@@ -409,6 +422,39 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     expectErrorResponse(
       'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
     )(response);
+    expectErrorResponse(
+      `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
+    )(response);
+  });
+
+  it('should trigger validation on passing time delete and pass a valid sequence', async () => {
+    // Gaps in sequence are OK so can delete non-first or non-last passing time.
+    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+    const deleteQuery = buildDeletePassingTimeMutation(
+      testPassingTime.timetabled_passing_time_id,
+    );
+
+    const response = await postQuery(deleteQuery);
+
+    expectNoErrors(response);
+  });
+
+  it('should trigger validation on passing time delete and fail an invalid sequence', async () => {
+    // Delete last -> 2nd last has non-null departure_time -> invalid sequence.
+    const lastPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+    const previousPassingTime =
+      timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+    const response = await postQuery(
+      buildDeletePassingTimeMutation(
+        lastPassingTime.timetabled_passing_time_id,
+      ),
+    );
+
+    expectErrorResponse('last passing time must not have departure_time set')(
+      response,
+    );
     expectErrorResponse(
       `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
     )(response);
