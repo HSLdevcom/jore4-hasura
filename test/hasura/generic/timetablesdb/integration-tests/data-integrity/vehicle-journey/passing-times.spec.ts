@@ -388,6 +388,32 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     expectNoErrors(response);
   });
 
+  it('should not accept inconsistent journey pattern references within a sequence', async () => {
+    // The sequence number is same, but stop points belong to different journey patterns.
+    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+    const differentVehicleJourneyPassingTime =
+      timetabledPassingTimesByName.v1MonFriJourney1Stop2;
+
+    const toBeUpdated = {
+      scheduled_stop_point_in_journey_pattern_ref_id:
+        differentVehicleJourneyPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
+    };
+
+    const response = await postQuery(
+      buildUpdatePassingTimeMutation(
+        testPassingTime.timetabled_passing_time_id,
+        toBeUpdated,
+      ),
+    );
+
+    expectErrorResponse(
+      'inconsistent journey_pattern_ref within vehicle journey, all timetabled_passing_times must reference same journey_pattern_ref as the vehicle_journey',
+    )(response);
+    expectErrorResponse(
+      `vehicle_journey_id ${testPassingTime.vehicle_journey_id}`,
+    )(response);
+  });
+
   it('should trigger validation on passing time insert', async () => {
     const previousPassingTime =
       timetabledPassingTimesByName.v1MonFriJourney2Stop4;
