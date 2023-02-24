@@ -1,0 +1,2 @@
+DROP INDEX passing_times.passing_times_timetabled_passing_time_vehicle_journey_id_scheduled_stop_point_in_journey_pattern_ref_id_unique_idx;
+CREATE INDEX idx_timetabled_passing_time_vehicle_journey ON passing_times.timetabled_passing_time USING btree (vehicle_journey_id);

@@ -414,14 +414,40 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     )(response);
   });
 
+  it('should not accept sequence where same scheduled stop point is used multiple times', async () => {
+    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+    const nextPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+    const toBeUpdated = {
+      scheduled_stop_point_in_journey_pattern_ref_id:
+        nextPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
+    };
+
+    const response = await postQuery(
+      buildUpdatePassingTimeMutation(
+        testPassingTime.timetabled_passing_time_id,
+        toBeUpdated,
+      ),
+    );
+
+    expectErrorResponse(
+      'Uniqueness violation. duplicate key value violates unique constraint \\"passing_times_timetabled_passing_time_vehicle_journey_id_schedu',
+    )(response);
+  });
+
   it('should trigger validation on passing time insert', async () => {
-    const previousPassingTime =
-      timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-    // Insert as last -> previous last incorrectly has departure_time: null and should fail.
+    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+    // "Make room" in the sequence first so we have a valid spot to insert to.
+    const deleteQuery = buildDeletePassingTimeMutation(
+      testPassingTime.timetabled_passing_time_id,
+    );
+    const deleteResponse = await postQuery(deleteQuery);
+    expectNoErrors(deleteResponse);
+
+    // Insert as non-last -> incorrectly has departure_time: null and should fail.
     const toInsert: TimetabledPassingTime = {
-      ...previousPassingTime,
+      ...testPassingTime,
       timetabled_passing_time_id: 'f8af422e-610b-4772-80f7-96562ca861b9',
-      arrival_time: previousPassingTime.arrival_time.plus({ minutes: 5 }),
       departure_time: null,
     };
 
@@ -447,7 +473,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
     )(response);
     expectErrorResponse(
-      `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
+      `vehicle_journey_id ${toInsert.vehicle_journey_id}, timetabled_passing_time_id ${toInsert.timetabled_passing_time_id}`,
     )(response);
   });
 
