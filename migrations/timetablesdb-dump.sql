@@ -171,6 +171,13 @@ COMMENT ON FUNCTION passing_times.validate_passing_time_sequences() IS 'Perform 
 COMMENT ON TABLE passing_times.timetabled_passing_time IS 'Long-term planned time data concerning public transport vehicles passing a particular POINT IN JOURNEY PATTERN on a specified VEHICLE JOURNEY for a certain DAY TYPE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:946 ';
 
 --
+-- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+--
 -- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
@@ -739,7 +746,7 @@ BEGIN
 
   INSERT INTO updated_vehicle_journey (vehicle_journey_id)
   SELECT DISTINCT vehicle_journey_id
-  FROM new_table
+  FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
   ON CONFLICT DO NOTHING;
 
   RETURN NULL;
@@ -1173,16 +1180,22 @@ CREATE TABLE vehicle_type.vehicle_type (
 ALTER TABLE vehicle_type.vehicle_type OWNER TO dbhasura;
 
 --
+-- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+
+--
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_insert_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_update_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
 
 --
 -- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
