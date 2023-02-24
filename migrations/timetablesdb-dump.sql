@@ -646,7 +646,7 @@ ALTER FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_t
 -- Name: get_passing_time_order_validity_data(uuid[], uuid[]); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[], filter_journey_pattern_ref_ids uuid[]) RETURNS TABLE(vehicle_journey_id uuid, first_passing_time_id uuid, last_passing_time_id uuid, stop_order_is_valid boolean)
+CREATE FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[], filter_journey_pattern_ref_ids uuid[]) RETURNS TABLE(vehicle_journey_id uuid, first_passing_time_id uuid, last_passing_time_id uuid, stop_order_is_valid boolean, coherent_journey_pattern_refs boolean)
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH RECURSIVE
@@ -654,13 +654,16 @@ WITH RECURSIVE
   passing_time_sequence_combos AS (
     SELECT
       tpt.*,
+      vj.journey_pattern_ref_id AS vehicle_journey_journey_pattern_ref_id,
+      ssp.journey_pattern_ref_id AS stop_point_journey_pattern_ref_id,
       -- Create a continuous sequence number of the scheduled_stop_point_sequence
       -- (which is not required to be continuous, i.e. there can be gaps).
       ROW_NUMBER() OVER (PARTITION BY tpt.vehicle_journey_id ORDER BY ssp.scheduled_stop_point_sequence) stop_point_order
     FROM passing_times.timetabled_passing_time tpt
     JOIN service_pattern.scheduled_stop_point_in_journey_pattern_ref ssp USING (scheduled_stop_point_in_journey_pattern_ref_id)
+    JOIN vehicle_journey.vehicle_journey vj USING (vehicle_journey_id)
     WHERE vehicle_journey_id = ANY(filter_vehicle_journey_ids)
-    OR journey_pattern_ref_id = ANY(filter_journey_pattern_ref_ids)
+    OR ssp.journey_pattern_ref_id = ANY(filter_journey_pattern_ref_ids)
   ),
   -- Try to go through passing times in sequence order,
   -- and mark if the passing times are in matching order.
@@ -682,7 +685,12 @@ WITH RECURSIVE
   stop_point_order_validity AS (
     SELECT
       DISTINCT vehicle_journey_id,
-      EVERY(is_after_previous) AS stop_order_is_valid
+      EVERY(is_after_previous) AS stop_order_is_valid,
+      -- There exists two paths between vehicle_journey and journey_pattern_ref:
+      -- 1. directly from vehicle_journey -> journey_pattern_ref
+      -- 2. via timetabled_passing_times and related scheduled_stop_point_in_journey_pattern_ref
+      -- Let's ensure that vehicle_journey and its timetabled_passing_times reference same journey_pattern_ref
+      EVERY(vehicle_journey_journey_pattern_ref_id = stop_point_journey_pattern_ref_id) AS coherent_journey_pattern_refs
     FROM traversal GROUP BY vehicle_journey_id
   ),
   -- Select ids of first and last passing times for journey, according to stop point order.
@@ -701,7 +709,8 @@ SELECT
   vehicle_journey_id,
   first_passing_time_id,
   last_passing_time_id,
-  stop_order_is_valid
+  stop_order_is_valid,
+  coherent_journey_pattern_refs
 FROM stop_point_order_validity JOIN first_last_passing_times USING (vehicle_journey_id)
 $$;
 
@@ -825,6 +834,12 @@ BEGIN
     THEN
       RAISE EXCEPTION 'all passing time that are not first or last in the sequence must have both departure and arrival time defined: vehicle_journey_id %, timetabled_passing_time_id %',
         row_validation_data.vehicle_journey_id, row_validation_data.timetabled_passing_time_id;
+    END IF;
+
+    IF (row_validation_data.coherent_journey_pattern_refs = false)
+    THEN
+      RAISE EXCEPTION 'inconsistent journey_pattern_ref within vehicle journey, all timetabled_passing_times must reference same journey_pattern_ref as the vehicle_journey: vehicle_journey_id %',
+        row_validation_data.vehicle_journey_id;
     END IF;
   END LOOP;
 
