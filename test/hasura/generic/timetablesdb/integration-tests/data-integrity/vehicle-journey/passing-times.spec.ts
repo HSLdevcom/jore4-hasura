@@ -25,12 +25,18 @@ describe('Vehicle journey passing time validation', () => {
 
   beforeEach(() => setupDb(dbConnection, defaultGenericTimetablesDbData));
 
-  const buildUpdatePassingTimeMutation = (
+  const wrapWithTimetablesMutation = (mutation: string) => `
+mutation {
+  timetables {
+    ${mutation}
+  }
+}
+`;
+
+  const buildPartialUpdatePassingTimeMutation = (
     passingTimeId: UUID,
     toBeUpdated: Partial<TimetabledPassingTime>,
   ) => `
-mutation {
-  timetables {
     timetables_update_passing_times_timetabled_passing_time(
       where: {
         timetabled_passing_time_id: {_eq: "${passingTimeId}"}
@@ -43,13 +49,11 @@ mutation {
         )}
       }
     }
-  }
-}
 `;
 
-  const buildDeletePassingTimeMutation = (timetabledPassingTimeId: UUID) => `
-mutation {
-  timetables {
+  const buildPartialDeletePassingTimeMutation = (
+    timetabledPassingTimeId: UUID,
+  ) => `
     timetables_delete_passing_times_timetabled_passing_time_by_pk(
       timetabled_passing_time_id: "${timetabledPassingTimeId}"
     ) {
@@ -57,9 +61,20 @@ mutation {
         genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
       )}
     }
-  }
-}
-  `;
+`;
+
+  const buildUpdatePassingTimeMutation = (
+    passingTimeId: UUID,
+    toBeUpdated: Partial<TimetabledPassingTime>,
+  ) =>
+    wrapWithTimetablesMutation(
+      buildPartialUpdatePassingTimeMutation(passingTimeId, toBeUpdated),
+    );
+
+  const buildDeletePassingTimeMutation = (timetabledPassingTimeId: UUID) =>
+    wrapWithTimetablesMutation(
+      buildPartialDeletePassingTimeMutation(timetabledPassingTimeId),
+    );
 
   const buildInsertOnePassingTimeMutation = (
     toInsert: Partial<TimetabledPassingTime>,
@@ -77,13 +92,8 @@ mutation {
   }
 `;
 
-  const buildUpdateStopPointsMutation = (updateMutations: string[]) => `
-mutation {
-  timetables {
-    ${updateMutations.join('\n    ')}
-  }
-}
-`;
+  const buildUpdateStopPointsMutation = (updateMutations: string[]) =>
+    wrapWithTimetablesMutation(updateMutations.join('\n    '));
 
   const buildPartialUpdateStopPointMutation = (
     alias: string,
@@ -164,6 +174,47 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
         },
       }),
     );
+  });
+
+  it('should only validate sequence state at the end of transaction', async () => {
+    const lastPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+    const newLastPassingTime =
+      timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+    expect(lastPassingTime.departure_time).toBe(null);
+
+    // Delete last point: after this the sequence is invalid because last stop has departure_time set.
+    const deleteMutationPartial = buildPartialDeletePassingTimeMutation(
+      lastPassingTime.timetabled_passing_time_id,
+    );
+    // Fix the new last stop.
+    const updateMutationPartial = buildPartialUpdatePassingTimeMutation(
+      newLastPassingTime.timetabled_passing_time_id,
+      { departure_time: null },
+    );
+
+    // Sanity check the test, verify that delete and update fail individually.
+    const deleteResponse = await postQuery(
+      wrapWithTimetablesMutation(deleteMutationPartial),
+    );
+    expectErrorResponse('last passing time must not have departure_time set')(
+      deleteResponse,
+    );
+
+    const updateResponse = await postQuery(
+      wrapWithTimetablesMutation(updateMutationPartial),
+    );
+    expectErrorResponse('must have both departure and arrival time defined')(
+      updateResponse,
+    );
+
+    // When done in a single transaction, the process succeeds.
+    const combinedMutation = wrapWithTimetablesMutation(`
+      ${deleteMutationPartial}
+      ${updateMutationPartial}
+    `);
+
+    const response = await postQuery(combinedMutation);
+    expectNoErrors(response);
   });
 
   it('should not accept a passing time missing both arrival_time and departure_time', async () => {
