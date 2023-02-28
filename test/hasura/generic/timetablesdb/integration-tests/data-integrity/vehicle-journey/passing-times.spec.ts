@@ -133,434 +133,462 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     );
   };
 
-  it('should accept a valid passing time', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-    const nextPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+  // Note: most validation logic is shared between UPDATE/INSERT/DELETE.
+  // Such logic is mainly tested here with updates.
+  describe('on updates', () => {
+    it('should accept a valid passing time', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const nextPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
 
-    const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 2 });
-    expect(newStopTime.valueOf()).toBeLessThan(
-      nextPassingTime.arrival_time?.valueOf(),
-    ); // Still valid.
+      const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 2 });
+      expect(newStopTime.valueOf()).toBeLessThan(
+        nextPassingTime.arrival_time?.valueOf(),
+      ); // Still valid.
 
-    const toBeUpdated = {
-      arrival_time: newStopTime,
-      departure_time: newStopTime,
-    };
+      const toBeUpdated = {
+        arrival_time: newStopTime,
+        departure_time: newStopTime,
+      };
 
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
 
-    const expectedUpdated = {
-      ...testPassingTime,
-      ...toBeUpdated,
-    };
+      const expectedUpdated = {
+        ...testPassingTime,
+        ...toBeUpdated,
+      };
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        data: {
-          timetables: {
-            timetables_update_passing_times_timetabled_passing_time: {
-              returning: [
-                {
-                  ...asGraphQlDateObject(expectedUpdated),
-                },
-              ],
+      expect(response).toEqual(
+        expect.objectContaining({
+          data: {
+            timetables: {
+              timetables_update_passing_times_timetabled_passing_time: {
+                returning: [
+                  {
+                    ...asGraphQlDateObject(expectedUpdated),
+                  },
+                ],
+              },
             },
           },
-        },
-      }),
-    );
-  });
+        }),
+      );
+    });
 
-  it('should only validate sequence state at the end of transaction', async () => {
-    const lastPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-    const newLastPassingTime =
-      timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-    expect(lastPassingTime.departure_time).toBe(null);
+    it('should only validate sequence state at the end of transaction', async () => {
+      const lastPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      const newLastPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      expect(lastPassingTime.departure_time).toBe(null);
 
-    // Delete last point: after this the sequence is invalid because last stop has departure_time set.
-    const deleteMutationPartial = buildPartialDeletePassingTimeMutation(
-      lastPassingTime.timetabled_passing_time_id,
-    );
-    // Fix the new last stop.
-    const updateMutationPartial = buildPartialUpdatePassingTimeMutation(
-      newLastPassingTime.timetabled_passing_time_id,
-      { departure_time: null },
-    );
+      // Delete last point: after this the sequence is invalid because last stop has departure_time set.
+      const deleteMutationPartial = buildPartialDeletePassingTimeMutation(
+        lastPassingTime.timetabled_passing_time_id,
+      );
+      // Fix the new last stop.
+      const updateMutationPartial = buildPartialUpdatePassingTimeMutation(
+        newLastPassingTime.timetabled_passing_time_id,
+        { departure_time: null },
+      );
 
-    // Sanity check the test, verify that delete and update fail individually.
-    const deleteResponse = await postQuery(
-      wrapWithTimetablesMutation(deleteMutationPartial),
-    );
-    expectErrorResponse('last passing time must not have departure_time set')(
-      deleteResponse,
-    );
+      // Sanity check the test, verify that delete and update fail individually.
+      const deleteResponse = await postQuery(
+        wrapWithTimetablesMutation(deleteMutationPartial),
+      );
+      expectErrorResponse('last passing time must not have departure_time set')(
+        deleteResponse,
+      );
 
-    const updateResponse = await postQuery(
-      wrapWithTimetablesMutation(updateMutationPartial),
-    );
-    expectErrorResponse('must have both departure and arrival time defined')(
-      updateResponse,
-    );
+      const updateResponse = await postQuery(
+        wrapWithTimetablesMutation(updateMutationPartial),
+      );
+      expectErrorResponse('must have both departure and arrival time defined')(
+        updateResponse,
+      );
 
-    // When done in a single transaction, the process succeeds.
-    const combinedMutation = wrapWithTimetablesMutation(`
+      // When done in a single transaction, the process succeeds.
+      const combinedMutation = wrapWithTimetablesMutation(`
       ${deleteMutationPartial}
       ${updateMutationPartial}
     `);
 
-    const response = await postQuery(combinedMutation);
-    expectNoErrors(response);
+      const response = await postQuery(combinedMutation);
+      expectNoErrors(response);
+    });
+
+    it('should not accept a passing time missing both arrival_time and departure_time', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      const toBeUpdated = {
+        arrival_time: null,
+        departure_time: null,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'Not-NULL violation. null value in column \\"passing_time\\" violates not-null constraint',
+      )(response);
+    });
+
+    it('should not accept passing time with arrival_time > departure_time', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      const toBeUpdated = {
+        arrival_time: testPassingTime.arrival_time,
+        departure_time: testPassingTime.departure_time.minus({ minutes: 1 }),
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'Check constraint violation. new row for relation \\"timetabled_passing_time\\" violates check constraint \\"arrival_not_after_departure\\"',
+      )(response);
+    });
+
+    it('should not accept passing time without arrival_time when it is for a non-last stop point', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      const toBeUpdated = {
+        arrival_time: null,
+        departure_time: testPassingTime.departure_time,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
+      )(response);
+    });
+
+    it('should not accept passing time without departure_time when it is for a non-first stop point', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      const toBeUpdated = {
+        arrival_time: testPassingTime.arrival_time,
+        departure_time: null,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
+      )(response);
+    });
+
+    it("should not accept a passing time with arrival_time before the previous passing time's departure_time", async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const nextPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+
+      const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 10 });
+      expect(newStopTime.valueOf()).toBeGreaterThan(
+        nextPassingTime.arrival_time?.valueOf(),
+      );
+
+      const toBeUpdated = {
+        arrival_time: newStopTime,
+        departure_time: newStopTime,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'passing times and their matching stop points must be in same order',
+      )(response);
+    });
+
+    it('should not accept a sequence where passing times overlap: arrival to next stop before departure from previous stop', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+      const nextPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      // Need two passing times with arrival > departure to verify this case.
+      // Individually both arrival_time and departure_time fields are still in correct order,
+      // but passing time as a whole is not since they overlap:
+      // bus would arrive to stop3 before departing from stop2.
+      const stop2PassingTimeUpdate = {
+        arrival_time: Duration.fromISO('PT7H16M'),
+        departure_time: Duration.fromISO('PT7H19M'),
+      };
+      const stop3PassingTimeUpdate = {
+        arrival_time: Duration.fromISO('PT7H18M'),
+        departure_time: Duration.fromISO('PT7H20M'),
+      };
+
+      // Setup, nothing wrong with this yet.
+      const nextPassingTimeUpdateResponse = await postQuery(
+        buildUpdatePassingTimeMutation(
+          nextPassingTime.timetabled_passing_time_id,
+          stop3PassingTimeUpdate,
+        ),
+      );
+      expectNoErrors(nextPassingTimeUpdateResponse);
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          stop2PassingTimeUpdate,
+        ),
+      );
+
+      expectErrorResponse(
+        'passing times and their matching stop points must be in same order',
+      )(response);
+    });
+
+    it("should accept a passing time with same arrival_time as the previous passing time's departure_time", async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const previousPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+
+      const newStopTime = previousPassingTime.departure_time;
+
+      const toBeUpdated = {
+        arrival_time: newStopTime,
+        departure_time: newStopTime,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectNoErrors(response);
+    });
+
+    it('should not be able to create vehicle journey where first passing_time has an arrival time', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop1;
+      expect(testPassingTime.arrival_time).toBe(null);
+
+      const toBeUpdated = {
+        arrival_time: testPassingTime.departure_time,
+        departure_time: testPassingTime.departure_time,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse('first passing time must not have arrival_time set')(
+        response,
+      );
+    });
+
+    it('should not be able to create vehicle journey where last passing_time has a departure time', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      expect(testPassingTime.departure_time).toBe(null);
+
+      const toBeUpdated = {
+        arrival_time: testPassingTime.arrival_time,
+        departure_time: testPassingTime.arrival_time,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse('last passing time must not have departure_time set')(
+        response,
+      );
+    });
+
+    it('should accept valid passing times with non-continuous sequence', async () => {
+      const testStopPoint1 =
+        scheduledStopPointsInJourneyPatternRefByName.route123InboundStop3;
+      const testStopPoint2 =
+        scheduledStopPointsInJourneyPatternRefByName.route123InboundStop4;
+
+      const updateQuery = buildUpdateStopPointsMutation([
+        buildPartialUpdateStopPointMutation(
+          'update_sp1',
+          testStopPoint1.scheduled_stop_point_in_journey_pattern_ref_id,
+          {
+            scheduled_stop_point_sequence:
+              testStopPoint1.scheduled_stop_point_sequence + 5,
+          },
+        ),
+        buildPartialUpdateStopPointMutation(
+          'update_sp2',
+          testStopPoint2.scheduled_stop_point_in_journey_pattern_ref_id,
+          {
+            scheduled_stop_point_sequence:
+              testStopPoint2.scheduled_stop_point_sequence + 6,
+          },
+        ),
+      ]);
+
+      const response = await postQuery(updateQuery);
+
+      expectNoErrors(response);
+    });
+
+    it('should not accept inconsistent journey pattern references within a sequence', async () => {
+      // The sequence number is same, but stop points belong to different journey patterns.
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+      const differentVehicleJourneyPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney1Stop2;
+
+      const toBeUpdated = {
+        scheduled_stop_point_in_journey_pattern_ref_id:
+          differentVehicleJourneyPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'inconsistent journey_pattern_ref within vehicle journey, all timetabled_passing_times must reference same journey_pattern_ref as the vehicle_journey',
+      )(response);
+      expectErrorResponse(
+        `vehicle_journey_id ${testPassingTime.vehicle_journey_id}`,
+      )(response);
+    });
+
+    it('should not accept sequence where same scheduled stop point is used multiple times', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+      const nextPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+
+      const toBeUpdated = {
+        scheduled_stop_point_in_journey_pattern_ref_id:
+          nextPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
+      };
+
+      const response = await postQuery(
+        buildUpdatePassingTimeMutation(
+          testPassingTime.timetabled_passing_time_id,
+          toBeUpdated,
+        ),
+      );
+
+      expectErrorResponse(
+        'Uniqueness violation. duplicate key value violates unique constraint \\"timetabled_passing_time_stop_point_unique_idx\\',
+      )(response);
+    });
   });
 
-  it('should not accept a passing time missing both arrival_time and departure_time', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    const toBeUpdated = {
-      arrival_time: null,
-      departure_time: null,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
+  describe('on inserts', () => {
+    it('should trigger validation on passing time insert', async () => {
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      // "Make room" in the sequence first so we have a valid spot to insert to.
+      const deleteQuery = buildDeletePassingTimeMutation(
         testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
+      );
+      const deleteResponse = await postQuery(deleteQuery);
+      expectNoErrors(deleteResponse);
 
-    expectErrorResponse(
-      'Not-NULL violation. null value in column \\"passing_time\\" violates not-null constraint',
-    )(response);
+      // Insert as non-last -> incorrectly has departure_time: null and should fail.
+      const toInsert: TimetabledPassingTime = {
+        ...testPassingTime,
+        timetabled_passing_time_id: 'f8af422e-610b-4772-80f7-96562ca861b9',
+        departure_time: null,
+      };
+
+      const response = await postQuery(
+        buildInsertOnePassingTimeMutation(toInsert),
+      );
+
+      expectErrorResponse(
+        'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
+      )(response);
+      expectErrorResponse(
+        `vehicle_journey_id ${toInsert.vehicle_journey_id}, timetabled_passing_time_id ${toInsert.timetabled_passing_time_id}`,
+      )(response);
+    });
   });
 
-  it('should not accept passing time with arrival_time > departure_time', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+  describe('on deletes', () => {
+    it('should trigger validation on passing time delete and pass a valid sequence', async () => {
+      // Gaps in sequence are OK so can delete non-first or non-last passing time.
+      const testPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
 
-    const toBeUpdated = {
-      arrival_time: testPassingTime.arrival_time,
-      departure_time: testPassingTime.departure_time.minus({ minutes: 1 }),
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
+      const deleteQuery = buildDeletePassingTimeMutation(
         testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
+      );
 
-    expectErrorResponse(
-      'Check constraint violation. new row for relation \\"timetabled_passing_time\\" violates check constraint \\"arrival_not_after_departure\\"',
-    )(response);
-  });
+      const response = await postQuery(deleteQuery);
 
-  it('should not accept passing time without arrival_time when it is for a non-last stop point', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      expectNoErrors(response);
+    });
 
-    const toBeUpdated = {
-      arrival_time: null,
-      departure_time: testPassingTime.departure_time,
-    };
+    it('should trigger validation on passing time delete and fail an invalid sequence', async () => {
+      // Delete last -> 2nd last has non-null departure_time -> invalid sequence.
+      const lastPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      const previousPassingTime =
+        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
 
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
+      const response = await postQuery(
+        buildDeletePassingTimeMutation(
+          lastPassingTime.timetabled_passing_time_id,
+        ),
+      );
 
-    expectErrorResponse(
-      'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
-    )(response);
-  });
-
-  it('should not accept passing time without departure_time when it is for a non-first stop point', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    const toBeUpdated = {
-      arrival_time: testPassingTime.arrival_time,
-      departure_time: null,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse(
-      'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
-    )(response);
-  });
-
-  it("should not accept a passing time with arrival_time before the previous passing time's departure_time", async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-    const nextPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-
-    const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 10 });
-    expect(newStopTime.valueOf()).toBeGreaterThan(
-      nextPassingTime.arrival_time?.valueOf(),
-    );
-
-    const toBeUpdated = {
-      arrival_time: newStopTime,
-      departure_time: newStopTime,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse(
-      'passing times and their matching stop points must be in same order',
-    )(response);
-  });
-
-  it('should not accept a sequence where passing times overlap: arrival to next stop before departure from previous stop', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-    const nextPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    // Need two passing times with arrival > departure to verify this case.
-    // Individually both arrival_time and departure_time fields are still in correct order,
-    // but passing time as a whole is not since they overlap:
-    // bus would arrive to stop3 before departing from stop2.
-    const stop2PassingTimeUpdate = {
-      arrival_time: Duration.fromISO('PT7H16M'),
-      departure_time: Duration.fromISO('PT7H19M'),
-    };
-    const stop3PassingTimeUpdate = {
-      arrival_time: Duration.fromISO('PT7H18M'),
-      departure_time: Duration.fromISO('PT7H20M'),
-    };
-
-    // Setup, nothing wrong with this yet.
-    const nextPassingTimeUpdateResponse = await postQuery(
-      buildUpdatePassingTimeMutation(
-        nextPassingTime.timetabled_passing_time_id,
-        stop3PassingTimeUpdate,
-      ),
-    );
-    expectNoErrors(nextPassingTimeUpdateResponse);
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        stop2PassingTimeUpdate,
-      ),
-    );
-
-    expectErrorResponse(
-      'passing times and their matching stop points must be in same order',
-    )(response);
-  });
-
-  it("should accept a passing time with same arrival_time as the previous passing time's departure_time", async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-    const previousPassingTime =
-      timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-
-    const newStopTime = previousPassingTime.departure_time;
-
-    const toBeUpdated = {
-      arrival_time: newStopTime,
-      departure_time: newStopTime,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectNoErrors(response);
-  });
-
-  it('should not be able to create vehicle journey where first passing_time has an arrival time', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop1;
-    expect(testPassingTime.arrival_time).toBe(null);
-
-    const toBeUpdated = {
-      arrival_time: testPassingTime.departure_time,
-      departure_time: testPassingTime.departure_time,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse('first passing time must not have arrival_time set')(
-      response,
-    );
-  });
-
-  it('should not be able to create vehicle journey where last passing_time has a departure time', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-    expect(testPassingTime.departure_time).toBe(null);
-
-    const toBeUpdated = {
-      arrival_time: testPassingTime.arrival_time,
-      departure_time: testPassingTime.arrival_time,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse('last passing time must not have departure_time set')(
-      response,
-    );
-  });
-
-  it('should accept valid passing times with non-continuous sequence', async () => {
-    const testStopPoint1 =
-      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop3;
-    const testStopPoint2 =
-      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop4;
-
-    const updateQuery = buildUpdateStopPointsMutation([
-      buildPartialUpdateStopPointMutation(
-        'update_sp1',
-        testStopPoint1.scheduled_stop_point_in_journey_pattern_ref_id,
-        {
-          scheduled_stop_point_sequence:
-            testStopPoint1.scheduled_stop_point_sequence + 5,
-        },
-      ),
-      buildPartialUpdateStopPointMutation(
-        'update_sp2',
-        testStopPoint2.scheduled_stop_point_in_journey_pattern_ref_id,
-        {
-          scheduled_stop_point_sequence:
-            testStopPoint2.scheduled_stop_point_sequence + 6,
-        },
-      ),
-    ]);
-
-    const response = await postQuery(updateQuery);
-
-    expectNoErrors(response);
-  });
-
-  it('should not accept inconsistent journey pattern references within a sequence', async () => {
-    // The sequence number is same, but stop points belong to different journey patterns.
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-    const differentVehicleJourneyPassingTime =
-      timetabledPassingTimesByName.v1MonFriJourney1Stop2;
-
-    const toBeUpdated = {
-      scheduled_stop_point_in_journey_pattern_ref_id:
-        differentVehicleJourneyPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse(
-      'inconsistent journey_pattern_ref within vehicle journey, all timetabled_passing_times must reference same journey_pattern_ref as the vehicle_journey',
-    )(response);
-    expectErrorResponse(
-      `vehicle_journey_id ${testPassingTime.vehicle_journey_id}`,
-    )(response);
-  });
-
-  it('should not accept sequence where same scheduled stop point is used multiple times', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-    const nextPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    const toBeUpdated = {
-      scheduled_stop_point_in_journey_pattern_ref_id:
-        nextPassingTime.scheduled_stop_point_in_journey_pattern_ref_id,
-    };
-
-    const response = await postQuery(
-      buildUpdatePassingTimeMutation(
-        testPassingTime.timetabled_passing_time_id,
-        toBeUpdated,
-      ),
-    );
-
-    expectErrorResponse(
-      'Uniqueness violation. duplicate key value violates unique constraint \\"timetabled_passing_time_stop_point_unique_idx\\',
-    )(response);
-  });
-
-  it('should trigger validation on passing time insert', async () => {
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-    // "Make room" in the sequence first so we have a valid spot to insert to.
-    const deleteQuery = buildDeletePassingTimeMutation(
-      testPassingTime.timetabled_passing_time_id,
-    );
-    const deleteResponse = await postQuery(deleteQuery);
-    expectNoErrors(deleteResponse);
-
-    // Insert as non-last -> incorrectly has departure_time: null and should fail.
-    const toInsert: TimetabledPassingTime = {
-      ...testPassingTime,
-      timetabled_passing_time_id: 'f8af422e-610b-4772-80f7-96562ca861b9',
-      departure_time: null,
-    };
-
-    const response = await postQuery(
-      buildInsertOnePassingTimeMutation(toInsert),
-    );
-
-    expectErrorResponse(
-      'all passing time that are not first or last in the sequence must have both departure and arrival time defined',
-    )(response);
-    expectErrorResponse(
-      `vehicle_journey_id ${toInsert.vehicle_journey_id}, timetabled_passing_time_id ${toInsert.timetabled_passing_time_id}`,
-    )(response);
-  });
-
-  it('should trigger validation on passing time delete and pass a valid sequence', async () => {
-    // Gaps in sequence are OK so can delete non-first or non-last passing time.
-    const testPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    const deleteQuery = buildDeletePassingTimeMutation(
-      testPassingTime.timetabled_passing_time_id,
-    );
-
-    const response = await postQuery(deleteQuery);
-
-    expectNoErrors(response);
-  });
-
-  it('should trigger validation on passing time delete and fail an invalid sequence', async () => {
-    // Delete last -> 2nd last has non-null departure_time -> invalid sequence.
-    const lastPassingTime = timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-    const previousPassingTime =
-      timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-
-    const response = await postQuery(
-      buildDeletePassingTimeMutation(
-        lastPassingTime.timetabled_passing_time_id,
-      ),
-    );
-
-    expectErrorResponse('last passing time must not have departure_time set')(
-      response,
-    );
-    expectErrorResponse(
-      `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
-    )(response);
+      expectErrorResponse('last passing time must not have departure_time set')(
+        response,
+      );
+      expectErrorResponse(
+        `vehicle_journey_id ${previousPassingTime.vehicle_journey_id}, timetabled_passing_time_id ${previousPassingTime.timetabled_passing_time_id}`,
+      )(response);
+    });
   });
 
   it('should trigger validation on scheduled stop point in journey pattern ref update and fail an invalid sequence', async () => {
