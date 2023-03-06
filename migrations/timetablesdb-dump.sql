@@ -86,12 +86,6 @@ COMMENT ON SCHEMA vehicle_schedule IS 'The vehicle schedule frame adapted from T
 COMMENT ON SCHEMA vehicle_service IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
 
 --
--- Name: FUNCTION const_default_timezone(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
---
-
-COMMENT ON FUNCTION internal_utils.const_default_timezone() IS 'Get the default timezone of service calendar.';
-
---
 -- Name: COLUMN journey_pattern_ref.journey_pattern_id; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -259,60 +253,6 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
 
 --
--- Name: COLUMN substitute_operating_day_by_line_type.begin_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_datetime IS 'Calculated timestamp for the instant from which the substituting public transit comes into effect.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.begin_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_time IS 'The time from which the substituting public transit comes into effect. If NULL, the substitution is in effect from the start of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys prior to this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys before this time are operated as usual.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.end_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_datetime IS 'Calculated timestamp for the instant (exclusive) until which the substituting public transit is in effect.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.end_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_time IS 'The time (exclusive) until which the substituting public transit is valid. If NULL, the substitution is in effect until the end of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys starting from this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys starting from this time are operated as usual.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.substitute_day_of_week; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.substitute_day_of_week IS 'The ISO day of week (1=Monday, ... , 7=Sunday) of the day type used as the basis for operating day substitution. A NULL value indicates that there is no public transit at all, i.e. no vehicle journeys are operated within the given time period.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.superseded_date; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.superseded_date IS 'The date of operating day being superseded.';
-
---
--- Name: COLUMN substitute_operating_day_by_line_type.type_of_line; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.type_of_line IS 'The type of line this substitute operating day is bound to.';
-
---
--- Name: FUNCTION const_operating_day_end_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON FUNCTION service_calendar.const_operating_day_end_time() IS 'Get the (exclusive) end time of operating day.';
-
---
--- Name: FUNCTION const_operating_day_start_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON FUNCTION service_calendar.const_operating_day_start_time() IS 'Get the (inclusive) start time of operating day.';
-
---
 -- Name: TABLE day_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -323,12 +263,6 @@ COMMENT ON TABLE service_calendar.day_type IS 'A type of day characterised by on
 --
 
 COMMENT ON TABLE service_calendar.day_type_active_on_day_of_week IS 'Tells on which days of week a particular DAY TYPE is active';
-
---
--- Name: TABLE substitute_operating_day_by_line_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
---
-
-COMMENT ON TABLE service_calendar.substitute_operating_day_by_line_type IS 'Models substitute public transit as (1) a reference day or (2) indicating that public transit does not occur on certain date. Substitute operating days are always bound to a type of line.';
 
 --
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern_ref.journey_pattern_ref_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -578,27 +512,6 @@ ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_pkey PRIMARY KEY (day_type_id, day_of_week);
 
 --
--- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_no_timespan_overlap; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
-    ADD CONSTRAINT substitute_operating_day_by_line_type_no_timespan_overlap EXCLUDE USING gist (type_of_line WITH =, tstzrange(begin_datetime, end_datetime) WITH &&);
-
---
--- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
-    ADD CONSTRAINT substitute_operating_day_by_line_type_pkey PRIMARY KEY (substitute_operating_day_by_line_type_id);
-
---
--- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_unique_dow; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
-    ADD CONSTRAINT substitute_operating_day_by_line_type_unique_dow EXCLUDE USING gist (type_of_line WITH =, superseded_date WITH =, COALESCE(substitute_day_of_week, 0) WITH <>);
-
---
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pattern_ref_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -694,13 +607,6 @@ ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_day_type_id_fkey FOREIGN KEY (day_type_id) REFERENCES service_calendar.day_type(day_type_id);
 
 --
--- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_type_of_line_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
---
-
-ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
-    ADD CONSTRAINT substitute_operating_day_by_line_type_type_of_line_fkey FOREIGN KEY (type_of_line) REFERENCES route.type_of_line(type_of_line);
-
---
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pat_journey_pattern_ref_id_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -755,19 +661,6 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
-
---
--- Name: const_default_timezone(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
---
-
-CREATE FUNCTION internal_utils.const_default_timezone() RETURNS text
-    LANGUAGE sql IMMUTABLE PARALLEL SAFE
-    AS $$
-SELECT 'Europe/Helsinki'
-$$;
-
-
-ALTER FUNCTION internal_utils.const_default_timezone() OWNER TO dbhasura;
 
 --
 -- Name: create_validate_passing_times_sequence_queue_temp_tables(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
@@ -1002,32 +895,6 @@ $$;
 ALTER FUNCTION passing_times.validate_passing_time_sequences() OWNER TO dbhasura;
 
 --
--- Name: const_operating_day_end_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
---
-
-CREATE FUNCTION service_calendar.const_operating_day_end_time() RETURNS interval
-    LANGUAGE sql IMMUTABLE PARALLEL SAFE
-    AS $$
-SELECT interval '28:30:00'
-$$;
-
-
-ALTER FUNCTION service_calendar.const_operating_day_end_time() OWNER TO dbhasura;
-
---
--- Name: const_operating_day_start_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
---
-
-CREATE FUNCTION service_calendar.const_operating_day_start_time() RETURNS interval
-    LANGUAGE sql IMMUTABLE PARALLEL SAFE
-    AS $$
-SELECT interval '04:30:00'
-$$;
-
-
-ALTER FUNCTION service_calendar.const_operating_day_start_time() OWNER TO dbhasura;
-
---
 -- Name: queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1104,12 +971,6 @@ CREATE UNIQUE INDEX timetabled_passing_time_stop_point_unique_idx ON passing_tim
 --
 
 CREATE UNIQUE INDEX service_calendar_day_type_label_idx ON service_calendar.day_type USING btree (label);
-
---
--- Name: substitute_operating_day_by_line_type_type_of_line; Type: INDEX; Schema: service_calendar; Owner: dbhasura
---
-
-CREATE INDEX substitute_operating_day_by_line_type_type_of_line ON service_calendar.substitute_operating_day_by_line_type USING btree (type_of_line);
 
 --
 -- Name: service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
@@ -1312,28 +1173,6 @@ CREATE TABLE service_calendar.day_type_active_on_day_of_week (
 
 
 ALTER TABLE service_calendar.day_type_active_on_day_of_week OWNER TO dbhasura;
-
---
--- Name: substitute_operating_day_by_line_type; Type: TABLE; Schema: service_calendar; Owner: dbhasura
---
-
-CREATE TABLE service_calendar.substitute_operating_day_by_line_type (
-    substitute_operating_day_by_line_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    type_of_line text NOT NULL,
-    superseded_date date NOT NULL,
-    substitute_day_of_week integer,
-    begin_time interval,
-    end_time interval,
-    timezone text DEFAULT internal_utils.const_default_timezone() NOT NULL,
-    begin_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(begin_time, service_calendar.const_operating_day_start_time()) + superseded_date))) STORED NOT NULL,
-    end_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(end_time, service_calendar.const_operating_day_end_time()) + superseded_date))) STORED NOT NULL,
-    CONSTRAINT substitute_operating_day_by_line_type_valid_begin_time CHECK (((begin_time >= service_calendar.const_operating_day_start_time()) AND (begin_time < COALESCE(end_time, service_calendar.const_operating_day_end_time())))),
-    CONSTRAINT substitute_operating_day_by_line_type_valid_dow CHECK (((substitute_day_of_week >= 1) AND (substitute_day_of_week <= 7))),
-    CONSTRAINT substitute_operating_day_by_line_type_valid_end_time CHECK (((end_time > COALESCE(begin_time, service_calendar.const_operating_day_start_time())) AND (end_time <= service_calendar.const_operating_day_end_time())))
-);
-
-
-ALTER TABLE service_calendar.substitute_operating_day_by_line_type OWNER TO dbhasura;
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref; Type: TABLE; Schema: service_pattern; Owner: dbhasura
