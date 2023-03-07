@@ -940,7 +940,7 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of t
 -- Name: COLUMN scheduled_stop_point.validity_start; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time (inclusive).';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'start of the operating date span in the scheduled stop point''s local time (inclusive).';
 
 --
 -- Name: COLUMN vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
