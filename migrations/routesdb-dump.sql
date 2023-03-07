@@ -707,13 +707,13 @@ COMMENT ON COLUMN route.line.type_of_line IS 'The type of the line.';
 -- Name: COLUMN line.validity_end; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.line.validity_end IS 'The point in time from which onwards the line is no longer valid. If NULL, the line will be always valid.';
+COMMENT ON COLUMN route.line.validity_end IS 'The point in time from which onwards the line is no longer valid (inclusive). If NULL, the line will be always valid.';
 
 --
 -- Name: COLUMN line.validity_start; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.line.validity_start IS 'The point in time when the line becomes valid. If NULL, the line has been always valid.';
+COMMENT ON COLUMN route.line.validity_start IS 'The point in time when the line becomes valid (inclusive). If NULL, the line has been always valid.';
 
 --
 -- Name: COLUMN route.description_i18n; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -761,13 +761,13 @@ COMMENT ON COLUMN route.route.unique_label IS 'Derived from label. Routes are un
 -- Name: COLUMN route.validity_end; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.validity_end IS 'The point in time from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
+COMMENT ON COLUMN route.route.validity_end IS 'The point in time (inclusive) from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
 
 --
 -- Name: COLUMN route.validity_start; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.validity_start IS 'The point in time when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
+COMMENT ON COLUMN route.route.validity_start IS 'The point in time (inclusive) when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
 
 --
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -934,13 +934,13 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point.timing_place_id IS 'Optio
 -- Name: COLUMN scheduled_stop_point.validity_end; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time (inclusive).';
 
 --
 -- Name: COLUMN scheduled_stop_point.validity_start; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time (inclusive).';
 
 --
 -- Name: COLUMN vehicle_mode_on_scheduled_stop_point.scheduled_stop_point_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
