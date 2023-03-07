@@ -168,8 +168,8 @@ COMMENT ON COLUMN route.line.line_id IS 'The ID of the line.';
 COMMENT ON COLUMN route.line.name_i18n IS 'The name of the line. Placeholder for multilingual strings.';
 COMMENT ON COLUMN route.line.short_name_i18n IS 'The shorted name of the line. Placeholder for multilingual strings.';
 COMMENT ON COLUMN route.line.primary_vehicle_mode IS 'The mode of the vehicles used as primary on the line.';
-COMMENT ON COLUMN route.line.validity_start IS 'The point in time when the line becomes valid. If NULL, the line has been always valid.';
-COMMENT ON COLUMN route.line.validity_end IS 'The point in time from which onwards the line is no longer valid. If NULL, the line will be always valid.';
+COMMENT ON COLUMN route.line.validity_start IS 'The point in time when the line becomes valid (inclusive). If NULL, the line has been always valid.';
+COMMENT ON COLUMN route.line.validity_end IS 'The point in time from which onwards the line is no longer valid (inclusive). If NULL, the line will be always valid.';
 COMMENT ON COLUMN route.line.priority IS 'The priority of the line definition. The definition may be overridden by higher priority definitions.';
 COMMENT ON COLUMN route.line.label IS 'The label of the line definition. The label is unique for a certain priority and validity period.';
 COMMENT ON COLUMN route.line.type_of_line IS 'The type of the line.';
@@ -203,8 +203,8 @@ COMMENT ON TABLE route.route IS 'The routes from Transmodel: https://www.transmo
 COMMENT ON COLUMN route.route.route_id IS 'The ID of the route.';
 COMMENT ON COLUMN route.route.description_i18n IS 'The description of the route in the form of starting location - destination. Placeholder for multilingual strings.';
 COMMENT ON COLUMN route.route.on_line_id IS 'The line to which this route belongs.';
-COMMENT ON COLUMN route.route.validity_start IS 'The point in time when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
-COMMENT ON COLUMN route.route.validity_end IS 'The point in time from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
+COMMENT ON COLUMN route.route.validity_start IS 'The point in time (inclusive) when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
+COMMENT ON COLUMN route.route.validity_end IS 'The point in time (inclusive) from which onwards the route is no longer valid. If NULL, the route is valid indefinitely after the start time of the validity period.';
 COMMENT ON COLUMN route.route.priority IS 'The priority of the route definition. The definition may be overridden by higher priority definitions.';
 COMMENT ON COLUMN route.route.label IS 'The label of the route definition, label and direction together are unique for a certain priority and validity period.';
 COMMENT ON COLUMN route.route.direction IS 'The direction of the route definition, label and direction together are unique for a certain priority and validity period.';
@@ -279,8 +279,8 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point.measured_location IS 'The
 COMMENT ON COLUMN service_pattern.scheduled_stop_point.located_on_infrastructure_link_id IS 'The infrastructure link on which the stop is located.';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point.direction IS 'The direction(s) of traffic with respect to the digitization, i.e. the direction of the specified line string.';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point.label IS 'The label is the short code that identifies the stop to the passengers. There can be at most one stop with the same label at a time. The label matches the GTFS stop_code.';
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time';
-COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_start IS 'end of the route''s operating date span in the route''s local time (inclusive).';
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.validity_end IS 'end of the operating date span in the scheduled stop point''s local time (inclusive).';
 COMMENT ON COLUMN service_pattern.scheduled_stop_point.timing_place_id IS 'Optional reference to a TIMING PLACE. If NULL, the SCHEDULED STOP POINT is not used for timing.';
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_pkey PRIMARY KEY (scheduled_stop_point_id);
