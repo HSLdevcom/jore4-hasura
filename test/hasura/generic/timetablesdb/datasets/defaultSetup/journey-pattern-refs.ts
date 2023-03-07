@@ -14,6 +14,12 @@ export const journeyPatternRefsByName = {
     observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
   },
+  route234Outbound: {
+    journey_pattern_ref_id: 'a5f7109a-035b-40db-8fa7-796645fb313a',
+    journey_pattern_id: 'b080eeed-8982-441e-aba2-16150dd89350',
+    observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+    snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+  },
 };
 export const journeyPatternRefs: JourneyPatternRef[] = Object.values(
   journeyPatternRefsByName,

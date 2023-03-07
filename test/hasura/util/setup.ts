@@ -6,6 +6,28 @@ import {
   isFileDataSource,
   isGeoProperty,
 } from 'generic/networkdb/datasets/types';
+import { Knex } from 'knex';
+
+export const insertTableData = async <TTableName extends string>(
+  conn: db.DbConnection,
+  tableData: TableData<TTableName>[],
+  transaction: Knex.Transaction,
+) => {
+  return promiseSequence(
+    tableData.map((table) => {
+      const { data } = table;
+
+      if (isFileDataSource(data)) {
+        // data contains the file name from which to load SQL statements
+        const fileContent = readFileSync(data, 'utf-8');
+        return db.singleQuery(transaction, fileContent);
+      }
+
+      const serializedData = data.map(serializeInsertInput);
+      return db.batchInsert(transaction, table.name, serializedData);
+    }),
+  );
+};
 
 export const setupDb = async <TTableName extends string>(
   conn: db.DbConnection,
@@ -26,20 +48,7 @@ export const setupDb = async <TTableName extends string>(
       );
 
       // insert data to tables present in config
-      await promiseSequence(
-        tableData.map((table) => {
-          const { data } = table;
-
-          if (isFileDataSource(data)) {
-            // data contains the file name from which to load SQL statements
-            const fileContent = readFileSync(data, 'utf-8');
-            return db.singleQuery(trx, fileContent);
-          }
-
-          const serializedData = data.map(serializeInsertInput);
-          return db.batchInsert(trx, table.name, serializedData);
-        }),
-      );
+      await insertTableData(conn, tableData, trx);
     },
     { connection: conn },
   );
