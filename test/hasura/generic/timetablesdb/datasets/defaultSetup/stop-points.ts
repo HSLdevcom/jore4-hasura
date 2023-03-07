@@ -1,7 +1,8 @@
 import { ScheduledStopInJourneyPatternRef } from '../types';
 import { journeyPatternRefsByName } from './journey-pattern-refs';
 
-const { route123Outbound, route123Inbound } = journeyPatternRefsByName;
+const { route123Outbound, route123Inbound, route234Outbound } =
+  journeyPatternRefsByName;
 
 export const scheduledStopPointsInJourneyPatternRefByName = {
   route123OutboundStop1: {
@@ -60,6 +61,21 @@ export const scheduledStopPointsInJourneyPatternRefByName = {
     scheduled_stop_point_sequence: 4,
     scheduled_stop_point_label: 'H2201',
     journey_pattern_ref_id: route123Inbound.journey_pattern_ref_id,
+  },
+
+  route234OutboundStop1: {
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      '5af14632-512e-47b7-b50b-b202b32dfe82',
+    scheduled_stop_point_sequence: 1,
+    scheduled_stop_point_label: 'H2201',
+    journey_pattern_ref_id: route234Outbound.journey_pattern_ref_id,
+  },
+  route234OutboundStop2: {
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      '47aa9bc9-5d20-4730-b739-1f76b4cdc77d',
+    scheduled_stop_point_sequence: 2,
+    scheduled_stop_point_label: 'H2202',
+    journey_pattern_ref_id: route234Outbound.journey_pattern_ref_id,
   },
 };
 
