@@ -360,13 +360,13 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.priority IS 'The prior
 -- Name: COLUMN vehicle_schedule_frame.validity_end; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity end. Null if always will be valid.';
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity ends (inclusive). Null if always will be valid.';
 
 --
 -- Name: COLUMN vehicle_schedule_frame.validity_start; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts. Null if always has been valid.';
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
 -- Name: TABLE vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
