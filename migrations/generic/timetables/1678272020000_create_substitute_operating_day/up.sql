@@ -28,7 +28,7 @@ INSERT INTO route.type_of_line
 -------------------- Journey Pattern --------------------
 
 ALTER TABLE ONLY journey_pattern.journey_pattern_ref
-  ADD COLUMN type_of_line text REFERENCES route.type_of_line (type_of_line);
+  ADD COLUMN type_of_line text NOT NULL REFERENCES route.type_of_line (type_of_line);
 
 COMMENT ON COLUMN journey_pattern.journey_pattern_ref.type_of_line IS 'The type of line (GTFS route type): https://developers.google.com/transit/gtfs/reference/extended-route-types';
 

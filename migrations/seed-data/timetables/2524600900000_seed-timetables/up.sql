@@ -6,9 +6,9 @@
 -- However when running the complementing "up" migrations again, these inserts get in conflict with
 -- the existing data, so we need to skip these errors using "ON CONFLICT DO NOTHING";
 
-INSERT INTO journey_pattern.journey_pattern_ref (journey_pattern_ref_id, journey_pattern_id, observation_timestamp, snapshot_timestamp)
+INSERT INTO journey_pattern.journey_pattern_ref (journey_pattern_ref_id, journey_pattern_id, type_of_line, observation_timestamp, snapshot_timestamp)
 VALUES
-  ('77a30292-807a-4cce-b4e2-e95049d3f096', '43e1985d-4643-4415-8367-c4a37fbc0a87', '2022-07-01', '2022-09-28')
+  ('77a30292-807a-4cce-b4e2-e95049d3f096', '43e1985d-4643-4415-8367-c4a37fbc0a87', 'stopping_bus_service', '2022-07-01', '2022-09-28')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO service_pattern.scheduled_stop_point_in_journey_pattern_ref

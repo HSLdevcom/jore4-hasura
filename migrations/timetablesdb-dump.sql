@@ -1252,7 +1252,7 @@ CREATE TABLE journey_pattern.journey_pattern_ref (
     journey_pattern_id uuid NOT NULL,
     observation_timestamp timestamp with time zone NOT NULL,
     snapshot_timestamp timestamp with time zone NOT NULL,
-    type_of_line text
+    type_of_line text NOT NULL
 );
 
 

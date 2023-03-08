@@ -10,6 +10,20 @@ export enum TimetablePriority {
   Staging = 40, // imported from Hastus, not in use until priority is changed
 }
 
+export enum TypeOfLine {
+  RegionalRailService = 'regional_rail_service',
+  SuburbanRailway = 'suburban_railway',
+  MetroService = 'metro_service',
+  RegionalBusService = 'regional_bus_service',
+  ExpressBusService = 'express_bus_service',
+  StoppingBusService = 'stopping_bus_service',
+  SpecialNeedsBus = 'special_needs_bus',
+  DemandAndResponseBusService = 'demand_and_response_bus_service',
+  CityTramService = 'city_tram_service',
+  RegionalTramService = 'regional_tram_service',
+  FerryService = 'ferry_service',
+}
+
 export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
   label: string;
@@ -95,6 +109,7 @@ export const scheduledStopInJourneyPatternRefProps: Property[] = [
 export type JourneyPatternRef = {
   journey_pattern_ref_id: UUID;
   observation_timestamp: DateTime;
+  type_of_line: TypeOfLine;
   snapshot_timestamp: DateTime;
   journey_pattern_id: UUID;
 };
@@ -104,4 +119,5 @@ export const journeyPatternRefProps: Property[] = [
   'observation_timestamp',
   'snapshot_timestamp',
   'journey_pattern_id',
+  'type_of_line',
 ];
