@@ -9,41 +9,41 @@ object_relationships:
     using:
       foreign_key_constraint_on: timing_place_id
 array_relationships:
-  - name: scheduled_stop_point_in_journey_patterns
-    using:
-      manual_configuration:
-        remote_table:
-          schema: journey_pattern
-          name: scheduled_stop_point_in_journey_pattern
-        insertion_order: null
-        column_mapping:
-          label: scheduled_stop_point_label
   - name: other_label_instances
     using:
       manual_configuration:
-        remote_table:
-          schema: service_pattern
-          name: scheduled_stop_point
-        insertion_order: null
         column_mapping:
           label: label
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point
+          schema: service_pattern
+  - name: scheduled_stop_point_in_journey_patterns
+    using:
+      manual_configuration:
+        column_mapping:
+          label: scheduled_stop_point_label
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point_in_journey_pattern
+          schema: journey_pattern
   - name: vehicle_mode_on_scheduled_stop_point
     using:
       manual_configuration:
-        remote_table:
-          schema: service_pattern
-          name: vehicle_mode_on_scheduled_stop_point
-        insertion_order: null
         column_mapping:
           scheduled_stop_point_id: scheduled_stop_point_id
+        insertion_order: null
+        remote_table:
+          name: vehicle_mode_on_scheduled_stop_point
+          schema: service_pattern
 computed_fields:
   - name: closest_point_on_infrastructure_link
     definition:
       function:
-        schema: service_pattern
         name: scheduled_stop_point_closest_point_on_infrastructure_link
+        schema: service_pattern
   - name: relative_distance_from_infrastructure_link_start
     definition:
       function:
-        schema: service_pattern
         name: ssp_relative_distance_from_infrastructure_link_start
+        schema: service_pattern
