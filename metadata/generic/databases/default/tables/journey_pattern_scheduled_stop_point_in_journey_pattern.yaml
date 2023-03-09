@@ -9,9 +9,9 @@ array_relationships:
   - name: scheduled_stop_points
     using:
       manual_configuration:
-        remote_table:
-          schema: service_pattern
-          name: scheduled_stop_point
-        insertion_order: null
         column_mapping:
           scheduled_stop_point_label: label
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point
+          schema: service_pattern

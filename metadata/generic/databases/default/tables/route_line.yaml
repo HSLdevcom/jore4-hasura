@@ -12,9 +12,9 @@ array_relationships:
   - name: line_routes
     using:
       manual_configuration:
-        remote_table:
-          schema: route
-          name: route
-        insertion_order: null
         column_mapping:
           line_id: on_line_id
+        insertion_order: null
+        remote_table:
+          name: route
+          schema: route
