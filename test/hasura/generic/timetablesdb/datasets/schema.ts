@@ -1,5 +1,6 @@
 import {
   journeyPatternRefProps,
+  journeyPatternsInVehicleServiceProps,
   scheduledStopInJourneyPatternRefProps,
   timetabledPassingTimeProps,
   vehicleJourneyProps,
@@ -15,6 +16,7 @@ export const genericTimetablesDbTables = [
   'vehicle_schedule.vehicle_schedule_frame',
   'vehicle_service.block',
   'vehicle_service.vehicle_service',
+  'vehicle_service.journey_patterns_in_vehicle_service',
 ] as const;
 export type GenericTimetablesDbTables =
   (typeof genericTimetablesDbTables)[number];
@@ -48,5 +50,9 @@ export const genericTimetablesDbSchema: TableSchemaMap<GenericTimetablesDbTables
     'vehicle_service.vehicle_service': {
       name: 'vehicle_service.vehicle_service',
       props: vehicleServiceProps,
+    },
+    'vehicle_service.journey_patterns_in_vehicle_service': {
+      name: 'vehicle_service.journey_patterns_in_vehicle_service',
+      props: journeyPatternsInVehicleServiceProps,
     },
   };
