@@ -16,3 +16,10 @@ array_relationships:
         table:
           name: block
           schema: vehicle_service
+  - name: journey_patterns_in_vehicle_service
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_service_id
+        table:
+          name: journey_patterns_in_vehicle_service
+          schema: vehicle_service

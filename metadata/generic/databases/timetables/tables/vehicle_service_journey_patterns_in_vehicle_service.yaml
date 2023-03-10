@@ -1,0 +1,7 @@
+table:
+  name: journey_patterns_in_vehicle_service
+  schema: vehicle_service
+object_relationships:
+  - name: vehicle_service
+    using:
+      foreign_key_constraint_on: vehicle_service_id
