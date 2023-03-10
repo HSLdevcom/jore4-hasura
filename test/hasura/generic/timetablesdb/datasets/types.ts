@@ -54,6 +54,18 @@ export const vehicleServiceProps: Property[] = [
   'vehicle_schedule_frame_id',
 ];
 
+export type JourneyPatternsInVehicleService = {
+  vehicle_service_id: UUID;
+  journey_pattern_id: UUID;
+  reference_count: number;
+};
+
+export const journeyPatternsInVehicleServiceProps: Property[] = [
+  'vehicle_service_id',
+  'journey_pattern_id',
+  'reference_count',
+];
+
 export type VehicleServiceBlock = {
   block_id: UUID;
   vehicle_service_id: UUID;

@@ -429,6 +429,20 @@ COMMENT ON COLUMN vehicle_service.block.vehicle_service_id IS 'The VEHICLE SERVI
 COMMENT ON COLUMN vehicle_service.block.vehicle_type_id IS 'Reference to vehicle_type.vehicle_type.';
 
 --
+-- Name: COLUMN journey_patterns_in_vehicle_service.journey_pattern_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.journey_patterns_in_vehicle_service.journey_pattern_id IS 'The journey_pattern_id from journey_pattern.journey_pattern_ref.
+ No foreign key reference is set because the target column is not unique.';
+
+--
+-- Name: COLUMN journey_patterns_in_vehicle_service.reference_count; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_service.journey_patterns_in_vehicle_service.reference_count IS 'The amount of unique references between the journey_pattern and vehicle_service.
+  When this reaches 0 the row will be deleted.';
+
+--
 -- Name: COLUMN vehicle_service.day_type_id; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
@@ -447,10 +461,32 @@ COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 
 --
+-- Name: FUNCTION execute_journey_patterns_in_vehicle_service_refresh_once(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() IS 'Executes the vehicle_service.refresh_journey_patterns_in_vehicle_service function
+ if it has not been already executed in this transaction via this function.
+ Otherwise does nothing.';
+
+--
+-- Name: FUNCTION refresh_journey_patterns_in_vehicle_service(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() IS 'Rebuilds the whole journey_patterns_in_vehicle_service table.';
+
+--
 -- Name: TABLE block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON TABLE vehicle_service.block IS 'The work of a vehicle from the time it leaves a PARKING POINT after parking until its next return to park at a PARKING POINT. Any subsequent departure from a PARKING POINT after parking marks the start of a new BLOCK. The period of a BLOCK has to be covered by DUTies. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:958 ';
+
+--
+-- Name: TABLE journey_patterns_in_vehicle_service; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON TABLE vehicle_service.journey_patterns_in_vehicle_service IS 'A denormalized table containing relationships between vehicle_services and journey_patterns (via journey_pattern_ref.journey_pattern_id).
+ Without this table this relationship could be found via vehicle_service -> block -> vehicle_journey -> journey_pattern_ref.
+ Kept up to date with triggers, should not be updated manually.';
 
 --
 -- Name: TABLE vehicle_service; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -545,6 +581,13 @@ ALTER TABLE ONLY vehicle_schedule.vehicle_schedule_frame
 
 ALTER TABLE ONLY vehicle_service.block
     ADD CONSTRAINT block_pkey PRIMARY KEY (block_id);
+
+--
+-- Name: journey_patterns_in_vehicle_service journey_patterns_in_vehicle_service_pkey; Type: CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_service.journey_patterns_in_vehicle_service
+    ADD CONSTRAINT journey_patterns_in_vehicle_service_pkey PRIMARY KEY (vehicle_service_id, journey_pattern_id);
 
 --
 -- Name: vehicle_service vehicle_service_pkey; Type: CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
@@ -647,6 +690,13 @@ ALTER TABLE ONLY vehicle_service.block
 
 ALTER TABLE ONLY vehicle_service.block
     ADD CONSTRAINT vehicle_type_fkey FOREIGN KEY (vehicle_type_id) REFERENCES vehicle_type.vehicle_type(vehicle_type_id);
+
+--
+-- Name: journey_patterns_in_vehicle_service journey_patterns_in_vehicle_service_vehicle_service_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_service.journey_patterns_in_vehicle_service
+    ADD CONSTRAINT journey_patterns_in_vehicle_service_vehicle_service_id_fkey FOREIGN KEY (vehicle_service_id) REFERENCES vehicle_service.vehicle_service(vehicle_service_id) ON DELETE CASCADE;
 
 --
 -- Name: vehicle_service vehicle_service_day_type_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
@@ -949,6 +999,77 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
+-- Name: execute_journey_patterns_in_vehicle_service_refresh_once(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  already_refreshed_journey_patterns_in_vehicle_service BOOLEAN;
+BEGIN
+  -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once()';
+
+  already_refreshed_journey_patterns_in_vehicle_service := NULLIF(current_setting('vehicle_service.already_refreshed_journey_patterns_in_vehicle_service', TRUE), '');
+  -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once, already refreshed: %', already_refreshed_journey_patterns_in_vehicle_service;
+
+  IF already_refreshed_journey_patterns_in_vehicle_service IS NOT TRUE THEN
+    -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once(): execute and reset flag.';
+
+    PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
+
+    SET LOCAL vehicle_service.already_refreshed_journey_patterns_in_vehicle_service = TRUE;
+  END IF;
+
+  RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() OWNER TO dbhasura;
+
+--
+-- Name: refresh_journey_patterns_in_vehicle_service(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE LOG 'refresh_journey_patterns_in_vehicle_service()';
+
+  -- Step 1: reset all counts.
+  UPDATE vehicle_service.journey_patterns_in_vehicle_service
+  SET reference_count = 0;
+
+  -- Step 2: upsert new entries.
+  INSERT INTO vehicle_service.journey_patterns_in_vehicle_service (journey_pattern_id, vehicle_service_id, reference_count)
+    SELECT DISTINCT journey_pattern_id, vehicle_service_id, COUNT(journey_pattern_ref_id) AS ref_count
+    FROM vehicle_service.vehicle_service
+    JOIN vehicle_service.block USING (vehicle_service_id)
+    JOIN vehicle_journey.vehicle_journey USING (block_id)
+    JOIN journey_pattern.journey_pattern_ref USING (journey_pattern_ref_id)
+    GROUP BY (journey_pattern_id, vehicle_service_id, journey_pattern_ref_id)
+  ON CONFLICT (vehicle_service_id, journey_pattern_id) DO
+    UPDATE SET reference_count = EXCLUDED.reference_count;
+
+  -- Step 3: remove all rows that are no longer used,
+  -- that is, where the reference between vehicle_service and journey_pattern no longer exists.
+  DELETE FROM vehicle_service.journey_patterns_in_vehicle_service
+  WHERE reference_count = 0;
+END;
+$$;
+
+
+ALTER FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() OWNER TO dbhasura;
+
+--
+-- Name: idx_journey_pattern_ref_journey_pattern_id; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE INDEX idx_journey_pattern_ref_journey_pattern_id ON journey_pattern.journey_pattern_ref USING btree (journey_pattern_id);
+
+--
 -- Name: journey_pattern_ref_type_of_line; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1001,6 +1122,12 @@ CREATE INDEX idx_block_vehicle_service ON vehicle_service.block USING btree (veh
 --
 
 CREATE INDEX idx_block_vehicle_type_id ON vehicle_service.block USING btree (vehicle_type_id);
+
+--
+-- Name: idx_journey_patterns_in_vehicle_service_journey_pattern_id; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE INDEX idx_journey_patterns_in_vehicle_service_journey_pattern_id ON vehicle_service.journey_patterns_in_vehicle_service USING btree (journey_pattern_id);
 
 --
 -- Name: idx_vehicle_service_day_type; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
@@ -1254,6 +1381,20 @@ CREATE TABLE vehicle_service.block (
 ALTER TABLE vehicle_service.block OWNER TO dbhasura;
 
 --
+-- Name: journey_patterns_in_vehicle_service; Type: TABLE; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE TABLE vehicle_service.journey_patterns_in_vehicle_service (
+    vehicle_service_id uuid NOT NULL,
+    journey_pattern_id uuid NOT NULL,
+    reference_count integer NOT NULL,
+    CONSTRAINT journey_patterns_in_vehicle_service_reference_count_check CHECK ((reference_count >= 0))
+);
+
+
+ALTER TABLE vehicle_service.journey_patterns_in_vehicle_service OWNER TO dbhasura;
+
+--
 -- Name: vehicle_service; Type: TABLE; Schema: vehicle_service; Owner: dbhasura
 --
 
@@ -1321,6 +1462,24 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER
 --
 
 CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+
+--
+-- Name: vehicle_journey refresh_jps_in_vs_on_vj_modified_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+
+--
+-- Name: block refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+
+--
+-- Name: vehicle_service refresh_jps_in_vs_on_vs_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vs_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_service.vehicle_service DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
 
 --
 -- Sorted dump complete
