@@ -1223,8 +1223,8 @@ ALTER TABLE vehicle_journey.vehicle_journey OWNER TO dbhasura;
 CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     vehicle_schedule_frame_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     name_i18n jsonb,
-    validity_start date,
-    validity_end date,
+    validity_start date NOT NULL,
+    validity_end date NOT NULL,
     priority integer NOT NULL,
     label text NOT NULL
 );
