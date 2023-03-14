@@ -15,3 +15,11 @@ export const expectErrorResponse =
       expect(JSON.stringify(response)).toContain(expectedErrorMsg);
     }
   };
+
+export const expectNoErrorResponse = (response: unknown) => {
+  expect(response).toEqual(
+    expect.not.objectContaining({
+      errors: expect.any(Array),
+    }),
+  );
+};

@@ -1,7 +1,7 @@
 import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
-import { expectErrorResponse } from '@util/response';
+import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { buildPropNameArray, setupDb } from '@util/setup';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
 import { timetabledPassingTimesByName } from 'generic/timetablesdb/datasets/defaultSetup/passing-times';
@@ -125,14 +125,6 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
   };
 
-  const expectNoErrors = (response: unknown) => {
-    expect(response).toEqual(
-      expect.not.objectContaining({
-        errors: expect.any(Array),
-      }),
-    );
-  };
-
   // Note: most validation logic is shared between UPDATE/INSERT/DELETE.
   // Such logic is mainly tested here with updates.
   describe('on updates', () => {
@@ -220,7 +212,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     `);
 
       const response = await postQuery(combinedMutation);
-      expectNoErrors(response);
+      expectNoErrorResponse(response);
     });
 
     it('should not accept a passing time missing both arrival_time and departure_time', async () => {
@@ -361,7 +353,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
           stop3PassingTimeUpdate,
         ),
       );
-      expectNoErrors(nextPassingTimeUpdateResponse);
+      expectNoErrorResponse(nextPassingTimeUpdateResponse);
 
       const response = await postQuery(
         buildUpdatePassingTimeMutation(
@@ -395,7 +387,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
         ),
       );
 
-      expectNoErrors(response);
+      expectNoErrorResponse(response);
     });
 
     it('should not be able to create vehicle journey where first passing_time has an arrival time', async () => {
@@ -469,7 +461,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
       const response = await postQuery(updateQuery);
 
-      expectNoErrors(response);
+      expectNoErrorResponse(response);
     });
 
     it('should not accept inconsistent journey pattern references within a sequence', async () => {
@@ -583,7 +575,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
       const response = await postQuery(updateQuery);
 
-      expectNoErrors(response);
+      expectNoErrorResponse(response);
     });
   });
 
@@ -596,7 +588,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
         testPassingTime.timetabled_passing_time_id,
       );
       const deleteResponse = await postQuery(deleteQuery);
-      expectNoErrors(deleteResponse);
+      expectNoErrorResponse(deleteResponse);
 
       // Insert as non-last -> incorrectly has departure_time: null and should fail.
       const toInsert: TimetabledPassingTime = {
@@ -630,7 +622,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
       const response = await postQuery(deleteQuery);
 
-      expectNoErrors(response);
+      expectNoErrorResponse(response);
     });
 
     it('should trigger validation on passing time delete and fail an invalid sequence', async () => {
