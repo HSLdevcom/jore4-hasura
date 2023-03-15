@@ -1410,6 +1410,12 @@ CREATE TABLE vehicle_type.vehicle_type (
 ALTER TABLE vehicle_type.vehicle_type OWNER TO dbhasura;
 
 --
+-- Name: journey_pattern_ref refresh_jps_in_vs_on_jpr_modified_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((old.journey_pattern_id <> new.journey_pattern_id)) EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+
+--
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 

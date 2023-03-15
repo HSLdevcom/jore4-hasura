@@ -14,7 +14,10 @@ import { vehicleJourneysByName } from 'generic/timetablesdb/datasets/defaultSetu
 import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-service-blocks';
 import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
-import { VehicleJourney } from 'generic/timetablesdb/datasets/types';
+import {
+  JourneyPatternRef,
+  VehicleJourney,
+} from 'generic/timetablesdb/datasets/types';
 import { post } from 'request-promise';
 
 describe('Denormalized references to journey patterns in vehicle services', () => {
@@ -84,6 +87,26 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         }
       ) {
         affected_rows
+      }
+    }
+  `;
+
+  const buildPartialUpdateJourneyPatternRefMutation = (
+    journeyPatternRefId: UUID,
+    toBeUpdated: Partial<JourneyPatternRef>,
+  ) => `
+    timetables {
+      timetables_update_journey_pattern_journey_pattern_ref(
+        where: {
+          journey_pattern_ref_id: {_eq: "${journeyPatternRefId}"}
+        },
+        _set: ${toGraphQlObject(toBeUpdated)}
+      ) {
+        returning {
+          ${buildPropNameArray(
+            genericTimetablesDbSchema['journey_pattern.journey_pattern_ref'],
+          )}
+        }
       }
     }
   `;
@@ -378,6 +401,34 @@ describe('Denormalized references to journey patterns in vehicle services', () =
             reference_count: 1,
           },
           // Inbound untouched.
+          defaultDatasetRows.route123Inbound,
+        ]),
+      );
+    });
+  });
+
+  describe('on journey pattern ref update', () => {
+    it('should update denormalized table when journey pattern id is updated', async () => {
+      const newJourneyPatternId = '9d5cb599-f348-4b76-b83c-e5c33f53b08e';
+      const updateMutation = `mutation {
+        ${buildPartialUpdateJourneyPatternRefMutation(
+          journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+          {
+            journey_pattern_id: newJourneyPatternId,
+          },
+        )}
+      }`;
+      const updateResponse = await postQuery(updateMutation);
+      expectNoErrorResponse(updateResponse);
+
+      const response = await getJourneyPatternsInVehicleServices();
+      expect(response.rowCount).toEqual(2);
+      expect(response.rows).toEqual(
+        expect.arrayContaining([
+          {
+            ...defaultDatasetRows.route123Outbound,
+            journey_pattern_id: newJourneyPatternId,
+          },
           defaultDatasetRows.route123Inbound,
         ]),
       );
