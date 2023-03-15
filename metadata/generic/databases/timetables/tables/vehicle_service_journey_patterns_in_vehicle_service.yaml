@@ -5,3 +5,14 @@ object_relationships:
   - name: vehicle_service
     using:
       foreign_key_constraint_on: vehicle_service_id
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: object
+        source: default
+        table:
+          name: journey_pattern
+          schema: journey_pattern
+    name: journey_pattern_instance
