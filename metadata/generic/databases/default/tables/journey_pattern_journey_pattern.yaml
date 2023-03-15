@@ -30,3 +30,13 @@ remote_relationships:
           name: journey_pattern_ref
           schema: journey_pattern
     name: journey_pattern_refs
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: array
+        source: timetables
+        table:
+          name: journey_patterns_in_vehicle_service
+          schema: vehicle_service
+    name: journey_patterns_in_vehicle_service
