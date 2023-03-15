@@ -96,3 +96,15 @@ CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger
   AFTER UPDATE OR INSERT OR DELETE ON vehicle_journey.vehicle_journey
   DEFERRABLE INITIALLY DEFERRED FOR EACH ROW
   EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+
+-- No need to add INSERT or DELETE for this journey_patten_ref trigger:
+-- all such operations that would require the denormalized table to be refreshed
+-- would fire other triggers as well,
+-- since only via foreign key references (from vehicle journey)
+-- does journey_pattern_ref affect the denormalized table.
+-- However, UPDATE could still invalidate the table if journey_pattern_id is changed.
+DROP TRIGGER IF EXISTS refresh_jps_in_vs_on_jpr_modified_trigger ON journey_pattern.journey_pattern_ref;
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger
+  AFTER UPDATE ON journey_pattern.journey_pattern_ref
+  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (OLD.journey_pattern_id <> NEW.journey_pattern_id)
+  EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
