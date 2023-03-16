@@ -127,6 +127,11 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       //   conflicting schedules detected:
       //   vehicle schedule frame 0e37fdb8-e35e-4d5a-9e5b-88e1b35c0a18 and vehicle schedule frame 792ff598-371b-41dd-8865-3a506f391409,
       //   priority 10, journey_pattern_id 55bab728-c76c-4ce6-9cc6-f6e51c1c5dca, overlapping on [2022-07-01,2023-05-31) on weekday 1
+      const validityStart = dataset.frame.validity_start?.toISODate();
+      const validityEndClosedUpper = dataset.frame.validity_end
+        ?.plus({ days: 1 })
+        ?.toISODate();
+      const expectedValidityRange = `[${validityStart},${validityEndClosedUpper})`;
       const expectedParts = {
         prefix: 'conflicting schedules detected: ',
         // The order is random, either of these could be defined first.
@@ -134,7 +139,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         frame2: `vehicle schedule frame ${vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id}`,
         priority: `priority ${dataset.frame.priority}, `,
         journey: `journey_pattern_id ${journeyPatternRefsByName.route123Outbound.journey_pattern_id}, `,
-        validity: `overlapping on [${dataset.frame.validity_start?.toISODate()},${dataset.frame.validity_end?.toISODate()})`,
+        validity: `overlapping on ${expectedValidityRange}`,
         weekday: /on weekday [1-5]/, // These conflict on multiple days, so weekday could be between 1-5.
       };
 
@@ -183,7 +188,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       // No sense going through all possible combinations, that would basically be just testing PostgreSQL OVERLAPS operator.
       // But this is an important corner case since it requires different behavior date ranges in PostgreSQL have by default:
       // validity_end is exclusive = date range is NOT half open.
-      it.skip("should fail when validity periods overlap: validity_end same as another's validity_start", async () => {
+      it("should fail when validity periods overlap: validity_end same as another's validity_start", async () => {
         const dataset = getBaseDataset();
         dataset.frame.validity_start = dataset.frame.validity_end;
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -191,7 +196,6 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
           months: 2,
         });
 
-        // FIXME: currently this insert passes incorrectly because the date range is handled as half open.
         await expect(insertDataset(dataset)).rejects.toThrow();
       });
     });

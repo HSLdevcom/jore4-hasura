@@ -393,6 +393,16 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.priority IS 'The prior
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity ends (inclusive). Null if always will be valid.';
 
 --
+-- Name: COLUMN vehicle_schedule_frame.validity_range; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_range IS '
+A denormalized column for actual daterange when vehicle schedule frame is valid,
+that is, a closed date range [validity_start, validity_end].
+Added to make working with PostgreSQL functions easier:
+they typically expect ranges to be half closed.';
+
+--
 -- Name: COLUMN vehicle_schedule_frame.validity_start; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
@@ -1051,9 +1061,7 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
     SELECT DISTINCT
       vehicle_schedule_frame_id,
       journey_pattern_id,
-      validity_start,
-      validity_end,
-      daterange(validity_start, validity_end) AS validity_range,
+      validity_range,
       day_of_week,
       priority
     FROM vehicle_service.journey_patterns_in_vehicle_service
@@ -1086,7 +1094,7 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
     FROM schedules_to_check current_schedule
     -- Check if the schedules conflict.
     JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
-    WHERE ((current_schedule.validity_start, current_schedule.validity_end) OVERLAPS (other_schedule.validity_start, other_schedule.validity_end))
+    WHERE (current_schedule.validity_range && other_schedule.validity_range)
     AND other_schedule.vehicle_schedule_frame_id != current_schedule.vehicle_schedule_frame_id
   )
 SELECT * FROM schedule_conflicts;
@@ -1520,7 +1528,8 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     validity_start date NOT NULL,
     validity_end date NOT NULL,
     priority integer NOT NULL,
-    label text NOT NULL
+    label text NOT NULL,
+    validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL
 );
 
 
