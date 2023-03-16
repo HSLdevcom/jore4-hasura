@@ -4,19 +4,21 @@ RETURNS TABLE(
   current_vehicle_schedule_frame_id uuid,
   other_vehicle_schedule_frame_id uuid,
   journey_pattern_id uuid,
-  day_of_week integer,
+  active_on_day_of_week integer,
   priority integer,
   current_validity_range daterange,
   other_validity_range daterange,
   validity_intersection daterange
 )
-LANGUAGE sql STABLE PARALLEL SAFE
+LANGUAGE sql
 AS $$
-WITH
+  -- There might be updates queued that have not been processed yet.
+  SELECT * FROM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
+
+  WITH
   -- Collect all relevant data about journey patterns for vehicle schedule frames.
   -- TODO: can this be narrowed down? Now selects basically the whole DB.
   vehicle_schedule_frame_journey_patterns AS (
-    -- TODO: Consider making this into a view
     SELECT DISTINCT
       vehicle_schedule_frame_id,
       journey_pattern_id,
@@ -25,12 +27,10 @@ WITH
       daterange(validity_start, validity_end) AS validity_range,
       day_of_week,
       priority
-    FROM vehicle_schedule.vehicle_schedule_frame FRAME
-    JOIN vehicle_service.vehicle_service SERVICE USING (vehicle_schedule_frame_id)
-    JOIN vehicle_service.block BLOCK USING (vehicle_service_id)
-    JOIN vehicle_journey.vehicle_journey JOURNEY USING (block_id)
-    JOIN service_calendar.day_type_active_on_day_of_week DAY_OF_WEEK USING (day_type_id)
-    JOIN journey_pattern.journey_pattern_ref PATTERN USING (journey_pattern_ref_id)
+    FROM vehicle_service.journey_patterns_in_vehicle_service
+    JOIN vehicle_service.vehicle_service USING (vehicle_service_id)
+    JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
+    JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
   ),
   -- TODO: use the function parameters instead.
   vehicle_journey_ids_filter AS (
@@ -49,7 +49,7 @@ WITH
       current_schedule.vehicle_schedule_frame_id as current_vehicle_schedule_frame_id,
       other_schedule.vehicle_schedule_frame_id AS other_vehicle_schedule_frame_id,
       journey_pattern_id,
-      day_of_week,
+      day_of_week AS active_on_day_of_week,
       priority,
       current_schedule.validity_range AS current_validity_range,
       other_schedule.validity_range AS other_validity_range,
@@ -89,7 +89,7 @@ BEGIN
 		  overlapping_schedule.priority,
 		  overlapping_schedule.journey_pattern_id,
 		  overlapping_schedule.validity_intersection,
-		  overlapping_schedule.day_of_week
+		  overlapping_schedule.active_on_day_of_week
     ) INTO error_message;
     RAISE EXCEPTION 'conflicting schedules detected: %', error_message;
   END IF;

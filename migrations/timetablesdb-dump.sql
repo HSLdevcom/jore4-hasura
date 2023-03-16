@@ -399,10 +399,28 @@ COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_end IS 'OPERA
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
+-- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) IS 'TODO.';
+
+--
+-- Name: FUNCTION validate_schedule_uniqueness(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.validate_schedule_uniqueness() IS 'TODO';
+
+--
 -- Name: TABLE vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
+
+--
+-- Name: TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
 
 --
 -- Name: COLUMN block.finishing_time; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -1013,6 +1031,107 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
+-- Name: get_overlapping_schedules(uuid[], uuid[]); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) RETURNS TABLE(current_vehicle_schedule_frame_id uuid, other_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, current_validity_range daterange, other_validity_range daterange, validity_intersection daterange)
+    LANGUAGE sql
+    AS $$
+  -- There might be updates queued that have not been processed yet.
+  SELECT * FROM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
+
+  WITH
+  -- Collect all relevant data about journey patterns for vehicle schedule frames.
+  -- TODO: can this be narrowed down? Now selects basically the whole DB.
+  vehicle_schedule_frame_journey_patterns AS (
+    SELECT DISTINCT
+      vehicle_schedule_frame_id,
+      journey_pattern_id,
+      validity_start,
+      validity_end,
+      daterange(validity_start, validity_end) AS validity_range,
+      day_of_week,
+      priority
+    FROM vehicle_service.journey_patterns_in_vehicle_service
+    JOIN vehicle_service.vehicle_service USING (vehicle_service_id)
+    JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
+    JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
+  ),
+  -- TODO: use the function parameters instead.
+  vehicle_journey_ids_filter AS (
+    SELECT vehicle_schedule_frame_id FROM vehicle_schedule.vehicle_schedule_frame vsf
+    -- WHERE vehicle_schedule_frame_id IN (
+    -- )
+  ),
+  schedules_to_check AS (
+    SELECT FVS.* FROM vehicle_schedule_frame_journey_patterns FVS
+    JOIN vehicle_journey_ids_filter USING (vehicle_schedule_frame_id)
+  ),
+  -- Select all schedules in DB that have conflicts with schedules_to_check.
+  -- Note that this will contain each conflicting schedule frame pair twice.
+  schedule_conflicts AS (
+    SELECT DISTINCT
+      current_schedule.vehicle_schedule_frame_id as current_vehicle_schedule_frame_id,
+      other_schedule.vehicle_schedule_frame_id AS other_vehicle_schedule_frame_id,
+      journey_pattern_id,
+      day_of_week AS active_on_day_of_week,
+      priority,
+      current_schedule.validity_range AS current_validity_range,
+      other_schedule.validity_range AS other_validity_range,
+      current_schedule.validity_range * other_schedule.validity_range AS validity_intersection
+    FROM schedules_to_check current_schedule
+    -- Check if the schedules conflict.
+    JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
+    WHERE ((current_schedule.validity_start, current_schedule.validity_end) OVERLAPS (other_schedule.validity_start, other_schedule.validity_end))
+    AND other_schedule.vehicle_schedule_frame_id != current_schedule.vehicle_schedule_frame_id
+  )
+SELECT * FROM schedule_conflicts;
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) OWNER TO dbhasura;
+
+--
+-- Name: validate_schedule_uniqueness(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.validate_schedule_uniqueness() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  overlapping_schedule RECORD;
+  error_message TEXT;
+BEGIN
+  -- RAISE NOTICE 'vehicle_schedule.validate_schedule_uniqueness()';
+
+  SELECT * FROM vehicle_schedule.get_overlapping_schedules(
+    array[]::uuid[], array[]::uuid[]
+  )
+  LIMIT 1 -- RECORD type, so other rows are discarded anyway.
+  INTO overlapping_schedule;
+
+  IF FOUND THEN
+    -- Note, this includes only one of the conflicting rows. There might be multiple.
+    SELECT format(
+      'vehicle schedule frame %s and vehicle schedule frame %s, priority %s, journey_pattern_id %s, overlapping on %s on weekday %s',
+		  overlapping_schedule.current_vehicle_schedule_frame_id,
+		  overlapping_schedule.other_vehicle_schedule_frame_id,
+		  overlapping_schedule.priority,
+		  overlapping_schedule.journey_pattern_id,
+		  overlapping_schedule.validity_intersection,
+		  overlapping_schedule.active_on_day_of_week
+    ) INTO error_message;
+    RAISE EXCEPTION 'conflicting schedules detected: %', error_message;
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.validate_schedule_uniqueness() OWNER TO dbhasura;
+
+--
 -- Name: execute_queued_journey_patterns_in_vehicle_service_refresh_once(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
 --
 
@@ -1524,6 +1643,12 @@ CREATE TRIGGER queue_refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DE
 --
 
 CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
+
+--
+-- Name: vehicle_schedule_frame validate_schedule_uniqueness_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER validate_schedule_uniqueness_trigger AFTER INSERT OR UPDATE ON vehicle_schedule.vehicle_schedule_frame DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_schedule.validate_schedule_uniqueness();
 
 --
 -- Name: block queue_refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
