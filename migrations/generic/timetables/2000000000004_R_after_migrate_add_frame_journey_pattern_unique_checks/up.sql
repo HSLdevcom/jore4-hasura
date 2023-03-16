@@ -22,9 +22,7 @@ AS $$
     SELECT DISTINCT
       vehicle_schedule_frame_id,
       journey_pattern_id,
-      validity_start,
-      validity_end,
-      daterange(validity_start, validity_end) AS validity_range,
+      validity_range,
       day_of_week,
       priority
     FROM vehicle_service.journey_patterns_in_vehicle_service
@@ -57,7 +55,7 @@ AS $$
     FROM schedules_to_check current_schedule
     -- Check if the schedules conflict.
     JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
-    WHERE ((current_schedule.validity_start, current_schedule.validity_end) OVERLAPS (other_schedule.validity_start, other_schedule.validity_end))
+    WHERE (current_schedule.validity_range OVERLAPS other_schedule.validity_range)
     AND other_schedule.vehicle_schedule_frame_id != current_schedule.vehicle_schedule_frame_id
   )
 SELECT * FROM schedule_conflicts;
