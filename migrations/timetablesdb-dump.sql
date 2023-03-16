@@ -461,12 +461,26 @@ COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 
 --
--- Name: FUNCTION execute_journey_patterns_in_vehicle_service_refresh_once(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+-- Name: FUNCTION execute_queued_journey_patterns_in_vehicle_service_refresh_once(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() IS 'Executes the vehicle_service.refresh_journey_patterns_in_vehicle_service function
- if it has not been already executed in this transaction via this function.
+COMMENT ON FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() IS 'Executes the vehicle_service.refresh_journey_patterns_in_vehicle_service function
+ if it has been queued (by queue_journey_patterns_in_vehicle_service_refresh)
+ and not yet executed in this transaction via this function.
  Otherwise does nothing.';
+
+--
+-- Name: FUNCTION execute_queued_journey_patterns_in_vehicle_service_refresh_trg(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() IS 'Trigger for calling execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
+
+--
+-- Name: FUNCTION queue_journey_patterns_in_vehicle_service_refresh(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() IS 'Sets a flag that journey_patterns_in_vehicle_service should be refreshed.
+ The actual refresh can then be triggered by execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
 
 --
 -- Name: FUNCTION refresh_journey_patterns_in_vehicle_service(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -999,34 +1013,70 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
--- Name: execute_journey_patterns_in_vehicle_service_refresh_once(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+-- Name: execute_queued_journey_patterns_in_vehicle_service_refresh_once(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() RETURNS trigger
+CREATE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() RETURNS void
     LANGUAGE plpgsql
     AS $$
 DECLARE
+  journey_patterns_in_vehicle_service_refresh_queued BOOLEAN;
   already_refreshed_journey_patterns_in_vehicle_service BOOLEAN;
 BEGIN
-  -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once()';
+  -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
 
-  already_refreshed_journey_patterns_in_vehicle_service := NULLIF(current_setting('vehicle_service.already_refreshed_journey_patterns_in_vehicle_service', TRUE), '');
-  -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once, already refreshed: %', already_refreshed_journey_patterns_in_vehicle_service;
+  journey_patterns_in_vehicle_service_refresh_queued := NULLIF(current_setting('vehicle_service.journey_patterns_in_vehicle_service_refresh_queued', TRUE), '');
+  -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once, refresh queued refreshed: %', journey_patterns_in_vehicle_service_refresh_queued;
+  IF journey_patterns_in_vehicle_service_refresh_queued IS TRUE THEN
+    already_refreshed_journey_patterns_in_vehicle_service := NULLIF(current_setting('vehicle_service.already_refreshed_journey_patterns_in_vehicle_service', TRUE), '');
+    -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once, already refreshed: %', already_refreshed_journey_patterns_in_vehicle_service;
 
-  IF already_refreshed_journey_patterns_in_vehicle_service IS NOT TRUE THEN
-    -- RAISE LOG 'execute_journey_patterns_in_vehicle_service_refresh_once(): execute and reset flag.';
+    IF already_refreshed_journey_patterns_in_vehicle_service IS NOT TRUE THEN
+      -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once(): execute and reset flag.';
 
-    PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
+      PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
 
-    SET LOCAL vehicle_service.already_refreshed_journey_patterns_in_vehicle_service = TRUE;
+      SET LOCAL vehicle_service.already_refreshed_journey_patterns_in_vehicle_service = TRUE;
+    END IF;
   END IF;
+END
+$$;
+
+
+ALTER FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() OWNER TO dbhasura;
+
+--
+-- Name: execute_queued_journey_patterns_in_vehicle_service_refresh_trg(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  PERFORM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
 
   RETURN NEW;
 END
 $$;
 
 
-ALTER FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once() OWNER TO dbhasura;
+ALTER FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() OWNER TO dbhasura;
+
+--
+-- Name: queue_journey_patterns_in_vehicle_service_refresh(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  SET LOCAL vehicle_service.journey_patterns_in_vehicle_service_refresh_queued = TRUE;
+  RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() OWNER TO dbhasura;
 
 --
 -- Name: refresh_journey_patterns_in_vehicle_service(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
@@ -1422,10 +1472,16 @@ CREATE TABLE vehicle_type.vehicle_type (
 ALTER TABLE vehicle_type.vehicle_type OWNER TO dbhasura;
 
 --
+-- Name: journey_pattern_ref queue_refresh_jps_in_vs_on_jpr_modified_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
+
+--
 -- Name: journey_pattern_ref refresh_jps_in_vs_on_jpr_modified_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((old.journey_pattern_id <> new.journey_pattern_id)) EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
@@ -1470,16 +1526,28 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER
 CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
 
 --
+-- Name: vehicle_journey queue_refresh_jps_in_vs_on_vj_modified_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
+
+--
 -- Name: vehicle_journey refresh_jps_in_vs_on_vj_modified_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
+
+--
+-- Name: block queue_refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
 
 --
 -- Name: block refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((old.vehicle_service_id <> new.vehicle_service_id)) EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
 
 --
 -- Sorted dump complete
