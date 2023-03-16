@@ -74,21 +74,17 @@ IS 'Executes the vehicle_service.refresh_journey_patterns_in_vehicle_service fun
 -- to only refresh necessary parts of the journey_patterns_in_vehicle_service table.
 -- The reference_count can probably be utilized for such purpose.
 --
--- UPDATE triggers on all UPDATEs wouldn't be strictly necessary,
--- because only foreign key column updates can invalidate the journey_patterns_in_vehicle_service table.
--- But again, we don't expect much of any kind of UPDATEs currently,
--- so not worth optimizing for such cases.
-
-DROP TRIGGER IF EXISTS refresh_jps_in_vs_on_vs_modified_trigger ON vehicle_service.vehicle_service;
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vs_modified_trigger
-  AFTER UPDATE OR INSERT OR DELETE ON vehicle_service.vehicle_service
-  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW
-  EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+-- For INSERT/DELETE we only need to trigger refresh when vehicle_journey is touched.
+-- If any rows from tables higher in the hierarchy are INSERTed/DELETEd,
+-- then their children (vehicle_journey) will be touched as well.
+--
+-- For UPDATE operations, only foreign key column updates can invalidate
+-- the journey_patterns_in_vehicle_service table, so it is enough to check those.
 
 DROP TRIGGER IF EXISTS refresh_jps_in_vs_on_block_modified_trigger ON vehicle_service.block;
 CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger
-  AFTER UPDATE OR INSERT OR DELETE ON vehicle_service.block
-  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW
+  AFTER UPDATE ON vehicle_service.block
+  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (OLD.vehicle_service_id <> NEW.vehicle_service_id)
   EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
 
 DROP TRIGGER IF EXISTS refresh_jps_in_vs_on_vj_modified_trigger ON vehicle_journey.vehicle_journey;
@@ -97,12 +93,6 @@ CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger
   DEFERRABLE INITIALLY DEFERRED FOR EACH ROW
   EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
 
--- No need to add INSERT or DELETE for this journey_patten_ref trigger:
--- all such operations that would require the denormalized table to be refreshed
--- would fire other triggers as well,
--- since only via foreign key references (from vehicle journey)
--- does journey_pattern_ref affect the denormalized table.
--- However, UPDATE could still invalidate the table if journey_pattern_id is changed.
 DROP TRIGGER IF EXISTS refresh_jps_in_vs_on_jpr_modified_trigger ON journey_pattern.journey_pattern_ref;
 CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger
   AFTER UPDATE ON journey_pattern.journey_pattern_ref
