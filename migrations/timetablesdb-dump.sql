@@ -1479,13 +1479,7 @@ CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT 
 -- Name: block refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
-
---
--- Name: vehicle_service refresh_jps_in_vs_on_vs_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
---
-
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vs_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_service.vehicle_service DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
+CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((old.vehicle_service_id <> new.vehicle_service_id)) EXECUTE FUNCTION vehicle_service.execute_journey_patterns_in_vehicle_service_refresh_once();
 
 --
 -- Sorted dump complete
