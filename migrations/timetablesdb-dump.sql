@@ -86,6 +86,24 @@ COMMENT ON SCHEMA vehicle_schedule IS 'The vehicle schedule frame adapted from T
 COMMENT ON SCHEMA vehicle_service IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
 
 --
+-- Name: FUNCTION create_validation_queue_temp_tables(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_utils.create_validation_queue_temp_tables() IS 'Create the temp tables used to enqueue validation of the changed rows from statement-level triggers.';
+
+--
+-- Name: FUNCTION execute_queued_validations(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_utils.execute_queued_validations() IS 'Runs all queued validations. This is intended to be ran only once per transaction (see queued_validations_already_processed).';
+
+--
+-- Name: FUNCTION queued_validations_already_processed(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_utils.queued_validations_already_processed() IS 'Keep track of whether the queued validations have already been processed in this transaction';
+
+--
 -- Name: COLUMN journey_pattern_ref.journey_pattern_id; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -110,10 +128,36 @@ COMMENT ON COLUMN journey_pattern.journey_pattern_ref.snapshot_timestamp IS 'The
 COMMENT ON COLUMN journey_pattern.journey_pattern_ref.type_of_line IS 'The type of line (GTFS route type): https://developers.google.com/transit/gtfs/reference/extended-route-types';
 
 --
+-- Name: FUNCTION queue_validation_by_jpr_id(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION journey_pattern.queue_validation_by_jpr_id() IS 'Queue modified vehicle schedule frames for validation which is performed at the end of transaction.';
+
+--
 -- Name: TABLE journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
 COMMENT ON TABLE journey_pattern.journey_pattern_ref IS 'Reference to a given snapshot of a JOURNEY PATTERN for a given operating day. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:729 ';
+
+--
+-- Name: TRIGGER process_queued_validation_on_jpr_trigger ON journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER process_queued_validation_on_jpr_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger to execute queued validations that were registered earlier by statement level triggers';
+
+--
+-- Name: TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing modified journey pattern refs for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
+
+--
+-- Name: TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing modified journey pattern refs for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: COLUMN timetabled_passing_time.arrival_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
@@ -288,11 +332,6 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.sc
 
 COMMENT ON FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() IS 'Queue modified journey pattern refs for passing time sequence validation which is performed at the end of transaction.';
 
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
 --
 -- Name: TABLE scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
@@ -357,6 +396,17 @@ COMMENT ON COLUMN vehicle_journey.vehicle_journey.layover_time IS 'LAYOVER TIMEs
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.turnaround_time IS 'Turnaround time is the time taken by a vehicle to proceed from the end of a ROUTE to the start of another.';
 
 --
+-- Name: FUNCTION queue_validation_by_vj_id(); Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_journey.queue_validation_by_vj_id() IS 'Queue modified vehicle journeys for validation which is performed at the end of transaction.';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
 -- Name: TABLE journey_type; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -367,6 +417,19 @@ COMMENT ON TABLE vehicle_journey.journey_type IS 'Enum table for defining allowe
 --
 
 COMMENT ON TABLE vehicle_journey.vehicle_journey IS 'The planned movement of a public transport vehicle on a DAY TYPE from the start point to the end point of a JOURNEY PATTERN on a specified ROUTE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:831 ';
+
+--
+-- Name: TRIGGER process_queued_validation_on_vj_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER process_queued_validation_on_vj_trigger ON vehicle_journey.vehicle_journey IS 'Trigger to execute queued validations that were registered earlier by statement level triggers';
+
+--
+-- Name: TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing modified vehicle journeys for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: COLUMN vehicle_schedule_frame.label; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -409,12 +472,6 @@ they typically expect ranges to be half closed.';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
--- Name: FUNCTION create_schedule_validation_queue_temp_tables(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
---
-
-COMMENT ON FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() IS 'Create the temp tables used to enqueue validation of the changed vehicle schedule frames and journey patterns from statement-level triggers';
-
---
 -- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
@@ -425,22 +482,18 @@ COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_sc
   - have any vehicle_journeys for same journey_patterns';
 
 --
--- Name: FUNCTION queue_schedule_uniqueness_validation_by_vsf_id(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: FUNCTION queue_validation_by_vsf_id(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() IS 'Queue modified vehicle schedule frames for schedule uniqueness validation which is performed at the end of transaction.';
+COMMENT ON FUNCTION vehicle_schedule.queue_validation_by_vsf_id() IS 'Queue modified vehicle schedule frames for validation which is performed at the end of transaction.';
 
 --
--- Name: FUNCTION schedule_uniqueness_already_validated(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: FUNCTION validate_queued_schedules_uniqueness(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() IS 'Keep track of whether the schedule uniqueness validation has already been performed in this transaction';
-
---
--- Name: FUNCTION validate_schedule_uniqueness(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
---
-
-COMMENT ON FUNCTION vehicle_schedule.validate_schedule_uniqueness() IS 'TODO';
+COMMENT ON FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() IS 'Performs validation on schedules, checking that there are no overlapping schedules.
+  Essentially runs get_overlapping_schedules for all modified rows
+  and throws an error if any overlapping schedules are detected.';
 
 --
 -- Name: TABLE vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -449,23 +502,24 @@ COMMENT ON FUNCTION vehicle_schedule.validate_schedule_uniqueness() IS 'TODO';
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 --
--- Name: TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: TRIGGER process_queued_validation_on_vsf_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
+COMMENT ON TRIGGER process_queued_validation_on_vsf_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger to execute queued validations that were registered earlier by statement level triggers';
 
 --
--- Name: TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
+COMMENT ON TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
--- Name: TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger to validate the schedule uniqueness after modifications on vehicle schedule frames.
-    This trigger will cause those VSFs to be checked, whose ID was queued to be checked by a statement level trigger.';
+COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: COLUMN block.finishing_time; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -524,26 +578,16 @@ COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 
 --
--- Name: FUNCTION execute_queued_journey_patterns_in_vehicle_service_refresh_once(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+-- Name: FUNCTION queue_validation_by_block_id(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() IS 'Executes the vehicle_service.refresh_journey_patterns_in_vehicle_service function
- if it has been queued (by queue_journey_patterns_in_vehicle_service_refresh)
- and not yet executed in this transaction via this function.
- Otherwise does nothing.';
+COMMENT ON FUNCTION vehicle_service.queue_validation_by_block_id() IS 'Queue modified vehicle service blocks for validation which is performed at the end of transaction.';
 
 --
--- Name: FUNCTION execute_queued_journey_patterns_in_vehicle_service_refresh_trg(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+-- Name: FUNCTION queue_validation_by_vs_id(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() IS 'Trigger for calling execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
-
---
--- Name: FUNCTION queue_journey_patterns_in_vehicle_service_refresh(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
---
-
-COMMENT ON FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() IS 'Sets a flag that journey_patterns_in_vehicle_service should be refreshed.
- The actual refresh can then be triggered by execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
+COMMENT ON FUNCTION vehicle_service.queue_validation_by_vs_id() IS 'Queue modified vehicle services for validation which is performed at the end of transaction.';
 
 --
 -- Name: FUNCTION refresh_journey_patterns_in_vehicle_service(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -570,6 +614,19 @@ COMMENT ON TABLE vehicle_service.journey_patterns_in_vehicle_service IS 'A denor
 --
 
 COMMENT ON TABLE vehicle_service.vehicle_service IS 'A work plan for a single vehicle for a whole day, planned for a specific DAY TYPE. A VEHICLE SERVICE includes one or several BLOCKs. If there is no service on a given day, it does not include any BLOCKs. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:965 ';
+
+--
+-- Name: TRIGGER process_queued_validation_on_block_trigger ON block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER process_queued_validation_on_block_trigger ON vehicle_service.block IS 'Trigger to execute queued validations that were registered earlier by statement level triggers';
+
+--
+-- Name: TRIGGER queue_block_validation_on_update_trigger ON block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block IS 'Trigger for queuing modified vehicle service blocks for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: COLUMN vehicle_type.description_i18n; Type: COMMENT; Schema: vehicle_type; Owner: dbhasura
@@ -788,6 +845,114 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+--
+-- Name: create_validation_queue_temp_tables(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.create_validation_queue_temp_tables() RETURNS void
+    LANGUAGE sql PARALLEL SAFE
+    AS $$
+    CREATE TEMP TABLE IF NOT EXISTS modified_vehicle_schedule_frame
+    ( vehicle_schedule_frame_id UUID UNIQUE )
+    ON COMMIT DELETE ROWS;
+
+    CREATE TEMP TABLE IF NOT EXISTS modified_vehicle_service
+    ( vehicle_service_id UUID UNIQUE )
+    ON COMMIT DELETE ROWS;
+
+    CREATE TEMP TABLE IF NOT EXISTS modified_block
+    ( block_id UUID UNIQUE )
+    ON COMMIT DELETE ROWS;
+
+    CREATE TEMP TABLE IF NOT EXISTS modified_vehicle_journey
+    ( vehicle_journey_id UUID UNIQUE )
+    ON COMMIT DELETE ROWS;
+
+    CREATE TEMP TABLE IF NOT EXISTS modified_journey_pattern_ref
+    ( journey_pattern_ref_id UUID UNIQUE )
+    ON COMMIT DELETE ROWS;
+  $$;
+
+
+ALTER FUNCTION internal_utils.create_validation_queue_temp_tables() OWNER TO dbhasura;
+
+--
+-- Name: execute_queued_validations(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.execute_queued_validations() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE LOG 'internal_utils.execute_queued_validations() started';
+
+  -- In case this is called without creating he tables.
+  -- At least for refresh_journey_patterns_in_vehicle_service there is such case (vehicle_journey delete)
+  PERFORM internal_utils.create_validation_queue_temp_tables();
+
+  -- RAISE LOG 'before vehicle_service.refresh_journey_patterns_in_vehicle_service()';
+  PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
+
+  -- RAISE LOG 'before vehicle_schedule.validate_queued_schedules_uniqueness()';
+  PERFORM vehicle_schedule.validate_queued_schedules_uniqueness();
+
+  -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION internal_utils.execute_queued_validations() OWNER TO dbhasura;
+
+--
+-- Name: queued_validations_already_processed(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.queued_validations_already_processed() RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+  DECLARE
+    queued_validations_already_processed BOOLEAN;
+  BEGIN
+    queued_validations_already_processed := NULLIF(current_setting('internal_vars.queued_validations_already_processed', TRUE), '');
+    IF queued_validations_already_processed IS TRUE THEN
+      RETURN TRUE;
+    ELSE
+      -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
+      SET LOCAL internal_vars.queued_validations_already_processed = TRUE;
+      RETURN FALSE;
+    END IF;
+  END
+  $$;
+
+
+ALTER FUNCTION internal_utils.queued_validations_already_processed() OWNER TO dbhasura;
+
+--
+-- Name: queue_validation_by_jpr_id(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION journey_pattern.queue_validation_by_jpr_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    -- RAISE LOG 'journey_pattern.queue_validation_by_jpr_id()';
+
+    PERFORM internal_utils.create_validation_queue_temp_tables();
+
+    INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
+    SELECT DISTINCT journey_pattern_ref_id
+    FROM new_table
+    ON CONFLICT DO NOTHING;
+
+    RETURN NULL;
+  END;
+  $$;
+
+
+ALTER FUNCTION journey_pattern.queue_validation_by_jpr_id() OWNER TO dbhasura;
 
 --
 -- Name: create_validate_passing_times_sequence_queue_temp_tables(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
@@ -1046,6 +1211,30 @@ $$;
 ALTER FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() OWNER TO dbhasura;
 
 --
+-- Name: queue_validation_by_vj_id(); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_journey.queue_validation_by_vj_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    -- RAISE LOG 'vehicle_journey.queue_validation_by_vj_id()';
+
+    PERFORM internal_utils.create_validation_queue_temp_tables();
+
+    INSERT INTO modified_vehicle_journey (vehicle_journey_id)
+    SELECT DISTINCT vehicle_journey_id
+    FROM new_table
+    ON CONFLICT DO NOTHING;
+
+    RETURN NULL;
+  END;
+  $$;
+
+
+ALTER FUNCTION vehicle_journey.queue_validation_by_vj_id() OWNER TO dbhasura;
+
+--
 -- Name: vehicle_journey_end_time(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -1076,39 +1265,12 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
--- Name: create_schedule_validation_queue_temp_tables(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
---
-
-CREATE FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() RETURNS void
-    LANGUAGE sql PARALLEL SAFE
-    AS $$
-  CREATE TEMP TABLE IF NOT EXISTS updated_vehicle_schedule_frame
-  (
-    vehicle_schedule_frame_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-
-  -- Note: table with same name is used for passing time validation. This is fine.
-  CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_ref
-  (
-    journey_pattern_ref_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-$$;
-
-
-ALTER FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() OWNER TO dbhasura;
-
---
 -- Name: get_overlapping_schedules(uuid[], uuid[]); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
 CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) RETURNS TABLE(current_vehicle_schedule_frame_id uuid, other_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, current_validity_range daterange, other_validity_range daterange, validity_intersection daterange)
     LANGUAGE sql
     AS $$
-  -- There might be updates queued that have not been processed yet.
-  SELECT * FROM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
-
   WITH
   -- Find out which rows we need to check.
   -- Only modified rows and those they could possibly conflict with need to be checked. This includes:
@@ -1170,69 +1332,45 @@ $$;
 ALTER FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) OWNER TO dbhasura;
 
 --
--- Name: queue_schedule_uniqueness_validation_by_vsf_id(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: queue_validation_by_vsf_id(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() RETURNS trigger
+CREATE FUNCTION vehicle_schedule.queue_validation_by_vsf_id() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-BEGIN
-  -- RAISE NOTICE 'vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id()';
+  BEGIN
+    -- RAISE LOG 'vehicle_schedule.queue_validation_by_vsf_id()';
 
-  PERFORM vehicle_schedule.create_schedule_validation_queue_temp_tables();
+    PERFORM internal_utils.create_validation_queue_temp_tables();
 
-  INSERT INTO updated_vehicle_schedule_frame (vehicle_schedule_frame_id)
-  SELECT DISTINCT vehicle_schedule_frame_id
-  FROM new_table
-  ON CONFLICT DO NOTHING;
+    INSERT INTO modified_vehicle_schedule_frame (vehicle_schedule_frame_id)
+    SELECT DISTINCT vehicle_schedule_frame_id
+    FROM new_table
+    ON CONFLICT DO NOTHING;
 
-  RETURN NULL;
-END;
-$$;
-
-
-ALTER FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() OWNER TO dbhasura;
-
---
--- Name: schedule_uniqueness_already_validated(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
---
-
-CREATE FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  schedule_uniqueness_already_validated BOOLEAN;
-BEGIN
-  schedule_uniqueness_already_validated := NULLIF(current_setting('vehicle_schedule_vars.schedule_uniqueness_already_validated', TRUE), '');
-  IF schedule_uniqueness_already_validated IS TRUE THEN
-    RETURN TRUE;
-  ELSE
-    -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
-    SET LOCAL vehicle_schedule_vars.schedule_uniqueness_already_validated = TRUE;
-    RETURN FALSE;
-  END IF;
-END
-$$;
+    RETURN NULL;
+  END;
+  $$;
 
 
-ALTER FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() OWNER TO dbhasura;
+ALTER FUNCTION vehicle_schedule.queue_validation_by_vsf_id() OWNER TO dbhasura;
 
 --
--- Name: validate_schedule_uniqueness(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: validate_queued_schedules_uniqueness(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_schedule.validate_schedule_uniqueness() RETURNS trigger
+CREATE FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() RETURNS void
     LANGUAGE plpgsql
     AS $$
 DECLARE
   overlapping_schedule RECORD;
   error_message TEXT;
 BEGIN
-  -- RAISE NOTICE 'vehicle_schedule.validate_schedule_uniqueness()';
+  -- RAISE NOTICE 'vehicle_schedule.validate_queued_schedules_uniqueness()';
 
   SELECT * FROM vehicle_schedule.get_overlapping_schedules(
-    (SELECT array_agg(vehicle_schedule_frame_id) FROM updated_vehicle_schedule_frame),
-    (SELECT array_agg(journey_pattern_ref_id) FROM updated_journey_pattern_ref)
+    (SELECT array_agg(vehicle_schedule_frame_id) FROM modified_vehicle_schedule_frame),
+    (SELECT array_agg(journey_pattern_ref_id) FROM modified_journey_pattern_ref)
   )
   LIMIT 1 -- RECORD type, so other rows are discarded anyway.
   INTO overlapping_schedule;
@@ -1250,79 +1388,59 @@ BEGIN
     ) INTO error_message;
     RAISE EXCEPTION 'conflicting schedules detected: %', error_message;
   END IF;
-
-  RETURN NULL;
 END;
 $$;
 
 
-ALTER FUNCTION vehicle_schedule.validate_schedule_uniqueness() OWNER TO dbhasura;
+ALTER FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() OWNER TO dbhasura;
 
 --
--- Name: execute_queued_journey_patterns_in_vehicle_service_refresh_once(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+-- Name: queue_validation_by_block_id(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() RETURNS void
+CREATE FUNCTION vehicle_service.queue_validation_by_block_id() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-DECLARE
-  journey_patterns_in_vehicle_service_refresh_queued BOOLEAN;
-  already_refreshed_journey_patterns_in_vehicle_service BOOLEAN;
-BEGIN
-  -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once()';
+  BEGIN
+    -- RAISE LOG 'vehicle_service.queue_validation_by_block_id()';
 
-  journey_patterns_in_vehicle_service_refresh_queued := NULLIF(current_setting('vehicle_service.journey_patterns_in_vehicle_service_refresh_queued', TRUE), '');
-  -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once, refresh queued refreshed: %', journey_patterns_in_vehicle_service_refresh_queued;
-  IF journey_patterns_in_vehicle_service_refresh_queued IS TRUE THEN
-    already_refreshed_journey_patterns_in_vehicle_service := NULLIF(current_setting('vehicle_service.already_refreshed_journey_patterns_in_vehicle_service', TRUE), '');
-    -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once, already refreshed: %', already_refreshed_journey_patterns_in_vehicle_service;
+    PERFORM internal_utils.create_validation_queue_temp_tables();
 
-    IF already_refreshed_journey_patterns_in_vehicle_service IS NOT TRUE THEN
-      -- RAISE LOG 'execute_queued_journey_patterns_in_vehicle_service_refresh_once(): execute and reset flag.';
+    INSERT INTO modified_block (block_id)
+    SELECT DISTINCT block_id
+    FROM new_table
+    ON CONFLICT DO NOTHING;
 
-      PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
-
-      SET LOCAL vehicle_service.already_refreshed_journey_patterns_in_vehicle_service = TRUE;
-    END IF;
-  END IF;
-END
-$$;
+    RETURN NULL;
+  END;
+  $$;
 
 
-ALTER FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once() OWNER TO dbhasura;
+ALTER FUNCTION vehicle_service.queue_validation_by_block_id() OWNER TO dbhasura;
 
 --
--- Name: execute_queued_journey_patterns_in_vehicle_service_refresh_trg(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+-- Name: queue_validation_by_vs_id(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() RETURNS trigger
+CREATE FUNCTION vehicle_service.queue_validation_by_vs_id() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-BEGIN
-  PERFORM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
+  BEGIN
+    -- RAISE LOG 'vehicle_service.queue_validation_by_vs_id()';
 
-  RETURN NEW;
-END
-$$;
+    PERFORM internal_utils.create_validation_queue_temp_tables();
 
+    INSERT INTO modified_vehicle_service (vehicle_service_id)
+    SELECT DISTINCT vehicle_service_id
+    FROM new_table
+    ON CONFLICT DO NOTHING;
 
-ALTER FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg() OWNER TO dbhasura;
-
---
--- Name: queue_journey_patterns_in_vehicle_service_refresh(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
---
-
-CREATE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  SET LOCAL vehicle_service.journey_patterns_in_vehicle_service_refresh_queued = TRUE;
-  RETURN NEW;
-END
-$$;
+    RETURN NULL;
+  END;
+  $$;
 
 
-ALTER FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh() OWNER TO dbhasura;
+ALTER FUNCTION vehicle_service.queue_validation_by_vs_id() OWNER TO dbhasura;
 
 --
 -- Name: refresh_journey_patterns_in_vehicle_service(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
@@ -1707,16 +1825,22 @@ CREATE TABLE vehicle_type.vehicle_type (
 ALTER TABLE vehicle_type.vehicle_type OWNER TO dbhasura;
 
 --
--- Name: journey_pattern_ref queue_refresh_jps_in_vs_on_jpr_modified_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+-- Name: journey_pattern_ref process_queued_validation_on_jpr_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: journey_pattern_ref refresh_jps_in_vs_on_jpr_modified_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+-- Name: journey_pattern_ref queue_jpr_validation_on_insert_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_jpr_modified_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
+CREATE TRIGGER queue_jpr_validation_on_insert_trigger AFTER INSERT ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+
+--
+-- Name: journey_pattern_ref queue_jpr_validation_on_update_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_jpr_validation_on_update_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
@@ -1761,46 +1885,46 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER
 CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
 
 --
--- Name: vehicle_journey queue_refresh_jps_in_vs_on_vj_modified_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+-- Name: vehicle_journey process_queued_validation_on_vj_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_vj_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: vehicle_journey refresh_jps_in_vs_on_vj_modified_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+-- Name: vehicle_journey queue_vj_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
+CREATE TRIGGER queue_vj_validation_on_update_trigger AFTER UPDATE ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
--- Name: vehicle_schedule_frame queue_validate_schedule_uniqueness_on_vsf_insert_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: vehicle_schedule_frame process_queued_validation_on_vsf_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_vsf_trigger AFTER INSERT OR UPDATE ON vehicle_schedule.vehicle_schedule_frame DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: vehicle_schedule_frame queue_validate_schedule_uniqueness_on_vsf_update_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: vehicle_schedule_frame queue_vsf_validation_on_insert_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
+CREATE TRIGGER queue_vsf_validation_on_insert_trigger AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 
 --
--- Name: vehicle_schedule_frame validate_schedule_uniqueness_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: vehicle_schedule_frame queue_vsf_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_schedule_uniqueness_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_schedule.vehicle_schedule_frame DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT vehicle_schedule.schedule_uniqueness_already_validated())) EXECUTE FUNCTION vehicle_schedule.validate_schedule_uniqueness();
+CREATE TRIGGER queue_vsf_validation_on_update_trigger AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 
 --
--- Name: block queue_refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+-- Name: block process_queued_validation_on_block_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_journey_patterns_in_vehicle_service_refresh();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_block_trigger AFTER UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: block refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+-- Name: block queue_block_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_block_modified_trigger AFTER UPDATE ON vehicle_service.block DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
+CREATE TRIGGER queue_block_validation_on_update_trigger AFTER UPDATE ON vehicle_service.block REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
 
 --
 -- Sorted dump complete
