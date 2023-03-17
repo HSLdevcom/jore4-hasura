@@ -12,9 +12,6 @@ RETURNS TABLE(
 )
 LANGUAGE sql
 AS $$
-  -- There might be updates queued that have not been processed yet.
-  SELECT * FROM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
-
   WITH
   -- Find out which rows we need to check.
   -- Only modified rows and those they could possibly conflict with need to be checked. This includes:
@@ -74,18 +71,18 @@ $$;
 COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[])
 IS 'TODO.';
 
-CREATE OR REPLACE FUNCTION vehicle_schedule.validate_schedule_uniqueness() RETURNS trigger
+CREATE OR REPLACE FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() RETURNS VOID
   LANGUAGE plpgsql
 AS $$
 DECLARE
   overlapping_schedule RECORD;
   error_message TEXT;
 BEGIN
-  -- RAISE NOTICE 'vehicle_schedule.validate_schedule_uniqueness()';
+  -- RAISE NOTICE 'vehicle_schedule.validate_queued_schedules_uniqueness()';
 
   SELECT * FROM vehicle_schedule.get_overlapping_schedules(
-    (SELECT array_agg(vehicle_schedule_frame_id) FROM updated_vehicle_schedule_frame),
-    (SELECT array_agg(journey_pattern_ref_id) FROM updated_journey_pattern_ref)
+    (SELECT array_agg(vehicle_schedule_frame_id) FROM modified_vehicle_schedule_frame),
+    (SELECT array_agg(journey_pattern_ref_id) FROM modified_journey_pattern_ref)
   )
   LIMIT 1 -- RECORD type, so other rows are discarded anyway.
   INTO overlapping_schedule;
@@ -103,96 +100,8 @@ BEGIN
     ) INTO error_message;
     RAISE EXCEPTION 'conflicting schedules detected: %', error_message;
   END IF;
-
-  RETURN NULL;
 END;
 $$;
-COMMENT ON FUNCTION vehicle_schedule.validate_schedule_uniqueness()
+COMMENT ON FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness()
 IS 'TODO';
 
-CREATE OR REPLACE FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() RETURNS void
-  LANGUAGE sql PARALLEL SAFE
-AS $$
-  CREATE TEMP TABLE IF NOT EXISTS updated_vehicle_schedule_frame
-  (
-    vehicle_schedule_frame_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-
-  -- Note: table with same name is used for passing time validation. This is fine.
-  CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_ref
-  (
-    journey_pattern_ref_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-$$;
-COMMENT ON FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables()
-IS 'Create the temp tables used to enqueue validation of the changed vehicle schedule frames and journey patterns from statement-level triggers';
-
-CREATE OR REPLACE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() RETURNS trigger
-  LANGUAGE plpgsql
-AS $$
-BEGIN
-  -- RAISE NOTICE 'vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id()';
-
-  PERFORM vehicle_schedule.create_schedule_validation_queue_temp_tables();
-
-  INSERT INTO updated_vehicle_schedule_frame (vehicle_schedule_frame_id)
-  SELECT DISTINCT vehicle_schedule_frame_id
-  FROM new_table
-  ON CONFLICT DO NOTHING;
-
-  RETURN NULL;
-END;
-$$;
-COMMENT ON FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id()
-IS 'Queue modified vehicle schedule frames for schedule uniqueness validation which is performed at the end of transaction.';
-
-CREATE OR REPLACE FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  schedule_uniqueness_already_validated BOOLEAN;
-BEGIN
-  schedule_uniqueness_already_validated := NULLIF(current_setting('vehicle_schedule_vars.schedule_uniqueness_already_validated', TRUE), '');
-  IF schedule_uniqueness_already_validated IS TRUE THEN
-    RETURN TRUE;
-  ELSE
-    -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
-    SET LOCAL vehicle_schedule_vars.schedule_uniqueness_already_validated = TRUE;
-    RETURN FALSE;
-  END IF;
-END
-$$;
-COMMENT ON FUNCTION vehicle_schedule.schedule_uniqueness_already_validated()
-IS 'Keep track of whether the schedule uniqueness validation has already been performed in this transaction';
-
--- TODO: add all necessary triggers, and run the validation only once per transaction.
-DROP TRIGGER IF EXISTS queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule.vehicle_schedule_frame;
-CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger
-  AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame
-  REFERENCING NEW TABLE AS new_table
-  FOR EACH STATEMENT
-  EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
-COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule.vehicle_schedule_frame
-IS 'TODO';
-
-DROP TRIGGER IF EXISTS queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule.vehicle_schedule_frame;
-CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger
-  AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame
-  REFERENCING NEW TABLE AS new_table
-  FOR EACH STATEMENT
-  EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
-COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule.vehicle_schedule_frame
-IS 'TODO';
-
-DROP TRIGGER IF EXISTS validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame;
-CREATE CONSTRAINT TRIGGER validate_schedule_uniqueness_trigger
-  AFTER UPDATE OR INSERT OR DELETE ON vehicle_schedule.vehicle_schedule_frame
-  DEFERRABLE INITIALLY DEFERRED
-  FOR EACH ROW
-  WHEN (NOT vehicle_schedule.schedule_uniqueness_already_validated())
-  EXECUTE FUNCTION vehicle_schedule.validate_schedule_uniqueness();
-COMMENT ON TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame
-IS 'Trigger to validate the schedule uniqueness after modifications on vehicle schedule frames.
-    This trigger will cause those VSFs to be checked, whose ID was queued to be checked by a statement level trigger.';
