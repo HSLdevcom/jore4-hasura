@@ -1,7 +1,8 @@
 # String interpolation tests
 
-The string interpolation script should be tested with the same Docker image that will be used in production.
-Otherwise for example shell incompatibilities might cause issues.
+The string interpolation script should be tested with the same Docker image that
+will be used in production. Otherwise for example shell incompatibilities might
+cause issues.
 
 All tests will be executed by running:
 
@@ -9,8 +10,8 @@ All tests will be executed by running:
 ./test.sh
 ```
 
-Each test is contained in its own directory within this directory.
-The name of each test directory signifies the name of the test.
+Each test is contained in its own directory within this directory. The name of
+each test directory signifies the name of the test.
 
 Each test directory should contain the following files:
 
