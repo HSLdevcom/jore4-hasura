@@ -409,6 +409,12 @@ they typically expect ranges to be half closed.';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
+-- Name: FUNCTION create_schedule_validation_queue_temp_tables(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() IS 'Create the temp tables used to enqueue validation of the changed vehicle schedule frames and journey patterns from statement-level triggers';
+
+--
 -- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
@@ -417,6 +423,18 @@ COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_sc
   - same priority
   - are valid on the same day (validity_range, active_on_day_of_week)
   - have any vehicle_journeys for same journey_patterns';
+
+--
+-- Name: FUNCTION queue_schedule_uniqueness_validation_by_vsf_id(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() IS 'Queue modified vehicle schedule frames for schedule uniqueness validation which is performed at the end of transaction.';
+
+--
+-- Name: FUNCTION schedule_uniqueness_already_validated(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() IS 'Keep track of whether the schedule uniqueness validation has already been performed in this transaction';
 
 --
 -- Name: FUNCTION validate_schedule_uniqueness(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -431,10 +449,23 @@ COMMENT ON FUNCTION vehicle_schedule.validate_schedule_uniqueness() IS 'TODO';
 COMMENT ON TABLE vehicle_schedule.vehicle_schedule_frame IS 'A coherent set of BLOCKS, COMPOUND BLOCKs, COURSEs of JOURNEY and VEHICLE SCHEDULEs to which the same set of VALIDITY CONDITIONs have been assigned. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 --
+-- Name: TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
+
+--
+-- Name: TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
+
+--
 -- Name: TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'TODO';
+COMMENT ON TRIGGER validate_schedule_uniqueness_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger to validate the schedule uniqueness after modifications on vehicle schedule frames.
+    This trigger will cause those VSFs to be checked, whose ID was queued to be checked by a statement level trigger.';
 
 --
 -- Name: COLUMN block.finishing_time; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
@@ -1045,6 +1076,30 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
+-- Name: create_schedule_validation_queue_temp_tables(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() RETURNS void
+    LANGUAGE sql PARALLEL SAFE
+    AS $$
+  CREATE TEMP TABLE IF NOT EXISTS updated_vehicle_schedule_frame
+  (
+    vehicle_schedule_frame_id UUID UNIQUE
+  )
+  ON COMMIT DELETE ROWS;
+
+  -- Note: table with same name is used for passing time validation. This is fine.
+  CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_ref
+  (
+    journey_pattern_ref_id UUID UNIQUE
+  )
+  ON COMMIT DELETE ROWS;
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.create_schedule_validation_queue_temp_tables() OWNER TO dbhasura;
+
+--
 -- Name: get_overlapping_schedules(uuid[], uuid[]); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
@@ -1055,8 +1110,25 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
   SELECT * FROM vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_once();
 
   WITH
+  -- Find out which rows we need to check.
+  -- Only modified rows and those they could possibly conflict with need to be checked. This includes:
+  -- 1. modified VSFs
+  -- 2. all VSFs that have same JP as any of the modified ones
+  -- 3. all VSFs that use any of the modified JPs
+  -- Achieve this by filtering with journey_pattern_id,
+  -- and include all JP ids that were either modified or relate to any modified VSFs.
+  journey_patterns_to_check AS (
+      SELECT journey_pattern_id
+      FROM journey_pattern.journey_pattern_ref
+      WHERE journey_pattern_ref_id = ANY(filter_journey_pattern_ref_ids)
+    UNION
+      SELECT DISTINCT journey_pattern_id
+      FROM vehicle_schedule.vehicle_schedule_frame
+      JOIN vehicle_service.vehicle_service vs  USING (vehicle_schedule_frame_id)
+      JOIN vehicle_service.journey_patterns_in_vehicle_service USING (vehicle_service_id)
+      WHERE vehicle_schedule_frame_id = ANY(filter_vehicle_schedule_frame_ids)
+  ),
   -- Collect all relevant data about journey patterns for vehicle schedule frames.
-  -- TODO: can this be narrowed down? Now selects basically the whole DB.
   vehicle_schedule_frame_journey_patterns AS (
     SELECT DISTINCT
       vehicle_schedule_frame_id,
@@ -1066,18 +1138,12 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
       priority
     FROM vehicle_service.journey_patterns_in_vehicle_service
     JOIN vehicle_service.vehicle_service USING (vehicle_service_id)
+    JOIN journey_pattern.journey_pattern_ref USING (journey_pattern_id)
     JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
     JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
-  ),
-  -- TODO: use the function parameters instead.
-  vehicle_journey_ids_filter AS (
-    SELECT vehicle_schedule_frame_id FROM vehicle_schedule.vehicle_schedule_frame vsf
-    -- WHERE vehicle_schedule_frame_id IN (
-    -- )
-  ),
-  schedules_to_check AS (
-    SELECT FVS.* FROM vehicle_schedule_frame_journey_patterns FVS
-    JOIN vehicle_journey_ids_filter USING (vehicle_schedule_frame_id)
+    WHERE (
+      journey_pattern_id IN (SELECT * FROM journey_patterns_to_check)
+    )
   ),
   -- Select all schedules in DB that have conflicts with schedules_to_check.
   -- Note that this will contain each conflicting schedule frame pair twice.
@@ -1091,7 +1157,7 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
       current_schedule.validity_range AS current_validity_range,
       other_schedule.validity_range AS other_validity_range,
       current_schedule.validity_range * other_schedule.validity_range AS validity_intersection
-    FROM schedules_to_check current_schedule
+    FROM vehicle_schedule_frame_journey_patterns current_schedule
     -- Check if the schedules conflict.
     JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
     WHERE (current_schedule.validity_range && other_schedule.validity_range)
@@ -1102,6 +1168,54 @@ $$;
 
 
 ALTER FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) OWNER TO dbhasura;
+
+--
+-- Name: queue_schedule_uniqueness_validation_by_vsf_id(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- RAISE NOTICE 'vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id()';
+
+  PERFORM vehicle_schedule.create_schedule_validation_queue_temp_tables();
+
+  INSERT INTO updated_vehicle_schedule_frame (vehicle_schedule_frame_id)
+  SELECT DISTINCT vehicle_schedule_frame_id
+  FROM new_table
+  ON CONFLICT DO NOTHING;
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id() OWNER TO dbhasura;
+
+--
+-- Name: schedule_uniqueness_already_validated(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  schedule_uniqueness_already_validated BOOLEAN;
+BEGIN
+  schedule_uniqueness_already_validated := NULLIF(current_setting('vehicle_schedule_vars.schedule_uniqueness_already_validated', TRUE), '');
+  IF schedule_uniqueness_already_validated IS TRUE THEN
+    RETURN TRUE;
+  ELSE
+    -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
+    SET LOCAL vehicle_schedule_vars.schedule_uniqueness_already_validated = TRUE;
+    RETURN FALSE;
+  END IF;
+END
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.schedule_uniqueness_already_validated() OWNER TO dbhasura;
 
 --
 -- Name: validate_schedule_uniqueness(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
@@ -1117,7 +1231,8 @@ BEGIN
   -- RAISE NOTICE 'vehicle_schedule.validate_schedule_uniqueness()';
 
   SELECT * FROM vehicle_schedule.get_overlapping_schedules(
-    array[]::uuid[], array[]::uuid[]
+    (SELECT array_agg(vehicle_schedule_frame_id) FROM updated_vehicle_schedule_frame),
+    (SELECT array_agg(journey_pattern_ref_id) FROM updated_journey_pattern_ref)
   )
   LIMIT 1 -- RECORD type, so other rows are discarded anyway.
   INTO overlapping_schedule;
@@ -1658,10 +1773,22 @@ CREATE TRIGGER queue_refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DE
 CREATE CONSTRAINT TRIGGER refresh_jps_in_vs_on_vj_modified_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_service.execute_queued_journey_patterns_in_vehicle_service_refresh_trg();
 
 --
+-- Name: vehicle_schedule_frame queue_validate_schedule_uniqueness_on_vsf_insert_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_insert_trigger AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
+
+--
+-- Name: vehicle_schedule_frame queue_validate_schedule_uniqueness_on_vsf_update_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_validate_schedule_uniqueness_on_vsf_update_trigger AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_schedule_uniqueness_validation_by_vsf_id();
+
+--
 -- Name: vehicle_schedule_frame validate_schedule_uniqueness_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_schedule_uniqueness_trigger AFTER INSERT OR UPDATE ON vehicle_schedule.vehicle_schedule_frame DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION vehicle_schedule.validate_schedule_uniqueness();
+CREATE CONSTRAINT TRIGGER validate_schedule_uniqueness_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_schedule.vehicle_schedule_frame DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT vehicle_schedule.schedule_uniqueness_already_validated())) EXECUTE FUNCTION vehicle_schedule.validate_schedule_uniqueness();
 
 --
 -- Name: block queue_refresh_jps_in_vs_on_block_modified_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
