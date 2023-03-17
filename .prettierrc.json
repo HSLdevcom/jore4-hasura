@@ -7,6 +7,12 @@
       "options": {
         "singleQuote": false
       }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always"
+      }
     }
   ]
 }
