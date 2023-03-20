@@ -2,11 +2,77 @@ import { toGraphQlObject } from '@util/dataset';
 import { addMutationWrapper } from '@util/graphql';
 import { buildPropNameArray } from '@util/setup';
 import { genericTimetablesDbSchema } from './datasets/schema';
-import { JourneyPatternRef, VehicleJourney } from './datasets/types';
+import {
+  JourneyPatternRef,
+  VehicleJourney,
+  VehicleScheduleFrame,
+  VehicleService,
+  VehicleServiceBlock,
+} from './datasets/types';
 
 // Note: these mutations are not usable by themselves,
 // they need to be ran through addMutationWrapper first.
 export { addMutationWrapper };
+
+// vehicle_schedule_frame:
+
+export const buildUpdateVehicleScheduleFrameMutation = (
+  vehicleScheduleFrameId: UUID,
+  toBeUpdated: Partial<VehicleScheduleFrame>,
+) => `
+  timetables {
+    timetables_update_vehicle_schedule_vehicle_schedule_frame(
+      where: {
+        vehicle_schedule_frame_id: {_eq: "${vehicleScheduleFrameId}"}
+      },
+      _set: ${toGraphQlObject(toBeUpdated)}
+    ) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+        )}
+      }
+    }
+  }
+`;
+
+// vehicle_service:
+
+export const buildInsertVehicleServiceMutation = (
+  newVehicleService: VehicleService,
+) => `
+  timetables {
+    timetables_insert_vehicle_service_vehicle_service(objects: ${toGraphQlObject(
+      newVehicleService,
+    )}) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+        )}
+      }
+    }
+  }
+`;
+
+export const buildUpdateVehicleServiceMutation = (
+  vehicleServiceId: UUID,
+  toBeUpdated: Partial<VehicleService>,
+) => `
+  timetables {
+    timetables_update_vehicle_service_vehicle_service(
+      where: {
+        vehicle_service_id: {_eq: "${vehicleServiceId}"}
+      },
+      _set: ${toGraphQlObject(toBeUpdated)}
+    ) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+        )}
+      }
+    }
+  }
+`;
 
 // vehicle_journey:
 

@@ -5,6 +5,8 @@ import {
   DbConnection,
   getKnex,
 } from '@util/db';
+import { addMutationWrapper, postQuery } from '@util/graphql';
+import { expectErrorResponse } from '@util/response';
 import { insertTableData, setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
@@ -17,6 +19,11 @@ import { vehicleScheduleFramesByName } from 'generic/timetablesdb/datasets/defau
 import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-service-blocks';
 import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
+import {
+  buildUpdateJourneyPatternRefMutation,
+  buildUpdateVehicleScheduleFrameMutation,
+  buildUpdateVehicleServiceMutation,
+} from 'generic/timetablesdb/mutations';
 import { cloneDeep, merge, pick } from 'lodash';
 import { DateTime } from 'luxon';
 
@@ -105,6 +112,32 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       },
       { connection: dbConnection },
     );
+  };
+
+  const useRoute234StopPoints = (
+    dataset: ReturnType<typeof cloneBaseDataset>,
+  ) => {
+    // The stops need to be from same journey pattern as well, not to break other constraints.
+    const newStops = [
+      scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop1,
+      scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop2,
+    ];
+
+    const newStopPoints = [
+      {
+        ...dataset.passingTimes[0],
+        scheduled_stop_point_in_journey_pattern_ref_id:
+          newStops[0].scheduled_stop_point_in_journey_pattern_ref_id,
+      },
+      {
+        ...dataset.passingTimes[3], // Last stop.
+        scheduled_stop_point_in_journey_pattern_ref_id:
+          newStops[1].scheduled_stop_point_in_journey_pattern_ref_id,
+      },
+    ];
+
+    dataset.passingTimes.length = 0; // eslint-disable-line no-param-reassign
+    dataset.passingTimes.push(...newStopPoints);
   };
 
   describe('on inserts', () => {
@@ -239,26 +272,104 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         const newJourneyPatternRefId =
           journeyPatternRefsByName.route234Outbound.journey_pattern_ref_id;
         dataset.journey.journey_pattern_ref_id = newJourneyPatternRefId;
-
-        // The stops need to be from same journey pattern as well, to not break other constraints.
-        const newStops = [
-          scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop1,
-          scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop2,
-        ];
-        dataset.passingTimes = [
-          {
-            ...dataset.passingTimes[0],
-            scheduled_stop_point_in_journey_pattern_ref_id:
-              newStops[0].scheduled_stop_point_in_journey_pattern_ref_id,
-          },
-          {
-            ...dataset.passingTimes[3], // Last stop.
-            scheduled_stop_point_in_journey_pattern_ref_id:
-              newStops[1].scheduled_stop_point_in_journey_pattern_ref_id,
-          },
-        ];
+        useRoute234StopPoints(dataset);
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
+      });
+    });
+  });
+
+  describe('on updates', () => {
+    describe('on properties considered for schedule conflicts', () => {
+      it('should run validation when priority is updated', async () => {
+        const dataset = cloneBaseDataset();
+        const baseDatasePriority = dataset.frame.priority;
+        dataset.frame.priority = baseDatasePriority + 10;
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+
+        const updateMutation = addMutationWrapper(
+          buildUpdateVehicleScheduleFrameMutation(
+            dataset.frame.vehicle_schedule_frame_id,
+            {
+              priority: baseDatasePriority,
+            },
+          ),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      it('should run validation when validity period is updated', async () => {
+        const dataset = cloneBaseDataset();
+        const baseDatasetValidityStart = dataset.frame.validity_start;
+        dataset.frame.validity_start = DateTime.fromISO('2023-11-01');
+        dataset.frame.validity_end = DateTime.fromISO('2023-12-31');
+
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+
+        const updateMutation = addMutationWrapper(
+          buildUpdateVehicleScheduleFrameMutation(
+            dataset.frame.vehicle_schedule_frame_id,
+            {
+              validity_start: baseDatasetValidityStart,
+            },
+          ),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      // FIXME: missing relevant UPDATE triggers to fix this.
+      it.skip('should run validation when day of week is updated', async () => {
+        const dataset = cloneBaseDataset();
+        const baseDatasetDayTypeId = dataset.service.day_type_id;
+        dataset.service.day_type_id = defaultDayTypeIds.SATURDAY;
+
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+
+        const updateMutation = addMutationWrapper(
+          buildUpdateVehicleServiceMutation(
+            dataset.service.vehicle_service_id,
+            {
+              day_type_id: baseDatasetDayTypeId,
+            },
+          ),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      it('should run validation when journey_pattern_ref is updated', async () => {
+        const dataset = cloneBaseDataset();
+        const baseDatasetRef = journeyPatternRefsByName.route123Outbound;
+        const newScheduleRef = journeyPatternRefsByName.route234Outbound;
+        // Set to inbound so this doesn't conflict with existing schedule.
+        expect(dataset.journey.journey_pattern_ref_id).toBe(
+          baseDatasetRef.journey_pattern_ref_id,
+        );
+        expect(baseDatasetRef.journey_pattern_id).not.toBe(
+          newScheduleRef.journey_pattern_id,
+        );
+        dataset.journey.journey_pattern_ref_id =
+          newScheduleRef.journey_pattern_ref_id;
+        useRoute234StopPoints(dataset);
+
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+
+        // Update the ref so that inbound and outbound point to same journey pattern -> conflict in schedules ensues.
+        const updateMutation = addMutationWrapper(
+          buildUpdateJourneyPatternRefMutation(
+            newScheduleRef.journey_pattern_ref_id,
+            {
+              journey_pattern_id: baseDatasetRef.journey_pattern_id,
+            },
+          ),
+        );
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
       });
     });
   });
