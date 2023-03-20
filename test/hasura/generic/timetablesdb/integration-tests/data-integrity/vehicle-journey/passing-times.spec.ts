@@ -1,6 +1,7 @@
-import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
+import { timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { buildPropNameArray, setupDb } from '@util/setup';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
@@ -12,7 +13,6 @@ import {
   TimetabledPassingTime,
 } from 'generic/timetablesdb/datasets/types';
 import { Duration } from 'luxon';
-import { post } from 'request-promise';
 
 describe('Vehicle journey passing time validation', () => {
   let dbConnection: DbConnection;
@@ -25,6 +25,7 @@ describe('Vehicle journey passing time validation', () => {
 
   beforeEach(() => setupDb(dbConnection, defaultGenericTimetablesDbData));
 
+  // TODO: maybe move these to timetables/mutations.ts
   const wrapWithTimetablesMutation = (mutation: string) => `
 mutation {
   timetables {
@@ -115,15 +116,6 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
   }
 }
 `;
-
-  const postQuery = (query: string) => {
-    return post({
-      ...hasuraRequestTemplate,
-      body: {
-        query,
-      },
-    });
-  };
 
   // Note: most validation logic is shared between UPDATE/INSERT/DELETE.
   // Such logic is mainly tested here with updates.

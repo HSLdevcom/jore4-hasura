@@ -1,13 +1,13 @@
-import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
-import { toGraphQlObject } from '@util/dataset';
+import { timetablesDbConfig } from '@config';
 import {
   batchInsert,
   closeDbConnection,
   createDbConnection,
   DbConnection,
 } from '@util/db';
+import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectNoErrorResponse } from '@util/response';
-import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
+import { queryTable, setupDb } from '@util/setup';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
 import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup/journey-pattern-refs';
 import { vehicleJourneysByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-journeys';
@@ -15,10 +15,12 @@ import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaul
 import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import {
-  JourneyPatternRef,
-  VehicleJourney,
-} from 'generic/timetablesdb/datasets/types';
-import { post } from 'request-promise';
+  buildInsertVehicleJourneyMutation,
+  buildUpdateVehicleJourneyMutation,
+  buildDeletePassingTimeMutation,
+  buildDeleteVehicleJourneyMutation,
+  buildUpdateJourneyPatternRefMutation,
+} from 'generic/timetablesdb/mutations';
 
 describe('Denormalized references to journey patterns in vehicle services', () => {
   let dbConnection: DbConnection;
@@ -30,99 +32,6 @@ describe('Denormalized references to journey patterns in vehicle services', () =
   afterAll(() => closeDbConnection(dbConnection));
 
   beforeEach(() => setupDb(dbConnection, defaultGenericTimetablesDbData));
-
-  const addMutationWrapper = (query: string) => `mutation {
-    ${query}
-  }`;
-
-  const buildInsertVehicleJourneyMutation = (
-    newVehicleJourney: VehicleJourney,
-  ) => `
-    timetables {
-      timetables_insert_vehicle_journey_vehicle_journey(objects: ${toGraphQlObject(
-        newVehicleJourney,
-      )}) {
-        returning {
-          ${buildPropNameArray(
-            genericTimetablesDbSchema['vehicle_journey.vehicle_journey'],
-          )}
-        }
-      }
-    }
-  `;
-
-  const buildUpdateVehicleJourneyMutation = (
-    vehicleJourneyId: UUID,
-    toBeUpdated: Partial<VehicleJourney>,
-  ) => `
-    timetables {
-      timetables_update_vehicle_journey_vehicle_journey(
-        where: {
-          vehicle_journey_id: {_eq: "${vehicleJourneyId}"}
-        },
-        _set: ${toGraphQlObject(toBeUpdated)}
-      ) {
-        returning {
-          ${buildPropNameArray(
-            genericTimetablesDbSchema['vehicle_journey.vehicle_journey'],
-          )}
-        }
-      }
-    }
-  `;
-
-  const buildDeletePassingTimeMutation = (vehicleJourneyId: UUID) => `
-    timetables {
-        timetables_delete_passing_times_timetabled_passing_time(
-          where: {
-            vehicle_journey_id: {_eq: "${vehicleJourneyId}"}
-          }
-        ) {
-          affected_rows
-        }
-      }
-  `;
-
-  const buildDeleteVehicleJourneyMutation = (vehicleJourneyId: UUID) => `
-    timetables {
-      timetables_delete_vehicle_journey_vehicle_journey(
-        where: {
-          vehicle_journey_id: {_eq: "${vehicleJourneyId}"}
-        }
-      ) {
-        affected_rows
-      }
-    }
-  `;
-
-  const buildUpdateJourneyPatternRefMutation = (
-    journeyPatternRefId: UUID,
-    toBeUpdated: Partial<JourneyPatternRef>,
-  ) => `
-    timetables {
-      timetables_update_journey_pattern_journey_pattern_ref(
-        where: {
-          journey_pattern_ref_id: {_eq: "${journeyPatternRefId}"}
-        },
-        _set: ${toGraphQlObject(toBeUpdated)}
-      ) {
-        returning {
-          ${buildPropNameArray(
-            genericTimetablesDbSchema['journey_pattern.journey_pattern_ref'],
-          )}
-        }
-      }
-    }
-  `;
-
-  const postQuery = (query: string) => {
-    return post({
-      ...hasuraRequestTemplate,
-      body: {
-        query,
-      },
-    });
-  };
 
   const getJourneyPatternsInVehicleServices = () => {
     return queryTable(
