@@ -35,7 +35,7 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
   label: 'inserted stop point',
   priority: 50,
   validity_end: DateTime.fromISO('2060-11-03'),
-  timing_place_id: null,
+  timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
 };
 
 const insertedDefaultValues: Partial<ScheduledStopPoint> = {

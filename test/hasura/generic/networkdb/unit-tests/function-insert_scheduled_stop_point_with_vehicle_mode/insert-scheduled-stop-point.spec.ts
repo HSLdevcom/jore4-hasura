@@ -40,7 +40,7 @@ const toBeInserted: ScheduledStopPoint = {
   priority: 50,
   validity_start: DateTime.fromISO('2036-11-03'),
   validity_end: DateTime.fromISO('2060-11-03'),
-  timing_place_id: null,
+  timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
 };
 
 const defaultVehicleMode: VehicleMode = VehicleMode.Bus;
@@ -59,23 +59,31 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
   const insertScheduledStopPointWithVehicleMode = async (
     scheduledStopPoint: ScheduledStopPoint,
     vehicleMode: VehicleMode,
-  ) =>
-    db.singleQuery(
+    includeTimingPlaceId = true,
+  ) => {
+    const params = [
+      `'${scheduledStopPoint.scheduled_stop_point_id}'::uuid`,
+      `'${asEwkb(
+        scheduledStopPoint.measured_location,
+      )}'::geography(PointZ, 4326)`,
+      `'${scheduledStopPoint.located_on_infrastructure_link_id}'::uuid`,
+      `'${scheduledStopPoint.direction}'::text`,
+      `'${scheduledStopPoint.label}'::text`,
+      `'${scheduledStopPoint.validity_start?.toISODate()}'::date`,
+      `'${scheduledStopPoint.validity_end?.toISODate()}'::date`,
+      `${scheduledStopPoint.priority}::int`,
+      `'${vehicleMode}'::text`,
+    ];
+
+    if (includeTimingPlaceId) {
+      params.push(`'${scheduledStopPoint.timing_place_id}'::uuid`);
+    }
+
+    return db.singleQuery(
       dbConnection,
-      `SELECT internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(
-        '${scheduledStopPoint.scheduled_stop_point_id}'::uuid,
-        '${asEwkb(
-          scheduledStopPoint.measured_location,
-        )}'::geography(PointZ, 4326),
-        '${scheduledStopPoint.located_on_infrastructure_link_id}'::uuid,
-        '${scheduledStopPoint.direction}'::text,
-        '${scheduledStopPoint.label}'::text,
-        '${scheduledStopPoint.validity_start?.toISODate()}'::date,
-        '${scheduledStopPoint.validity_end?.toISODate()}'::date,
-        ${scheduledStopPoint.priority}::int,
-        '${vehicleMode}'::text
-      )`,
+      `SELECT internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(${params})`,
     );
+  };
 
   it('should insert scheduled_stop_point row', async () => {
     await insertScheduledStopPointWithVehicleMode(
@@ -122,6 +130,33 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
           scheduled_stop_point_id: toBeInserted.scheduled_stop_point_id,
           vehicle_mode: defaultVehicleMode,
         },
+      ]),
+    );
+  });
+
+  it('should insert scheduled_stop_point row without timing_place_id parameter', async () => {
+    const toBeInsertedWithoutTimingPlaceId = {
+      ...toBeInserted,
+      timing_place_id: null,
+    };
+
+    await insertScheduledStopPointWithVehicleMode(
+      toBeInsertedWithoutTimingPlaceId,
+      defaultVehicleMode,
+      false,
+    );
+
+    const response = await queryTable(
+      dbConnection,
+      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+    );
+
+    expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
+
+    expect(response.rows).toEqual(
+      expect.arrayContaining([
+        ...serializeMatcherInputs(scheduledStopPoints),
+        serializeMatcherInput(toBeInsertedWithoutTimingPlaceId),
       ]),
     );
   });
