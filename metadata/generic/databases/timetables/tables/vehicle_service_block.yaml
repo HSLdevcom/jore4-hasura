@@ -5,6 +5,9 @@ object_relationships:
   - name: vehicle_service
     using:
       foreign_key_constraint_on: vehicle_service_id
+  - name: vehicle_type
+    using:
+      foreign_key_constraint_on: vehicle_type_id
 array_relationships:
   - name: vehicle_journeys
     using:
