@@ -1378,8 +1378,21 @@ DECLARE
 BEGIN
   -- RAISE NOTICE 'vehicle_schedule.validate_queued_schedules_uniqueness()';
 
+  -- Build modified_vehicle_schedule_frame_ids from modified_ tables,
+  -- finding out which frames or their children were modified.
+  -- Eg. if block_id is present in modified_block, it's parent vehicle_schedule_frame_id will be selected.
+  WITH modified_vehicle_schedule_frame_ids AS (
+    SELECT vehicle_schedule_frame_id
+    FROM modified_vehicle_journey
+    JOIN vehicle_journey.vehicle_journey USING (vehicle_journey_id)
+    FULL OUTER JOIN modified_block USING (block_id)
+    JOIN vehicle_service.block USING (block_id)
+    FULL OUTER JOIN modified_vehicle_service USING (vehicle_service_id)
+    JOIN vehicle_service.vehicle_service USING (vehicle_service_id)
+    FULL OUTER JOIN modified_vehicle_schedule_frame USING (vehicle_schedule_frame_id)
+  )
   SELECT * FROM vehicle_schedule.get_overlapping_schedules(
-    (SELECT array_agg(vehicle_schedule_frame_id) FROM modified_vehicle_schedule_frame),
+    (SELECT array_agg(vehicle_schedule_frame_id) FROM modified_vehicle_schedule_frame_ids),
     (SELECT array_agg(journey_pattern_ref_id) FROM modified_journey_pattern_ref)
   )
   LIMIT 1 -- RECORD type, so other rows are discarded anyway.

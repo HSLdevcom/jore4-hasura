@@ -6,7 +6,7 @@ import {
   getKnex,
 } from '@util/db';
 import { addMutationWrapper, postQuery } from '@util/graphql';
-import { expectErrorResponse } from '@util/response';
+import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { insertTableData, setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
@@ -20,7 +20,9 @@ import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaul
 import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
 import {
+  buildUpdateBlockMutation,
   buildUpdateJourneyPatternRefMutation,
+  buildUpdateVehicleJourneyMutation,
   buildUpdateVehicleScheduleFrameMutation,
   buildUpdateVehicleServiceMutation,
 } from 'generic/timetablesdb/mutations';
@@ -321,8 +323,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         expectErrorResponse('conflicting schedules detected')(updateResponse);
       });
 
-      // FIXME: missing relevant UPDATE triggers to fix this.
-      it.skip('should run validation when day of week is updated', async () => {
+      it('should run validation when day of week is updated', async () => {
         const dataset = cloneBaseDataset();
         const baseDatasetDayTypeId = dataset.service.day_type_id;
         dataset.service.day_type_id = defaultDayTypeIds.SATURDAY;
@@ -370,6 +371,117 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         );
         const updateResponse = await postQuery(updateMutation);
         expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+    });
+
+    describe('on foreign keys', () => {
+      const insertSchedulesForForeignKeyTests = async () => {
+        // Need 3 different schedules to setup this conflict:
+        // 1. the base dataset (vehicle schedule frame winter2022, from defaultGenericTimetablesDbData)
+        // 2. datasetDifferentPrio, with same journey pattern as base dataset, but different priority
+        // 3. datasetDifferentJourney, with different journey pattern
+        //
+        // At the start, none of these conflict with each other.
+        //
+        // With this setup moving the vehicle_journey (or its parents) from datasetDifferentPrio to datasetDifferentJourney
+        // will make datasetDifferentJourney conflict with the base dataset since then they have same journey pattern and priority (among other properties).
+
+        const datasetDifferentPrio = cloneBaseDataset();
+        datasetDifferentPrio.frame.priority = 20;
+        await expect(
+          insertDataset(datasetDifferentPrio),
+        ).resolves.not.toThrow();
+
+        const datasetDifferentJourney = cloneBaseDataset();
+        datasetDifferentJourney.journey.journey_pattern_ref_id =
+          journeyPatternRefsByName.route234Outbound.journey_pattern_ref_id;
+        useRoute234StopPoints(datasetDifferentJourney);
+        await expect(
+          insertDataset(datasetDifferentJourney),
+        ).resolves.not.toThrow();
+
+        return {
+          datasetDifferentPrio,
+          datasetDifferentJourney,
+        };
+      };
+
+      it('should run validation when vehicle_service.vehicle_schedule_frame_id is changed', async () => {
+        const { datasetDifferentPrio, datasetDifferentJourney } =
+          await insertSchedulesForForeignKeyTests();
+
+        // Move vehicle service from schedule of datasetDifferentPrio to schedule of datasetDifferentJourney.
+        // Since the moved vehicle service from datasetDifferentPrio uses same journey pattern as base dataset,
+        // after this update datasetDifferentJourney would conflict with base dataset.
+        const updateMutation = addMutationWrapper(
+          buildUpdateVehicleServiceMutation(
+            datasetDifferentPrio.service.vehicle_service_id,
+            {
+              vehicle_schedule_frame_id:
+                datasetDifferentJourney.service.vehicle_schedule_frame_id,
+            },
+          ),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      it('should run validation when block.vehicle_service_id is changed', async () => {
+        const { datasetDifferentPrio, datasetDifferentJourney } =
+          await insertSchedulesForForeignKeyTests();
+
+        // Move block from schedule of datasetDifferentPrio to schedule of datasetDifferentJourney.
+        // Since the moved block from datasetDifferentPrio uses same journey pattern as base dataset,
+        // after this update datasetDifferentJourney would conflict with base dataset.
+        const updateMutation = addMutationWrapper(
+          buildUpdateBlockMutation(datasetDifferentPrio.block.block_id, {
+            vehicle_service_id:
+              datasetDifferentJourney.block.vehicle_service_id,
+          }),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      it('should run validation when vehicle_journey.block_id is changed', async () => {
+        const { datasetDifferentPrio, datasetDifferentJourney } =
+          await insertSchedulesForForeignKeyTests();
+
+        // Move vehicle journey from schedule of datasetDifferentPrio to schedule of datasetDifferentJourney.
+        // Since the moved vehicle journey from datasetDifferentPrio uses same journey pattern as base dataset,
+        // after this update datasetDifferentJourney would conflict with base dataset.
+        const updateMutation = addMutationWrapper(
+          buildUpdateVehicleJourneyMutation(
+            datasetDifferentPrio.journey.vehicle_journey_id,
+            {
+              block_id: datasetDifferentJourney.journey.block_id,
+            },
+          ),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectErrorResponse('conflicting schedules detected')(updateResponse);
+      });
+
+      it('should allow valid updates', async () => {
+        const { datasetDifferentPrio, datasetDifferentJourney } =
+          await insertSchedulesForForeignKeyTests();
+
+        // Similar UPDATE as in previous tests, but the other way around:
+        // moving schedule from datasetDifferentJourney -> datasetDifferentPrio.
+        // After this datasetDifferentPrio has same journey as base dataset but still different priority,
+        // so there is no conflict.
+        // Same would apply to all other tables, but don't think it's worth testing all the cases.
+        const updateMutation = addMutationWrapper(
+          buildUpdateBlockMutation(datasetDifferentJourney.block.block_id, {
+            vehicle_service_id: datasetDifferentPrio.block.vehicle_service_id,
+          }),
+        );
+
+        const updateResponse = await postQuery(updateMutation);
+        expectNoErrorResponse(updateResponse);
       });
     });
   });

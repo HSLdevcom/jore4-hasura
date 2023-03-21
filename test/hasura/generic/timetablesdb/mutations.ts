@@ -74,6 +74,28 @@ export const buildUpdateVehicleServiceMutation = (
   }
 `;
 
+// block:
+
+export const buildUpdateBlockMutation = (
+  blockId: UUID,
+  toBeUpdated: Partial<VehicleServiceBlock>,
+) => `
+  timetables {
+    timetables_update_vehicle_service_block(
+      where: {
+        block_id: {_eq: "${blockId}"}
+      },
+      _set: ${toGraphQlObject(toBeUpdated)}
+    ) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.block'],
+        )}
+      }
+    }
+  }
+`;
+
 // vehicle_journey:
 
 export const buildInsertVehicleJourneyMutation = (
