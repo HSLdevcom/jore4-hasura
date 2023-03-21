@@ -1015,6 +1015,12 @@ CREATE INDEX idx_vehicle_service_day_type ON vehicle_service.vehicle_service USI
 CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehicle_service USING btree (vehicle_schedule_frame_id);
 
 --
+-- Name: vehicle_type_label_idx; Type: INDEX; Schema: vehicle_type; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX vehicle_type_label_idx ON vehicle_type.vehicle_type USING btree (label);
+
+--
 -- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -1266,7 +1272,7 @@ ALTER TABLE vehicle_service.vehicle_service OWNER TO dbhasura;
 --
 
 CREATE TABLE vehicle_type.vehicle_type (
-    vehicle_type_id uuid NOT NULL,
+    vehicle_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     label text NOT NULL,
     description_i18n jsonb
 );
