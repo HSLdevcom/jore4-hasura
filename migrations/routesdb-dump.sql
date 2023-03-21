@@ -1707,26 +1707,28 @@ $$;
 ALTER FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) OWNER TO dbhasura;
 
 --
--- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
+-- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text, uuid); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) RETURNS void
+CREATE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text, timing_place_id uuid DEFAULT NULL::uuid) RETURNS void
     LANGUAGE plpgsql
     AS $$
 BEGIN
   INSERT INTO service_pattern.scheduled_stop_point (scheduled_stop_point_id,
-                                                             measured_location,
-                                                             located_on_infrastructure_link_id,
-                                                             direction,
-                                                             label,
-                                                             validity_start,
-                                                             validity_end,
-                                                             priority)
+                                                    measured_location,
+                                                    located_on_infrastructure_link_id,
+                                                    direction,
+                                                    label,
+                                                    timing_place_id,
+                                                    validity_start,
+                                                    validity_end,
+                                                    priority)
   VALUES (scheduled_stop_point_id,
           measured_location,
           located_on_infrastructure_link_id,
           direction,
           label,
+          timing_place_id,
           validity_start,
           validity_end,
           priority);
@@ -1739,7 +1741,7 @@ END;
 $$;
 
 
-ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text) OWNER TO dbhasura;
+ALTER FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, supported_vehicle_mode text, timing_place_id uuid) OWNER TO dbhasura;
 
 --
 -- Name: const_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
