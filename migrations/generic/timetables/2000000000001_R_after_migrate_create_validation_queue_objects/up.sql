@@ -177,6 +177,16 @@ COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.ve
 IS 'Trigger for queuing modified vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+DROP TRIGGER IF EXISTS queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service;
+CREATE TRIGGER queue_vs_validation_on_update_trigger
+  AFTER UPDATE ON vehicle_service.vehicle_service
+  REFERENCING NEW TABLE AS new_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
+COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service
+IS 'Trigger for queuing modified vehicle schedules for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
+
 DROP TRIGGER IF EXISTS queue_block_validation_on_update_trigger ON vehicle_service.block;
 CREATE TRIGGER queue_block_validation_on_update_trigger
   AFTER UPDATE ON vehicle_service.block
@@ -227,6 +237,16 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_vsf_trigger
   WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER process_queued_validation_on_vsf_trigger ON vehicle_schedule.vehicle_schedule_frame
+IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
+
+DROP TRIGGER IF EXISTS process_queued_validation_on_vs_trigger ON vehicle_service.vehicle_service;
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_vs_trigger
+  AFTER UPDATE ON vehicle_service.vehicle_service
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW
+  WHEN (NOT internal_utils.queued_validations_already_processed())
+  EXECUTE FUNCTION internal_utils.execute_queued_validations();
+COMMENT ON TRIGGER process_queued_validation_on_vs_trigger ON vehicle_service.vehicle_service
 IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 DROP TRIGGER IF EXISTS process_queued_validation_on_block_trigger ON vehicle_service.block;
