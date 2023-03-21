@@ -2,11 +2,76 @@ import { toGraphQlObject } from '@util/dataset';
 import { addMutationWrapper } from '@util/graphql';
 import { buildPropNameArray } from '@util/setup';
 import { genericTimetablesDbSchema } from './datasets/schema';
-import { JourneyPatternRef, VehicleJourney } from './datasets/types';
+import {
+  JourneyPatternRef,
+  VehicleJourney,
+  VehicleService,
+  VehicleServiceBlock,
+} from './datasets/types';
 
 // Note: these mutations are not usable by themselves,
 // they need to be ran through addMutationWrapper first.
 export { addMutationWrapper };
+
+// vehicle_service:
+
+export const buildInsertVehicleServiceMutation = (
+  newVehicleService: VehicleService,
+) => `
+  timetables {
+    timetables_insert_vehicle_service_vehicle_service(objects: ${toGraphQlObject(
+      newVehicleService,
+    )}) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+        )}
+      }
+    }
+  }
+`;
+
+export const buildUpdateVehicleServiceMutation = (
+  vehicleServiceId: UUID,
+  toBeUpdated: Partial<VehicleService>,
+) => `
+  timetables {
+    timetables_update_vehicle_service_vehicle_service(
+      where: {
+        vehicle_service_id: {_eq: "${vehicleServiceId}"}
+      },
+      _set: ${toGraphQlObject(toBeUpdated)}
+    ) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+        )}
+      }
+    }
+  }
+`;
+
+// block:
+
+export const buildUpdateBlockMutation = (
+  blockId: UUID,
+  toBeUpdated: Partial<VehicleServiceBlock>,
+) => `
+  timetables {
+    timetables_update_vehicle_service_block(
+      where: {
+        block_id: {_eq: "${blockId}"}
+      },
+      _set: ${toGraphQlObject(toBeUpdated)}
+    ) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_service.block'],
+        )}
+      }
+    }
+  }
+`;
 
 // vehicle_journey:
 

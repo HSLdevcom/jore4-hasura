@@ -5,6 +5,7 @@ import {
   timetabledPassingTimeProps,
   vehicleJourneyProps,
   vehicleScheduleFrameProps,
+  vehicleServiceBlockProps,
   vehicleServiceProps,
 } from './types';
 
@@ -45,7 +46,7 @@ export const genericTimetablesDbSchema: TableSchemaMap<GenericTimetablesDbTables
     },
     'vehicle_service.block': {
       name: 'vehicle_service.block',
-      props: vehicleServiceProps,
+      props: vehicleServiceBlockProps,
     },
     'vehicle_service.vehicle_service': {
       name: 'vehicle_service.vehicle_service',
