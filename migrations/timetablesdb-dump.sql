@@ -622,10 +622,23 @@ COMMENT ON TABLE vehicle_service.vehicle_service IS 'A work plan for a single ve
 COMMENT ON TRIGGER process_queued_validation_on_block_trigger ON vehicle_service.block IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
+-- Name: TRIGGER process_queued_validation_on_vs_trigger ON vehicle_service; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER process_queued_validation_on_vs_trigger ON vehicle_service.vehicle_service IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
+
+--
 -- Name: TRIGGER queue_block_validation_on_update_trigger ON block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
 COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block IS 'Trigger for queuing modified vehicle service blocks for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
+
+--
+-- Name: TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service IS 'Trigger for queuing modified vehicle schedules for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
@@ -1934,6 +1947,18 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_block_trigger AFTER UPDAT
 --
 
 CREATE TRIGGER queue_block_validation_on_update_trigger AFTER UPDATE ON vehicle_service.block REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
+
+--
+-- Name: vehicle_service process_queued_validation_on_vs_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_vs_trigger AFTER UPDATE ON vehicle_service.vehicle_service DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+
+--
+-- Name: vehicle_service queue_vs_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_vs_validation_on_update_trigger AFTER UPDATE ON vehicle_service.vehicle_service REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
 
 --
 -- Sorted dump complete
