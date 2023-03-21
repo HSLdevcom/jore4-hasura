@@ -56,6 +56,12 @@ GRANT USAGE ON SCHEMA route TO dbimporter;
 GRANT USAGE ON SCHEMA service_pattern TO dbimporter;
 
 --
+-- Name: SCHEMA timing_pattern; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA timing_pattern TO dbimporter;
+
+--
 -- Name: TABLE direction; Type: ACL; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -156,6 +162,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_st
 --
 
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.vehicle_mode_on_scheduled_stop_point TO dbimporter;
+
+--
+-- Name: TABLE timing_place; Type: ACL; Schema: timing_pattern; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE timing_pattern.timing_place TO dbimporter;
 
 --
 -- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: 
@@ -1329,6 +1341,12 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT ON TABLE
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT ON TABLES  TO dbimporter;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: timing_pattern; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT ON TABLES  TO dbimporter;
 
 --
 -- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
