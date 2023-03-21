@@ -7,3 +7,4 @@
 - "!include vehicle_schedule_vehicle_schedule_frame.yaml"
 - "!include vehicle_service_block.yaml"
 - "!include vehicle_service_vehicle_service.yaml"
+- "!include vehicle_type_vehicle_type.yaml"
