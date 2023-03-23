@@ -35,7 +35,7 @@ export const serializePlainObject = (
 // serializes values sent to SQL INSERT INTO commands
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
   if (value instanceof DateTime) {
-    return value.toISODate();
+    return value.toISO();
   }
   if (value instanceof Duration) {
     return value.toString();

@@ -31,6 +31,7 @@ export type VehicleScheduleFrame = {
   validity_start: DateTime | null;
   validity_end: DateTime | null;
   priority: TimetablePriority;
+  created_at?: DateTime;
 };
 
 export const vehicleScheduleFrameProps: Property[] = [
@@ -40,6 +41,7 @@ export const vehicleScheduleFrameProps: Property[] = [
   'validity_start',
   'validity_end',
   'priority',
+  'created_at',
 ];
 
 export type VehicleService = {
