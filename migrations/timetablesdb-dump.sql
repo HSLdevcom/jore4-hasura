@@ -1232,7 +1232,8 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     validity_start date NOT NULL,
     validity_end date NOT NULL,
     priority integer NOT NULL,
-    label text NOT NULL
+    label text NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
