@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
@@ -57,6 +58,15 @@ describe('Insert vehicle schedule frame', () => {
       body: { query: buildMutation(toBeInserted) },
     });
 
+    const { created_at } =
+      response.data.timetables
+        .timetables_insert_vehicle_schedule_vehicle_schedule_frame.returning[0];
+
+    const createdAt = DateTime.fromISO(created_at);
+    expect(createdAt.isValid).toBe(true);
+    expect(createdAt.diffNow().as('milliseconds')).toBeLessThan(0);
+    expect(createdAt.diffNow().as('milliseconds')).toBeGreaterThan(-5000);
+
     expect(response).toEqual(
       expect.objectContaining({
         data: {
@@ -64,7 +74,10 @@ describe('Insert vehicle schedule frame', () => {
             timetables_insert_vehicle_schedule_vehicle_schedule_frame: {
               returning: [
                 {
-                  ...asGraphQlDateObject(toBeInserted),
+                  ...asGraphQlDateObject({
+                    created_at,
+                    ...toBeInserted,
+                  }),
                 },
               ],
             },
@@ -85,13 +98,16 @@ describe('Insert vehicle schedule frame', () => {
       genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
     );
 
+    const { created_at } = response.rows[response.rows.length - 1];
+
     expect(response.rowCount).toEqual(vehicleScheduleFrames.length + 1);
     expect(response.rows).toEqual(
       expect.arrayContaining([
+        ...vehicleScheduleFrames,
         {
+          created_at,
           ...toBeInserted,
         },
-        ...vehicleScheduleFrames,
       ]),
     );
   });

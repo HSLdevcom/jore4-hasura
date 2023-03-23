@@ -1812,7 +1812,8 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     validity_end date NOT NULL,
     priority integer NOT NULL,
     label text NOT NULL,
-    validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL
+    validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
