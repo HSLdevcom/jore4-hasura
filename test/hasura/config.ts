@@ -10,7 +10,7 @@ Settings.throwOnInvalid = true; // Invalid dates are too easy to miss otherwise.
 Settings.defaultZone = 'Europe/Helsinki';
 
 // Set global pg config: return date(time)s as luxon DateTime objects instead of JS Date.
-const parseToLuxonDateTime = (value: string) => DateTime.fromISO(value);
+const parseToLuxonDateTime = (value: string) => DateTime.fromSQL(value);
 types.setTypeParser(types.builtins.DATE, parseToLuxonDateTime);
 types.setTypeParser(types.builtins.TIMESTAMP, parseToLuxonDateTime);
 types.setTypeParser(types.builtins.TIMESTAMPTZ, parseToLuxonDateTime);
