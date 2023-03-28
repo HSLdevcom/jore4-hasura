@@ -5,6 +5,7 @@ import {
   closeDbConnection,
   createDbConnection,
   DbConnection,
+  getKnex,
 } from '@util/db';
 import { expectNoErrorResponse } from '@util/response';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
@@ -459,6 +460,36 @@ describe('Denormalized references to journey patterns in vehicle services', () =
           defaultDatasetRows.route123Inbound,
         ]),
       );
+    });
+  });
+
+  describe('on transaction rollback', () => {
+    it('should also roll back the denormalized table to correct state', async () => {
+      const denormalizedTableBefore =
+        await getJourneyPatternsInVehicleServices();
+      expectNoErrorResponse(denormalizedTableBefore);
+
+      let deleteRan = false;
+      await getKnex().transaction(
+        async (trx) => {
+          await trx
+            .from('vehicle_service.journey_patterns_in_vehicle_service')
+            .delete();
+          deleteRan = true;
+
+          // Rather than manually, this could be caused by an error in eg. validations,
+          // but this is simpler for tests and end result is the same.
+          return trx.rollback();
+        },
+        { connection: dbConnection },
+      );
+
+      expect(deleteRan).toBe(true); // Mainly a sanity check that the query is valid.
+      const denormalizedTableAfter =
+        await getJourneyPatternsInVehicleServices();
+      expectNoErrorResponse(denormalizedTableAfter);
+
+      expect(denormalizedTableAfter.rows).toEqual(denormalizedTableBefore.rows);
     });
   });
 });
