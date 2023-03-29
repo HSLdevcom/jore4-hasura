@@ -19,6 +19,7 @@ import { vehicleScheduleFramesByName } from 'generic/timetablesdb/datasets/defau
 import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-service-blocks';
 import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
+import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import {
   buildUpdateBlockMutation,
   buildUpdateJourneyPatternRefMutation,
@@ -142,6 +143,26 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     dataset.passingTimes.push(...newStopPoints);
   };
 
+  const setBaseDatasetSchedulePriority = async (
+    priority: TimetablePriority,
+  ) => {
+    const updateMutation = addMutationWrapper(
+      buildUpdateVehicleScheduleFrameMutation(
+        vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
+        {
+          priority,
+        },
+      ),
+    );
+
+    const updateResponse = await postQuery(updateMutation);
+    expectNoErrorResponse(updateResponse);
+    expect(
+      updateResponse.data.timetables
+        .timetables_update_vehicle_schedule_vehicle_schedule_frame.returning,
+    ).toHaveLength(1);
+  };
+
   describe('on inserts', () => {
     it('should fail when existing and new vehicle schedule frame have same priority, journey pattern, day of week and overlapping validity period', async () => {
       const dataset = cloneBaseDataset();
@@ -197,7 +218,37 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     describe('priority checks', () => {
       it('should succeed when priorities are different', async () => {
         const dataset = cloneBaseDataset();
-        dataset.frame.priority += 5;
+        expect(dataset.frame.priority).toBe(TimetablePriority.Standard);
+        dataset.frame.priority = TimetablePriority.Special;
+
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+      });
+
+      it('should fail if trying to insert with same priority if priority is Special (or lower)', async () => {
+        await setBaseDatasetSchedulePriority(TimetablePriority.Special);
+
+        const dataset = cloneBaseDataset();
+        dataset.frame.priority = TimetablePriority.Special;
+
+        await expect(insertDataset(dataset)).rejects.toThrow(
+          'conflicting schedules detected',
+        );
+      });
+
+      it('should successfully insert with same priority if priority is Draft, even if schedule otherwise conflicts', async () => {
+        await setBaseDatasetSchedulePriority(TimetablePriority.Draft);
+
+        const dataset = cloneBaseDataset();
+        dataset.frame.priority = TimetablePriority.Draft;
+
+        await expect(insertDataset(dataset)).resolves.not.toThrow();
+      });
+
+      it('should successfully insert with same priority if priority is Staging, even if schedule otherwise conflicts', async () => {
+        await setBaseDatasetSchedulePriority(TimetablePriority.Staging);
+
+        const dataset = cloneBaseDataset();
+        dataset.frame.priority = TimetablePriority.Staging;
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
       });

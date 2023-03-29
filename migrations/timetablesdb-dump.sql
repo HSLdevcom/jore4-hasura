@@ -479,7 +479,10 @@ COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_sc
   Two vehicle_schedule_frames will be considered overlapping if they have:
   - same priority
   - are valid on the same day (validity_range, active_on_day_of_week)
-  - have any vehicle_journeys for same journey_patterns';
+  - have any vehicle_journeys for same journey_patterns
+
+  Schedules with priority Draft or Staging are exempt from this constraint.
+';
 
 --
 -- Name: FUNCTION queue_validation_by_vsf_id(); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -858,6 +861,17 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+--
+-- Name: const_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_priority_draft() RETURNS integer
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$SELECT 30$$;
+
+
+ALTER FUNCTION internal_utils.const_priority_draft() OWNER TO dbhasura;
 
 --
 -- Name: create_validation_queue_temp_tables(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
@@ -1316,6 +1330,7 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
     JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
     JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
     JOIN journey_patterns_to_check USING (journey_pattern_id)
+    WHERE priority < internal_utils.const_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
   ),
   -- Select all schedules in DB that have conflicts with schedules_to_check.
   -- Note that this will contain each conflicting schedule frame pair twice.

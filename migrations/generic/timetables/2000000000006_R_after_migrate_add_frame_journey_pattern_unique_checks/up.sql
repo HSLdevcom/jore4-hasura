@@ -44,6 +44,7 @@ AS $$
     JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
     JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
     JOIN journey_patterns_to_check USING (journey_pattern_id)
+    WHERE priority < internal_utils.const_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
   ),
   -- Select all schedules in DB that have conflicts with schedules_to_check.
   -- Note that this will contain each conflicting schedule frame pair twice.
@@ -70,7 +71,10 @@ IS 'Returns information on all schedules that are overlapping.
   Two vehicle_schedule_frames will be considered overlapping if they have:
   - same priority
   - are valid on the same day (validity_range, active_on_day_of_week)
-  - have any vehicle_journeys for same journey_patterns';
+  - have any vehicle_journeys for same journey_patterns
+
+  Schedules with priority Draft or Staging are exempt from this constraint.
+';
 
 CREATE OR REPLACE FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() RETURNS VOID
   LANGUAGE plpgsql
