@@ -3,9 +3,9 @@ import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { route116TableConfig } from 'generic/networkdb/datasets/route116';
-import { journeyPatterns } from 'generic/networkdb/datasets/route116/journey-patterns';
 import {
+  journeyPatterns,
+  route116TableConfig,
   scheduledStopPoints,
   scheduledStopPointWithSameLabelAndOnSameLink,
   scheduledStopPointWithSameLabelOnLinkAfterNextStop,
@@ -14,7 +14,7 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
-} from 'generic/networkdb/datasets/route116/scheduled-stop-points';
+} from 'generic/networkdb/datasets/route116';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,

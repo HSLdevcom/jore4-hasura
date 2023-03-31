@@ -3,11 +3,11 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { routesAndJourneyPatternsTableData } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import {
   journeyPatterns,
+  routesAndJourneyPatternsTableData,
   scheduledStopPointInJourneyPattern,
-} from 'generic/networkdb/datasets/routesAndJourneyPatterns/journey-patterns';
+} from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   ScheduledStopPointInJourneyPattern,

@@ -4,9 +4,11 @@ import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { routesAndJourneyPatternsTableData } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
-import { infrastructureLinks } from 'generic/networkdb/datasets/routesAndJourneyPatterns/infrastructure-links';
-import { scheduledStopPoints } from 'generic/networkdb/datasets/routesAndJourneyPatterns/scheduled-stop-points';
+import {
+  infrastructureLinks,
+  routesAndJourneyPatternsTableData,
+  scheduledStopPoints,
+} from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { scheduledStopPointProps } from 'generic/networkdb/datasets/types';
 import * as rp from 'request-promise';

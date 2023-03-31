@@ -4,9 +4,11 @@ import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { buildPropNameArray, setupDb } from '@util/setup';
-import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
-import { timetabledPassingTimesByName } from 'generic/timetablesdb/datasets/defaultSetup/passing-times';
-import { scheduledStopPointsInJourneyPatternRefByName } from 'generic/timetablesdb/datasets/defaultSetup/stop-points';
+import {
+  defaultGenericTimetablesDbData,
+  scheduledStopPointsInJourneyPatternRefByName,
+  timetabledPassingTimesByName,
+} from 'generic/timetablesdb/datasets/defaultSetup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import {
   ScheduledStopInJourneyPatternRef,

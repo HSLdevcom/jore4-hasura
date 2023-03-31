@@ -2,8 +2,10 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { routes } from 'generic/networkdb/datasets/defaultSetup/routes';
+import {
+  defaultGenericNetworkDbData,
+  routes,
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { routeProps } from 'generic/networkdb/datasets/types';
 import * as rp from 'request-promise';

@@ -9,15 +9,17 @@ import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { insertTableData, setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
-import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
-import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup/day-types';
-import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup/journey-pattern-refs';
-import { timetabledPassingTimes } from 'generic/timetablesdb/datasets/defaultSetup/passing-times';
-import { scheduledStopPointsInJourneyPatternRefByName } from 'generic/timetablesdb/datasets/defaultSetup/stop-points';
-import { vehicleJourneysByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-journeys';
-import { vehicleScheduleFramesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-schedules-frames';
-import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-service-blocks';
-import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
+import {
+  defaultDayTypeIds,
+  defaultGenericTimetablesDbData,
+  journeyPatternRefsByName,
+  scheduledStopPointsInJourneyPatternRefByName,
+  timetabledPassingTimes,
+  vehicleJourneysByName,
+  vehicleScheduleFramesByName,
+  vehicleServiceBlocksByName,
+  vehicleServicesByName,
+} from 'generic/timetablesdb/datasets/defaultSetup';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import {

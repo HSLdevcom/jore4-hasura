@@ -2,9 +2,11 @@ import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { routesAndJourneyPatternsTableData } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
-import { journeyPatterns } from 'generic/networkdb/datasets/routesAndJourneyPatterns/journey-patterns';
-import { routes } from 'generic/networkdb/datasets/routesAndJourneyPatterns/routes';
+import {
+  journeyPatterns,
+  routes,
+  routesAndJourneyPatternsTableData,
+} from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { journeyPatternProps } from 'generic/networkdb/datasets/types';
 import * as rp from 'request-promise';

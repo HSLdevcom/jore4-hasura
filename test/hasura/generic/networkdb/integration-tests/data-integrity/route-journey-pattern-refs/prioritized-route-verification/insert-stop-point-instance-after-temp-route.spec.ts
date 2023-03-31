@@ -2,12 +2,12 @@ import * as config from '@config';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { queryTable, setupDb } from '@util/setup';
-import { prioritizedRouteVerificationWithTempRouteTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {
+  prioritizedRouteVerificationWithTempRouteTableData,
   scheduledStopPointsWithTempRoute,
   tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute,
   tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute,
-} from 'generic/networkdb/datasets/prioritizedRouteVerification/scheduled-stop-points';
+} from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   insertStopPoint,

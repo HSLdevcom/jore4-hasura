@@ -3,9 +3,11 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
-import { infrastructureLinkAlongRoute } from 'generic/networkdb/datasets/defaultSetup/routes';
+import {
+  defaultGenericNetworkDbData,
+  infrastructureLinkAlongRoute,
+  infrastructureLinks,
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   InfrastructureLinkAlongRoute,

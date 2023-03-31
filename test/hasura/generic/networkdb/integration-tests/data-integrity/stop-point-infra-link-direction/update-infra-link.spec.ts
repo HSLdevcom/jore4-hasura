@@ -9,8 +9,10 @@ import {
   queryTable,
   setupDb,
 } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
+import {
+  defaultGenericNetworkDbData,
+  infrastructureLinks,
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   InfrastructureLink,

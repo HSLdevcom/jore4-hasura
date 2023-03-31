@@ -2,8 +2,10 @@ import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { routesAndJourneyPatternsTableData } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
-import { infrastructureLinkAlongRoute } from 'generic/networkdb/datasets/routesAndJourneyPatterns/routes';
+import {
+  infrastructureLinkAlongRoute,
+  routesAndJourneyPatternsTableData,
+} from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   InfrastructureLinkAlongRoute,

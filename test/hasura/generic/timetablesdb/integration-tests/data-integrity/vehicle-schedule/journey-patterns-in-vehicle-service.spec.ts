@@ -9,21 +9,21 @@ import {
 import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectNoErrorResponse } from '@util/response';
 import { queryTable, setupDb } from '@util/setup';
-import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
-import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup/journey-pattern-refs';
 import {
+  defaultGenericTimetablesDbData,
+  journeyPatternRefsByName,
   vehicleJourneys,
   vehicleJourneysByName,
-} from 'generic/timetablesdb/datasets/defaultSetup/vehicle-journeys';
-import { vehicleServiceBlocksByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-service-blocks';
-import { vehicleServicesByName } from 'generic/timetablesdb/datasets/defaultSetup/vehicle-services';
+  vehicleServiceBlocksByName,
+  vehicleServicesByName,
+} from 'generic/timetablesdb/datasets/defaultSetup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import {
-  buildInsertVehicleJourneyMutation,
-  buildUpdateVehicleJourneyMutation,
   buildDeletePassingTimeMutation,
   buildDeleteVehicleJourneyMutation,
+  buildInsertVehicleJourneyMutation,
   buildUpdateJourneyPatternRefMutation,
+  buildUpdateVehicleJourneyMutation,
 } from 'generic/timetablesdb/mutations';
 
 describe('Denormalized references to journey patterns in vehicle services', () => {

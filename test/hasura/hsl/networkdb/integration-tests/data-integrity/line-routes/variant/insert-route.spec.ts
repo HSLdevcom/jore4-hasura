@@ -3,9 +3,11 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultHslNetworkDbData } from 'hsl/networkdb/datasets/defaultSetup';
-import { hslLines } from 'hsl/networkdb/datasets/defaultSetup/lines';
-import { hslRoutes } from 'hsl/networkdb/datasets/defaultSetup/routes';
+import {
+  defaultHslNetworkDbData,
+  hslLines,
+  hslRoutes,
+} from 'hsl/networkdb/datasets/defaultSetup';
 import { buildHslRoute } from 'hsl/networkdb/datasets/factories';
 import { hslNetworkDbSchema } from 'hsl/networkdb/datasets/schema';
 import {

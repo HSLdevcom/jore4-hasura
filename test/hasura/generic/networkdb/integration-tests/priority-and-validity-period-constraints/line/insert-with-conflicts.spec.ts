@@ -4,8 +4,10 @@ import { buildLocalizedString } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { lines } from 'generic/networkdb/datasets/defaultSetup/lines';
+import {
+  defaultGenericNetworkDbData,
+  lines,
+} from 'generic/networkdb/datasets/defaultSetup';
 import { buildLine } from 'generic/networkdb/datasets/factories';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Line, lineProps, VehicleMode } from 'generic/networkdb/datasets/types';

@@ -4,9 +4,11 @@ import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
-import { scheduledStopPoints } from 'generic/networkdb/datasets/defaultSetup/scheduled-stop-points';
+import {
+  defaultGenericNetworkDbData,
+  infrastructureLinks,
+  scheduledStopPoints,
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   LinkDirection,

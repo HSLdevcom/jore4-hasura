@@ -3,11 +3,11 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
 import {
+  defaultGenericNetworkDbData,
   infrastructureLinks,
   vehicleSubmodeOnInfrastructureLink,
-} from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { infrastructureLinkProps } from 'generic/networkdb/datasets/types';
 import * as rp from 'request-promise';
