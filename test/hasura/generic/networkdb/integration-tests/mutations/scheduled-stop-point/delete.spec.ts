@@ -7,11 +7,11 @@ import {
   queryTable,
   setupDb,
 } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
 import {
+  defaultGenericNetworkDbData,
   scheduledStopPointInvariants,
   scheduledStopPoints,
-} from 'generic/networkdb/datasets/defaultSetup/scheduled-stop-points';
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { scheduledStopPointProps } from 'generic/networkdb/datasets/types';
 import * as rp from 'request-promise';

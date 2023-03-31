@@ -3,13 +3,13 @@ import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
-import { lines } from 'generic/networkdb/datasets/defaultSetup/lines';
 import {
+  defaultGenericNetworkDbData,
   infrastructureLinkAlongRoute,
+  infrastructureLinks,
+  lines,
   routes,
-} from 'generic/networkdb/datasets/defaultSetup/routes';
+} from 'generic/networkdb/datasets/defaultSetup';
 import { buildRoute } from 'generic/networkdb/datasets/factories';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {

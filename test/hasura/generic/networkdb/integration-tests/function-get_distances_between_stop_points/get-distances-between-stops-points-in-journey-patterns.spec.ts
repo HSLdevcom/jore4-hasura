@@ -3,10 +3,12 @@ import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
-import { routesAndJourneyPatternsTableData as baseTableConfig } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
-import { infrastructureLinks as sourceInfrastructureLinks } from 'generic/networkdb/datasets/routesAndJourneyPatterns/infrastructure-links';
-import { journeyPatterns } from 'generic/networkdb/datasets/routesAndJourneyPatterns/journey-patterns';
-import { scheduledStopPoints as sourceScheduledStopPoints } from 'generic/networkdb/datasets/routesAndJourneyPatterns/scheduled-stop-points';
+import {
+  infrastructureLinks as sourceInfrastructureLinks,
+  journeyPatterns,
+  routesAndJourneyPatternsTableData as baseTableConfig,
+  scheduledStopPoints as sourceScheduledStopPoints,
+} from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { GenericNetworkDbTables } from 'generic/networkdb/datasets/schema';
 import {
   InfrastructureLink,

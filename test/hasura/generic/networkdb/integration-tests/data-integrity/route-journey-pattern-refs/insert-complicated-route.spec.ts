@@ -1,15 +1,13 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { queryTable, setupDb } from '@util/setup';
-import { route116TableConfig } from 'generic/networkdb/datasets/route116';
-import {
-  journeyPatterns,
-  scheduledStopPointInJourneyPattern,
-} from 'generic/networkdb/datasets/route116/journey-patterns';
 import {
   infrastructureLinkAlongRoute,
+  journeyPatterns,
+  route116TableConfig,
   routes,
-} from 'generic/networkdb/datasets/route116/routes';
+  scheduledStopPointInJourneyPattern,
+} from 'generic/networkdb/datasets/route116';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 
 describe('Inserting a complicated route', () => {

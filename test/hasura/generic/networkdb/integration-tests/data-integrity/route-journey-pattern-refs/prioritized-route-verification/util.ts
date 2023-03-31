@@ -4,7 +4,7 @@ import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable } from '@util/setup';
-import { scheduledStopPoints } from 'generic/networkdb/datasets/prioritizedRouteVerification/scheduled-stop-points';
+import { scheduledStopPoints } from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,

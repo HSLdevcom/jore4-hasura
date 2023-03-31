@@ -4,8 +4,10 @@ import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
 import { DateTime } from 'luxon';
 import { post } from 'request-promise';
-import { defaultGenericTimetablesDbData } from '../datasets/defaultSetup';
-import { vehicleScheduleFrames } from '../datasets/defaultSetup/vehicle-schedules-frames';
+import {
+  defaultGenericTimetablesDbData,
+  vehicleScheduleFrames,
+} from '../datasets/defaultSetup';
 import { buildVehicleScheduleFrame } from '../datasets/factories';
 import { genericTimetablesDbSchema } from '../datasets/schema';
 import { VehicleScheduleFrame } from '../datasets/types';

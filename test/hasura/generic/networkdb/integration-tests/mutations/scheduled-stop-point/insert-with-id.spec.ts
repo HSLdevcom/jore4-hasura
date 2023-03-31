@@ -2,12 +2,12 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
-import { defaultGenericNetworkDbData } from 'generic/networkdb/datasets/defaultSetup';
-import { infrastructureLinks } from 'generic/networkdb/datasets/defaultSetup/infrastructure-links';
 import {
+  defaultGenericNetworkDbData,
+  infrastructureLinks,
   scheduledStopPointInvariants,
   scheduledStopPoints,
-} from 'generic/networkdb/datasets/defaultSetup/scheduled-stop-points';
+} from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   LinkDirection,

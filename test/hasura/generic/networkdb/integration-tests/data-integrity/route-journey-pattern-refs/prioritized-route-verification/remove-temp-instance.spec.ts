@@ -2,16 +2,14 @@ import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { expectErrorResponse } from '@util/response';
 import { setupDb } from '@util/setup';
-import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
-import {
-  scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
-  scheduledStopPointInTempJourneyPatternWithSameStops,
-} from 'generic/networkdb/datasets/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithOtherLinks,
+  prioritizedRouteVerificationTableData,
+  scheduledStopPointInTempJourneyPatternWithoutConflictingInfraLinkStop,
+  scheduledStopPointInTempJourneyPatternWithSameStops,
   tempRouteWithOtherLinks,
-} from 'generic/networkdb/datasets/prioritizedRouteVerification/routes';
-import { tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute } from 'generic/networkdb/datasets/prioritizedRouteVerification/scheduled-stop-points';
+  tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
+} from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {
   checkInfraLinkStopRefsForStopPointRemoval,
   deleteRoute,

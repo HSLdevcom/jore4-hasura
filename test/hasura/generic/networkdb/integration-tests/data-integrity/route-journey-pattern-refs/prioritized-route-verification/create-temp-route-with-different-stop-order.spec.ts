@@ -1,13 +1,13 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
-import { prioritizedRouteVerificationTableData } from 'generic/networkdb/datasets/prioritizedRouteVerification';
-import { scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop } from 'generic/networkdb/datasets/prioritizedRouteVerification/journey-patterns';
 import {
   infrastructureLinkAlongTempRouteWithSameLinks,
+  prioritizedRouteVerificationTableData,
+  scheduledStopPointInTempJourneyPatternWithoutConflictingOrderStop,
   tempRouteWithSameLinks,
-} from 'generic/networkdb/datasets/prioritizedRouteVerification/routes';
-import { tempScheduledStopPointWithConflictingInfraLinkOrder } from 'generic/networkdb/datasets/prioritizedRouteVerification/scheduled-stop-points';
+  tempScheduledStopPointWithConflictingInfraLinkOrder,
+} from 'generic/networkdb/datasets/prioritizedRouteVerification';
 import {
   insertRoute,
   insertStopPoint,
