@@ -68,12 +68,14 @@ export const getPropNameArray = (props: Property[]) =>
 export const queryTable = <TTableName extends string>(
   dbConnection: db.DbConnection,
   tableSchema: TableSchema<TTableName>,
+  additionalExpressions = '',
 ) =>
   db.singleQuery(
     dbConnection,
     `
       SELECT ${getPropNameArray(tableSchema.props).join(',')}
       FROM ${tableSchema.name}
+      ${additionalExpressions}
     `,
   );
 
