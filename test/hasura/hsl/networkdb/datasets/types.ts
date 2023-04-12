@@ -38,6 +38,13 @@ export const hslLineProps: Property[] = [
   'transport_target',
 ];
 
+export type LineExternalId = {
+  label: string;
+  external_id: number;
+};
+
+export const lineExternalIdProps: Property[] = ['label', 'external_id'];
+
 export enum LegacyHslMunicipality {
   LegacyNotUsed = 'legacy_not_used',
   Helsinki = 'helsinki',

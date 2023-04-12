@@ -1,0 +1,11 @@
+table:
+  name: line_external_id
+  schema: route
+array_relationships:
+  - name: lines
+    using:
+      foreign_key_constraint_on:
+        column: label
+        table:
+          name: line
+          schema: route
