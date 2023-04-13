@@ -26,12 +26,6 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
---
 -- Name: SCHEMA internal_utils; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -764,12 +758,6 @@ CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
 --
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 --
 -- Name: journey_pattern_ref journey_pattern_ref_type_of_line_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
