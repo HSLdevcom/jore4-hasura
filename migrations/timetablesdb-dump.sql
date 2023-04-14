@@ -419,6 +419,13 @@ COMMENT ON TABLE vehicle_journey.vehicle_journey IS 'The planned movement of a p
 COMMENT ON TRIGGER process_queued_validation_on_vj_trigger ON vehicle_journey.vehicle_journey IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
+-- Name: TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing modified vehicle journeys for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
+
+--
 -- Name: TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -1928,6 +1935,12 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT O
 --
 
 CREATE CONSTRAINT TRIGGER process_queued_validation_on_vj_trigger AFTER INSERT OR DELETE OR UPDATE ON vehicle_journey.vehicle_journey DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+
+--
+-- Name: vehicle_journey queue_vj_validation_on_insert_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE TRIGGER queue_vj_validation_on_insert_trigger AFTER INSERT ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: vehicle_journey queue_vj_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura

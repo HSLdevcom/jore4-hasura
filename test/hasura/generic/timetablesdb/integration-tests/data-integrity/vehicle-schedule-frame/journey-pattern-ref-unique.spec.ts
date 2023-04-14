@@ -7,7 +7,7 @@ import {
 } from '@util/db';
 import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
-import { insertTableData, setupDb } from '@util/setup';
+import { getPartialTableData, insertTableData, setupDb } from '@util/setup';
 import { randomUUID } from 'crypto';
 import {
   defaultDayTypeIds,
@@ -29,7 +29,7 @@ import {
   buildUpdateVehicleScheduleFrameMutation,
   buildUpdateVehicleServiceMutation,
 } from 'generic/timetablesdb/mutations';
-import { cloneDeep, merge, pick } from 'lodash';
+import { cloneDeep, merge, pick, without } from 'lodash';
 import { DateTime } from 'luxon';
 
 describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', () => {
@@ -85,7 +85,9 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     return clonedData;
   };
 
-  const buildTableDataForBaseDataset = (dataset: ReturnType<typeof cloneBaseDataset>) => {
+  const buildTableDataForBaseDataset = (
+    dataset: ReturnType<typeof cloneBaseDataset>,
+  ) => {
     const dbData: TableData<GenericTimetablesDbTables>[] = [
       {
         name: 'vehicle_schedule.vehicle_schedule_frame',
@@ -340,6 +342,42 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         useRoute234StopPoints(dataset);
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
+      });
+    });
+
+    describe('when inserts are done in different transactions', () => {
+      // Vehicle journey is the part that finally "links" vehicle_schedule_frame and journey_pattern,
+      // so it is important to ensure validation is triggered on that insert alone.
+      it('should trigger validation when vehicle journey is inserted separately', async () => {
+        const dataset = cloneBaseDataset();
+
+        // Split the test data to two parts that we will insert separately:
+        // vehicle_journey (and its "children") and everything else.
+        const dbData = buildTableDataForBaseDataset(dataset);
+        const allTableNames = dbData.map((td) => td.name);
+        const vehicleJourneyTableNames: GenericTimetablesDbTables[] = [
+          'vehicle_journey.vehicle_journey',
+          'passing_times.timetabled_passing_time',
+        ];
+        const tableDataWithoutVehicleJourney = getPartialTableData(
+          dbData,
+          without(allTableNames, ...vehicleJourneyTableNames),
+        );
+        const vehicleJourneyTableData = getPartialTableData(
+          dbData,
+          vehicleJourneyTableNames,
+        );
+
+        await expect(
+          insertTableDataInTransaction(tableDataWithoutVehicleJourney),
+        ).resolves.not.toThrow();
+
+        // No connection yet between the inserted vehicle_schedule_frame and base dataset.
+        // Insert the vehicle_journey to connect them and create conflict.
+
+        await expect(
+          insertTableDataInTransaction(vehicleJourneyTableData),
+        ).rejects.toThrow('conflicting schedules detected');
       });
     });
   });
