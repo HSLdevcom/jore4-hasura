@@ -909,7 +909,7 @@ CREATE FUNCTION internal_utils.execute_queued_validations() RETURNS trigger
 BEGIN
   -- RAISE LOG 'internal_utils.execute_queued_validations() started';
 
-  -- In case this is called without creating he tables.
+  -- In case this is called without creating the tables.
   -- At least for refresh_journey_patterns_in_vehicle_service there is such case (vehicle_journey delete)
   PERFORM internal_utils.create_validation_queue_temp_tables();
 
