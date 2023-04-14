@@ -38,9 +38,3 @@ FROM hasura-generic AS hasura-hsl
 COPY ./migrations/hsl "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
 COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}/hsl"
 RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}/hsl ${HASURA_GRAPHQL_METADATA_DIR}
-
-# extend the hasura-hsl image to also load some seed data as migrations
-FROM hasura-hsl AS hasura-seed
-
-# copy seed-data migrations
-COPY ./migrations/seed-data "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
