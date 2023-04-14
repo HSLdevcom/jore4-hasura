@@ -85,7 +85,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     return clonedData;
   };
 
-  const insertDataset = (dataset: ReturnType<typeof cloneBaseDataset>) => {
+  const buildTableDataForBaseDataset = (dataset: ReturnType<typeof cloneBaseDataset>) => {
     const dbData: TableData<GenericTimetablesDbTables>[] = [
       {
         name: 'vehicle_schedule.vehicle_schedule_frame',
@@ -108,7 +108,12 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         data: dataset.passingTimes,
       },
     ];
+    return dbData;
+  };
 
+  const insertTableDataInTransaction = (
+    dbData: TableData<GenericTimetablesDbTables>[],
+  ) => {
     return getKnex().transaction(
       async (trx) => {
         const result = await insertTableData(trx, dbData);
@@ -117,6 +122,11 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       },
       { connection: dbConnection },
     );
+  };
+
+  const insertDataset = (dataset: ReturnType<typeof cloneBaseDataset>) => {
+    const dbData = buildTableDataForBaseDataset(dataset);
+    return insertTableDataInTransaction(dbData);
   };
 
   const useRoute234StopPoints = (
