@@ -201,6 +201,16 @@ IS 'Trigger for queuing modified vehicle service blocks for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- vehicle_journey:
+DROP TRIGGER IF EXISTS queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey;
+CREATE TRIGGER queue_vj_validation_on_insert_trigger
+  AFTER INSERT ON vehicle_journey.vehicle_journey
+  REFERENCING NEW TABLE AS new_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey
+IS 'Trigger for queuing modified vehicle journeys for later validation.
+Actual validation is performed at the end of transaction by execute_queued_validations().';
+
 DROP TRIGGER IF EXISTS queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey;
 CREATE TRIGGER queue_vj_validation_on_update_trigger
   AFTER UPDATE ON vehicle_journey.vehicle_journey
