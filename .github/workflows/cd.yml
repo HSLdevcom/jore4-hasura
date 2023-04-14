@@ -51,14 +51,6 @@ jobs:
             --tag $IMAGE_NAME:hsl-$COMMIT_ID \
             .
 
-          docker buildx build \
-            --push \
-            --platform linux/amd64,linux/arm64 \
-            --target hasura-seed \
-            --cache-from type=registry,ref=$IMAGE_NAME:seed \
-            --tag $IMAGE_NAME:seed-$COMMIT_ID \
-            .
-
       - name: Build and push :latest tag to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
@@ -76,14 +68,6 @@ jobs:
             --target hasura-hsl \
             --cache-to type=registry,ref=$IMAGE_NAME:hsl,mode=max \
             --tag $IMAGE_NAME:latest \
-            .
-
-          docker buildx build \
-            --push \
-            --platform linux/amd64,linux/arm64 \
-            --target hasura-seed \
-            --cache-to type=registry,ref=$IMAGE_NAME:seed,mode=max \
-            --tag $IMAGE_NAME:seed-data \
             .
 
   run_dump_tests:
@@ -118,7 +102,7 @@ jobs:
 
     strategy:
       matrix:
-        imagePrefix: ['generic-', 'seed-', 'hsl-']
+        imagePrefix: ['generic-', 'hsl-']
 
     steps:
       - name: Checkout code
