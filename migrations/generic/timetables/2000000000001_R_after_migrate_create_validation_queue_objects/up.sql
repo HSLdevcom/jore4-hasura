@@ -157,6 +157,7 @@ CREATE OR REPLACE FUNCTION internal_utils.execute_queued_validations() RETURNS t
 -- Create the triggers.
 -- Queue triggers:
 
+-- vehicle_schedule_frame:
 DROP TRIGGER IF EXISTS queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame;
 CREATE TRIGGER queue_vsf_validation_on_insert_trigger
   AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame
@@ -177,6 +178,7 @@ COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.ve
 IS 'Trigger for queuing modified vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+-- vehicle_service:
 DROP TRIGGER IF EXISTS queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service;
 CREATE TRIGGER queue_vs_validation_on_update_trigger
   AFTER UPDATE ON vehicle_service.vehicle_service
@@ -187,6 +189,7 @@ COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehi
 IS 'Trigger for queuing modified vehicle schedules for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+-- block:
 DROP TRIGGER IF EXISTS queue_block_validation_on_update_trigger ON vehicle_service.block;
 CREATE TRIGGER queue_block_validation_on_update_trigger
   AFTER UPDATE ON vehicle_service.block
@@ -197,6 +200,7 @@ COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.b
 IS 'Trigger for queuing modified vehicle service blocks for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+-- vehicle_journey:
 DROP TRIGGER IF EXISTS queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey;
 CREATE TRIGGER queue_vj_validation_on_update_trigger
   AFTER UPDATE ON vehicle_journey.vehicle_journey
@@ -207,6 +211,7 @@ COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehi
 IS 'Trigger for queuing modified vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+-- journey_pattern_ref:
 DROP TRIGGER IF EXISTS queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref;
 CREATE TRIGGER queue_jpr_validation_on_update_trigger
   AFTER UPDATE ON journey_pattern.journey_pattern_ref
