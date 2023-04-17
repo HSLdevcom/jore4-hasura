@@ -1,5 +1,8 @@
+-- Similar to internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode in generic schema,
+-- but with additional HSL specific fields.
 CREATE OR REPLACE FUNCTION internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(
   scheduled_stop_point_id uuid,
+  external_id integer,
   measured_location public.geography,
   located_on_infrastructure_link_id uuid,
   direction text,
@@ -15,6 +18,7 @@ CREATE OR REPLACE FUNCTION internal_service_pattern.insert_scheduled_stop_point_
   AS $$
 BEGIN
   INSERT INTO service_pattern.scheduled_stop_point (scheduled_stop_point_id,
+                                                    external_id,
                                                     measured_location,
                                                     located_on_infrastructure_link_id,
                                                     direction,
@@ -24,6 +28,7 @@ BEGIN
                                                     validity_end,
                                                     priority)
   VALUES (scheduled_stop_point_id,
+          external_id,
           measured_location,
           located_on_infrastructure_link_id,
           direction,
