@@ -1,0 +1,3 @@
+DROP FUNCTION vehicle_service.get_timetables_and_substitute_operating_days;
+DROP FUNCTION vehicle_service.get_timetables_and_substitute_operating_days_by_journey_pattern_ids;
+DROP FUNCTION vehicle_service.get_timetable_versions_by_journey_pattern_ids;

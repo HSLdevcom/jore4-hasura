@@ -1,0 +1,6 @@
+function:
+  name: get_timetables_and_substitute_operating_days_by_journey_pattern
+  schema: vehicle_service
+configuration:
+  custom_root_fields: {}
+  exposed_as: query
