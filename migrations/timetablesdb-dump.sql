@@ -875,6 +875,39 @@ CREATE FUNCTION internal_utils.const_timetables_priority_draft() RETURNS integer
 ALTER FUNCTION internal_utils.const_timetables_priority_draft() OWNER TO dbhasura;
 
 --
+-- Name: const_timetables_priority_special(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_timetables_priority_special() RETURNS integer
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$SELECT 25$$;
+
+
+ALTER FUNCTION internal_utils.const_timetables_priority_special() OWNER TO dbhasura;
+
+--
+-- Name: const_timetables_priority_staging(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_timetables_priority_staging() RETURNS integer
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$SELECT 40$$;
+
+
+ALTER FUNCTION internal_utils.const_timetables_priority_staging() OWNER TO dbhasura;
+
+--
+-- Name: const_timetables_priority_substitute_by_line_type(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_timetables_priority_substitute_by_line_type() RETURNS integer
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$SELECT 23$$;
+
+
+ALTER FUNCTION internal_utils.const_timetables_priority_substitute_by_line_type() OWNER TO dbhasura;
+
+--
 -- Name: create_validation_queue_temp_tables(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
 --
 
