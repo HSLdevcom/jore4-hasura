@@ -44,6 +44,12 @@ COMMENT ON SCHEMA journey_pattern IS 'The journey pattern model adapted from Tra
 COMMENT ON SCHEMA passing_times IS 'The passing times model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:939 ';
 
 --
+-- Name: SCHEMA return_value; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA return_value IS 'This schema is used for all the SLQ functions that need to have a table as return value. Nothing is stored in the tables in this schema.';
+
+--
 -- Name: SCHEMA route; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -1620,6 +1626,15 @@ CREATE SCHEMA passing_times;
 
 
 ALTER SCHEMA passing_times OWNER TO dbhasura;
+
+--
+-- Name: return_value; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA return_value;
+
+
+ALTER SCHEMA return_value OWNER TO dbhasura;
 
 --
 -- Name: route; Type: SCHEMA; Schema: -; Owner: dbhasura
