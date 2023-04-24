@@ -1,0 +1,16 @@
+table:
+  name: timetable_version
+  schema: return_value
+object_relationships:
+  - name: day_type
+    using:
+      foreign_key_constraint_on: day_type_id
+  - name: vehicle_schedule_frame
+    using:
+      foreign_key_constraint_on: vehicle_schedule_frame_id
+  - name: journey_pattern_ref
+    using:
+      foreign_key_constraint_on: journey_pattern_ref_id
+  - name: substitute_operating_day_by_line_type
+    using:
+      foreign_key_constraint_on: substitute_operating_day_by_line_type_id
