@@ -1,2 +1,5 @@
 - "!include service_calendar_get_active_day_types_for_date.yaml"
+- "!include vehicle_service_get_timetable_versions_by_journey_pattern_ids.yaml"
+- "!include vehicle_service_get_timetables_and_substitute_operating_days_by_journey_pattern.yaml"
+- "!include vehicle_service_get_timetables_and_substitute_operating_days.yaml"
 - "!include vehicle_service_get_vehicle_services_for_date.yaml"
