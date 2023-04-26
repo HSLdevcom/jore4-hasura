@@ -378,6 +378,19 @@ WITH RECURSIVE
                   AND (ssp.direction = 'bidirectional' OR
                        ((ssp.direction = 'forward' AND ilar.is_traversal_forwards = true)
                          OR (ssp.direction = 'backward' AND ilar.is_traversal_forwards = false)))
+        -- In some cases the JOINs above might produce duplicate rows
+        -- (seems to be caused by at least prioritized_route having many rows for same route, with different validity periods though).
+        -- Eliminate those: they would cause severe performance issues in the following recursive CTE.
+         GROUP BY
+           sspijp.journey_pattern_id,
+           ssp.scheduled_stop_point_id,
+           sspijp.scheduled_stop_point_sequence,
+           sspijp.stop_point_order,
+           ssp.relative_distance_from_infrastructure_link_start,
+           ilar.route_id,
+           ilar.infrastructure_link_id,
+           ilar.infrastructure_link_sequence,
+           ilar.is_traversal_forwards
   ),
   -- Iteratively try to traverse the journey patterns in their specified order one stop point at a time, such
   -- that all visited links appear in ascending order on each journey pattern's route.
