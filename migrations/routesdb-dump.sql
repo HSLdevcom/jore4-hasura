@@ -2100,7 +2100,12 @@ WITH RECURSIVE
   -- we cannot approach the stop point on that particular link visit. Similarly, include only those stop
   -- instances, whose validity period overlaps with the route's priority span's validity period.)
   sspijp_ilar_combos AS (
-    SELECT sspijp.journey_pattern_id,
+    -- DISTINCT because in some cases the JOINs below might produce duplicate rows.
+    -- Seems to be caused by at least prioritized_route having many rows for same route, with different validity periods though.
+    -- This can happen at least when there are multiple routes with same label (but different unique label) and their validity times overlap.
+    -- Eliminate those duplicates: they would cause severe performance issues in the following recursive CTE.
+    SELECT DISTINCT
+           sspijp.journey_pattern_id,
            ssp.scheduled_stop_point_id,
            sspijp.scheduled_stop_point_sequence,
            sspijp.stop_point_order,
