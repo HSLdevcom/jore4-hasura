@@ -3549,12 +3549,6 @@ CREATE FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_sched
     LANGUAGE plpgsql STABLE
     AS $$
 BEGIN
-  IF new_scheduled_stop_point_id IS NULL THEN
-    RETURN QUERY
-      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
-  ELSE
     RETURN QUERY
       SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
@@ -3571,8 +3565,12 @@ BEGIN
              internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
              NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
       FROM infrastructure_network.infrastructure_link il
-      WHERE il.infrastructure_link_id = new_located_on_infrastructure_link_id;
-  END IF;
+      WHERE
+        CASE WHEN new_scheduled_stop_point_id IS NOT NULL THEN
+          il.infrastructure_link_id = new_located_on_infrastructure_link_id
+        ELSE
+          false
+        END;
 END;
 $$;
 
