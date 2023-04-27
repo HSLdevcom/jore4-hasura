@@ -1012,6 +1012,18 @@ COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_s
     appended to the result (it is not inserted into the table).';
 
 --
+-- Name: FUNCTION maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_pattern.maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Conditionally returns a row representing a new scheduled_stop_point, or nothing.
+  Intended to be used in conjunction with service_pattern.scheduled_stop_points_with_infra_link_data view.
+  If value for new_scheduled_stop_point_id parameter is given,
+  returns a row representing that scheduled_stop_point.
+  The structure matches the service_pattern.scheduled_stop_points_with_infra_link_data view.
+  In case new_scheduled_stop_point_id is null, returns nothing.
+';
+
+--
 -- Name: FUNCTION scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3553,24 +3565,17 @@ BEGIN
       SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
          OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
-      UNION ALL
-      SELECT new_scheduled_stop_point_id,
-             new_measured_location::geography(PointZ, 4326),
-             new_located_on_infrastructure_link_id,
-             new_direction,
-             new_label,
-             new_validity_start,
-             new_validity_end,
-             new_priority,
-             internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
-             NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
-      FROM infrastructure_network.infrastructure_link il
-      WHERE
-        CASE WHEN new_scheduled_stop_point_id IS NOT NULL THEN
-          il.infrastructure_link_id = new_located_on_infrastructure_link_id
-        ELSE
-          false
-        END;
+    UNION ALL
+      SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+        new_scheduled_stop_point_id,
+        new_located_on_infrastructure_link_id,
+        new_measured_location,
+        new_direction,
+        new_label,
+        new_validity_start,
+        new_validity_end,
+        new_priority
+      );
 END;
 $$;
 
@@ -3592,6 +3597,36 @@ $$;
 
 
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text) OWNER TO dbhasura;
+
+--
+-- Name: maybe_append_new_scheduled_stop_point(uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT new_scheduled_stop_point_id,
+         new_measured_location::geography(PointZ, 4326),
+         new_located_on_infrastructure_link_id,
+         new_direction,
+         new_label,
+         new_validity_start,
+         new_validity_end,
+         new_priority,
+         internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
+         NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
+  FROM infrastructure_network.infrastructure_link il
+  WHERE
+    CASE
+      WHEN new_scheduled_stop_point_id IS NOT NULL THEN
+        il.infrastructure_link_id = new_located_on_infrastructure_link_id
+      ELSE
+        false
+    END;
+$$;
+
+
+ALTER FUNCTION service_pattern.maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
 
 --
 -- Name: on_delete_scheduled_stop_point(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
