@@ -517,8 +517,8 @@ COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_use
 -- Name: FUNCTION truncate_scheduled_stop_point_in_journey_pattern(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS '''Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
-  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.''';
+COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS 'Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
+  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.';
 
 --
 -- Name: FUNCTION verify_infra_link_stop_refs(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -1001,9 +1001,9 @@ COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey
 --
 
 COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Returns the scheduled stop points from the service_pattern.scheduled_stop_point table.
-     If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
-     Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
-     appended to the result (it is not inserted into the table).';
+    If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
+    Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
+    appended to the result (it is not inserted into the table).';
 
 --
 -- Name: FUNCTION scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -2214,9 +2214,10 @@ WITH RECURSIVE
                   t.is_traversal_forwards,
                   t.relative_distance_from_infrastructure_link_start,
                   t.scheduled_stop_point_id,
-                  ROW_NUMBER()
-                  OVER (PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence)
-                                                          AS order_by_min,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order
+                    ORDER BY infrastructure_link_sequence
+                  ) AS order_by_min,
                   r.route_id,
                   ssp.scheduled_stop_point_id IS NOT NULL AS ssp_match,
                   -- if there is no matching stop point within the validity span in question, check if there is a
