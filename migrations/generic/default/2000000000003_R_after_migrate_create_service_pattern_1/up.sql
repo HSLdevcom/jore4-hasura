@@ -1,3 +1,18 @@
+CREATE OR REPLACE VIEW service_pattern.scheduled_stop_points_with_infra_link_data AS (
+  SELECT ssp.scheduled_stop_point_id,
+         ssp.measured_location,
+         ssp.located_on_infrastructure_link_id,
+         ssp.direction,
+         ssp.label,
+         ssp.validity_start,
+         ssp.validity_end,
+         ssp.priority,
+         internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+         internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+  FROM service_pattern.scheduled_stop_point ssp
+  JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+);
+
 CREATE OR REPLACE FUNCTION service_pattern.get_scheduled_stop_points_with_new(
   replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid,
   new_scheduled_stop_point_id uuid DEFAULT NULL::uuid,
@@ -26,34 +41,12 @@ RETURNS TABLE(
 BEGIN
   IF new_scheduled_stop_point_id IS NULL THEN
     RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
          OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
   ELSE
     RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
          OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
       UNION ALL
