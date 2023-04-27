@@ -1,4 +1,24 @@
-CREATE OR REPLACE FUNCTION journey_pattern.maximum_priority_validity_spans(entity_type text, filter_route_labels text[], filter_validity_start date DEFAULT NULL::date, filter_validity_end date DEFAULT NULL::date, upper_priority_limit integer DEFAULT NULL::integer, replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(id uuid, validity_start date, validity_end date)
+CREATE OR REPLACE FUNCTION journey_pattern.maximum_priority_validity_spans(
+  entity_type text,
+  filter_route_labels text[],
+  filter_validity_start date DEFAULT NULL::date,
+  filter_validity_end date DEFAULT NULL::date,
+  upper_priority_limit integer DEFAULT NULL::integer,
+  replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid,
+  new_scheduled_stop_point_id uuid DEFAULT NULL::uuid,
+  new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid,
+  new_measured_location public.geography DEFAULT NULL::public.geography,
+  new_direction text DEFAULT NULL::text,
+  new_label text DEFAULT NULL::text,
+  new_validity_start date DEFAULT NULL::date,
+  new_validity_end date DEFAULT NULL::date,
+  new_priority integer DEFAULT NULL::integer
+)
+RETURNS TABLE(
+  id uuid,
+  validity_start date,
+  validity_end date
+)
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH RECURSIVE
@@ -197,7 +217,8 @@ FROM (SELECT id,
       FROM boundary_with_entities) bwe
 WHERE priority = max_priority
 $$;
-COMMENT ON FUNCTION journey_pattern.maximum_priority_validity_spans(entity_type text, filter_route_labels text[], filter_validity_start date, filter_validity_end date, upper_priority_limit integer, replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Find the validity time spans of highest priority in the given time span for entities of the given type (routes or
+COMMENT ON FUNCTION journey_pattern.maximum_priority_validity_spans(entity_type text, filter_route_labels text[], filter_validity_start date, filter_validity_end date, upper_priority_limit integer, replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer)
+IS 'Find the validity time spans of highest priority in the given time span for entities of the given type (routes or
     scheduled stop points), which are related to routes with any of the given labels.
 
     Consider the validity times of two overlapping route instances with label A:
@@ -253,7 +274,18 @@ WHERE ord = (SELECT max(ord) FROM merged_route_range);
 $$;
 COMMENT ON FUNCTION journey_pattern.get_broken_route_check_filters(filter_route_ids uuid[]) IS 'Gather the filter parameters (route labels and validity range to check) for the broken route check.';
 
-CREATE OR REPLACE FUNCTION journey_pattern.get_broken_route_journey_patterns(filter_route_ids uuid[], replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS SETOF journey_pattern.journey_pattern
+CREATE OR REPLACE FUNCTION journey_pattern.get_broken_route_journey_patterns(
+  filter_route_ids uuid[],
+  replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid,
+  new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid,
+  new_measured_location public.geography DEFAULT NULL::public.geography,
+  new_direction text DEFAULT NULL::text,
+  new_label text DEFAULT NULL::text,
+  new_validity_start date DEFAULT NULL::date,
+  new_validity_end date DEFAULT NULL::date,
+  new_priority integer DEFAULT NULL::integer
+)
+RETURNS SETOF journey_pattern.journey_pattern
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH RECURSIVE
@@ -454,9 +486,10 @@ WITH RECURSIVE
                   t.is_traversal_forwards,
                   t.relative_distance_from_infrastructure_link_start,
                   t.scheduled_stop_point_id,
-                  ROW_NUMBER()
-                  OVER (PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence)
-                                                          AS order_by_min,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order
+                    ORDER BY infrastructure_link_sequence
+                  ) AS order_by_min,
                   r.route_id,
                   ssp.scheduled_stop_point_id IS NOT NULL AS ssp_match,
                   -- if there is no matching stop point within the validity span in question, check if there is a
@@ -505,7 +538,8 @@ WHERE EXISTS(
           OR ils.stop_point_order != ils.infra_link_order)
         );
 $$;
-COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(filter_route_ids uuid[], replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Check if it is possible to visit all stops of journey patterns in such a fashion that all links, on which
+COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(filter_route_ids uuid[], replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer)
+IS 'Check if it is possible to visit all stops of journey patterns in such a fashion that all links, on which
      the stops reside, are visited in an order matching the corresponding routes'' link order. Additionally it is
      checked that there are no stop points on the route''s journey pattern, whose validity span does not overlap with
      the route''s validity span at all. Only the links / stops on the routes with the specified filter_route_ids are
@@ -518,7 +552,17 @@ COMMENT ON FUNCTION journey_pattern.get_broken_route_journey_patterns(filter_rou
      This functions returns those journey pattern / route combinations, which are broken (either in actual
      table data or with the proposed scheduled stop point changes).';
 
-CREATE OR REPLACE FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) RETURNS SETOF journey_pattern.journey_pattern
+CREATE OR REPLACE FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(
+  replace_scheduled_stop_point_id uuid,
+  new_located_on_infrastructure_link_id uuid,
+  new_measured_location public.geography,
+  new_direction text,
+  new_label text,
+  new_validity_start date,
+  new_validity_end date,
+  new_priority integer
+)
+RETURNS SETOF journey_pattern.journey_pattern
     LANGUAGE sql STABLE PARALLEL SAFE
     AS $$
 WITH filter_route_ids AS (
@@ -551,7 +595,8 @@ FROM journey_pattern.get_broken_route_journey_patterns(
   new_priority
   );
 $$;
-COMMENT ON FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Check whether the journey pattern''s / route''s links and stop points still correspond to each other
+COMMENT ON FUNCTION journey_pattern.check_infra_link_stop_refs_with_new_scheduled_stop_point(replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer)
+IS 'Check whether the journey pattern''s / route''s links and stop points still correspond to each other
      if a new stop point would be inserted (defined by arguments new_xxx). If replace_scheduled_stop_point_id
      is specified, the new stop point is thought to replace the stop point with that ID.
      This function returns a list of journey pattern and route ids, in which the links
@@ -706,8 +751,8 @@ BEGIN
   RETURN NULL;
 END;
 $$;
-COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS '''Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
-  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.''';
+COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS 'Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
+  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.';
 
 CREATE OR REPLACE FUNCTION journey_pattern.verify_infra_link_stop_refs() RETURNS trigger
     LANGUAGE plpgsql
@@ -757,7 +802,8 @@ COMMENT ON FUNCTION journey_pattern.verify_route_journey_pattern_refs(filter_jou
 
 DROP TRIGGER IF EXISTS queue_verify_infra_link_stop_refs_on_jp_update_trigger ON journey_pattern.journey_pattern;
 CREATE TRIGGER queue_verify_infra_link_stop_refs_on_jp_update_trigger AFTER UPDATE ON journey_pattern.journey_pattern REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_journey_pattern_id();
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_jp_update_trigger ON journey_pattern.journey_pattern IS 'Trigger to verify the infra link <-> scheduled stop point references.
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_jp_update_trigger ON journey_pattern.journey_pattern
+IS 'Trigger to verify the infra link <-> scheduled stop point references.
       Updating a journey_pattern''s reference to a route (on_route_id) can break the route consistency in a way that
       the new route is in violation with the journey pattern''s stop points in one of the following ways:
       1. A stop point of the journey pattern might be located on an infra link which is not part of the journey
@@ -768,7 +814,8 @@ COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_jp_update_trigger ON jou
          pattern''s new route''s validity time ("ghost stop").';
 DROP TRIGGER IF EXISTS queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
 CREATE TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger AFTER INSERT ON journey_pattern.scheduled_stop_point_in_journey_pattern REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_journey_pattern_id();
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern IS 'Trigger to verify the infra link <-> scheduled stop point references.
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern
+IS 'Trigger to verify the infra link <-> scheduled stop point references.
       Inserting a new scheduled_stop_point_in_journey_pattern -row can break the route consistency in the following
       ways:
       1. The inserted stop point might be located on an infra link which is not part of the journey pattern''s route.
@@ -778,7 +825,8 @@ COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger ON
          pattern''s route''s validity time ("ghost stop").';
 DROP TRIGGER IF EXISTS queue_verify_infra_link_stop_refs_on_sspijp_update_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
 CREATE TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_update_trigger AFTER UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_verify_infra_link_stop_refs_by_new_journey_pattern_id();
-COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_update_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern IS 'Trigger to verify the infra link <-> scheduled stop point references.
+COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_update_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern
+IS 'Trigger to verify the infra link <-> scheduled stop point references.
       Updating a scheduled_stop_point_in_journey_pattern -row can break the route consistency in the following
       ways:
       1. The updated stop point might be located on an infra link which is not part of the journey pattern''s route.
@@ -788,14 +836,16 @@ COMMENT ON TRIGGER queue_verify_infra_link_stop_refs_on_sspijp_update_trigger ON
          pattern''s route''s validity time ("ghost stop").';
 DROP TRIGGER IF EXISTS verify_infra_link_stop_refs_on_journey_pattern_trigger ON journey_pattern.journey_pattern;
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger AFTER UPDATE ON journey_pattern.journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
-COMMENT ON TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger ON journey_pattern.journey_pattern IS 'Trigger to verify the infra link <-> stop references after a delete on the
+COMMENT ON TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger ON journey_pattern.journey_pattern
+IS 'Trigger to verify the infra link <-> stop references after a delete on the
    route table.
 
    This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
    level trigger.';
 DROP TRIGGER IF EXISTS verify_infra_link_stop_refs_on_sspijp_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_sspijp_trigger AFTER INSERT OR UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
-COMMENT ON TRIGGER verify_infra_link_stop_refs_on_sspijp_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern IS 'Trigger to verify the infra link <-> stop references after an insert or update on the
+COMMENT ON TRIGGER verify_infra_link_stop_refs_on_sspijp_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern
+IS 'Trigger to verify the infra link <-> stop references after an insert or update on the
    scheduled_stop_point_in_journey_pattern table.
 
    This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
@@ -826,7 +876,8 @@ BEGIN
   RETURN NULL;
 END;
 $$;
-COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point() IS 'If scheduled stop point in journey pattern is marked to be used as timing point, a timing place must be attached to each instance of the scheduled stop point.';
+COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point()
+IS 'If scheduled stop point in journey pattern is marked to be used as timing point, a timing place must be attached to each instance of the scheduled stop point.';
 
 DROP TRIGGER IF EXISTS scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger ON journey_pattern.scheduled_stop_point_in_journey_pattern;
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_has_timing_place_if_used_as_timing_point_trigger AFTER INSERT OR UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_used_as_timing_point();
