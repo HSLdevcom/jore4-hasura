@@ -1003,15 +1003,6 @@ COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey
 COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service patterns.';
 
 --
--- Name: FUNCTION get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Returns the scheduled stop points from the service_pattern.scheduled_stop_point table.
-    If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
-    Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
-    appended to the result (it is not inserted into the table).';
-
---
 -- Name: FUNCTION maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -2076,17 +2067,19 @@ WITH RECURSIVE
                 ON priority_validity_spans.id = r.route_id
   ),
   ssp_with_new AS (
-    SELECT *
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-      replace_scheduled_stop_point_id,
-      (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
-      new_located_on_infrastructure_link_id,
-      new_measured_location,
-      new_direction,
-      new_label,
-      new_validity_start,
-      new_validity_end,
-      new_priority
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
       )
   ),
   -- fetch the stop point entities with their prioritized validity times
@@ -2346,16 +2339,22 @@ WITH RECURSIVE
            ssp.label                   AS key1,
            NULL                        AS key2,
            ssp.priority
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-           replace_scheduled_stop_point_id,
-           new_scheduled_stop_point_id,
-           new_located_on_infrastructure_link_id,
-           new_measured_location,
-           new_direction,
-           new_label,
-           new_validity_start,
-           new_validity_end,
-           new_priority) ssp
+    FROM (
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          new_scheduled_stop_point_id,
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
+      )
+    ) AS ssp
     WHERE entity_type = 'scheduled_stop_point'
       AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
           internal_utils.daterange_closed_upper(filter_validity_start, filter_validity_end)
@@ -3552,35 +3551,6 @@ $$;
 
 
 ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) OWNER TO dbhasura;
-
---
--- Name: get_scheduled_stop_points_with_new(uuid, uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
-    LANGUAGE plpgsql STABLE
-    AS $$
-BEGIN
-    RETURN QUERY
-      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
-    UNION ALL
-      SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
-        new_scheduled_stop_point_id,
-        new_located_on_infrastructure_link_id,
-        new_measured_location,
-        new_direction,
-        new_label,
-        new_validity_start,
-        new_validity_end,
-        new_priority
-      );
-END;
-$$;
-
-
-ALTER FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
 
 --
 -- Name: insert_scheduled_stop_point_label(text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura

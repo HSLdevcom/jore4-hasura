@@ -43,16 +43,22 @@ WITH RECURSIVE
            ssp.label                   AS key1,
            NULL                        AS key2,
            ssp.priority
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-           replace_scheduled_stop_point_id,
-           new_scheduled_stop_point_id,
-           new_located_on_infrastructure_link_id,
-           new_measured_location,
-           new_direction,
-           new_label,
-           new_validity_start,
-           new_validity_end,
-           new_priority) ssp
+    FROM (
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          new_scheduled_stop_point_id,
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
+      )
+    ) AS ssp
     WHERE entity_type = 'scheduled_stop_point'
       AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
           internal_utils.daterange_closed_upper(filter_validity_start, filter_validity_end)
@@ -316,17 +322,19 @@ WITH RECURSIVE
                 ON priority_validity_spans.id = r.route_id
   ),
   ssp_with_new AS (
-    SELECT *
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-      replace_scheduled_stop_point_id,
-      (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
-      new_located_on_infrastructure_link_id,
-      new_measured_location,
-      new_direction,
-      new_label,
-      new_validity_start,
-      new_validity_end,
-      new_priority
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
       )
   ),
   -- fetch the stop point entities with their prioritized validity times
