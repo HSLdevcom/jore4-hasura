@@ -158,6 +158,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_st
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_point_invariant TO dbimporter;
 
 --
+-- Name: TABLE scheduled_stop_points_with_infra_link_data; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE service_pattern.scheduled_stop_points_with_infra_link_data TO dbimporter;
+
+--
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1083,6 +1089,12 @@ COMMENT ON TRIGGER verify_infra_link_stop_refs_on_scheduled_stop_point_trigger O
 
    This trigger will cause those routes to be checked, whose ID was queued to be checked by a statement
    level trigger.';
+
+--
+-- Name: VIEW scheduled_stop_points_with_infra_link_data; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON VIEW service_pattern.scheduled_stop_points_with_infra_link_data IS 'Contains scheduled_stop_points enriched with some infra link data.';
 
 --
 -- Name: TABLE timing_place; Type: COMMENT; Schema: timing_pattern; Owner: dbhasura
@@ -3538,34 +3550,12 @@ CREATE FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_sched
 BEGIN
   IF new_scheduled_stop_point_id IS NULL THEN
     RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
          OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
   ELSE
     RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
       WHERE replace_scheduled_stop_point_id IS NULL
          OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
       UNION ALL
@@ -4629,6 +4619,27 @@ CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPD
 --
 
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger AFTER DELETE ON service_pattern.vehicle_mode_on_scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_vehicle_mode();
+
+--
+-- Name: scheduled_stop_points_with_infra_link_data; Type: VIEW; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE VIEW service_pattern.scheduled_stop_points_with_infra_link_data AS
+ SELECT ssp.scheduled_stop_point_id,
+    ssp.measured_location,
+    ssp.located_on_infrastructure_link_id,
+    ssp.direction,
+    ssp.label,
+    ssp.validity_start,
+    ssp.validity_end,
+    ssp.priority,
+    internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+    internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+   FROM (service_pattern.scheduled_stop_point ssp
+     JOIN infrastructure_network.infrastructure_link il ON ((ssp.located_on_infrastructure_link_id = il.infrastructure_link_id)));
+
+
+ALTER TABLE service_pattern.scheduled_stop_points_with_infra_link_data OWNER TO dbhasura;
 
 --
 -- Sorted dump complete
