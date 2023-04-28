@@ -2806,7 +2806,8 @@ BEGIN
         oid::regprocedure),
       E'\n')
   FROM pg_proc
-  WHERE pronamespace = ANY(target_schemas::regnamespace[]);
+  WHERE pronamespace = ANY(target_schemas::regnamespace[])
+  AND provolatile NOT IN ('i');
 
   IF sql_command IS NOT NULL THEN
     EXECUTE sql_command;

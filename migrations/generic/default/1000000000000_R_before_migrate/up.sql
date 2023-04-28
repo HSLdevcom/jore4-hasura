@@ -87,7 +87,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
--- drop all functions in jore4 schemas
+-- drop all functions in jore4 schemas which are not declared as immutable
 CREATE OR REPLACE FUNCTION drop_functions(target_schemas text[]) RETURNS void
 AS $$
 DECLARE
@@ -106,7 +106,8 @@ BEGIN
         oid::regprocedure),
       E'\n')
   FROM pg_proc
-  WHERE pronamespace = ANY(target_schemas::regnamespace[]);
+  WHERE pronamespace = ANY(target_schemas::regnamespace[])
+  AND provolatile NOT IN ('i');
 
   IF sql_command IS NOT NULL THEN
     EXECUTE sql_command;
