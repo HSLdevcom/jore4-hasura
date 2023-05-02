@@ -364,8 +364,8 @@ WITH RECURSIVE
            prioritized_ssp.direction,
            prioritized_ssp.label,
            prioritized_ssp.priority,
-           prioritized_ssp.priority_span_validity_start AS validity_start,
-           prioritized_ssp.priority_span_validity_end AS validity_end
+           prioritized_ssp.priority_span_validity_start,
+           prioritized_ssp.priority_span_validity_end
     FROM (
       SELECT
         ssp.*,
@@ -434,7 +434,7 @@ WITH RECURSIVE
                 ON r.route_id = sspijp.route_id
                   -- scheduled stop point instances, whose validity period does not overlap with the
                   -- route's validity period, are filtered out here
-                  AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
+                  AND internal_utils.daterange_closed_upper(ssp.priority_span_validity_start, ssp.priority_span_validity_end) &&
                       internal_utils.daterange_closed_upper(r.validity_start, r.validity_end)
            JOIN route.infrastructure_link_along_route ilar
                 ON ilar.route_id = r.route_id
@@ -544,7 +544,7 @@ WITH RECURSIVE
                        ON sspijp.journey_pattern_id = jp.journey_pattern_id
                   LEFT JOIN prioritized_ssp_with_new ssp -- left join to be able to find the ghost ssp
                             ON ssp.label = sspijp.scheduled_stop_point_label
-                              AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
+                              AND internal_utils.daterange_closed_upper(ssp.priority_span_validity_start, ssp.priority_span_validity_end) &&
                                   internal_utils.daterange_closed_upper(r.validity_start, r.validity_end)
                   LEFT JOIN traversal t
                             ON t.journey_pattern_id = sspijp.journey_pattern_id
