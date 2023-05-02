@@ -2102,18 +2102,43 @@ WITH RECURSIVE
   ),
   -- fetch the stop point entities with their prioritized validity times
   prioritized_ssp_with_new AS (
-    SELECT ssp.scheduled_stop_point_id,
-           ssp.located_on_infrastructure_link_id,
-           ssp.measured_location,
-           ssp.relative_distance_from_infrastructure_link_start,
-           ssp.direction,
-           ssp.label,
-           ssp.priority,
-           priority_validity_spans.validity_start,
-           priority_validity_spans.validity_end
-    FROM ssp_with_new ssp
-           JOIN priority_validity_spans
-                ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+    SELECT prioritized_ssp.scheduled_stop_point_id,
+           prioritized_ssp.located_on_infrastructure_link_id,
+           prioritized_ssp.measured_location,
+           prioritized_ssp.relative_distance_from_infrastructure_link_start,
+           prioritized_ssp.direction,
+           prioritized_ssp.label,
+           prioritized_ssp.priority,
+           prioritized_ssp.priority_span_validity_start AS validity_start,
+           prioritized_ssp.priority_span_validity_end AS validity_end
+    FROM (
+      SELECT
+        ssp.*,
+           priority_validity_spans.validity_start AS priority_span_validity_start,
+           priority_validity_spans.validity_end AS priority_span_validity_end
+        FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        JOIN priority_validity_spans ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+        WHERE replace_scheduled_stop_point_id IS NULL
+        OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      -- Safe to use UNION ALL here rather than plain UNION since the following row does not exist in previous SELECT result.
+      -- Also faster since no sorting associated with plain UNION is needed.
+      UNION ALL
+        SELECT
+           ssp.*,
+           priority_validity_spans.validity_start AS priority_span_validity_start,
+           priority_validity_spans.validity_end AS priority_span_validity_end
+        FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
+      ) ssp
+      JOIN priority_validity_spans ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+    ) prioritized_ssp
   ),
   -- For all stops in the journey patterns, list all visits of the stop's infra link. (But only include
   -- visits happening in a direction matching the stop's allowed directions - if the direction is wrong,
