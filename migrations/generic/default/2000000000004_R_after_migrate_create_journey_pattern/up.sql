@@ -337,19 +337,8 @@ WITH RECURSIVE
           new_priority
       )
   ),
-  -- fetch the stop point entities with their prioritized validity times
-  prioritized_ssp_with_new AS (
-    SELECT ssp.scheduled_stop_point_id,
-           ssp.located_on_infrastructure_link_id,
-           ssp.measured_location,
-           ssp.relative_distance_from_infrastructure_link_start,
-           ssp.direction,
-           ssp.label,
-           ssp.priority,
-           priority_validity_spans.validity_start,
-           priority_validity_spans.validity_end
-    FROM ssp_with_new ssp
-           JOIN journey_pattern.maximum_priority_validity_spans(
+  priority_validity_spans AS (
+    SELECT * FROM journey_pattern.maximum_priority_validity_spans(
       'scheduled_stop_point',
       (SELECT labels FROM filter_route),
       (SELECT validity_start FROM filter_route),
@@ -364,7 +353,21 @@ WITH RECURSIVE
       new_validity_start,
       new_validity_end,
       new_priority
-      ) priority_validity_spans
+    )
+  ),
+  -- fetch the stop point entities with their prioritized validity times
+  prioritized_ssp_with_new AS (
+    SELECT ssp.scheduled_stop_point_id,
+           ssp.located_on_infrastructure_link_id,
+           ssp.measured_location,
+           ssp.relative_distance_from_infrastructure_link_start,
+           ssp.direction,
+           ssp.label,
+           ssp.priority,
+           priority_validity_spans.validity_start,
+           priority_validity_spans.validity_end
+    FROM ssp_with_new ssp
+           JOIN priority_validity_spans
                 ON priority_validity_spans.id = ssp.scheduled_stop_point_id
   ),
   -- For all stops in the journey patterns, list all visits of the stop's infra link. (But only include
