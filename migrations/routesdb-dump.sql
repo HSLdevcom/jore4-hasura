@@ -158,6 +158,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_st
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_point_invariant TO dbimporter;
 
 --
+-- Name: TABLE scheduled_stop_points_with_infra_link_data; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE service_pattern.scheduled_stop_points_with_infra_link_data TO dbimporter;
+
+--
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -517,8 +523,8 @@ COMMENT ON FUNCTION journey_pattern.scheduled_stop_point_has_timing_place_if_use
 -- Name: FUNCTION truncate_scheduled_stop_point_in_journey_pattern(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS '''Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
-  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.''';
+COMMENT ON FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern() IS 'Truncate the scheduled_stop_point_in_journey_pattern if it contains any rows. It must not be truncated if it
+  does not contain data to prevent errors if it was truncated ("touched") within the same transaction.';
 
 --
 -- Name: FUNCTION verify_infra_link_stop_refs(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
@@ -995,15 +1001,6 @@ COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey
 --
 
 COMMENT ON FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) IS 'Get the distances between scheduled stop points (in metres) for the given journey/service patterns.';
-
---
--- Name: FUNCTION get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) IS 'Returns the scheduled stop points from the service_pattern.scheduled_stop_point table.
-     If replace_scheduled_stop_point_id is not null, the stop point with that ID is filtered out.
-     Similarly, if the new_xxx arguments are specified, a scheduled stop point with those values is
-     appended to the result (it is not inserted into the table).';
 
 --
 -- Name: FUNCTION scheduled_stop_point_closest_point_on_infrastructure_link(ssp service_pattern.scheduled_stop_point); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -2052,32 +2049,23 @@ WITH RECURSIVE
                 ON priority_validity_spans.id = r.route_id
   ),
   ssp_with_new AS (
-    SELECT *
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-      replace_scheduled_stop_point_id,
-      (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
-      new_located_on_infrastructure_link_id,
-      new_measured_location,
-      new_direction,
-      new_label,
-      new_validity_start,
-      new_validity_end,
-      new_priority
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
       )
   ),
-  -- fetch the stop point entities with their prioritized validity times
-  prioritized_ssp_with_new AS (
-    SELECT ssp.scheduled_stop_point_id,
-           ssp.located_on_infrastructure_link_id,
-           ssp.measured_location,
-           ssp.relative_distance_from_infrastructure_link_start,
-           ssp.direction,
-           ssp.label,
-           ssp.priority,
-           priority_validity_spans.validity_start,
-           priority_validity_spans.validity_end
-    FROM ssp_with_new ssp
-           JOIN journey_pattern.maximum_priority_validity_spans(
+  priority_validity_spans AS (
+    SELECT * FROM journey_pattern.maximum_priority_validity_spans(
       'scheduled_stop_point',
       (SELECT labels FROM filter_route),
       (SELECT validity_start FROM filter_route),
@@ -2092,8 +2080,45 @@ WITH RECURSIVE
       new_validity_start,
       new_validity_end,
       new_priority
-      ) priority_validity_spans
-                ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+    )
+  ),
+  -- fetch the stop point entities with their prioritized validity times
+  prioritized_ssp_with_new AS (
+    SELECT prioritized_ssp.scheduled_stop_point_id,
+           prioritized_ssp.located_on_infrastructure_link_id,
+           prioritized_ssp.measured_location,
+           prioritized_ssp.relative_distance_from_infrastructure_link_start,
+           prioritized_ssp.direction,
+           prioritized_ssp.label,
+           prioritized_ssp.priority,
+           prioritized_ssp.priority_span_validity_start,
+           prioritized_ssp.priority_span_validity_end
+    FROM (
+      SELECT
+        ssp.*,
+           priority_validity_spans.validity_start AS priority_span_validity_start,
+           priority_validity_spans.validity_end AS priority_span_validity_end
+        FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        JOIN priority_validity_spans ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+        WHERE replace_scheduled_stop_point_id IS NULL
+        OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT
+           ssp.*,
+           priority_validity_spans.validity_start AS priority_span_validity_start,
+           priority_validity_spans.validity_end AS priority_span_validity_end
+        FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
+      ) ssp
+      JOIN priority_validity_spans ON priority_validity_spans.id = ssp.scheduled_stop_point_id
+    ) prioritized_ssp
   ),
   -- For all stops in the journey patterns, list all visits of the stop's infra link. (But only include
   -- visits happening in a direction matching the stop's allowed directions - if the direction is wrong,
@@ -2136,7 +2161,7 @@ WITH RECURSIVE
                 ON r.route_id = sspijp.route_id
                   -- scheduled stop point instances, whose validity period does not overlap with the
                   -- route's validity period, are filtered out here
-                  AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
+                  AND internal_utils.daterange_closed_upper(ssp.priority_span_validity_start, ssp.priority_span_validity_end) &&
                       internal_utils.daterange_closed_upper(r.validity_start, r.validity_end)
            JOIN route.infrastructure_link_along_route ilar
                 ON ilar.route_id = r.route_id
@@ -2146,6 +2171,19 @@ WITH RECURSIVE
                   AND (ssp.direction = 'bidirectional' OR
                        ((ssp.direction = 'forward' AND ilar.is_traversal_forwards = true)
                          OR (ssp.direction = 'backward' AND ilar.is_traversal_forwards = false)))
+        -- In some cases the JOINs above might produce duplicate rows
+        -- (seems to be caused by at least prioritized_route having many rows for same route, with different validity periods though).
+        -- Eliminate those: they would cause severe performance issues in the following recursive CTE.
+         GROUP BY
+           sspijp.journey_pattern_id,
+           ssp.scheduled_stop_point_id,
+           sspijp.scheduled_stop_point_sequence,
+           sspijp.stop_point_order,
+           ssp.relative_distance_from_infrastructure_link_start,
+           ilar.route_id,
+           ilar.infrastructure_link_id,
+           ilar.infrastructure_link_sequence,
+           ilar.is_traversal_forwards
   ),
   -- Iteratively try to traverse the journey patterns in their specified order one stop point at a time, such
   -- that all visited links appear in ascending order on each journey pattern's route.
@@ -2209,9 +2247,10 @@ WITH RECURSIVE
                   t.is_traversal_forwards,
                   t.relative_distance_from_infrastructure_link_start,
                   t.scheduled_stop_point_id,
-                  ROW_NUMBER()
-                  OVER (PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order ORDER BY infrastructure_link_sequence)
-                                                          AS order_by_min,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY sspijp.journey_pattern_id, ssp.scheduled_stop_point_id, r.route_id, infrastructure_link_id, stop_point_order
+                    ORDER BY infrastructure_link_sequence
+                  ) AS order_by_min,
                   r.route_id,
                   ssp.scheduled_stop_point_id IS NOT NULL AS ssp_match,
                   -- if there is no matching stop point within the validity span in question, check if there is a
@@ -2232,7 +2271,7 @@ WITH RECURSIVE
                        ON sspijp.journey_pattern_id = jp.journey_pattern_id
                   LEFT JOIN prioritized_ssp_with_new ssp -- left join to be able to find the ghost ssp
                             ON ssp.label = sspijp.scheduled_stop_point_label
-                              AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
+                              AND internal_utils.daterange_closed_upper(ssp.priority_span_validity_start, ssp.priority_span_validity_end) &&
                                   internal_utils.daterange_closed_upper(r.validity_start, r.validity_end)
                   LEFT JOIN traversal t
                             ON t.journey_pattern_id = sspijp.journey_pattern_id
@@ -2316,16 +2355,22 @@ WITH RECURSIVE
            ssp.label                   AS key1,
            NULL                        AS key2,
            ssp.priority
-    FROM service_pattern.get_scheduled_stop_points_with_new(
-           replace_scheduled_stop_point_id,
-           new_scheduled_stop_point_id,
-           new_located_on_infrastructure_link_id,
-           new_measured_location,
-           new_direction,
-           new_label,
-           new_validity_start,
-           new_validity_end,
-           new_priority) ssp
+    FROM (
+      SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
+        WHERE replace_scheduled_stop_point_id IS NULL
+           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+      UNION ALL
+        SELECT * FROM service_pattern.maybe_append_new_scheduled_stop_point(
+          new_scheduled_stop_point_id,
+          new_located_on_infrastructure_link_id,
+          new_measured_location,
+          new_direction,
+          new_label,
+          new_validity_start,
+          new_validity_end,
+          new_priority
+      )
+    ) AS ssp
     WHERE entity_type = 'scheduled_stop_point'
       AND internal_utils.daterange_closed_upper(ssp.validity_start, ssp.validity_end) &&
           internal_utils.daterange_closed_upper(filter_validity_start, filter_validity_end)
@@ -2788,7 +2833,8 @@ BEGIN
         oid::regprocedure),
       E'\n')
   FROM pg_proc
-  WHERE pronamespace = ANY(target_schemas::regnamespace[]);
+  WHERE pronamespace = ANY(target_schemas::regnamespace[])
+  AND provolatile NOT IN ('i');
 
   IF sql_command IS NOT NULL THEN
     EXECUTE sql_command;
@@ -3523,66 +3569,6 @@ $$;
 ALTER FUNCTION service_pattern.get_distances_between_stop_points_in_journey_patterns(journey_pattern_ids uuid[], observation_date date, include_draft_stops boolean) OWNER TO dbhasura;
 
 --
--- Name: get_scheduled_stop_points_with_new(uuid, uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
-    LANGUAGE plpgsql STABLE
-    AS $$
-BEGIN
-  IF new_scheduled_stop_point_id IS NULL THEN
-    RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id;
-  ELSE
-    RETURN QUERY
-      SELECT ssp.scheduled_stop_point_id,
-             ssp.measured_location,
-             ssp.located_on_infrastructure_link_id,
-             ssp.direction,
-             ssp.label,
-             ssp.validity_start,
-             ssp.validity_end,
-             ssp.priority,
-             internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-             internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
-      FROM service_pattern.scheduled_stop_point ssp
-        JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
-      WHERE replace_scheduled_stop_point_id IS NULL
-         OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
-      UNION ALL
-      SELECT new_scheduled_stop_point_id,
-             new_measured_location::geography(PointZ, 4326),
-             new_located_on_infrastructure_link_id,
-             new_direction,
-             new_label,
-             new_validity_start,
-             new_validity_end,
-             new_priority,
-             internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
-             NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
-      FROM infrastructure_network.infrastructure_link il
-      WHERE il.infrastructure_link_id = new_located_on_infrastructure_link_id;
-  END IF;
-END;
-$$;
-
-
-ALTER FUNCTION service_pattern.get_scheduled_stop_points_with_new(replace_scheduled_stop_point_id uuid, new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
-
---
 -- Name: insert_scheduled_stop_point_label(text); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3597,6 +3583,39 @@ $$;
 
 
 ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text) OWNER TO dbhasura;
+
+--
+-- Name: maybe_append_new_scheduled_stop_point(uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
+    LANGUAGE plpgsql STABLE
+    AS $$
+BEGIN
+  RETURN QUERY
+    SELECT new_scheduled_stop_point_id,
+           new_measured_location::geography(PointZ, 4326),
+           new_located_on_infrastructure_link_id,
+           new_direction,
+           new_label,
+           new_validity_start,
+           new_validity_end,
+           new_priority,
+           internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
+           NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
+    FROM infrastructure_network.infrastructure_link il
+    WHERE
+      CASE
+        WHEN new_scheduled_stop_point_id IS NOT NULL THEN
+        il.infrastructure_link_id = new_located_on_infrastructure_link_id
+      ELSE
+        il.infrastructure_link_id = NULL -- Matches nothing.
+      END;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.maybe_append_new_scheduled_stop_point(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer) OWNER TO dbhasura;
 
 --
 -- Name: on_delete_scheduled_stop_point(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
@@ -4623,6 +4642,27 @@ CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPD
 --
 
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_vehicle_mode_trigger AFTER DELETE ON service_pattern.vehicle_mode_on_scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_vehicle_mode();
+
+--
+-- Name: scheduled_stop_points_with_infra_link_data; Type: VIEW; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE VIEW service_pattern.scheduled_stop_points_with_infra_link_data AS
+ SELECT ssp.scheduled_stop_point_id,
+    ssp.measured_location,
+    ssp.located_on_infrastructure_link_id,
+    ssp.direction,
+    ssp.label,
+    ssp.validity_start,
+    ssp.validity_end,
+    ssp.priority,
+    internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
+    internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+   FROM (service_pattern.scheduled_stop_point ssp
+     JOIN infrastructure_network.infrastructure_link il ON ((ssp.located_on_infrastructure_link_id = il.infrastructure_link_id)));
+
+
+ALTER TABLE service_pattern.scheduled_stop_points_with_infra_link_data OWNER TO dbhasura;
 
 --
 -- Sorted dump complete
