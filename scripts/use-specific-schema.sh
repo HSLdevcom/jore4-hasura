@@ -5,7 +5,7 @@ if [[ "$PWD" != *scripts ]]; then
 fi
 
 if [[ -z ${1} ]]; then
-  echo "Usage: specific-schema.sh environment"
+  echo "Usage: use-specific-schema.sh environment"
   echo "Possible environment values are currently:"
   ls -1 -d ../migrations/*/ | cut -f3 -d'/'
   exit 1
