@@ -4,6 +4,10 @@
 
 set -euo pipefail
 
+# allow running from any working directory
+WD=$(dirname "$0")
+cd "${WD}/.."
+
 echo "Downloading latest version of E2E docker-compose package..."
 curl https://raw.githubusercontent.com/HSLdevcom/jore4-tools/main/docker/download-docker-bundle.sh | bash
 
