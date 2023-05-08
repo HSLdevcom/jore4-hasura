@@ -1,0 +1,10 @@
+DROP FUNCTION IF EXISTS internal_utils.next_day(bound date);
+DROP FUNCTION IF EXISTS internal_utils.prev_day(bound date);
+DROP FUNCTION IF EXISTS internal_utils.const_priority_draft();
+DROP FUNCTION IF EXISTS internal_utils.date_closed_upper(range daterange);
+DROP FUNCTION IF EXISTS internal_utils.daterange_closed_upper(lower_bound date, closed_upper_bound date);
+DROP FUNCTION IF EXISTS internal_utils.determine_srid(geog public.geography);
+DROP FUNCTION IF EXISTS internal_utils.determine_srid(geog1 public.geography, geog2 public.geography);
+DROP FUNCTION IF EXISTS internal_utils.st_closestpoint(a_linestring public.geography, a_point public.geography);
+DROP FUNCTION IF EXISTS internal_utils.st_lineinterpolatepoint(a_linestring public.geography, a_fraction double precision);
+DROP FUNCTION IF EXISTS internal_utils.st_linelocatepoint(a_linestring public.geography, a_point public.geography);
