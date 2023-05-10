@@ -45,8 +45,7 @@ WITH RECURSIVE
            ssp.priority
     FROM (
       SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
-        WHERE replace_scheduled_stop_point_id IS NULL
-           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+        WHERE replace_scheduled_stop_point_id IS DISTINCT FROM ssp.scheduled_stop_point_id
       UNION ALL
         SELECT * FROM service_pattern.new_scheduled_stop_point_if_id_given(
           new_scheduled_stop_point_id,
@@ -323,8 +322,7 @@ WITH RECURSIVE
   ),
   ssp_with_new AS (
       SELECT * FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
-        WHERE replace_scheduled_stop_point_id IS NULL
-           OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+        WHERE replace_scheduled_stop_point_id IS DISTINCT FROM ssp.scheduled_stop_point_id
       UNION ALL
         SELECT * FROM service_pattern.new_scheduled_stop_point_if_id_given(
           (SELECT new_scheduled_stop_point_id FROM new_ssp_param),
@@ -373,8 +371,7 @@ WITH RECURSIVE
            priority_validity_spans.validity_end AS priority_span_validity_end
         FROM service_pattern.scheduled_stop_points_with_infra_link_data ssp
         JOIN priority_validity_spans ON priority_validity_spans.id = ssp.scheduled_stop_point_id
-        WHERE replace_scheduled_stop_point_id IS NULL
-        OR ssp.scheduled_stop_point_id != replace_scheduled_stop_point_id
+        WHERE replace_scheduled_stop_point_id IS DISTINCT FROM ssp.scheduled_stop_point_id
       -- Safe to use UNION ALL here rather than plain UNION since the following row does not exist in previous SELECT result.
       -- Also faster since no sorting associated with plain UNION is needed.
       UNION ALL
