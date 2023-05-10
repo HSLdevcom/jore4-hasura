@@ -3597,7 +3597,7 @@ ALTER FUNCTION service_pattern.insert_scheduled_stop_point_label(new_label text)
 -- Name: new_scheduled_stop_point_if_id_given(uuid, uuid, public.geography, text, text, date, date, integer); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE FUNCTION service_pattern.new_scheduled_stop_point_if_id_given(new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision, closest_point_on_infrastructure_link public.geography)
+CREATE FUNCTION service_pattern.new_scheduled_stop_point_if_id_given(new_scheduled_stop_point_id uuid DEFAULT NULL::uuid, new_located_on_infrastructure_link_id uuid DEFAULT NULL::uuid, new_measured_location public.geography DEFAULT NULL::public.geography, new_direction text DEFAULT NULL::text, new_label text DEFAULT NULL::text, new_validity_start date DEFAULT NULL::date, new_validity_end date DEFAULT NULL::date, new_priority integer DEFAULT NULL::integer) RETURNS TABLE(scheduled_stop_point_id uuid, measured_location public.geography, located_on_infrastructure_link_id uuid, direction text, label text, validity_start date, validity_end date, priority integer, relative_distance_from_infrastructure_link_start double precision)
     LANGUAGE sql STABLE
     AS $$
   SELECT new_scheduled_stop_point_id,
@@ -3608,8 +3608,7 @@ CREATE FUNCTION service_pattern.new_scheduled_stop_point_if_id_given(new_schedul
          new_validity_start,
          new_validity_end,
          new_priority,
-         internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
-         NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
+         internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start
   FROM infrastructure_network.infrastructure_link il
   WHERE new_scheduled_stop_point_id IS NOT NULL
   AND new_located_on_infrastructure_link_id = il.infrastructure_link_id;
@@ -4657,8 +4656,7 @@ CREATE VIEW service_pattern.scheduled_stop_points_with_infra_link_data AS
     ssp.validity_start,
     ssp.validity_end,
     ssp.priority,
-    internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-    internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+    internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start
    FROM (service_pattern.scheduled_stop_point ssp
      JOIN infrastructure_network.infrastructure_link il ON ((ssp.located_on_infrastructure_link_id = il.infrastructure_link_id)));
 
