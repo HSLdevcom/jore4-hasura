@@ -50,13 +50,8 @@ AS $$
          internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
          NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
   FROM infrastructure_network.infrastructure_link il
-  WHERE
-    CASE
-      WHEN new_scheduled_stop_point_id IS NOT NULL THEN
-        il.infrastructure_link_id = new_located_on_infrastructure_link_id
-      ELSE
-        false
-    END;
+  WHERE new_scheduled_stop_point_id IS NOT NULL
+  AND new_located_on_infrastructure_link_id = il.infrastructure_link_id;
 $$;
 COMMENT ON FUNCTION service_pattern.new_scheduled_stop_point_if_id_given(new_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer)
 IS 'Conditionally returns a row representing a new scheduled_stop_point, or nothing.
