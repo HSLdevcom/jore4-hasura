@@ -7,8 +7,7 @@ CREATE OR REPLACE VIEW service_pattern.scheduled_stop_points_with_infra_link_dat
          ssp.validity_start,
          ssp.validity_end,
          ssp.priority,
-         internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start,
-         internal_utils.st_closestpoint(il.shape, ssp.measured_location) AS closest_point_on_infrastructure_link
+         internal_utils.st_linelocatepoint(il.shape, ssp.measured_location) AS relative_distance_from_infrastructure_link_start
   FROM service_pattern.scheduled_stop_point ssp
   JOIN infrastructure_network.infrastructure_link il ON ssp.located_on_infrastructure_link_id = il.infrastructure_link_id
 );
@@ -34,8 +33,7 @@ RETURNS TABLE(
   validity_start date,
   validity_end date,
   priority integer,
-  relative_distance_from_infrastructure_link_start double precision,
-  closest_point_on_infrastructure_link public.geography
+  relative_distance_from_infrastructure_link_start double precision
 )
   LANGUAGE sql STABLE
 AS $$
@@ -47,8 +45,7 @@ AS $$
          new_validity_start,
          new_validity_end,
          new_priority,
-         internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start,
-         NULL::geography(PointZ, 4326)                                      AS closest_point_on_infrastructure_link
+         internal_utils.st_linelocatepoint(il.shape, new_measured_location) AS relative_distance_from_infrastructure_link_start
   FROM infrastructure_network.infrastructure_link il
   WHERE new_scheduled_stop_point_id IS NOT NULL
   AND new_located_on_infrastructure_link_id = il.infrastructure_link_id;
