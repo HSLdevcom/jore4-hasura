@@ -3,15 +3,16 @@ import { DateTime } from 'luxon';
 import { TimetablePriority, VehicleScheduleFrame } from './types';
 
 // can set either name_i18n (-> leave as is) or name (-> make i18n version)
-type EntityName =
+export type EntityName =
   | { name?: never; name_i18n: LocalizedString }
   | { name: string; name_i18n?: never };
 
 /**
  * Builds the name for the entity if the i18n attribute is not set
  */
-const buildName = <TEntity extends EntityName>(entityWithName: TEntity) =>
-  entityWithName.name_i18n || buildLocalizedString(entityWithName.name);
+export const buildName = <TEntity extends EntityName>(
+  entityWithName: TEntity,
+) => entityWithName.name_i18n || buildLocalizedString(entityWithName.name);
 
 export const buildVehicleScheduleFrame = (
   frame: RequiredKeys<
