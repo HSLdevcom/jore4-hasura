@@ -129,6 +129,20 @@ describe('Update scheduled stop point in journey pattern', () => {
     shouldNotModifyDatabase(scheduledStopPointInJourneyPattern[3], toBeUpdated);
   });
 
+  describe('when scheduled stop point is not associated with a timing place do not allow it to be set as a timing point in the journey pattern', () => {
+    const toBeUpdated = {
+      is_used_as_timing_point: true,
+    };
+
+    shouldReturnErrorResponse(
+      scheduledStopPointInJourneyPattern[1],
+      toBeUpdated,
+      'scheduled stop point must have a timing place attached if it is used as a timing point in a journey pattern',
+    );
+
+    shouldNotModifyDatabase(scheduledStopPointInJourneyPattern[1], toBeUpdated);
+  });
+
   describe('without conflict', () => {
     const original = scheduledStopPointInJourneyPattern[4];
     const toBeUpdated = {
