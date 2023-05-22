@@ -21,7 +21,12 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      typescript: {
+        project: __dirname,
+      },
     },
   },
   plugins: ['@typescript-eslint', 'jest'],
