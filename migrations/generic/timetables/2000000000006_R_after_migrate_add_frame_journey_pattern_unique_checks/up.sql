@@ -44,7 +44,7 @@ AS $$
     JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
     JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
     JOIN journey_patterns_to_check USING (journey_pattern_id)
-    WHERE priority < internal_utils.const_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
+    WHERE priority < internal_utils.const_timetables_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
   ),
   -- Select all schedules in DB that have conflicts with schedules_to_check.
   -- Note that this will contain each conflicting schedule frame pair twice.
