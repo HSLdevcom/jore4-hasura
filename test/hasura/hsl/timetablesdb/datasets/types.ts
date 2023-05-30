@@ -1,4 +1,5 @@
 import {
+  TimetablePriority,
   TypeOfLine,
   VehicleScheduleFrame,
 } from 'generic/timetablesdb/datasets/types';
@@ -42,4 +43,12 @@ export type SubstituteOperatingDayByLineType = {
   timezone?: string;
   begin_datetime?: DateTime;
   end_datetime?: DateTime;
+};
+
+export type TimetableVersion = {
+  vehicle_schedule_frame_id: UUID;
+  substitute_operating_day_by_line_type_id: UUID;
+  in_effect: boolean;
+  priority: TimetablePriority;
+  day_type_id: UUID;
 };
