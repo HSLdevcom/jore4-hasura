@@ -1,8 +1,9 @@
 import {
+  TimetablePriority,
   TypeOfLine,
   VehicleScheduleFrame,
 } from 'generic/timetablesdb/datasets/types';
-import { DateTime, Interval } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 export type HslVehicleScheduleFrame = VehicleScheduleFrame & {
   booking_label: string;
@@ -31,15 +32,24 @@ export const substituteOperatingDayByLineTypeProps: Property[] = [
   'end_datetime',
 ];
 
-// TODO: Check the correct types for times
 export type SubstituteOperatingDayByLineType = {
   substitute_operating_day_by_line_type_id: UUID;
   type_of_line: TypeOfLine;
   superseded_date: DateTime;
-  substitute_day_of_week?: DayOfWeek;
-  begin_time?: Interval;
-  end_time?: Interval;
+  substitute_day_of_week?: DayOfWeek | null;
+  begin_time?: Duration | null;
+  end_time?: Duration | null;
   timezone?: string;
   begin_datetime?: DateTime;
   end_datetime?: DateTime;
+};
+
+export type TimetableVersion = {
+  vehicle_schedule_frame_id: UUID | null;
+  substitute_operating_day_by_line_type_id: UUID | null;
+  in_effect: boolean;
+  priority: TimetablePriority;
+  day_type_id: UUID;
+  validity_start: DateTime;
+  validity_end: DateTime;
 };
