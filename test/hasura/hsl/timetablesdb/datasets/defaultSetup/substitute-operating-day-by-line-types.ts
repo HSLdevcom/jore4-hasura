@@ -9,6 +9,7 @@ export const substituteOperatingDayByLineTypesByName = {
     type_of_line: TypeOfLine.StoppingBusService,
     superseded_date: DateTime.fromISO('2023-04-01'),
     substitute_day_of_week: DayOfWeek.Friday,
+    substitute_operating_period_id: '0967a31a-8304-4440-9a8e-18bb67b28166',
   },
 };
 
