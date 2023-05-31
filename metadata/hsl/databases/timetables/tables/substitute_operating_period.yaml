@@ -1,0 +1,11 @@
+table:
+  name: substitute_operating_period
+  schema: service_calendar
+array_relationships:
+  - name: substitute_operating_day_by_line_types
+    using:
+      foreign_key_constraint_on:
+        column: substitute_operating_period_id
+        table:
+          name: substitute_operating_day_by_line_type
+          schema: service_calendar

@@ -30,6 +30,13 @@ export const substituteOperatingDayByLineTypeProps: Property[] = [
   'timezone',
   'begin_datetime',
   'end_datetime',
+  'substitute_operating_period_id',
+];
+
+export const SubstituteOperatingPeriodProps: Property[] = [
+  'substitute_operating_period_id,',
+  'period_name',
+  'is_preset',
 ];
 
 export type SubstituteOperatingDayByLineType = {
@@ -42,6 +49,7 @@ export type SubstituteOperatingDayByLineType = {
   timezone?: string;
   begin_datetime?: DateTime;
   end_datetime?: DateTime;
+  substitute_operating_period_id: UUID;
 };
 
 export type TimetableVersion = {
@@ -63,4 +71,10 @@ export type VehicleSchedule = {
   validity_start: DateTime;
   validity_end: DateTime;
   created_at: DateTime;
+};
+
+export type SubstituteOperatingPeriod = {
+  substitute_operating_period_id: UUID;
+  period_name: string;
+  is_preset: boolean;
 };
