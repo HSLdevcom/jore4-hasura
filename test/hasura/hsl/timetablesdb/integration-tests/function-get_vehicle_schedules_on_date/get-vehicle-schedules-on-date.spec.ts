@@ -18,6 +18,7 @@ import {
   stagingSunApril2024Dataset,
   stoppingBusServiceSaturday20230520Dataset,
   stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
+  stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
   temporarySatFirstHalfApril2023Dataset,
   temporarySatFirstHalfApril2023VehicleJourneysByName,
   temporarySatFirstHalfApril2023VehicleScheduleFrame,
@@ -812,6 +813,12 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   datasets: [
                     [
                       {
+                        name: 'service_calendar.substitute_operating_period',
+                        data: [
+                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
+                        ],
+                      },
+                      {
                         name: 'service_calendar.substitute_operating_day_by_line_type',
                         data: [
                           {
@@ -896,6 +903,12 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 getDbDataWithAdditionalDatasets({
                   datasets: [
                     [
+                      {
+                        name: 'service_calendar.substitute_operating_period',
+                        data: [
+                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
+                        ],
+                      },
                       {
                         name: 'service_calendar.substitute_operating_day_by_line_type',
                         data: [
@@ -983,6 +996,12 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 getDbDataWithAdditionalDatasets({
                   datasets: [
                     [
+                      {
+                        name: 'service_calendar.substitute_operating_period',
+                        data: [
+                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
+                        ],
+                      },
                       {
                         name: 'service_calendar.substitute_operating_day_by_line_type',
                         data: [
@@ -1080,6 +1099,12 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   datasets: [
                     [
                       {
+                        name: 'service_calendar.substitute_operating_period',
+                        data: [
+                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
+                        ],
+                      },
+                      {
                         name: 'service_calendar.substitute_operating_day_by_line_type',
                         data: [
                           {
@@ -1175,6 +1200,12 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 getDbDataWithAdditionalDatasets({
                   datasets: [
                     [
+                      {
+                        name: 'service_calendar.substitute_operating_period',
+                        data: [
+                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
+                        ],
+                      },
                       {
                         name: 'service_calendar.substitute_operating_day_by_line_type',
                         data: [
