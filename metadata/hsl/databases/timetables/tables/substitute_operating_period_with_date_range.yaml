@@ -1,0 +1,3 @@
+table:
+  name: substitute_operating_period_with_date_range
+  schema: service_calendar

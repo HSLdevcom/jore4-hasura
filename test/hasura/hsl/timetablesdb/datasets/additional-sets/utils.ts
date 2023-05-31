@@ -52,6 +52,10 @@ export const getDbDataWithAdditionalDatasets = ({
           datasets,
           'service_calendar.substitute_operating_day_by_line_type',
         ),
+        getCombinedData(
+          datasets,
+          'service_calendar.substitute_operating_period',
+        ),
       ],
       (tableSchema) => tableSchema.name,
     ),

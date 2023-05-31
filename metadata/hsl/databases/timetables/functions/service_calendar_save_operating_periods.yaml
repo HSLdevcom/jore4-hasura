@@ -1,0 +1,6 @@
+function:
+  name: save_operating_periods
+  schema: service_calendar
+configuration:
+  custom_root_fields: {}
+  exposed_as: mutation

@@ -2,6 +2,7 @@ import { mergeLists } from '@util/schema';
 import { defaultGenericTimetablesDbData } from 'generic/timetablesdb/datasets/defaultSetup';
 import { HslTimetablesDbTables } from '../schema';
 import { substituteOperatingDayByLineTypes } from './substitute-operating-day-by-line-types';
+import { substituteOperatingPeriod } from './substitute_operating_period';
 import { hslVehicleJourneys } from './vehicle-journeys';
 import { hslVehicleScheduleFrames } from './vehicle-schedule-frames';
 import { hslVehicleServices } from './vehicle-services';
@@ -27,6 +28,10 @@ export const defaultHslTimetablesDbData: TableData<HslTimetablesDbTables>[] = [
     ],
     (tableSchema) => tableSchema.name,
   ),
+  {
+    name: 'service_calendar.substitute_operating_period',
+    data: substituteOperatingPeriod,
+  },
   {
     name: 'service_calendar.substitute_operating_day_by_line_type',
     data: substituteOperatingDayByLineTypes,

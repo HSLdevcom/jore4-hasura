@@ -1,2 +1,4 @@
 - "!include substitute_operating_day_by_line_type.yaml"
 - "!include return_value_timetable_version.yaml"
+- "!include substitute_operating_period.yaml"
+- "!include substitute_operating_period_with_date_range.yaml"
