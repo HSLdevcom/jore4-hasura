@@ -1,5 +1,6 @@
 - "!include journey_pattern_journey_pattern_ref.yaml"
 - "!include passing_times_timetabled_passing_time.yaml"
+- "!include return_value_frames_replaced_by_staging_timetables.yaml"
 - "!include service_calendar_day_type.yaml"
 - "!include service_calendar_day_type_active_on_day_of_week.yaml"
 - "!include service_pattern_scheduled_stop_point_in_journey_pattern_ref.yaml"

@@ -261,6 +261,12 @@ COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.time
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
 
 --
+-- Name: TABLE frames_replaced_by_staging_timetables; Type: COMMENT; Schema: return_value; Owner: dbhasura
+--
+
+COMMENT ON TABLE return_value.frames_replaced_by_staging_timetables IS 'The return value for vehicle_schedule.get_frames_replaced_by_staging_timetables.';
+
+--
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -803,6 +809,20 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_vehicle_journey_id_fkey FOREIGN KEY (vehicle_journey_id) REFERENCES vehicle_journey.vehicle_journey(vehicle_journey_id);
 
 --
+-- Name: frames_replaced_by_staging_timetables frames_replaced_by_staging_ti_replaced_vehicle_schedule_fr_fkey; Type: FK CONSTRAINT; Schema: return_value; Owner: dbhasura
+--
+
+ALTER TABLE ONLY return_value.frames_replaced_by_staging_timetables
+    ADD CONSTRAINT frames_replaced_by_staging_ti_replaced_vehicle_schedule_fr_fkey FOREIGN KEY (replaced_vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+--
+-- Name: frames_replaced_by_staging_timetables frames_replaced_by_staging_ti_staging_vehicle_schedule_fra_fkey; Type: FK CONSTRAINT; Schema: return_value; Owner: dbhasura
+--
+
+ALTER TABLE ONLY return_value.frames_replaced_by_staging_timetables
+    ADD CONSTRAINT frames_replaced_by_staging_ti_staging_vehicle_schedule_fra_fkey FOREIGN KEY (staging_vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+--
 -- Name: day_type_active_on_day_of_week day_type_active_on_day_of_week_day_type_id_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -1338,7 +1358,7 @@ ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.veh
 -- Name: get_frames_replaced_by_staging_timetables(uuid[], integer); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer) RETURNS TABLE(staging_vehicle_schedule_frame_id uuid, replaced_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, staging_validity_range daterange, replaced_validity_range daterange, validity_intersection daterange)
+CREATE FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer) RETURNS SETOF return_value.frames_replaced_by_staging_timetables
     LANGUAGE sql STABLE
     AS $$
   WITH overlapping_schedules AS (
@@ -1811,6 +1831,24 @@ CREATE TABLE passing_times.timetabled_passing_time (
 
 
 ALTER TABLE passing_times.timetabled_passing_time OWNER TO dbhasura;
+
+--
+-- Name: frames_replaced_by_staging_timetables; Type: TABLE; Schema: return_value; Owner: dbhasura
+--
+
+CREATE TABLE return_value.frames_replaced_by_staging_timetables (
+    staging_vehicle_schedule_frame_id uuid,
+    replaced_vehicle_schedule_frame_id uuid,
+    journey_pattern_id uuid,
+    active_on_day_of_week integer,
+    priority integer,
+    staging_validity_range daterange,
+    replaced_validity_range daterange,
+    validity_intersection daterange
+);
+
+
+ALTER TABLE return_value.frames_replaced_by_staging_timetables OWNER TO dbhasura;
 
 --
 -- Name: type_of_line; Type: TABLE; Schema: route; Owner: dbhasura
