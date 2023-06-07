@@ -1,0 +1,6 @@
+function:
+  name: get_frames_replaced_by_staging_timetables
+  schema: vehicle_schedule
+configuration:
+  custom_root_fields: {}
+  exposed_as: query

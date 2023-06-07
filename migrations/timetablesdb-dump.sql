@@ -479,6 +479,14 @@ they typically expect ranges to be half closed.';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
+-- Name: FUNCTION get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer) IS 'Returns information on all schedules of given priority that
+ staging vehicle_schedule_frames overlaps with
+ and would thus replace when raised to that priority.';
+
+--
 -- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[], ignore_priority boolean); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
@@ -1325,6 +1333,37 @@ $$;
 
 
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
+-- Name: get_frames_replaced_by_staging_timetables(uuid[], integer); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer) RETURNS TABLE(staging_vehicle_schedule_frame_id uuid, replaced_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, staging_validity_range daterange, replaced_validity_range daterange, validity_intersection daterange)
+    LANGUAGE sql STABLE
+    AS $$
+  WITH overlapping_schedules AS (
+    SELECT * FROM vehicle_schedule.get_overlapping_schedules(
+      staging_vehicle_schedule_frame_ids,
+      ARRAY[]::uuid[],
+      true
+    )
+  )
+  SELECT DISTINCT
+    replaced.current_vehicle_schedule_frame_id AS staging_vehicle_schedule_frame_id,
+    replaced.other_vehicle_schedule_frame_id AS replaced_vehicle_schedule_frame_id,
+    journey_pattern_id,
+    active_on_day_of_week,
+    replaced.priority,
+    replaced.current_validity_range AS staging_validity_range,
+    replaced.other_validity_range AS replaced_validity_range,
+    validity_intersection
+  FROM vehicle_schedule.vehicle_schedule_frame vsf
+  JOIN overlapping_schedules replaced ON vsf.vehicle_schedule_frame_id = replaced.other_vehicle_schedule_frame_id
+  WHERE vsf.priority = target_priority;
+$$;
+
+
+ALTER FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(staging_vehicle_schedule_frame_ids uuid[], target_priority integer) OWNER TO dbhasura;
 
 --
 -- Name: get_overlapping_schedules(uuid[], uuid[], boolean); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
