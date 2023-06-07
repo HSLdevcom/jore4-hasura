@@ -1,0 +1,21 @@
+table:
+  name: frames_replaced_by_staging_timetables
+  schema: return_value
+object_relationships:
+  - name: replaced_vehicle_schedule_frame
+    using:
+      foreign_key_constraint_on: replaced_vehicle_schedule_frame_id
+  - name: staging_vehicle_schedule_frame
+    using:
+      foreign_key_constraint_on: staging_vehicle_schedule_frame_id
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: object
+        source: default
+        table:
+          name: journey_pattern
+          schema: journey_pattern
+    name: journey_pattern

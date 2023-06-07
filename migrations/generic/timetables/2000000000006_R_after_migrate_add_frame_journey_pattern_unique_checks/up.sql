@@ -96,16 +96,7 @@ CREATE OR REPLACE FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timet
   staging_vehicle_schedule_frame_ids uuid[],
   target_priority int
 )
-RETURNS TABLE(
-  staging_vehicle_schedule_frame_id uuid,
-  replaced_vehicle_schedule_frame_id uuid,
-  journey_pattern_id uuid,
-  active_on_day_of_week integer,
-  priority integer,
-  staging_validity_range daterange,
-  replaced_validity_range daterange,
-  validity_intersection daterange
-)
+RETURNS SETOF return_value.frames_replaced_by_staging_timetables
 LANGUAGE sql
 STABLE
 AS $$
