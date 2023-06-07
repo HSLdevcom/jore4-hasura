@@ -24,6 +24,13 @@ export const vehicleServicesByName = {
     vehicle_schedule_frame_id:
       vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
   },
+  // vehicle 1, Mon-Fri, Summer 2023
+  v1MonFriSummer2023: {
+    vehicle_service_id: '125f8ee1-549e-48f2-97e0-318c407f2ca3',
+    day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+    vehicle_schedule_frame_id:
+      vehicleScheduleFramesByName.summer2023.vehicle_schedule_frame_id,
+  },
 };
 export const vehicleServices: VehicleService[] = Object.values(
   vehicleServicesByName,
