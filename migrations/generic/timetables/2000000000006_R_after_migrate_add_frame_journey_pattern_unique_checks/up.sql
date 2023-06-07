@@ -62,7 +62,7 @@ AS $$
     -- Check if the schedules conflict.
     JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
     WHERE (current_schedule.validity_range && other_schedule.validity_range)
-    AND other_schedule.vehicle_schedule_frame_id != current_schedule.vehicle_schedule_frame_id
+    AND current_schedule.vehicle_schedule_frame_id != other_schedule.vehicle_schedule_frame_id
   )
 SELECT * FROM schedule_conflicts;
 $$;
