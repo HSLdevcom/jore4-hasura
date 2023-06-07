@@ -27,6 +27,12 @@ export const vehicleJourneysByName = {
     journey_pattern_ref_id:
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
   },
+  v1MonFriJourney1Summer2023: {
+    vehicle_journey_id: '2c27c47f-8559-43f2-a572-9f302d6ba0ba',
+    block_id: vehicleServiceBlocksByName.v1MonFriSummer2023.block_id,
+    journey_pattern_ref_id:
+      journeyPatternRefsByName.route234Outbound.journey_pattern_ref_id,
+  },
 };
 export const vehicleJourneys: VehicleJourney[] = Object.values(
   vehicleJourneysByName,

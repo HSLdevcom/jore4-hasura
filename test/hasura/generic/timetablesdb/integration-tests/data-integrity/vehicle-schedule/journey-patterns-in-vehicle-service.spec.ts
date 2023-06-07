@@ -66,7 +66,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
   it('should have created correct rows to denormalized table initially', async () => {
     const response = await getJourneyPatternsInVehicleServices();
     expectNoErrorResponse(response);
-    expect(response.rowCount).toEqual(2);
+    expect(response.rowCount).toEqual(3);
     expect(response.rows).toEqual(
       expect.arrayContaining([
         defaultDatasetRows.route123Outbound,
@@ -92,7 +92,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(2);
+      expect(response.rowCount).toEqual(3);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
@@ -120,7 +120,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(3);
+      expect(response.rowCount).toEqual(4);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           defaultDatasetRows.route123Outbound,
@@ -197,7 +197,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(5);
+      expect(response.rowCount).toEqual(6);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
@@ -252,7 +252,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(2);
+      expect(response.rowCount).toEqual(3);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
@@ -298,7 +298,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(1);
+      expect(response.rowCount).toEqual(2);
       expect(response.rows).toEqual(
         expect.arrayContaining([defaultDatasetRows.route123Inbound]),
       );
@@ -320,7 +320,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(3);
+      expect(response.rowCount).toEqual(4);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           // One got removed from outbound...
@@ -359,7 +359,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
       const response = await getJourneyPatternsInVehicleServices();
       expectNoErrorResponse(response);
-      expect(response.rowCount).toEqual(2);
+      expect(response.rowCount).toEqual(3);
       expect(response.rows).toEqual(
         expect.arrayContaining([
           {
