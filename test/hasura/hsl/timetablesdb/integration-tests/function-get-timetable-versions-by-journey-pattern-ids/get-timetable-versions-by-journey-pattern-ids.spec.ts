@@ -580,6 +580,162 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
     });
   });
 
+  describe('more than one journey pattern', () => {
+    describe('time range hits timetables on both journey patterns timetables (winter and summer)', () => {
+      describe('observation date is on summer timetables validity range', () => {
+        it('should have only the summer timetable version in effect', async () => {
+          const startDate = DateTime.fromISO('2023-01-01');
+          const endDate = DateTime.fromISO('2023-06-30');
+          const observationDate = DateTime.fromISO('2023-06-01');
+
+          const response = await getTimetableVersions(
+            defaultHslTimetablesDbData,
+            [
+              journeyPatternRefsByName.route123Inbound.journey_pattern_id,
+              journeyPatternRefsByName.route234Outbound.journey_pattern_id,
+            ],
+            startDate,
+            endDate,
+            observationDate,
+          );
+          const mappedResponse = mapTimetableVersionResponse(response);
+
+          expect(
+            // Sort arrays so that the order does not matter
+            sortVersionsForAssert(mappedResponse),
+          ).toEqual(
+            sortVersionsForAssert([
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.SUNDAY,
+                in_effect: false,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+                in_effect: false,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.SATURDAY,
+                in_effect: false,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  hslVehicleScheduleFramesByName.specialAscensionDay2023
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.THURSDAY,
+                in_effect: false,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.summer2023
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+                in_effect: true,
+              },
+              {
+                day_type_id: defaultDayTypeIds.SATURDAY,
+                in_effect: false,
+                substitute_operating_day_by_line_type_id:
+                  substituteOperatingDayByLineTypesByName.aprilFools
+                    .substitute_operating_day_by_line_type_id,
+                vehicle_schedule_frame_id: null,
+              },
+            ]),
+          );
+        });
+      });
+
+      describe('observation date is on winter timetables validity range', () => {
+        it('should have only the winter timetable version in effect', async () => {
+          const startDate = DateTime.fromISO('2023-01-01');
+          const endDate = DateTime.fromISO('2023-06-30');
+          const observationDate = DateTime.fromISO('2023-01-30');
+
+          const response = await getTimetableVersions(
+            defaultHslTimetablesDbData,
+            [
+              journeyPatternRefsByName.route123Inbound.journey_pattern_id,
+              journeyPatternRefsByName.route234Outbound.journey_pattern_id,
+            ],
+            startDate,
+            endDate,
+            observationDate,
+          );
+          const mappedResponse = mapTimetableVersionResponse(response);
+
+          expect(
+            // Sort arrays so that the order does not matter
+            sortVersionsForAssert(mappedResponse),
+          ).toEqual(
+            sortVersionsForAssert([
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.SUNDAY,
+                in_effect: true,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+                in_effect: true,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.winter2022
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.SATURDAY,
+                in_effect: true,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  hslVehicleScheduleFramesByName.specialAscensionDay2023
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.THURSDAY,
+                in_effect: false,
+              },
+              {
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFramesByName.summer2023
+                    .vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+                in_effect: false,
+              },
+              {
+                day_type_id: defaultDayTypeIds.SATURDAY,
+                in_effect: false,
+                substitute_operating_day_by_line_type_id:
+                  substituteOperatingDayByLineTypesByName.aprilFools
+                    .substitute_operating_day_by_line_type_id,
+                vehicle_schedule_frame_id: null,
+              },
+            ]),
+          );
+        });
+      });
+    });
+  });
+
   describe('draft and staging priorities', () => {
     it('should not be affected by draft priority (Standard priorities should be in effect)', async () => {
       const startDate = DateTime.fromISO('2023-04-01');
