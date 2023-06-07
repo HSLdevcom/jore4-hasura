@@ -92,6 +92,52 @@ IS 'Returns information on all schedules that are overlapping.
   To bypass these priority checks completely, ignore_priority = true can be used.
 ';
 
+CREATE OR REPLACE FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(
+  staging_vehicle_schedule_frame_ids uuid[],
+  target_priority int
+)
+RETURNS TABLE(
+  staging_vehicle_schedule_frame_id uuid,
+  replaced_vehicle_schedule_frame_id uuid,
+  journey_pattern_id uuid,
+  active_on_day_of_week integer,
+  priority integer,
+  staging_validity_range daterange,
+  replaced_validity_range daterange,
+  validity_intersection daterange
+)
+LANGUAGE sql
+STABLE
+AS $$
+  WITH overlapping_schedules AS (
+    SELECT * FROM vehicle_schedule.get_overlapping_schedules(
+      staging_vehicle_schedule_frame_ids,
+      ARRAY[]::uuid[],
+      true
+    )
+  )
+  SELECT DISTINCT
+    replaced.current_vehicle_schedule_frame_id AS staging_vehicle_schedule_frame_id,
+    replaced.other_vehicle_schedule_frame_id AS replaced_vehicle_schedule_frame_id,
+    journey_pattern_id,
+    active_on_day_of_week,
+    vsf.priority,
+    replaced.current_validity_range AS staging_validity_range,
+    replaced.other_validity_range AS replaced_validity_range,
+    validity_intersection
+  FROM vehicle_schedule.vehicle_schedule_frame vsf
+  JOIN overlapping_schedules replaced ON vsf.vehicle_schedule_frame_id = replaced.other_vehicle_schedule_frame_id
+  WHERE vsf.priority = target_priority
+  AND replaced.current_vehicle_schedule_frame_id = ANY(staging_vehicle_schedule_frame_ids);
+$$;
+COMMENT ON FUNCTION vehicle_schedule.get_frames_replaced_by_staging_timetables(
+  staging_vehicle_schedule_frame_ids uuid[],
+  target_priority int
+)
+IS 'Returns information on all schedules of given priority that
+ staging vehicle_schedule_frames overlaps with
+ and would thus replace when raised to that priority.';
+
 CREATE OR REPLACE FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() RETURNS VOID
   LANGUAGE plpgsql
 AS $$
