@@ -486,16 +486,17 @@ they typically expect ranges to be half closed.';
 COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.validity_start IS 'OPERATING DAY when the VEHICLE SCHEDULE FRAME validity starts (inclusive). Null if always has been valid.';
 
 --
--- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: FUNCTION get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[], ignore_priority boolean); Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) IS 'Returns information on all schedules that are overlapping.
+COMMENT ON FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[], ignore_priority boolean) IS 'Returns information on all schedules that are overlapping.
   Two vehicle_schedule_frames will be considered overlapping if they have:
-  - same priority
   - are valid on the same day (validity_range, active_on_day_of_week)
   - have any vehicle_journeys for same journey_patterns
 
+  By default (ignore_priority = false) the schedules must also have same priority to be considered overlapping.
   Schedules with priority Draft or Staging are exempt from this constraint.
+  To bypass these priority checks completely, ignore_priority = true can be used.
 ';
 
 --
@@ -1363,10 +1364,10 @@ $$;
 ALTER FUNCTION vehicle_journey.vehicle_journey_start_time(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
--- Name: get_overlapping_schedules(uuid[], uuid[]); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
+-- Name: get_overlapping_schedules(uuid[], uuid[], boolean); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) RETURNS TABLE(current_vehicle_schedule_frame_id uuid, other_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, current_validity_range daterange, other_validity_range daterange, validity_intersection daterange)
+CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[], ignore_priority boolean DEFAULT false) RETURNS TABLE(current_vehicle_schedule_frame_id uuid, other_vehicle_schedule_frame_id uuid, journey_pattern_id uuid, active_on_day_of_week integer, priority integer, current_validity_range daterange, other_validity_range daterange, validity_intersection daterange)
     LANGUAGE sql
     AS $$
   WITH
@@ -1401,7 +1402,10 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
     JOIN vehicle_schedule.vehicle_schedule_frame USING (vehicle_schedule_frame_id)
     JOIN service_calendar.day_type_active_on_day_of_week USING (day_type_id)
     JOIN journey_patterns_to_check USING (journey_pattern_id)
-    WHERE priority < internal_utils.const_timetables_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
+    WHERE (
+      ignore_priority = true OR
+      priority < internal_utils.const_timetables_priority_draft() -- The restrictions should not apply for Draft and Staging priorities.
+    )
   ),
   -- Select all schedules in DB that have conflicts with schedules_to_check.
   -- Note that this will contain each conflicting schedule frame pair twice.
@@ -1411,21 +1415,25 @@ CREATE FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedu
       other_schedule.vehicle_schedule_frame_id AS other_vehicle_schedule_frame_id,
       journey_pattern_id,
       day_of_week AS active_on_day_of_week,
-      priority,
+      current_schedule.priority,
       current_schedule.validity_range AS current_validity_range,
       other_schedule.validity_range AS other_validity_range,
       current_schedule.validity_range * other_schedule.validity_range AS validity_intersection
     FROM vehicle_schedule_frame_journey_patterns current_schedule
     -- Check if the schedules conflict.
-    JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week, priority)
+    JOIN vehicle_schedule_frame_journey_patterns other_schedule USING (journey_pattern_id, day_of_week)
     WHERE (current_schedule.validity_range && other_schedule.validity_range)
     AND current_schedule.vehicle_schedule_frame_id != other_schedule.vehicle_schedule_frame_id
+    AND (
+      ignore_priority = true OR
+      current_schedule.priority = other_schedule.priority
+    )
   )
 SELECT * FROM schedule_conflicts;
 $$;
 
 
-ALTER FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[]) OWNER TO dbhasura;
+ALTER FUNCTION vehicle_schedule.get_overlapping_schedules(filter_vehicle_schedule_frame_ids uuid[], filter_journey_pattern_ref_ids uuid[], ignore_priority boolean) OWNER TO dbhasura;
 
 --
 -- Name: queue_validation_by_vsf_id(); Type: FUNCTION; Schema: vehicle_schedule; Owner: dbhasura
