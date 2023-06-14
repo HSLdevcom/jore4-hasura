@@ -4,6 +4,7 @@ import {
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import { DateTime } from 'luxon';
+import { TimetablesDataset } from 'timetables-data-inserter';
 import { buildHslVehicleScheduleFrame } from '../../factories';
 import { HslTimetablesDbTables } from '../../schema';
 
@@ -41,6 +42,45 @@ export const specialAprilFools2023VehicleJourneysByName = {
     block_id: specialAprilFools2023VehicleServiceBlock.block_id,
     journey_pattern_ref_id:
       journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+  },
+};
+
+export const specialAprilFools2023Timetable: TimetablesDataset = {
+  // TODO:
+  // - remove DateTime.fromISO calls
+  // - pass priority as String
+  // - pass day_type_id as String
+  // - autogenerate ids
+  // - pass journey patterns by name
+  _vehicle_schedule_frame: {
+    vehicle_schedule_frame_id: '9142d422-31c8-40b6-8c76-fcaabd004818',
+    // validity_start: DateTime.fromISO('2023-04-01'),
+    // validity_end: DateTime.fromISO('2023-04-01'),
+    priority: TimetablePriority.Special,
+    name: 'Aprillipäivä 2023',
+    // created_at: DateTime.fromISO('2022-02-01T02:34:56.789+02:00'),
+
+    _vehicle_service: {
+      vehicle_service_id: 'b7de19ec-e336-45e9-a94b-fcd86f7c6512',
+      day_type_id: defaultDayTypeIds.SATURDAY,
+
+      _block: {
+        block_id: '9c29207d-1dec-44c2-976a-292e6bd9f9dc',
+
+        _vehicle_journeys: [
+          {
+            vehicle_journey_id: 'cc0ca525-eb96-462e-9658-35cd91eaa17a',
+            journey_pattern_ref_id:
+              journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
+          },
+          {
+            vehicle_journey_id: '5fcabadd-ee62-4455-904b-c652c14b57f0',
+            journey_pattern_ref_id:
+              journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+          },
+        ],
+      },
+    },
   },
 };
 

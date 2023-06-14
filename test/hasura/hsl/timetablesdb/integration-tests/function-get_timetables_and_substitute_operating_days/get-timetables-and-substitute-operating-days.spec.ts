@@ -18,7 +18,7 @@ import {
   temporarySatFirstHalfApril2023VehicleService,
 } from 'hsl/timetablesdb/datasets/additional-sets';
 import {
-  specialAprilFools2023Dataset,
+  specialAprilFools2023Timetable,
   specialAprilFools2023VehicleScheduleFrame,
 } from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
 import { stagingSunApril2024Dataset } from 'hsl/timetablesdb/datasets/additional-sets/timetables/stagingSunApril2024Dataset';
@@ -33,6 +33,7 @@ import {
   sortVersionsForAssert,
 } from 'hsl/timetablesdb/test-utils';
 import { DateTime } from 'luxon';
+import { buildTimetablesTableData } from 'timetables-data-inserter';
 
 describe('Function get_timetables_and_substitute_operating_days', () => {
   let dbConnection: DbConnection;
@@ -69,7 +70,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const response = await getTimetablesAndSubstituteOperatingDays(
         getDbDataWithAdditionalDatasets({
           datasets: [
-            specialAprilFools2023Dataset,
+            // buildTimetablesTableData(specialAprilFools2023Dataset),
+            buildTimetablesTableData(specialAprilFools2023Timetable),
             temporarySatFirstHalfApril2023Dataset,
             expressBusServiceSaturday20230520Dataset,
             stoppingBusServiceSaturday20230520Dataset,
