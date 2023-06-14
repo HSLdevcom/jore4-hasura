@@ -12,18 +12,21 @@ export const insertTableData = async <TTableName extends string>(
   tableData: TableData<TTableName>[],
 ) => {
   return promiseSequence(
-    tableData.map((table) => {
-      const { data } = table;
+    tableData
+      .filter((table) => table.data.length) // Crashes with empty insert queries.
+      .map((table) => {
+        const { data } = table;
 
-      if (isFileDataSource(data)) {
-        // data contains the file name from which to load SQL statements
-        const fileContent = readFileSync(data, 'utf-8');
-        return db.singleQuery(conn, fileContent);
-      }
+        if (isFileDataSource(data)) {
+          // data contains the file name from which to load SQL statements
+          const fileContent = readFileSync(data, 'utf-8');
+          return db.singleQuery(conn, fileContent);
+        }
 
-      const serializedData = data.map(serializeInsertInput);
-      return db.batchInsert(conn, table.name, serializedData);
-    }),
+        const serializedData = data.map(serializeInsertInput);
+
+        return db.batchInsert(conn, table.name, serializedData);
+      }),
   );
 };
 

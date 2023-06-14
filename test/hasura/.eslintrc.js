@@ -48,6 +48,7 @@ module.exports = {
     ],
     'no-shadow': 'off', // this might report false positives with TS: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md#how-to-use
     '@typescript-eslint/no-shadow': ['error'], //
+    'no-underscore-dangle': 'off',
     'no-unused-expressions': ['error', { allowTernary: true }], // allow expressions like `booleanValue ? doSomething() : doSomethingElse()`
     'import/extensions': [
       'error',
