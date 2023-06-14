@@ -27,3 +27,126 @@ export const journeyPatternRefsByName = {
 export const journeyPatternRefs: JourneyPatternRef[] = Object.values(
   journeyPatternRefsByName,
 );
+
+// TODO: delete this, replace with defaultJourneyPatternRefsByName.
+export const journeyPatternRefsDataset = {
+  _journey_pattern_refs: {
+    route123Outbound: {
+      journey_pattern_id:
+        journeyPatternRefsByName.route123Outbound.journey_pattern_id,
+
+      _stop_points: [
+        {
+          scheduled_stop_point_sequence: 1,
+          scheduled_stop_point_label: 'H2201',
+        },
+        {
+          scheduled_stop_point_sequence: 2,
+          scheduled_stop_point_label: 'H2202',
+        },
+        {
+          scheduled_stop_point_sequence: 3,
+          scheduled_stop_point_label: 'H2203',
+        },
+        {
+          scheduled_stop_point_sequence: 4,
+          scheduled_stop_point_label: 'H2204',
+        },
+      ],
+    },
+    route123Inbound: {
+      journey_pattern_id:
+        journeyPatternRefsByName.route123Inbound.journey_pattern_id,
+
+      _stop_points: [
+        {
+          scheduled_stop_point_sequence: 1,
+          scheduled_stop_point_label: 'H2204',
+        },
+        {
+          scheduled_stop_point_sequence: 2,
+          scheduled_stop_point_label: 'H2203',
+        },
+        {
+          scheduled_stop_point_sequence: 3,
+          scheduled_stop_point_label: 'H2202',
+        },
+        {
+          scheduled_stop_point_sequence: 4,
+          scheduled_stop_point_label: 'H2201',
+        },
+      ],
+    },
+  },
+};
+
+export const defaultJourneyPatternRefsByName = {
+  route123Outbound: {
+    journey_pattern_id: '55bab728-c76c-4ce6-9cc6-f6e51c1c5dca',
+    type_of_line: TypeOfLine.StoppingBusService,
+    observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+    snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+
+    _stop_points: [
+      {
+        scheduled_stop_point_sequence: 1,
+        scheduled_stop_point_label: 'H2201',
+      },
+      {
+        scheduled_stop_point_sequence: 2,
+        scheduled_stop_point_label: 'H2202',
+      },
+      {
+        scheduled_stop_point_sequence: 3,
+        scheduled_stop_point_label: 'H2203',
+      },
+      {
+        scheduled_stop_point_sequence: 4,
+        scheduled_stop_point_label: 'H2204',
+      },
+    ],
+  },
+  route123Inbound: {
+    journey_pattern_id: '34acd9ad-f7c4-4af2-a6d4-f9d69f0288ee',
+    type_of_line: TypeOfLine.StoppingBusService,
+    observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+    snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+
+    _stop_points: [
+      {
+        scheduled_stop_point_sequence: 1,
+        scheduled_stop_point_label: 'H2204',
+      },
+      {
+        scheduled_stop_point_sequence: 2,
+        scheduled_stop_point_label: 'H2203',
+      },
+      {
+        scheduled_stop_point_sequence: 3,
+        scheduled_stop_point_label: 'H2202',
+      },
+      {
+        scheduled_stop_point_sequence: 4,
+        scheduled_stop_point_label: 'H2201',
+      },
+    ],
+  },
+
+  route234Outbound: {
+    journey_pattern_id: 'b080eeed-8982-441e-aba2-16150dd89350',
+    type_of_line: TypeOfLine.StoppingBusService,
+    observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+    snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+
+    _stop_points: [
+      {
+        scheduled_stop_point_sequence: 1,
+        scheduled_stop_point_label: 'H2201',
+      },
+      {
+        scheduled_stop_point_sequence: 2,
+        scheduled_stop_point_label: 'H2202',
+      },
+    ],
+  },
+};
