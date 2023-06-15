@@ -1,7 +1,6 @@
 import {
   defaultDayTypeIds,
   journeyPatternRefsByName,
-  scheduledStopPointsInJourneyPatternRef,
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import { DateTime } from 'luxon';
@@ -127,27 +126,52 @@ export const specialAprilFools2023Timetable: TimetablesDataset = {
       },
     },
   },
-  _journey_patterns_by_name: {
-    route123Inbound: {
-      journey_pattern_ref_id:
-        journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
-
-      // TODO: inline these.
-      _stop_points: scheduledStopPointsInJourneyPatternRef.filter(
-        (sp) =>
-          sp.journey_pattern_ref_id ===
-          journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
-      ),
-    },
+  _journey_pattern_refs_by_name: {
     route123Outbound: {
       journey_pattern_ref_id:
         journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
 
-      _stop_points: scheduledStopPointsInJourneyPatternRef.filter(
-        (sp) =>
-          sp.journey_pattern_ref_id ===
-          journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
-      ),
+      _stop_points: [
+        {
+          scheduled_stop_point_sequence: 1,
+          scheduled_stop_point_label: 'H2201',
+        },
+        {
+          scheduled_stop_point_sequence: 2,
+          scheduled_stop_point_label: 'H2202',
+        },
+        {
+          scheduled_stop_point_sequence: 3,
+          scheduled_stop_point_label: 'H2203',
+        },
+        {
+          scheduled_stop_point_sequence: 4,
+          scheduled_stop_point_label: 'H2204',
+        },
+      ],
+    },
+    route123Inbound: {
+      journey_pattern_ref_id:
+        journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
+
+      _stop_points: [
+        {
+          scheduled_stop_point_sequence: 1,
+          scheduled_stop_point_label: 'H2204',
+        },
+        {
+          scheduled_stop_point_sequence: 2,
+          scheduled_stop_point_label: 'H2203',
+        },
+        {
+          scheduled_stop_point_sequence: 3,
+          scheduled_stop_point_label: 'H2202',
+        },
+        {
+          scheduled_stop_point_sequence: 4,
+          scheduled_stop_point_label: 'H2201',
+        },
+      ],
     },
   },
 };

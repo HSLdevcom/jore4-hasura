@@ -40,17 +40,22 @@ export type VehicleScheduleFrameInput = Partial<HslVehicleScheduleFrame> & {
   _vehicle_services?: VehicleServiceInput[];
 };
 
-export type JourneyPatternsByNameInput = Record<
+export type ScheduledStopInJourneyPatternRefInput =
+  Partial<ScheduledStopInJourneyPatternRef>;
+
+export type JourneyPatternRefInput = {
+  journey_pattern_ref_id?: UUID;
+  _stop_points: ScheduledStopInJourneyPatternRefInput[];
+};
+
+export type JourneyPatternsRefsByNameInput = Record<
   string,
-  {
-    journey_pattern_ref_id?: UUID;
-    _stop_points: ScheduledStopInJourneyPatternRef[];
-  }
+  JourneyPatternRefInput
 >;
 
 export type TimetablesDataset = {
   _vehicle_schedule_frame: VehicleScheduleFrameInput;
-  _journey_patterns_by_name: JourneyPatternsByNameInput;
+  _journey_pattern_refs_by_name: JourneyPatternsRefsByNameInput;
 };
 
 // TODO: some better approach than global variable.
@@ -118,11 +123,11 @@ const processVehicleJourney = (vehicleJourney: VehicleJourneyInput) => {
   let result = vehicleJourney;
 
   const idField = 'vehicle_journey_id';
-  result = assignId(vehicleJourney, idField);
+  result = assignId(result, idField);
   const journeyPatternRefName =
     result._journey_pattern_ref_name || 'TODO: how to handle this';
   const journeyPatternRef =
-    datasetInput!._journey_patterns_by_name[journeyPatternRefName];
+    datasetInput!._journey_pattern_refs_by_name[journeyPatternRefName];
   result = assignForeignKey(
     vehicleJourney,
     'journey_pattern_ref_id',
@@ -159,7 +164,7 @@ const processBlock = (block: VehicleServiceBlockInput) => {
   let result = block;
 
   const idField = 'block_id';
-  result = assignId(block, idField);
+  result = assignId(result, idField);
 
   result = processChildren({
     item: result,
@@ -175,7 +180,7 @@ const processVehicleService = (vehicleService: VehicleServiceInput) => {
   let result = vehicleService;
 
   const idField = 'vehicle_service_id';
-  result = assignId(vehicleService, idField);
+  result = assignId(result, idField);
 
   result = processChildren({
     item: result,
@@ -193,7 +198,7 @@ const processVehicleScheduleFrame = (
   let result = vehicleScheduleFrame;
 
   const idField = 'vehicle_schedule_frame_id';
-  result = assignId(vehicleScheduleFrame, idField);
+  result = assignId(result, idField);
 
   result = processChildren({
     item: result,
@@ -205,14 +210,56 @@ const processVehicleScheduleFrame = (
   return result;
 };
 
+const processScheduledStopPoint = (
+  stopPoint: ScheduledStopInJourneyPatternRefInput,
+) => {
+  let result = stopPoint;
+
+  const idField = 'scheduled_stop_point_in_journey_pattern_ref_id';
+  result = assignId(result, idField);
+
+  return result;
+};
+
+const processJourneyPatternRef = (
+  journeyPatternRef: JourneyPatternRefInput,
+) => {
+  let result = journeyPatternRef;
+
+  const idField = 'journey_pattern_ref_id';
+  result = assignId(result, idField);
+
+  result = processChildren({
+    item: result,
+    parentIdField: idField,
+    singularField: '_stop_point',
+    mapper: processScheduledStopPoint,
+  });
+
+  return result;
+};
+
 export const buildTimetablesTableData = (
   input: TimetablesDataset,
 ): TableData<HslTimetablesDbTables>[] => {
   datasetInput = input;
   const result = cloneDeep(input);
 
-  const stuff = processVehicleScheduleFrame(result._vehicle_schedule_frame);
-  console.log('stuff:', JSON.stringify(stuff, null, 2));
+  const processedJprs: JourneyPatternsRefsByNameInput = {};
+  Object.entries(result._journey_pattern_refs_by_name).forEach(
+    ([jprName, jpr]) => {
+      processedJprs[jprName] = processJourneyPatternRef(jpr);
+    },
+  );
+  result._journey_pattern_refs_by_name = processedJprs;
+  datasetInput = input; // TODO: fix hackety hack.
+  // console.log('processedJprs:', JSON.stringify(processedJprs, null, 2));
+
+  result._vehicle_schedule_frame = processVehicleScheduleFrame(
+    result._vehicle_schedule_frame,
+  );
+  // console.log('vsf:', JSON.stringify(vsf, null, 2));
+  console.log('result:', JSON.stringify(result, null, 2));
 
   return [];
   // return input;
