@@ -57,7 +57,7 @@ export type TimetablesDataset = {
 let datasetInput: TimetablesDataset | null = null;
 
 const assignId = <T, K extends keyof T>(item: T, idField: K): T => {
-  if (!item[idField]) {
+  if (item[idField]) {
     return item;
   }
 
