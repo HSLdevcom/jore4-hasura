@@ -1,7 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { randomUUID } from 'crypto';
+import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
+import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import {
+  JourneyPatternRef,
   ScheduledStopInJourneyPatternRef,
+  TimetablePriority,
   TimetabledPassingTime,
   VehicleJourney,
   VehicleService,
@@ -12,7 +16,7 @@ import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
 import { cloneDeep, omit } from 'lodash';
 import { Duration } from 'luxon';
 
-export type PassingTimeInput = Partial<TimetabledPassingTime> & {
+export type TimetabledPassingTimeInput = Partial<Omit<TimetabledPassingTime, 'arrival_time' | 'departure_time'>> & {
   _scheduled_stop_point_label: string;
   arrival_time: string | null;
   departure_time: string | null;
@@ -21,24 +25,35 @@ export type PassingTimeInput = Partial<TimetabledPassingTime> & {
 export type VehicleJourneyInput = Partial<VehicleJourney> & {
   _journey_pattern_ref_name?: string; // Required for input, missing from output. TODO: split types.
 
-  _passing_times: PassingTimeInput[];
+  _passing_times: TimetabledPassingTimeInput[];
 };
 
 export type VehicleServiceBlockInput = Partial<VehicleServiceBlock> & {
-  _vehicle_journey?: any;
-  _vehicle_journeys?: any[];
+  _vehicle_journey?: VehicleJourneyInput;
+  _vehicle_journeys?: VehicleJourneyInput[];
 };
 
 export type VehicleServiceInput = Partial<VehicleService> & {
+  day_type_id?: keyof typeof defaultDayTypeIds;
   _block?: VehicleServiceBlockInput;
   _blocks?: VehicleServiceBlockInput[];
 };
 
-export type VehicleScheduleFrameInput = Partial<HslVehicleScheduleFrame> & {
+export type VehicleScheduleFrameInput = Partial<
+  Omit<
+    HslVehicleScheduleFrame,
+    'validity_start' | 'validity_end' | 'created_at' | 'priority'
+  >
+> & {
+  name_i18n?: LocalizedString; // TODO: this should already come from HslVehicleScheduleFrame via VehicleScheduleFrame
+  validity_start: string;
+  validity_end: string;
+  priority?: TimetablePriority | keyof typeof TimetablePriority;
+  created_at?: string;
   name?: string;
   _vehicle_service?: VehicleServiceInput;
   _vehicle_services?: VehicleServiceInput[];
-};
+} & EntityName;
 
 export type ScheduledStopInJourneyPatternRefInput =
   Partial<ScheduledStopInJourneyPatternRef>;
@@ -156,8 +171,26 @@ const processVehicleJourney = (vehicleJourney: VehicleJourneyInput) => {
   });
 
   return {
+    ...result,
     _passing_times: processedPassingTimes,
   };
+};
+
+const vehicleJourneyToDbFormat = (
+  vehicleJourney: VehicleJourneyInput,
+): VehicleJourney => {
+  // TODO: add defaults for all values and remove type cast.
+  return omit(vehicleJourney, [
+    '_journey_pattern_ref_name',
+    '_passing_times',
+  ]) as VehicleJourney;
+};
+
+const timetabledPassingTimeToDbFormat = (
+  passingTime: TimetabledPassingTimeInput,
+): TimetabledPassingTime => {
+  // TODO: add defaults for all values and remove type cast.
+  return omit(passingTime, ['_scheduled_stop_point_label']) as TimetabledPassingTime;
 };
 
 const processBlock = (block: VehicleServiceBlockInput) => {
@@ -176,6 +209,16 @@ const processBlock = (block: VehicleServiceBlockInput) => {
   return result;
 };
 
+const vehicleServiceBlockToDbFormat = (
+  block: VehicleServiceBlockInput,
+): VehicleServiceBlock => {
+  // TODO: add defaults for all values and remove type cast.
+  return omit(block, [
+    '_vehicle_journey',
+    '_vehicle_journeys',
+  ]) as VehicleServiceBlock;
+};
+
 const processVehicleService = (vehicleService: VehicleServiceInput) => {
   let result = vehicleService;
 
@@ -189,12 +232,24 @@ const processVehicleService = (vehicleService: VehicleServiceInput) => {
     mapper: processBlock,
   });
 
-  return result;
+  return {
+    ...result,
+    day_type_id: defaultDayTypeIds[
+      result.day_type_id || 'MONDAY_FRIDAY'
+    ],
+  };
+};
+
+const vehicleServiceToDbFormat = (
+  vehicleService: VehicleServiceInput,
+): VehicleService => {
+  // TODO: add defaults for all values and remove type cast.
+  return omit(vehicleService, ['_block', '_blocks']) as VehicleService;
 };
 
 const processVehicleScheduleFrame = (
   vehicleScheduleFrame: VehicleScheduleFrameInput,
-) => {
+): RequiredKeys<Omit<VehicleScheduleFrameInput, 'name'>, 'name_i18n'> => {
   let result = vehicleScheduleFrame;
 
   const idField = 'vehicle_schedule_frame_id';
@@ -207,7 +262,27 @@ const processVehicleScheduleFrame = (
     mapper: processVehicleService,
   });
 
-  return result;
+  const res = {
+    label: buildName(result).fi_FI,
+    name_i18n: buildName(result),
+    ...result,
+    priority: TimetablePriority[
+      result.priority || 'Standard'
+    ] as TimetablePriority,
+  };
+  delete res.name; // TODO: would there be a better place to do this? Complicates typings at the moment.
+  return res;
+};
+
+const vehicleScheduleFrameToDbFormat = (
+  vehicleScheduleFrame: VehicleScheduleFrameInput,
+): HslVehicleScheduleFrame => {
+  // TODO: add defaults for all values and remove type cast.
+  // TODO: fix types and remove the "unknown" cast. That is required at the moment because DateTime types don't match
+  return omit(vehicleScheduleFrame, [
+    '_vehicle_service',
+    '_vehicle_services',
+  ]) as unknown as HslVehicleScheduleFrame;
 };
 
 const processScheduledStopPoint = (
@@ -219,6 +294,13 @@ const processScheduledStopPoint = (
   result = assignId(result, idField);
 
   return result;
+};
+
+const scheduledStopPointToDbFormat = (
+  stopPoint: ScheduledStopInJourneyPatternRefInput,
+): ScheduledStopInJourneyPatternRef => {
+  // TODO: fix typings so the type cast is not required. All properties are assigned at this point.
+  return stopPoint as ScheduledStopInJourneyPatternRef;
 };
 
 const processJourneyPatternRef = (
@@ -239,6 +321,38 @@ const processJourneyPatternRef = (
   return result;
 };
 
+const journeyPatternRefToDbFormat = (journeyPatternRef: JourneyPatternRefInput): JourneyPatternRef => {
+  // TODO: add defaults for all values and remove type cast.
+  return omit(journeyPatternRef, ['_stop_points']) as JourneyPatternRef;
+};
+
+const flattenDataset = (dataset: TimetablesDataset) => {
+  const flattened = {
+    vehicleScheduleFrames: [] as VehicleScheduleFrameInput[],
+    vehicleServices: [] as VehicleServiceInput[],
+    blocks: [] as VehicleServiceBlockInput[],
+    vehicleJourneys: [] as VehicleJourneyInput[],
+    passingTimes: [] as TimetabledPassingTimeInput[],
+    journeyPatternRefs: [] as JourneyPatternRefInput[],
+    stopPoints: [] as ScheduledStopInJourneyPatternRefInput[],
+  };
+
+  flattened.vehicleScheduleFrames.push(dataset._vehicle_schedule_frame); // TODO: handle multiple.
+  flattened.vehicleServices.push(...flattened.vehicleScheduleFrames.map(vsf => vsf._vehicle_services || []).flat());
+  flattened.blocks.push(...flattened.vehicleServices.map(vsf => vsf._blocks || []).flat());
+  flattened.vehicleJourneys.push(
+    ...flattened.blocks.map((vsf) => vsf._vehicle_journeys || []).flat(),
+    );
+  flattened.passingTimes.push(
+    ...flattened.vehicleJourneys.map((vsf) => vsf._passing_times || []).flat(),
+  );
+
+  flattened.journeyPatternRefs.push(...Object.values(dataset._journey_pattern_refs_by_name));
+  flattened.stopPoints.push(...flattened.journeyPatternRefs.map(jpr => jpr._stop_points).flat());
+
+  return flattened;
+};
+
 export const buildTimetablesTableData = (
   input: TimetablesDataset,
 ): TableData<HslTimetablesDbTables>[] => {
@@ -253,14 +367,52 @@ export const buildTimetablesTableData = (
   );
   result._journey_pattern_refs_by_name = processedJprs;
   datasetInput = input; // TODO: fix hackety hack.
-  // console.log('processedJprs:', JSON.stringify(processedJprs, null, 2));
 
-  result._vehicle_schedule_frame = processVehicleScheduleFrame(
+  // TODO: remove this hardcoding of handling only a single VSF.
+  const test = processVehicleScheduleFrame(
     result._vehicle_schedule_frame,
   );
-  // console.log('vsf:', JSON.stringify(vsf, null, 2));
-  console.log('result:', JSON.stringify(result, null, 2));
+  result._vehicle_schedule_frame = test;
 
-  return [];
-  // return input;
+  const flattenedDataset = flattenDataset(result);
+
+  const finalResult: TableData<HslTimetablesDbTables>[] = [
+    {
+      name: 'vehicle_schedule.vehicle_schedule_frame',
+      data: flattenedDataset.vehicleScheduleFrames.map(
+        vehicleScheduleFrameToDbFormat,
+      ),
+    },
+    {
+      name: 'vehicle_service.vehicle_service',
+      data: flattenedDataset.vehicleServices.map(vehicleServiceToDbFormat),
+    },
+    {
+      name: 'vehicle_service.block',
+      data: flattenedDataset.blocks.map(vehicleServiceBlockToDbFormat),
+    },
+    {
+      name: 'journey_pattern.journey_pattern_ref',
+      data: flattenedDataset.journeyPatternRefs.map(
+        journeyPatternRefToDbFormat,
+      ),
+    },
+    {
+      name: 'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+      data: flattenedDataset.stopPoints.map(scheduledStopPointToDbFormat),
+    },
+    {
+      name: 'vehicle_journey.vehicle_journey',
+      data: flattenedDataset.vehicleJourneys.map(vehicleJourneyToDbFormat),
+    },
+    {
+      name: 'passing_times.timetabled_passing_time',
+      data: flattenedDataset.passingTimes.map(
+        timetabledPassingTimeToDbFormat,
+      ),
+    },
+    // TODO: 'service_calendar.substitute_operating_day_by_line_type'
+  ];
+
+  return finalResult;
 };

@@ -19,7 +19,6 @@ import {
 } from 'hsl/timetablesdb/datasets/additional-sets';
 import {
   specialAprilFools2023Timetable,
-  specialAprilFools2023VehicleScheduleFrame,
 } from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
 import { stagingSunApril2024Dataset } from 'hsl/timetablesdb/datasets/additional-sets/timetables/stagingSunApril2024Dataset';
 import {
@@ -27,7 +26,7 @@ import {
   substituteOperatingDayByLineTypesByName,
 } from 'hsl/timetablesdb/datasets/defaultSetup';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
-import { TimetableVersion } from 'hsl/timetablesdb/datasets/types';
+import { HslVehicleScheduleFrame, TimetableVersion } from 'hsl/timetablesdb/datasets/types';
 import {
   mapTimetableVersionResponse,
   sortVersionsForAssert,
@@ -67,11 +66,16 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     it('should return rows for everything else but express bus substitute operating day by line type', async () => {
       const startDate = DateTime.fromISO('2023-01-01');
       const endDate = DateTime.fromISO('2023-12-31');
+
+      const specialAprilFools2023Dataset = buildTimetablesTableData(specialAprilFools2023Timetable);
+      // TODO: implement a better way to do this.
+      const specialAprilFools2023VehicleScheduleFrame =
+        specialAprilFools2023Dataset.find(td => td.name === 'vehicle_schedule.vehicle_schedule_frame')!.data[0] as HslVehicleScheduleFrame;
+
       const response = await getTimetablesAndSubstituteOperatingDays(
         getDbDataWithAdditionalDatasets({
           datasets: [
-            // buildTimetablesTableData(specialAprilFools2023Dataset),
-            buildTimetablesTableData(specialAprilFools2023Timetable),
+            specialAprilFools2023Dataset,
             temporarySatFirstHalfApril2023Dataset,
             expressBusServiceSaturday20230520Dataset,
             stoppingBusServiceSaturday20230520Dataset,
