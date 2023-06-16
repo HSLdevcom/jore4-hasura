@@ -19,6 +19,12 @@ import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
 import { cloneDeep, merge, omit } from 'lodash';
 import { Duration } from 'luxon';
 
+// TODO:
+// - split to smaller files
+// - have separate typings for input and output
+// - take input as plain JSON
+// - include method for inserting straight to DB (so we don't need to duplicate the db utils)
+
 export type TimetabledPassingTimeInput = Partial<
   Omit<TimetabledPassingTime, 'arrival_time' | 'departure_time'>
 > & {

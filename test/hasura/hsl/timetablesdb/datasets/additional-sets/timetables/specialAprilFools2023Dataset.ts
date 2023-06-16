@@ -3,7 +3,6 @@ import { TimetablesDataset } from 'timetables-data-inserter';
 export const specialAprilFools2023Timetable: TimetablesDataset = {
   _vehicle_schedule_frames: [
     {
-      vehicle_schedule_frame_id: '9142d422-31c8-40b6-8c76-fcaabd004818',
       validity_start: '2023-04-01',
       validity_end: '2023-04-01',
       priority: 'Special',
@@ -12,16 +11,12 @@ export const specialAprilFools2023Timetable: TimetablesDataset = {
 
       _vehicle_services: [
         {
-          vehicle_service_id: 'b7de19ec-e336-45e9-a94b-fcd86f7c6512',
           day_type_id: 'SATURDAY',
 
           _blocks: [
             {
-              block_id: '9c29207d-1dec-44c2-976a-292e6bd9f9dc',
-
               _vehicle_journeys: [
                 {
-                  vehicle_journey_id: 'cc0ca525-eb96-462e-9658-35cd91eaa17a',
                   _journey_pattern_ref_name: 'route123Inbound',
 
                   _passing_times: [
