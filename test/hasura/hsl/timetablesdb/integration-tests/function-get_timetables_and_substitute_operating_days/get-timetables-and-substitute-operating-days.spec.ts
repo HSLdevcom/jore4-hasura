@@ -17,22 +17,23 @@ import {
   temporarySatFirstHalfApril2023Dataset,
   temporarySatFirstHalfApril2023VehicleService,
 } from 'hsl/timetablesdb/datasets/additional-sets';
-import {
-  specialAprilFools2023Timetable,
-} from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
+import { specialAprilFools2023Timetable } from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
 import { stagingSunApril2024Dataset } from 'hsl/timetablesdb/datasets/additional-sets/timetables/stagingSunApril2024Dataset';
 import {
   hslVehicleScheduleFramesByName,
   substituteOperatingDayByLineTypesByName,
 } from 'hsl/timetablesdb/datasets/defaultSetup';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
-import { HslVehicleScheduleFrame, TimetableVersion } from 'hsl/timetablesdb/datasets/types';
+import { TimetableVersion } from 'hsl/timetablesdb/datasets/types';
 import {
   mapTimetableVersionResponse,
   sortVersionsForAssert,
 } from 'hsl/timetablesdb/test-utils';
 import { DateTime } from 'luxon';
-import { buildTimetablesTableData } from 'timetables-data-inserter';
+import {
+  buildTimetablesDataset,
+  createTableData,
+} from 'timetables-data-inserter';
 
 describe('Function get_timetables_and_substitute_operating_days', () => {
   let dbConnection: DbConnection;
@@ -67,15 +68,17 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const startDate = DateTime.fromISO('2023-01-01');
       const endDate = DateTime.fromISO('2023-12-31');
 
-      const specialAprilFools2023Dataset = buildTimetablesTableData(specialAprilFools2023Timetable);
-      // TODO: implement a better way to do this.
+      const specialAprilFools2023Dataset = buildTimetablesDataset(
+        specialAprilFools2023Timetable,
+      );
       const specialAprilFools2023VehicleScheduleFrame =
-        specialAprilFools2023Dataset.find(td => td.name === 'vehicle_schedule.vehicle_schedule_frame')!.data[0] as HslVehicleScheduleFrame;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, no-underscore-dangle
+        specialAprilFools2023Dataset!._vehicle_schedule_frame;
 
       const response = await getTimetablesAndSubstituteOperatingDays(
         getDbDataWithAdditionalDatasets({
           datasets: [
-            specialAprilFools2023Dataset,
+            createTableData(specialAprilFools2023Dataset),
             temporarySatFirstHalfApril2023Dataset,
             expressBusServiceSaturday20230520Dataset,
             stoppingBusServiceSaturday20230520Dataset,
@@ -146,7 +149,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           },
           {
             vehicle_schedule_frame_id:
-              specialAprilFools2023VehicleScheduleFrame.vehicle_schedule_frame_id,
+              specialAprilFools2023VehicleScheduleFrame.vehicle_schedule_frame_id!,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,

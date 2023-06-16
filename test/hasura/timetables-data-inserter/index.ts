@@ -16,7 +16,9 @@ import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
 import { cloneDeep, omit } from 'lodash';
 import { Duration } from 'luxon';
 
-export type TimetabledPassingTimeInput = Partial<Omit<TimetabledPassingTime, 'arrival_time' | 'departure_time'>> & {
+export type TimetabledPassingTimeInput = Partial<
+  Omit<TimetabledPassingTime, 'arrival_time' | 'departure_time'>
+> & {
   _scheduled_stop_point_label: string;
   arrival_time: string | null;
   departure_time: string | null;
@@ -124,7 +126,6 @@ const processChildren = ({
   if (result[singularField]) {
     result[pluralField].push(result[singularField]);
   }
-  delete result[singularField];
 
   result[pluralField] = result[pluralField].map((child: any) => {
     return assignForeignKey(child, parentIdField, item[parentIdField]);
@@ -148,7 +149,6 @@ const processVehicleJourney = (vehicleJourney: VehicleJourneyInput) => {
     'journey_pattern_ref_id',
     journeyPatternRef.journey_pattern_ref_id as UUID,
   );
-  delete result._journey_pattern_ref_name;
 
   const stopPoints = journeyPatternRef._stop_points;
   const processedPassingTimes = result._passing_times.map((pt) => {
@@ -190,7 +190,9 @@ const timetabledPassingTimeToDbFormat = (
   passingTime: TimetabledPassingTimeInput,
 ): TimetabledPassingTime => {
   // TODO: add defaults for all values and remove type cast.
-  return omit(passingTime, ['_scheduled_stop_point_label']) as TimetabledPassingTime;
+  return omit(passingTime, [
+    '_scheduled_stop_point_label',
+  ]) as TimetabledPassingTime;
 };
 
 const processBlock = (block: VehicleServiceBlockInput) => {
@@ -234,9 +236,7 @@ const processVehicleService = (vehicleService: VehicleServiceInput) => {
 
   return {
     ...result,
-    day_type_id: defaultDayTypeIds[
-      result.day_type_id || 'MONDAY_FRIDAY'
-    ],
+    day_type_id: defaultDayTypeIds[result.day_type_id || 'MONDAY_FRIDAY'],
   };
 };
 
@@ -262,7 +262,7 @@ const processVehicleScheduleFrame = (
     mapper: processVehicleService,
   });
 
-  const res = {
+  return {
     label: buildName(result).fi_FI,
     name_i18n: buildName(result),
     ...result,
@@ -270,8 +270,6 @@ const processVehicleScheduleFrame = (
       result.priority || 'Standard'
     ] as TimetablePriority,
   };
-  delete res.name; // TODO: would there be a better place to do this? Complicates typings at the moment.
-  return res;
 };
 
 const vehicleScheduleFrameToDbFormat = (
@@ -280,6 +278,7 @@ const vehicleScheduleFrameToDbFormat = (
   // TODO: add defaults for all values and remove type cast.
   // TODO: fix types and remove the "unknown" cast. That is required at the moment because DateTime types don't match
   return omit(vehicleScheduleFrame, [
+    'name',
     '_vehicle_service',
     '_vehicle_services',
   ]) as unknown as HslVehicleScheduleFrame;
@@ -321,7 +320,9 @@ const processJourneyPatternRef = (
   return result;
 };
 
-const journeyPatternRefToDbFormat = (journeyPatternRef: JourneyPatternRefInput): JourneyPatternRef => {
+const journeyPatternRefToDbFormat = (
+  journeyPatternRef: JourneyPatternRefInput,
+): JourneyPatternRef => {
   // TODO: add defaults for all values and remove type cast.
   return omit(journeyPatternRef, ['_stop_points']) as JourneyPatternRef;
 };
@@ -338,45 +339,37 @@ const flattenDataset = (dataset: TimetablesDataset) => {
   };
 
   flattened.vehicleScheduleFrames.push(dataset._vehicle_schedule_frame); // TODO: handle multiple.
-  flattened.vehicleServices.push(...flattened.vehicleScheduleFrames.map(vsf => vsf._vehicle_services || []).flat());
-  flattened.blocks.push(...flattened.vehicleServices.map(vsf => vsf._blocks || []).flat());
+  flattened.vehicleServices.push(
+    ...flattened.vehicleScheduleFrames
+      .map((vsf) => vsf._vehicle_services || [])
+      .flat(),
+  );
+  flattened.blocks.push(
+    ...flattened.vehicleServices.map((vsf) => vsf._blocks || []).flat(),
+  );
   flattened.vehicleJourneys.push(
     ...flattened.blocks.map((vsf) => vsf._vehicle_journeys || []).flat(),
-    );
+  );
   flattened.passingTimes.push(
     ...flattened.vehicleJourneys.map((vsf) => vsf._passing_times || []).flat(),
   );
 
-  flattened.journeyPatternRefs.push(...Object.values(dataset._journey_pattern_refs_by_name));
-  flattened.stopPoints.push(...flattened.journeyPatternRefs.map(jpr => jpr._stop_points).flat());
+  flattened.journeyPatternRefs.push(
+    ...Object.values(dataset._journey_pattern_refs_by_name),
+  );
+  flattened.stopPoints.push(
+    ...flattened.journeyPatternRefs.map((jpr) => jpr._stop_points).flat(),
+  );
 
   return flattened;
 };
 
-export const buildTimetablesTableData = (
-  input: TimetablesDataset,
+export const createTableData = (
+  builtDataset: TimetablesDataset,
 ): TableData<HslTimetablesDbTables>[] => {
-  datasetInput = input;
-  const result = cloneDeep(input);
+  const flattenedDataset = flattenDataset(builtDataset);
 
-  const processedJprs: JourneyPatternsRefsByNameInput = {};
-  Object.entries(result._journey_pattern_refs_by_name).forEach(
-    ([jprName, jpr]) => {
-      processedJprs[jprName] = processJourneyPatternRef(jpr);
-    },
-  );
-  result._journey_pattern_refs_by_name = processedJprs;
-  datasetInput = input; // TODO: fix hackety hack.
-
-  // TODO: remove this hardcoding of handling only a single VSF.
-  const test = processVehicleScheduleFrame(
-    result._vehicle_schedule_frame,
-  );
-  result._vehicle_schedule_frame = test;
-
-  const flattenedDataset = flattenDataset(result);
-
-  const finalResult: TableData<HslTimetablesDbTables>[] = [
+  const tableData: TableData<HslTimetablesDbTables>[] = [
     {
       name: 'vehicle_schedule.vehicle_schedule_frame',
       data: flattenedDataset.vehicleScheduleFrames.map(
@@ -407,12 +400,33 @@ export const buildTimetablesTableData = (
     },
     {
       name: 'passing_times.timetabled_passing_time',
-      data: flattenedDataset.passingTimes.map(
-        timetabledPassingTimeToDbFormat,
-      ),
+      data: flattenedDataset.passingTimes.map(timetabledPassingTimeToDbFormat),
     },
     // TODO: 'service_calendar.substitute_operating_day_by_line_type'
   ];
 
-  return finalResult;
+  return tableData;
+};
+
+export const buildTimetablesDataset = (
+  input: TimetablesDataset,
+): TimetablesDataset => {
+  datasetInput = input;
+  const result = cloneDeep(input);
+
+  const processedJprs: JourneyPatternsRefsByNameInput = {};
+  Object.entries(result._journey_pattern_refs_by_name).forEach(
+    ([jprName, jpr]) => {
+      processedJprs[jprName] = processJourneyPatternRef(jpr);
+    },
+  );
+  result._journey_pattern_refs_by_name = processedJprs;
+  datasetInput = input; // TODO: fix hackety hack.
+
+  // TODO: remove this hardcoding of handling only a single VSF.
+  const test = processVehicleScheduleFrame(result._vehicle_schedule_frame);
+  result._vehicle_schedule_frame = test;
+
+  // TODO: use different return type to show that all properties are assigned.
+  return result;
 };
