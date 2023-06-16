@@ -31,13 +31,11 @@ export type VehicleJourneyInput = Partial<VehicleJourney> & {
 };
 
 export type VehicleServiceBlockInput = Partial<VehicleServiceBlock> & {
-  _vehicle_journey?: VehicleJourneyInput;
   _vehicle_journeys?: VehicleJourneyInput[];
 };
 
 export type VehicleServiceInput = Partial<VehicleService> & {
   day_type_id?: keyof typeof defaultDayTypeIds;
-  _block?: VehicleServiceBlockInput;
   _blocks?: VehicleServiceBlockInput[];
 };
 
@@ -71,7 +69,6 @@ export type JourneyPatternsRefsByNameInput = Record<
 >;
 
 export type TimetablesDataset = {
-  _vehicle_schedule_frame?: VehicleScheduleFrameInput;
   _vehicle_schedule_frames?: VehicleScheduleFrameInput[];
   _journey_pattern_refs_by_name: JourneyPatternsRefsByNameInput;
 };
@@ -105,53 +102,23 @@ const assignForeignKey = <T, K extends keyof T>(
   };
 };
 
-const getPluralFieldDefault = (singularField: string) => `${singularField}s`;
-
-const normalizeChildRelationshipFields = ({
-  item,
-  singularField,
-  pluralField = getPluralFieldDefault(singularField),
-}: {
-  item: any;
-  singularField: string;
-  pluralField?: string;
-}) => {
-  const result = item;
-  // Normalize child relationship field.
-  if (!result[pluralField]) {
-    result[pluralField] = [];
-  }
-  if (result[singularField]) {
-    result[pluralField].push(result[singularField]);
-  }
-  return result;
-};
-
 const processChildren = ({
   item,
   parentIdField,
-  singularField,
-  pluralField = getPluralFieldDefault(singularField),
+  childField,
   mapper,
 }: {
   item: any;
   parentIdField: string;
-  singularField: string;
-  pluralField?: string;
+  childField: string;
   mapper: (arg1: any) => any;
 }) => {
-  let result = item;
+  const result = item;
 
-  result = normalizeChildRelationshipFields({
-    item,
-    singularField,
-    pluralField,
-  });
-
-  result[pluralField] = result[pluralField].map((child: any) => {
+  result[childField] = result[childField].map((child: any) => {
     return assignForeignKey(child, parentIdField, item[parentIdField]);
   });
-  result[pluralField] = result[pluralField].map(mapper);
+  result[childField] = result[childField].map(mapper);
 
   return result;
 };
@@ -225,7 +192,7 @@ const processBlock = (block: VehicleServiceBlockInput) => {
   result = processChildren({
     item: result,
     parentIdField: idField,
-    singularField: '_vehicle_journey',
+    childField: '_vehicle_journeys',
     mapper: processVehicleJourney,
   });
 
@@ -236,10 +203,7 @@ const vehicleServiceBlockToDbFormat = (
   block: VehicleServiceBlockInput,
 ): VehicleServiceBlock => {
   // TODO: add defaults for all values and remove type cast.
-  return omit(block, [
-    '_vehicle_journey',
-    '_vehicle_journeys',
-  ]) as VehicleServiceBlock;
+  return omit(block, ['_vehicle_journeys']) as VehicleServiceBlock;
 };
 
 const processVehicleService = (vehicleService: VehicleServiceInput) => {
@@ -251,7 +215,7 @@ const processVehicleService = (vehicleService: VehicleServiceInput) => {
   result = processChildren({
     item: result,
     parentIdField: idField,
-    singularField: '_block',
+    childField: '_blocks',
     mapper: processBlock,
   });
 
@@ -265,7 +229,7 @@ const vehicleServiceToDbFormat = (
   vehicleService: VehicleServiceInput,
 ): VehicleService => {
   // TODO: add defaults for all values and remove type cast.
-  return omit(vehicleService, ['_block', '_blocks']) as VehicleService;
+  return omit(vehicleService, ['_blocks']) as VehicleService;
 };
 
 const processVehicleScheduleFrame = (
@@ -279,7 +243,7 @@ const processVehicleScheduleFrame = (
   result = processChildren({
     item: result,
     parentIdField: idField,
-    singularField: '_vehicle_service',
+    childField: '_vehicle_services',
     mapper: processVehicleService,
   });
 
@@ -300,7 +264,6 @@ const vehicleScheduleFrameToDbFormat = (
   // TODO: fix types and remove the "unknown" cast. That is required at the moment because DateTime types don't match
   return omit(vehicleScheduleFrame, [
     'name',
-    '_vehicle_service',
     '_vehicle_services',
   ]) as unknown as HslVehicleScheduleFrame;
 };
@@ -334,7 +297,7 @@ const processJourneyPatternRef = (
   result = processChildren({
     item: result,
     parentIdField: idField,
-    singularField: '_stop_point',
+    childField: '_stop_points',
     mapper: processScheduledStopPoint,
   });
 
@@ -435,7 +398,7 @@ export const buildTimetablesDataset = (
   input: TimetablesDataset,
 ): TimetablesDataset => {
   datasetInput = input;
-  let result = cloneDeep(input);
+  const result = cloneDeep(input);
 
   const processedJprs: JourneyPatternsRefsByNameInput = {};
   Object.entries(result._journey_pattern_refs_by_name).forEach(
@@ -446,10 +409,6 @@ export const buildTimetablesDataset = (
   result._journey_pattern_refs_by_name = processedJprs;
   datasetInput = input; // TODO: fix hackety hack.
 
-  result = normalizeChildRelationshipFields({
-    item: result,
-    singularField: '_vehicle_schedule_frame',
-  });
   result._vehicle_schedule_frames = result._vehicle_schedule_frames?.map(
     processVehicleScheduleFrame,
   );
