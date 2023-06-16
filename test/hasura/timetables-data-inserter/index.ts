@@ -1,4 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import { serializeInsertInput } from '@util/dataset';
+import { buildInsertQuery } from '@util/db';
 import { randomUUID } from 'crypto';
 import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup/day-types';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
@@ -11,6 +13,7 @@ import {
   VehicleService,
   VehicleServiceBlock,
 } from 'generic/timetablesdb/datasets/types';
+import { isFileDataSource } from 'hsl/networkdb/datasets/types';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
 import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
 import { cloneDeep, merge, omit } from 'lodash';
@@ -392,6 +395,24 @@ export const createTableData = (
   ];
 
   return tableData;
+};
+
+// TODO: quite some overlap here with insertTableData in test/hasura/util/setup.ts, maybe some opportunities for refactoring.
+export const tableDataToSql = (
+  tableData: TableData<HslTimetablesDbTables>[],
+): string => {
+  const insertsForTables = tableData.map((td) => {
+    const { data } = td;
+    if (isFileDataSource(data)) {
+      throw new Error('Data file sources not supported');
+    }
+
+    const serializedData = data.map(serializeInsertInput);
+    const insertSql = buildInsertQuery(td.name, serializedData).toString();
+    return `${insertSql};`; // Semicolon not included by default, terminate the statement.
+  });
+
+  return insertsForTables.join('\n\n'); // For clarity.
 };
 
 const mergeTimetablesDatasets = (

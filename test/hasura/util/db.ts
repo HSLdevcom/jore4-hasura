@@ -45,12 +45,19 @@ export const singleQuery = (
   return executeKnexQuery(conn, knexQuery);
 };
 
+export const buildInsertQuery = (
+  tableName: string,
+  jsonObjects: PlainObject[],
+) => {
+  return getKnex().insert(jsonObjects).into(tableName);
+};
+
 export const batchInsert = (
   conn: DbConnection,
   tableName: string,
   jsonObjects: PlainObject[],
 ) => {
-  const knexQuery = getKnex().insert(jsonObjects).into(tableName);
+  const knexQuery = buildInsertQuery(tableName, jsonObjects);
   return executeKnexQuery(conn, knexQuery);
 };
 
