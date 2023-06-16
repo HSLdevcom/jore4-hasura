@@ -5,6 +5,7 @@ import { setupDb } from '@util/setup';
 import {
   defaultDayTypeIds,
   journeyPatternRefsByName,
+  journeyPatternRefsDataset,
   vehicleScheduleFramesByName,
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import {
@@ -68,9 +69,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const startDate = DateTime.fromISO('2023-01-01');
       const endDate = DateTime.fromISO('2023-12-31');
 
-      const specialAprilFools2023Dataset = buildTimetablesDataset(
+      const specialAprilFools2023Dataset = buildTimetablesDataset([
         specialAprilFools2023Timetable,
-      );
+        journeyPatternRefsDataset,
+      ]);
       const [specialAprilFools2023VehicleScheduleFrame] =
         // eslint-disable-next-line no-underscore-dangle
         specialAprilFools2023Dataset._vehicle_schedule_frames || [];

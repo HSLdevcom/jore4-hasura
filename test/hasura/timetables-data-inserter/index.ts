@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { randomUUID } from 'crypto';
-import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
+import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup/day-types';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import {
   JourneyPatternRef,
@@ -13,7 +13,7 @@ import {
 } from 'generic/timetablesdb/datasets/types';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
 import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
-import { cloneDeep, omit } from 'lodash';
+import { cloneDeep, merge, omit } from 'lodash';
 import { Duration } from 'luxon';
 
 export type TimetabledPassingTimeInput = Partial<
@@ -70,7 +70,7 @@ export type JourneyPatternsRefsByNameInput = Record<
 
 export type TimetablesDataset = {
   _vehicle_schedule_frames?: VehicleScheduleFrameInput[];
-  _journey_pattern_refs_by_name: JourneyPatternsRefsByNameInput;
+  _journey_pattern_refs_by_name?: JourneyPatternsRefsByNameInput;
 };
 
 // TODO: some better approach than global variable.
@@ -131,7 +131,7 @@ const processVehicleJourney = (vehicleJourney: VehicleJourneyInput) => {
   const journeyPatternRefName =
     result._journey_pattern_ref_name || 'TODO: how to handle this';
   const journeyPatternRef =
-    datasetInput!._journey_pattern_refs_by_name[journeyPatternRefName];
+    datasetInput!._journey_pattern_refs_by_name![journeyPatternRefName];
   result = assignForeignKey(
     vehicleJourney,
     'journey_pattern_ref_id',
@@ -341,7 +341,7 @@ const flattenDataset = (dataset: TimetablesDataset) => {
   );
 
   flattened.journeyPatternRefs.push(
-    ...Object.values(dataset._journey_pattern_refs_by_name),
+    ...Object.values(dataset._journey_pattern_refs_by_name || {}),
   );
   flattened.stopPoints.push(
     ...flattened.journeyPatternRefs.map((jpr) => jpr._stop_points).flat(),
@@ -394,20 +394,32 @@ export const createTableData = (
   return tableData;
 };
 
-export const buildTimetablesDataset = (
-  input: TimetablesDataset,
+const mergeTimetablesDatasets = (
+  datasets: TimetablesDataset[],
 ): TimetablesDataset => {
-  datasetInput = input;
-  const result = cloneDeep(input);
+  // TODO: better implementation. _.merge merges arrays by index, so is not ideal here.
+  return merge({}, ...datasets);
+};
+
+export const buildTimetablesDataset = (
+  inputs: TimetablesDataset | TimetablesDataset[],
+): TimetablesDataset => {
+  datasetInput = Array.isArray(inputs)
+    ? mergeTimetablesDatasets(inputs)
+    : inputs;
+
+  const result = cloneDeep(datasetInput);
 
   const processedJprs: JourneyPatternsRefsByNameInput = {};
-  Object.entries(result._journey_pattern_refs_by_name).forEach(
+  Object.entries(result._journey_pattern_refs_by_name || {}).forEach(
     ([jprName, jpr]) => {
       processedJprs[jprName] = processJourneyPatternRef(jpr);
     },
   );
   result._journey_pattern_refs_by_name = processedJprs;
-  datasetInput = input; // TODO: fix hackety hack.
+  // TODO: fix hackety hack. This is needed because VSF processing needs JPR ids present in the input.
+  datasetInput._journey_pattern_refs_by_name =
+    result._journey_pattern_refs_by_name;
 
   result._vehicle_schedule_frames = result._vehicle_schedule_frames?.map(
     processVehicleScheduleFrame,
