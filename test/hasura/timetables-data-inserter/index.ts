@@ -71,7 +71,8 @@ export type JourneyPatternsRefsByNameInput = Record<
 >;
 
 export type TimetablesDataset = {
-  _vehicle_schedule_frame: VehicleScheduleFrameInput;
+  _vehicle_schedule_frame?: VehicleScheduleFrameInput;
+  _vehicle_schedule_frames?: VehicleScheduleFrameInput[];
   _journey_pattern_refs_by_name: JourneyPatternsRefsByNameInput;
 };
 
@@ -104,11 +105,33 @@ const assignForeignKey = <T, K extends keyof T>(
   };
 };
 
+const getPluralFieldDefault = (singularField: string) => `${singularField}s`;
+
+const normalizeChildRelationshipFields = ({
+  item,
+  singularField,
+  pluralField = getPluralFieldDefault(singularField),
+}: {
+  item: any;
+  singularField: string;
+  pluralField?: string;
+}) => {
+  const result = item;
+  // Normalize child relationship field.
+  if (!result[pluralField]) {
+    result[pluralField] = [];
+  }
+  if (result[singularField]) {
+    result[pluralField].push(result[singularField]);
+  }
+  return result;
+};
+
 const processChildren = ({
   item,
   parentIdField,
   singularField,
-  pluralField = `${singularField}s`,
+  pluralField = getPluralFieldDefault(singularField),
   mapper,
 }: {
   item: any;
@@ -117,15 +140,13 @@ const processChildren = ({
   pluralField?: string;
   mapper: (arg1: any) => any;
 }) => {
-  const result = item;
+  let result = item;
 
-  // Normalize child relationship field.
-  if (!result[pluralField]) {
-    result[pluralField] = [];
-  }
-  if (result[singularField]) {
-    result[pluralField].push(result[singularField]);
-  }
+  result = normalizeChildRelationshipFields({
+    item,
+    singularField,
+    pluralField,
+  });
 
   result[pluralField] = result[pluralField].map((child: any) => {
     return assignForeignKey(child, parentIdField, item[parentIdField]);
@@ -338,7 +359,9 @@ const flattenDataset = (dataset: TimetablesDataset) => {
     stopPoints: [] as ScheduledStopInJourneyPatternRefInput[],
   };
 
-  flattened.vehicleScheduleFrames.push(dataset._vehicle_schedule_frame); // TODO: handle multiple.
+  flattened.vehicleScheduleFrames.push(
+    ...(dataset._vehicle_schedule_frames || []),
+  );
   flattened.vehicleServices.push(
     ...flattened.vehicleScheduleFrames
       .map((vsf) => vsf._vehicle_services || [])
@@ -412,7 +435,7 @@ export const buildTimetablesDataset = (
   input: TimetablesDataset,
 ): TimetablesDataset => {
   datasetInput = input;
-  const result = cloneDeep(input);
+  let result = cloneDeep(input);
 
   const processedJprs: JourneyPatternsRefsByNameInput = {};
   Object.entries(result._journey_pattern_refs_by_name).forEach(
@@ -423,9 +446,13 @@ export const buildTimetablesDataset = (
   result._journey_pattern_refs_by_name = processedJprs;
   datasetInput = input; // TODO: fix hackety hack.
 
-  // TODO: remove this hardcoding of handling only a single VSF.
-  const test = processVehicleScheduleFrame(result._vehicle_schedule_frame);
-  result._vehicle_schedule_frame = test;
+  result = normalizeChildRelationshipFields({
+    item: result,
+    singularField: '_vehicle_schedule_frame',
+  });
+  result._vehicle_schedule_frames = result._vehicle_schedule_frames?.map(
+    processVehicleScheduleFrame,
+  );
 
   // TODO: use different return type to show that all properties are assigned.
   return result;

@@ -71,9 +71,9 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const specialAprilFools2023Dataset = buildTimetablesDataset(
         specialAprilFools2023Timetable,
       );
-      const specialAprilFools2023VehicleScheduleFrame =
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, no-underscore-dangle
-        specialAprilFools2023Dataset!._vehicle_schedule_frame;
+      const [specialAprilFools2023VehicleScheduleFrame] =
+        // eslint-disable-next-line no-underscore-dangle
+        specialAprilFools2023Dataset._vehicle_schedule_frames || [];
 
       const response = await getTimetablesAndSubstituteOperatingDays(
         getDbDataWithAdditionalDatasets({
