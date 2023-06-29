@@ -1,0 +1,6 @@
+function:
+  name: get_vehicle_schedules_on_date
+  schema: vehicle_journey
+configuration:
+  custom_root_fields: {}
+  exposed_as: query
