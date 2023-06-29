@@ -1,0 +1,10 @@
+table:
+  name: vehicle_schedule
+  schema: return_value
+object_relationships:
+  - name: day_type
+    using:
+      foreign_key_constraint_on: day_type_id
+  - name: vehicle_journey
+    using:
+      foreign_key_constraint_on: vehicle_journey_id
