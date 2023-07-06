@@ -53,13 +53,13 @@ describe('Denormalized references to journey patterns in vehicle services', () =
       vehicle_service_id: vehicleServicesByName.v1MonFri.vehicle_service_id,
       journey_pattern_id:
         journeyPatternRefsByName.route123Outbound.journey_pattern_id,
-      reference_count: 2,
+      reference_count: 3,
     },
     route123Inbound: {
       vehicle_service_id: vehicleServicesByName.v1MonFri.vehicle_service_id,
       journey_pattern_id:
         journeyPatternRefsByName.route123Inbound.journey_pattern_id,
-      reference_count: 2,
+      reference_count: 3,
     },
   };
 
@@ -97,7 +97,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         expect.arrayContaining([
           {
             ...defaultDatasetRows.route123Outbound,
-            reference_count: 3,
+            reference_count: 4,
           },
           defaultDatasetRows.route123Inbound,
         ]),
@@ -202,11 +202,11 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         expect.arrayContaining([
           {
             ...defaultDatasetRows.route123Outbound,
-            reference_count: 4,
+            reference_count: 5,
           },
           {
             ...defaultDatasetRows.route123Inbound,
-            reference_count: 3,
+            reference_count: 4,
           },
           {
             vehicle_service_id: vehicleServicesByName.v1Sat.vehicle_service_id,
@@ -257,7 +257,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         expect.arrayContaining([
           {
             ...defaultDatasetRows.route123Outbound,
-            reference_count: 1,
+            reference_count: 2,
           },
           defaultDatasetRows.route123Inbound,
         ]),
@@ -266,17 +266,22 @@ describe('Denormalized references to journey patterns in vehicle services', () =
 
     it('should delete the row when count reaches zero', async () => {
       // Test with outbound vehicle journeys.
-      // Sanity check test data: only relevant vehicle journeys are exactly these two.
-      const { v1MonFriJourney1, v1MonFriJourney3 } = vehicleJourneysByName;
+      // Sanity check test data: only relevant vehicle journeys are exactly these three.
+      const { v1MonFriJourney1, v1MonFriJourney3, v1MonFriJourney5 } =
+        vehicleJourneysByName;
       const outboundJourneyPatternRefId =
         journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id;
       const allOutboundVehicleJourneys = vehicleJourneys.filter(
         (vj) => vj.journey_pattern_ref_id === outboundJourneyPatternRefId,
       );
       expect(allOutboundVehicleJourneys).toEqual(
-        expect.arrayContaining([v1MonFriJourney1, v1MonFriJourney3]),
+        expect.arrayContaining([
+          v1MonFriJourney1,
+          v1MonFriJourney3,
+          v1MonFriJourney5,
+        ]),
       );
-      expect(allOutboundVehicleJourneys).toHaveLength(2);
+      expect(allOutboundVehicleJourneys).toHaveLength(3);
 
       const deleteMutation = addMutationWrapper(`
         outbound_journey1_tpt_delete: ${buildDeletePassingTimeMutation(
@@ -291,6 +296,13 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         )}
         outbound_journey2_vj_delete: ${buildDeleteVehicleJourneyMutation(
           v1MonFriJourney3.vehicle_journey_id,
+        )}
+
+        outbound_journey3_tpt_delete: ${buildDeletePassingTimeMutation(
+          v1MonFriJourney5.vehicle_journey_id,
+        )}
+        outbound_journey3_vj_delete: ${buildDeleteVehicleJourneyMutation(
+          v1MonFriJourney5.vehicle_journey_id,
         )}
       `);
       const deleteRes = await postQuery(deleteMutation);
@@ -326,7 +338,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
           // One got removed from outbound...
           {
             ...defaultDatasetRows.route123Outbound,
-            reference_count: 1,
+            reference_count: 2,
           },
           // ...because it was moved to another block,
           // which is in different vehicle service -> new row.

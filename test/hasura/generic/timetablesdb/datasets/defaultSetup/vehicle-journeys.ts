@@ -27,6 +27,18 @@ export const vehicleJourneysByName = {
     journey_pattern_ref_id:
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
   },
+  v1MonFriJourney5: {
+    vehicle_journey_id: '6bacee4f-329f-46bd-9a12-a54690b76ae0',
+    block_id: vehicleServiceBlocksByName.v1MonFri.block_id,
+    journey_pattern_ref_id:
+      journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+  },
+  v1MonFriJourney6: {
+    vehicle_journey_id: '6151db34-a4ac-44a6-97c4-81a78308d455',
+    block_id: vehicleServiceBlocksByName.v1MonFri.block_id,
+    journey_pattern_ref_id:
+      journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
+  },
   v1MonFriJourney1Summer2023: {
     vehicle_journey_id: '2c27c47f-8559-43f2-a572-9f302d6ba0ba',
     block_id: vehicleServiceBlocksByName.v1MonFriSummer2023.block_id,
