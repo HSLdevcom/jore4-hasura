@@ -53,3 +53,14 @@ export type TimetableVersion = {
   validity_start: DateTime;
   validity_end: DateTime;
 };
+
+export type VehicleSchedule = {
+  vehicle_journey_id: UUID | null;
+  vehicle_schedule_frame_id: UUID | null;
+  substitute_operating_day_by_line_type_id: UUID | null;
+  priority: TimetablePriority;
+  day_type_id: UUID;
+  validity_start: DateTime;
+  validity_end: DateTime;
+  created_at: DateTime;
+};
