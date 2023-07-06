@@ -15,3 +15,18 @@ RETURNS text AS $$
   FROM passing_times.timetabled_passing_time tpt
   WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
 $$ LANGUAGE sql STABLE;
+
+-- Create the same functions to return interval for database internal use
+CREATE OR REPLACE FUNCTION internal_utils.vehicle_journey_start_time_interval(vj vehicle_journey.vehicle_journey)
+RETURNS interval AS $$
+  SELECT MIN (departure_time) AS start_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION internal_utils.vehicle_journey_end_time_interval(vj vehicle_journey.vehicle_journey)
+RETURNS interval AS $$
+  SELECT MAX (arrival_time) AS end_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$ LANGUAGE sql STABLE;
