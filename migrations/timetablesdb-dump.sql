@@ -103,6 +103,11 @@ COMMENT ON FUNCTION internal_utils.execute_queued_validations() IS 'Runs all que
 
 COMMENT ON FUNCTION internal_utils.queued_validations_already_processed() IS 'Keep track of whether the queued validations have already been processed in this transaction';
 
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
 --
 -- Name: COLUMN journey_pattern_ref.journey_pattern_id; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
@@ -400,11 +405,6 @@ COMMENT ON COLUMN vehicle_journey.vehicle_journey.turnaround_time IS 'Turnaround
 --
 
 COMMENT ON FUNCTION vehicle_journey.queue_validation_by_vj_id() IS 'Queue modified vehicle journeys for validation which is performed at the end of transaction.';
-
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- Name: TABLE journey_type; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
@@ -990,6 +990,36 @@ CREATE FUNCTION internal_utils.queued_validations_already_processed() RETURNS bo
 
 
 ALTER FUNCTION internal_utils.queued_validations_already_processed() OWNER TO dbhasura;
+
+--
+-- Name: vehicle_journey_end_time_interval(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.vehicle_journey_end_time_interval(vj vehicle_journey.vehicle_journey) RETURNS interval
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MAX (arrival_time) AS end_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$;
+
+
+ALTER FUNCTION internal_utils.vehicle_journey_end_time_interval(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
+
+--
+-- Name: vehicle_journey_start_time_interval(vehicle_journey.vehicle_journey); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.vehicle_journey_start_time_interval(vj vehicle_journey.vehicle_journey) RETURNS interval
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MIN (departure_time) AS start_time
+  FROM passing_times.timetabled_passing_time tpt
+  WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
+$$;
+
+
+ALTER FUNCTION internal_utils.vehicle_journey_start_time_interval(vj vehicle_journey.vehicle_journey) OWNER TO dbhasura;
 
 --
 -- Name: queue_validation_by_jpr_id(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
