@@ -168,6 +168,88 @@ export const timetabledPassingTimesByName = {
       scheduledStopPointsInJourneyPatternRefByName.route123InboundStop4
         .scheduled_stop_point_in_journey_pattern_ref_id,
   },
+  // Journey 5, outbound.
+  v1MonFriJourney5Stop1: {
+    timetabled_passing_time_id: 'f58b0fe2-25d9-4252-a2f2-be0700595e5b',
+    arrival_time: null,
+    departure_time: Duration.fromISO('PT9H5M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney5.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop1
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney5Stop2: {
+    timetabled_passing_time_id: '9ee73d7f-67f6-44b9-97a7-07a33d8e90b0',
+    arrival_time: Duration.fromISO('PT9H15M'),
+    departure_time: Duration.fromISO('PT9H15M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney5.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop2
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney5Stop3: {
+    timetabled_passing_time_id: '9c4b1fca-2a86-4678-8d76-2cccc260e0ec',
+    arrival_time: Duration.fromISO('PT9H22M'),
+    departure_time: Duration.fromISO('PT9H22M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney5.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop3
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney5Stop4: {
+    timetabled_passing_time_id: '9f2b1ad1-a27d-4e52-9769-64b1cb5039ed',
+    arrival_time: Duration.fromISO('PT9H27M'),
+    departure_time: null,
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney5.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop4
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  // Journey 6, inbound.
+  v1MonFriJourney6Stop1: {
+    timetabled_passing_time_id: 'a29031cd-3311-4c75-b405-c0fd416be6d0',
+    arrival_time: null,
+    departure_time: Duration.fromISO('PT9H5M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop1
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney6Stop2: {
+    timetabled_passing_time_id: '8a3b1d75-6031-4e35-a16b-9e93d1330ce9',
+    arrival_time: Duration.fromISO('PT9H15M'),
+    departure_time: Duration.fromISO('PT9H15M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop2
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney6Stop3: {
+    timetabled_passing_time_id: 'b9640d77-2989-46dd-8baf-6191a300336f',
+    arrival_time: Duration.fromISO('PT9H19M'),
+    departure_time: Duration.fromISO('PT9H19M'),
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop3
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
+  v1MonFriJourney6Stop4: {
+    timetabled_passing_time_id: 'fb141d82-4953-4e62-bfdb-1edcab25fb19',
+    arrival_time: Duration.fromISO('PT9H25M'),
+    departure_time: null,
+    vehicle_journey_id:
+      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+    scheduled_stop_point_in_journey_pattern_ref_id:
+      scheduledStopPointsInJourneyPatternRefByName.route123InboundStop4
+        .scheduled_stop_point_in_journey_pattern_ref_id,
+  },
 };
 export const timetabledPassingTimes: TimetabledPassingTime[] = Object.values(
   timetabledPassingTimesByName,
