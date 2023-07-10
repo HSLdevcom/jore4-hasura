@@ -29,7 +29,6 @@
   customization:
     naming_convention: hasura-default
     root_fields:
-      namespace: timetables
       prefix: timetables_
     type_names:
       prefix: timetables_

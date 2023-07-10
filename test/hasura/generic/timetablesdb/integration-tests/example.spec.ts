@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
 import { DateTime } from 'luxon';
 import { post } from 'request-promise';
@@ -25,17 +25,13 @@ const toBeInserted: Partial<VehicleScheduleFrame> = {
 
 const buildMutation = (scheduleFrame: Partial<VehicleScheduleFrame>) => `
   mutation {
-    timetables {
-      timetables_insert_vehicle_schedule_vehicle_schedule_frame(objects: ${toGraphQlObject(
-        scheduleFrame,
-      )}) {
-        returning {
-          ${buildPropNameArray(
-            genericTimetablesDbSchema[
-              'vehicle_schedule.vehicle_schedule_frame'
-            ],
-          )}
-        }
+    timetables_insert_vehicle_schedule_vehicle_schedule_frame(objects: ${toGraphQlObject(
+      scheduleFrame,
+    )}) {
+      returning {
+        ${buildPropNameArray(
+          genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+        )}
       }
     }
   }
