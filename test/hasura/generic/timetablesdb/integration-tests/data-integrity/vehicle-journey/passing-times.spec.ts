@@ -1,20 +1,21 @@
 import { timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { buildPropNameArray, setupDb } from '@util/setup';
-import {
-  defaultGenericTimetablesDbData,
-  scheduledStopPointsInJourneyPatternRefByName,
-  timetabledPassingTimesByName,
-} from 'generic/timetablesdb/datasets/defaultSetup';
+import { defaultTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import {
   ScheduledStopInJourneyPatternRef,
   TimetabledPassingTime,
 } from 'generic/timetablesdb/datasets/types';
 import { Duration } from 'luxon';
+import {
+  buildGenericTimetablesDataset,
+  createGenericTableData,
+} from 'timetables-data-inserter';
+import { createTimetablesDatasetHelper } from 'timetables-data-inserter/generic/timetables-dataset-helper';
 
 describe('Vehicle journey passing time validation', () => {
   let dbConnection: DbConnection;
@@ -25,7 +26,15 @@ describe('Vehicle journey passing time validation', () => {
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(() => setupDb(dbConnection, defaultGenericTimetablesDbData));
+  const builtDefaultDataset = buildGenericTimetablesDataset(
+    defaultTimetablesDataset,
+  );
+  const datasetHelper = createTimetablesDatasetHelper(builtDefaultDataset);
+
+  beforeEach(async () => {
+    const tableData = createGenericTableData(builtDefaultDataset);
+    await setupDb(dbConnection, tableData);
+  });
 
   // TODO: maybe move these to timetables/mutations.ts
   const wrapWithTimetablesMutation = (mutation: string) => `
@@ -123,14 +132,15 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
   // Such logic is mainly tested here with updates.
   describe('on updates', () => {
     it('should accept a valid passing time', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-      const nextPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
+      const nextPassingTime = journey._passing_times[3];
 
-      const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 2 });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newStopTime = testPassingTime.arrival_time!.plus({ minutes: 2 });
       expect(newStopTime.valueOf()).toBeLessThan(
-        nextPassingTime.arrival_time?.valueOf(),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        nextPassingTime.arrival_time!.valueOf(),
       ); // Still valid.
 
       const toBeUpdated = {
@@ -168,10 +178,10 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should only validate sequence state at the end of transaction', async () => {
-      const lastPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-      const newLastPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const lastPassingTime = journey._passing_times[3];
+      const newLastPassingTime = journey._passing_times[2];
+
       expect(lastPassingTime.departure_time).toBe(null);
 
       // Delete last point: after this the sequence is invalid because last stop has departure_time set.
@@ -210,8 +220,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept a passing time missing both arrival_time and departure_time', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
 
       const toBeUpdated = {
         arrival_time: null,
@@ -231,12 +241,13 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept passing time with arrival_time > departure_time', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
+      expect(testPassingTime.departure_time).not.toBeNull();
 
       const toBeUpdated = {
         arrival_time: testPassingTime.arrival_time,
-        departure_time: testPassingTime.departure_time.minus({ minutes: 1 }),
+        departure_time: testPassingTime?.departure_time?.minus({ minutes: 1 }),
       };
 
       const response = await postQuery(
@@ -252,8 +263,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept passing time without arrival_time when it is for a non-last stop point', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
 
       const toBeUpdated = {
         arrival_time: null,
@@ -273,14 +284,13 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept passing time without departure_time when it is for a non-first stop point', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
 
       const toBeUpdated = {
         arrival_time: testPassingTime.arrival_time,
         departure_time: null,
       };
-
       const response = await postQuery(
         buildUpdatePassingTimeMutation(
           testPassingTime.timetabled_passing_time_id,
@@ -294,14 +304,15 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it("should not accept a passing time with arrival_time before the previous passing time's departure_time", async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-      const nextPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
+      const nextPassingTime = journey._passing_times[3];
+      expect(nextPassingTime.arrival_time).not.toBeNull();
 
-      const newStopTime = testPassingTime.arrival_time?.plus({ minutes: 10 });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newStopTime = testPassingTime.arrival_time!.plus({ minutes: 10 });
       expect(newStopTime.valueOf()).toBeGreaterThan(
-        nextPassingTime.arrival_time?.valueOf(),
+        nextPassingTime.arrival_time!.valueOf(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
       );
 
       const toBeUpdated = {
@@ -322,10 +333,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept a sequence where passing times overlap: arrival to next stop before departure from previous stop', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-      const nextPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[1];
+      const nextPassingTime = journey._passing_times[2];
 
       // Need two passing times with arrival > departure to verify this case.
       // Individually both arrival_time and departure_time fields are still in correct order,
@@ -362,10 +372,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it("should accept a passing time with same arrival_time as the previous passing time's departure_time", async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
-      const previousPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
+      const previousPassingTime = journey._passing_times[1];
 
       const newStopTime = previousPassingTime.departure_time;
 
@@ -385,8 +394,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not be able to create vehicle journey where first passing_time has an arrival time', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop1;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[0];
       expect(testPassingTime.arrival_time).toBe(null);
 
       const toBeUpdated = {
@@ -407,8 +416,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not be able to create vehicle journey where last passing_time has a departure time', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[3];
       expect(testPassingTime.departure_time).toBe(null);
 
       const toBeUpdated = {
@@ -429,10 +438,10 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should accept valid passing times with non-continuous sequence', async () => {
-      const testStopPoint1 =
-        scheduledStopPointsInJourneyPatternRefByName.route123InboundStop3;
-      const testStopPoint2 =
-        scheduledStopPointsInJourneyPatternRefByName.route123InboundStop4;
+      const journeyPatternRef =
+        builtDefaultDataset._journey_pattern_refs.route123Inbound;
+      const testStopPoint1 = journeyPatternRef._stop_points[2];
+      const testStopPoint2 = journeyPatternRef._stop_points[3];
 
       const updateQuery = buildUpdateStopPointsMutation([
         buildPartialUpdateStopPointMutation(
@@ -459,11 +468,14 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept inconsistent journey pattern references within a sequence', async () => {
+      const journeyOutbound =
+        datasetHelper.getVehicleJourney('route123Outbound1');
+      const journeyInbound =
+        datasetHelper.getVehicleJourney('route123Inbound1');
       // The sequence number is same, but stop points belong to different journey patterns.
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
+      const testPassingTime = journeyInbound._passing_times[1];
       const differentVehicleJourneyPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney1Stop2;
+        journeyOutbound._passing_times[1];
 
       const toBeUpdated = {
         scheduled_stop_point_in_journey_pattern_ref_id:
@@ -486,10 +498,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should not accept sequence where same scheduled stop point is used multiple times', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop2;
-      const nextPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[1];
+      const nextPassingTime = journey._passing_times[2];
 
       const toBeUpdated = {
         scheduled_stop_point_in_journey_pattern_ref_id:
@@ -509,10 +520,10 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
     });
 
     it('should trigger validation on scheduled stop point in journey pattern ref update and fail an invalid sequence', async () => {
-      const testStopPoint =
-        scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop2;
-      const nextStopPoint =
-        scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop3;
+      const journeyPatternRef =
+        builtDefaultDataset._journey_pattern_refs.route123Outbound;
+      const testStopPoint = journeyPatternRef._stop_points[1];
+      const nextStopPoint = journeyPatternRef._stop_points[2];
 
       const updateQuery = buildUpdateStopPointsMutation([
         // Make room for swap. Can't swap in place due to unique index:
@@ -553,8 +564,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
     it('should trigger validation on scheduled stop point in journey pattern ref update and pass a valid sequence', async () => {
       // Last stop. Incrementing sequence just results in a gap, which is fine.
-      const testStopPoint =
-        scheduledStopPointsInJourneyPatternRefByName.route123OutboundStop4;
+      const journeyPatternRef =
+        builtDefaultDataset._journey_pattern_refs.route123Outbound;
+      const testStopPoint = journeyPatternRef._stop_points[3];
 
       const updateQuery = buildUpdateStopPointsMutation([
         buildPartialUpdateStopPointMutation(
@@ -575,8 +587,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
   describe('on inserts', () => {
     it('should trigger validation on passing time insert', async () => {
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
       // "Make room" in the sequence first so we have a valid spot to insert to.
       const deleteQuery = buildDeletePassingTimeMutation(
         testPassingTime.timetabled_passing_time_id,
@@ -607,8 +619,8 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
   describe('on deletes', () => {
     it('should trigger validation on passing time delete and pass a valid sequence', async () => {
       // Gaps in sequence are OK so can delete non-first or non-last passing time.
-      const testPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const testPassingTime = journey._passing_times[2];
 
       const deleteQuery = buildDeletePassingTimeMutation(
         testPassingTime.timetabled_passing_time_id,
@@ -621,10 +633,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
     it('should trigger validation on passing time delete and fail an invalid sequence', async () => {
       // Delete last -> 2nd last has non-null departure_time -> invalid sequence.
-      const lastPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop4;
-      const previousPassingTime =
-        timetabledPassingTimesByName.v1MonFriJourney2Stop3;
+      const journey = datasetHelper.getVehicleJourney('route123Inbound1');
+      const lastPassingTime = journey._passing_times[3];
+      const previousPassingTime = journey._passing_times[2];
 
       const response = await postQuery(
         buildDeletePassingTimeMutation(
