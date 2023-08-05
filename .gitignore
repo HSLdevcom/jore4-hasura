@@ -7,3 +7,4 @@ __snapshots__
 docker/*
 !docker/docker-compose.custom.yml
 test/hasura/dist/*
+test/hasura/latest-dataset.json

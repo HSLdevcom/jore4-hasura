@@ -1,4 +1,6 @@
+import { writeLatestTimetablesDatasetToFile } from '@config';
 import { randomUUID } from 'crypto';
+import fs from 'fs';
 
 export const assignId = <T, K extends keyof T>(item: T, idField: K) => {
   return {
@@ -26,4 +28,11 @@ export const assignForeignKey = <T, K extends keyof T>(
       [fieldName]: id as T[K],
     } as { [P in K]-?: NonNullable<T[P]> }),
   };
+};
+
+export const writeBuiltDatasetToFile = (dataset: unknown) => {
+  if (writeLatestTimetablesDatasetToFile) {
+    const datasetFile = './latest-dataset.json';
+    fs.writeFileSync(datasetFile, JSON.stringify(dataset, null, 2));
+  }
 };
