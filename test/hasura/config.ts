@@ -47,3 +47,5 @@ export const hasuraRequestTemplate = {
   },
   json: true,
 };
+
+export const writeLatestTimetablesDatasetToFile = false;

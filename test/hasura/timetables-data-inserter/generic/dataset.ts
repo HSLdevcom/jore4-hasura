@@ -1,5 +1,6 @@
 import { isArray, mergeWith, omit } from 'lodash';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
+import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
 import {
   processGenericVehicleScheduleFrame,
   processJourneyPatternRef,
@@ -75,7 +76,7 @@ export const buildGenericTimetablesDataset = (
       processedJourneyPatternRefs,
     );
 
-  return {
+  const builtDataset = {
     // Currently this omit returns an empty object, but it still allows TS to
     // infer keys of _vehicle_schedule_frames etc objects in return value
     // (even if autocomplete for this does not necessarily work in IDE).
@@ -83,4 +84,7 @@ export const buildGenericTimetablesDataset = (
     _journey_pattern_refs: processedJourneyPatternRefs,
     _vehicle_schedule_frames: processedVehicleScheduleFrames,
   };
+  writeBuiltDatasetToFile(builtDataset);
+
+  return builtDataset;
 };

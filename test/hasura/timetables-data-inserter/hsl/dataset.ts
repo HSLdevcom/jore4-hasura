@@ -3,6 +3,7 @@ import {
   JourneyPatternRefOutput,
   processDatasetJourneyPatternRefs,
 } from 'timetables-data-inserter/generic';
+import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
 import {
   processHslVehicleScheduleFrame,
   processSubstituteOperatingPeriod,
@@ -68,7 +69,7 @@ export const buildHslTimetablesDataset = (
       datasetInput._substitute_operating_periods || {},
     );
 
-  return {
+  const builtDataset = {
     ...omit(
       datasetInput,
       '_journey_pattern_refs',
@@ -79,4 +80,7 @@ export const buildHslTimetablesDataset = (
     _vehicle_schedule_frames: processedVehicleScheduleFrames,
     _substitute_operating_periods: processedSubstituteOperatingPeriods,
   };
+  writeBuiltDatasetToFile(builtDataset);
+
+  return builtDataset;
 };
