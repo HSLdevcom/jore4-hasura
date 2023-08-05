@@ -28,6 +28,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'jest'],
   ignorePatterns: [
+    'dist/*',
     'ui/src/generated/*.tsx',
     'test-db-manager/src/generated/*.ts',
     'test-db-manager/dist',
