@@ -46,7 +46,9 @@ export const flattenDatasetBase = (
   };
 };
 
-const flattenGenericDataset = (dataset: GenericTimetablesDatasetOutput) => {
+export const flattenGenericDataset = (
+  dataset: GenericTimetablesDatasetOutput,
+) => {
   const flattened = flattenDatasetBase(dataset);
   return {
     ...flattened,
