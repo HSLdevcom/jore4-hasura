@@ -6,3 +6,4 @@ __snapshots__
 *.swp
 docker/*
 !docker/docker-compose.custom.yml
+test/hasura/dist/*
