@@ -17,3 +17,16 @@ export const expressBusServiceSaturday20230520Dataset: TableData<HslTimetablesDb
       data: [expressBusServiceSaturday20230520SubstituteOperatingDayByLineType],
     },
   ];
+
+export const expressBusServiceSubstitutesSaturday20230520Dataset = {
+  _substitute_operating_periods: {
+    expressBusSaturday20230520: {
+      _substitute_operating_day_by_line_types: {
+        expressBusSaturday20230520: {
+          type_of_line: TypeOfLine.ExpressBusService,
+          superseded_date: DateTime.fromISO('2023-05-20'),
+        },
+      },
+    },
+  },
+};

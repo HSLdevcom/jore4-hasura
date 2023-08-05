@@ -47,6 +47,11 @@ export const getDbDataWithAdditionalDatasets = ({
         getCombinedData(datasets, 'vehicle_schedule.vehicle_schedule_frame'),
         getCombinedData(datasets, 'vehicle_service.vehicle_service'),
         getCombinedData(datasets, 'vehicle_service.block'),
+        getCombinedData(datasets, 'journey_pattern.journey_pattern_ref'),
+        getCombinedData(
+          datasets,
+          'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+        ),
         getCombinedData(datasets, 'vehicle_journey.vehicle_journey'),
         getCombinedData(
           datasets,
