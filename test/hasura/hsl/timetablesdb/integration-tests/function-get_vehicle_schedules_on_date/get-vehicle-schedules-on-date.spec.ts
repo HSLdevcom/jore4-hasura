@@ -5,40 +5,29 @@ import { setupDb } from '@util/setup';
 import {
   defaultDayTypeIds,
   journeyPatternRefsByName,
-  vehicleJourneysByName,
-  vehicleScheduleFramesByName,
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import {
-  draftSunApril2023Dataset,
-  getDbDataWithAdditionalDatasets,
-  specialAprilFools2023Dataset,
-  specialAprilFools2023VehicleJourneysByName,
-  specialAprilFools2023VehicleScheduleFrame,
-  stagingSunApril2024Dataset,
-  stoppingBusServiceSaturday20230520Dataset,
-  stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-  stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-  temporarySatFirstHalfApril2023Dataset,
-  temporarySatFirstHalfApril2023VehicleJourneysByName,
-  temporarySatFirstHalfApril2023VehicleScheduleFrame,
+  draftSunApril2023Timetable,
+  specialAprilFools2023Timetable,
+  stagingSunApril2024Timetable,
+  stoppingBusServiceSubstitutesSaturday20230520Dataset,
+  temporarySatFirstHalfApril2023Timetable,
 } from 'hsl/timetablesdb/datasets/additional-sets';
-import {
-  stoppingBusServiceSaturday20230406Dataset,
-  stoppingBusServiceThursday20230406SubstituteOperatingDayByLineType,
-} from 'hsl/timetablesdb/datasets/additional-sets/substitute-operating-days-by-line-types/stoppingBusServiceThursday20230406';
-import {
-  hslVehicleScheduleFramesByName,
-  substituteOperatingDayByLineTypesByName,
-} from 'hsl/timetablesdb/datasets/defaultSetup';
-import { hslVehicleJourneysByName } from 'hsl/timetablesdb/datasets/defaultSetup/vehicle-journeys';
+import { stoppingBusServiceSubstitutesSaturday20230406Dataset } from 'hsl/timetablesdb/datasets/additional-sets/substitute-operating-days-by-line-types/stoppingBusServiceThursday20230406';
+import { defaultTimetablesDataset } from 'hsl/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
 import { DayOfWeek, VehicleSchedule } from 'hsl/timetablesdb/datasets/types';
 import {
   mapVehicleScheduleResponse,
   sortVehicleSchedulesForAssert,
 } from 'hsl/timetablesdb/test-utils';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
+import {
+  buildHslTimetablesDataset,
+  createHslTableData,
+  mergeTimetablesDatasets,
+} from 'timetables-data-inserter';
 
 describe('Function get_timetables_and_substitute_operating_days', () => {
   let dbConnection: DbConnection;
@@ -65,18 +54,31 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
     return response.rows;
   };
+
   describe('cases without substitute operating day by line types', () => {
     describe('dataset has priorities: standard(Mon-Fri, Sat, Sun), temporary (Sat), special (Sat, Thu)', () => {
       describe('only standard priorities are valid on observation date', () => {
         it('should return rows for standard priority vehicle schedules', async () => {
           const observationDate = DateTime.fromISO('2023-04-16');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+            specialAprilFools2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const saturdayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sat._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [
-                temporarySatFirstHalfApril2023Dataset,
-                specialAprilFools2023Dataset,
-              ],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -90,50 +92,48 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound1
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SatJourney1.vehicle_journey_id,
+                  saturdayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -142,16 +142,29 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           );
         });
       });
+
       describe('standard priority (all) and temporary priority (Sat) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sun) and temporary (Sat)', async () => {
           const observationDate = DateTime.fromISO('2023-04-14');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+            specialAprilFools2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const temporaryFirstHalfApril2023Journeys =
+            builtDataset._vehicle_schedule_frames.temporaryFirstHalfApril2023
+              ._vehicle_services.sat._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [
-                temporarySatFirstHalfApril2023Dataset,
-                specialAprilFools2023Dataset,
-              ],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -165,50 +178,50 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  temporarySatFirstHalfApril2023VehicleJourneysByName.v1journey1
+                  winter2022MonFriVehicleJourneys.route123Inbound1
                     .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  temporarySatFirstHalfApril2023VehicleScheduleFrame.vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  temporaryFirstHalfApril2023Journeys.route123Inbound
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.temporaryFirstHalfApril2023
+                    .vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Temporary,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -221,13 +234,24 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard priority (all), temporary and special priority (Sat) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sun) and special (Sat)', async () => {
           const observationDate = DateTime.fromISO('2023-04-01');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+            specialAprilFools2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const aprilFoolsJourneys =
+            builtDataset._vehicle_schedule_frames.aprilFools2023
+              ._vehicle_services.sat._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [
-                temporarySatFirstHalfApril2023Dataset,
-                specialAprilFools2023Dataset,
-              ],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -241,50 +265,49 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  specialAprilFools2023VehicleJourneysByName.v1journey1
+                  winter2022MonFriVehicleJourneys.route123Inbound1
                     .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  specialAprilFools2023VehicleScheduleFrame.vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  aprilFoolsJourneys.route123Outbound.vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.aprilFools2023
+                    .vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Special,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -297,13 +320,27 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard priority (all) and special priority (Thu) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sat, Sun) and special (Thu)', async () => {
           const observationDate = DateTime.fromISO('2023-05-18');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+            specialAprilFools2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const saturdayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sat._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+          const ascensionDayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.specialAscensionDay2023
+              ._vehicle_services.thursday._blocks.block._vehicle_journeys;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [
-                temporarySatFirstHalfApril2023Dataset,
-                specialAprilFools2023Dataset,
-              ],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -317,40 +354,40 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  hslVehicleJourneysByName.v1AscensionDayJourney1
+                  winter2022MonFriVehicleJourneys.route123Inbound1
                     .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  hslVehicleScheduleFramesByName.specialAscensionDay2023
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  ascensionDayVehicleJourneys.route123Inbound
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.specialAscensionDay2023
                     .vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Special,
@@ -358,20 +395,18 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SatJourney1.vehicle_journey_id,
+                  saturdayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -386,10 +421,24 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('draft and standard priorities are valid on observation date', () => {
         it('should not include draft priorities in the result set', async () => {
           const observationDate = DateTime.fromISO('2023-04-02');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            draftSunApril2023Timetable,
+            stagingSunApril2024Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const saturdayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sat._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [draftSunApril2023Dataset, stagingSunApril2024Dataset],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -403,50 +452,48 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound1
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SatJourney1.vehicle_journey_id,
+                  saturdayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -459,10 +506,14 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('staging priority is the only valid on observation date', () => {
         it('should return empty array', async () => {
           const observationDate = DateTime.fromISO('2024-04-07');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            draftSunApril2023Timetable,
+            stagingSunApril2024Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [draftSunApril2023Dataset, stagingSunApril2024Dataset],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -478,10 +529,23 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard, temporary and substitute are valid on observation date', () => {
         it('should have substitute priority for saturday which has same vehicle_journey_id as Mon-Fri rows', async () => {
           const observationDate = DateTime.fromISO('2023-04-01');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+          const aprilFoolsSubstituteOperatingDay =
+            builtDataset._substitute_operating_periods.aprilFools
+              ._substitute_operating_day_by_line_types.aprilFools;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [temporarySatFirstHalfApril2023Dataset],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -495,70 +559,69 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound1
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound1
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id: null,
                 substitute_operating_day_by_line_type_id:
-                  substituteOperatingDayByLineTypesByName.aprilFools
-                    .substitute_operating_day_by_line_type_id,
+                  aprilFoolsSubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                 priority: TimetablePriority.SubstituteOperatingDayByLineType,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id: null,
                 substitute_operating_day_by_line_type_id:
-                  substituteOperatingDayByLineTypesByName.aprilFools
-                    .substitute_operating_day_by_line_type_id,
+                  aprilFoolsSubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                 priority: TimetablePriority.SubstituteOperatingDayByLineType,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id: null,
                 substitute_operating_day_by_line_type_id:
-                  substituteOperatingDayByLineTypesByName.aprilFools
-                    .substitute_operating_day_by_line_type_id,
+                  aprilFoolsSubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                 priority: TimetablePriority.SubstituteOperatingDayByLineType,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -573,10 +636,23 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard, temporary and substitute are valid on observation date', () => {
         it('should have all standard priority vehicle_schedules and also substitute for Thursday(same vj_id as Sunday)', async () => {
           const observationDate = DateTime.fromISO('2023-04-06');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            stoppingBusServiceSubstitutesSaturday20230406Dataset,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+          const saturdayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sat._blocks.block._vehicle_journeys;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [stoppingBusServiceSaturday20230406Dataset],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -590,59 +666,59 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound1
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id: null,
                 substitute_operating_day_by_line_type_id:
-                  stoppingBusServiceThursday20230406SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                  builtDataset._substitute_operating_periods.saturday20230406
+                    ._substitute_operating_day_by_line_types.saturday20230406
+                    .substitute_operating_day_by_line_type_id,
                 priority: TimetablePriority.SubstituteOperatingDayByLineType,
                 day_type_id: defaultDayTypeIds.THURSDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SatJourney1.vehicle_journey_id,
+                  saturdayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -657,13 +733,24 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard, temporary, special and substitute are valid on observation date', () => {
         it('should return standard priority (Mon-Fri, Sun) and special (Sat) vehicle schedules', async () => {
           const observationDate = DateTime.fromISO('2023-04-01');
+          const mergedDataset = mergeTimetablesDatasets([
+            defaultTimetablesDataset,
+            temporarySatFirstHalfApril2023Timetable,
+            specialAprilFools2023Timetable,
+          ]);
+          const builtDataset = buildHslTimetablesDataset(mergedDataset);
+          const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+          const winter2022MonFriVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .monFri._blocks.block._vehicle_journeys;
+          const sundayVehicleJourneys =
+            builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+              .sun._blocks.block._vehicle_journeys;
+          const aprilFoolsJourneys =
+            builtDataset._vehicle_schedule_frames.aprilFools2023
+              ._vehicle_services.sat._blocks.block._vehicle_journeys;
           const response = await getVehicleSchedulesOnDate(
-            getDbDataWithAdditionalDatasets({
-              datasets: [
-                temporarySatFirstHalfApril2023Dataset,
-                specialAprilFools2023Dataset,
-              ],
-            }),
+            createHslTableData(builtDataset),
             journeyPatternRefsByName.route123Inbound.journey_pattern_id,
             observationDate,
           );
@@ -677,50 +764,49 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
             sortVehicleSchedulesForAssert([
               {
                 vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
-                vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
-                substitute_operating_day_by_line_type_id: null,
-                priority: TimetablePriority.Standard,
-                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
-              },
-              {
-                vehicle_journey_id:
-                  specialAprilFools2023VehicleJourneysByName.v1journey1
+                  winter2022MonFriVehicleJourneys.route123Inbound1
                     .vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  specialAprilFools2023VehicleScheduleFrame.vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound2
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  winter2022MonFriVehicleJourneys.route123Inbound3
+                    .vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
+                substitute_operating_day_by_line_type_id: null,
+                priority: TimetablePriority.Standard,
+                day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+              },
+              {
+                vehicle_journey_id:
+                  aprilFoolsJourneys.route123Outbound.vehicle_journey_id,
+                vehicle_schedule_frame_id:
+                  vehicleScheduleFrames.aprilFools2023
+                    .vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Special,
                 day_type_id: defaultDayTypeIds.SATURDAY,
               },
               {
                 vehicle_journey_id:
-                  hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                  sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                 vehicle_schedule_frame_id:
-                  vehicleScheduleFramesByName.winter2022
-                    .vehicle_schedule_frame_id,
+                  vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                 substitute_operating_day_by_line_type_id: null,
                 priority: TimetablePriority.Standard,
                 day_type_id: defaultDayTypeIds.SUNDAY,
@@ -736,10 +822,20 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
         describe('substitute day is no-operation day (substitute_day_of_week is null)', () => {
           it('should have the generated no-operating row for substitute day (Sat)', async () => {
             const observationDate = DateTime.fromISO('2023-05-20');
+            const mergedDataset = mergeTimetablesDatasets([
+              defaultTimetablesDataset,
+              stoppingBusServiceSubstitutesSaturday20230520Dataset,
+            ]);
+            const builtDataset = buildHslTimetablesDataset(mergedDataset);
+            const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+            const winter2022MonFriVehicleJourneys =
+              builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+                .monFri._blocks.block._vehicle_journeys;
+            const sundayVehicleJourneys =
+              builtDataset._vehicle_schedule_frames.winter2022._vehicle_services
+                .sun._blocks.block._vehicle_journeys;
             const response = await getVehicleSchedulesOnDate(
-              getDbDataWithAdditionalDatasets({
-                datasets: [stoppingBusServiceSaturday20230520Dataset],
-              }),
+              createHslTableData(builtDataset),
               journeyPatternRefsByName.route123Inbound.journey_pattern_id,
               observationDate,
             );
@@ -753,30 +849,30 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
               sortVehicleSchedulesForAssert([
                 {
                   vehicle_journey_id:
-                    vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                    winter2022MonFriVehicleJourneys.route123Inbound1
+                      .vehicle_journey_id,
                   vehicle_schedule_frame_id:
-                    vehicleScheduleFramesByName.winter2022
-                      .vehicle_schedule_frame_id,
+                    vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                   substitute_operating_day_by_line_type_id: null,
                   priority: TimetablePriority.Standard,
                   day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
                 },
                 {
                   vehicle_journey_id:
-                    vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                    winter2022MonFriVehicleJourneys.route123Inbound2
+                      .vehicle_journey_id,
                   vehicle_schedule_frame_id:
-                    vehicleScheduleFramesByName.winter2022
-                      .vehicle_schedule_frame_id,
+                    vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                   substitute_operating_day_by_line_type_id: null,
                   priority: TimetablePriority.Standard,
                   day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
                 },
                 {
                   vehicle_journey_id:
-                    vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                    winter2022MonFriVehicleJourneys.route123Inbound3
+                      .vehicle_journey_id,
                   vehicle_schedule_frame_id:
-                    vehicleScheduleFramesByName.winter2022
-                      .vehicle_schedule_frame_id,
+                    vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                   substitute_operating_day_by_line_type_id: null,
                   priority: TimetablePriority.Standard,
                   day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
@@ -785,16 +881,17 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   vehicle_journey_id: null,
                   vehicle_schedule_frame_id: null,
                   substitute_operating_day_by_line_type_id:
-                    stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                    builtDataset._substitute_operating_periods.saturday20230520
+                      ._substitute_operating_day_by_line_types.saturday20230520
+                      .substitute_operating_day_by_line_type_id,
                   priority: TimetablePriority.SubstituteOperatingDayByLineType,
                   day_type_id: defaultDayTypeIds.SATURDAY,
                 },
                 {
                   vehicle_journey_id:
-                    hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                    sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                   vehicle_schedule_frame_id:
-                    vehicleScheduleFramesByName.winter2022
-                      .vehicle_schedule_frame_id,
+                    vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
                   substitute_operating_day_by_line_type_id: null,
                   priority: TimetablePriority.Standard,
                   day_type_id: defaultDayTypeIds.SUNDAY,
@@ -808,29 +905,38 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           describe('begin_time is after the last departure of target day', () => {
             it('should have the generated no-operating row for substitute day (Sat)', async () => {
               const observationDate = DateTime.fromISO('2023-05-20');
+              const saturdaySubstitute =
+                stoppingBusServiceSubstitutesSaturday20230520Dataset
+                  ._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
+              const modifiedSubstituteDataset = {
+                _substitute_operating_periods: {
+                  saturday20230520: {
+                    _substitute_operating_day_by_line_types: {
+                      saturday20230520: {
+                        ...saturdaySubstitute,
+                        substitute_day_of_week: DayOfWeek.Friday,
+                        begin_time: Duration.fromISO('PT12H'),
+                      },
+                    },
+                  },
+                },
+              };
+              const mergedDataset = mergeTimetablesDatasets([
+                defaultTimetablesDataset,
+                modifiedSubstituteDataset,
+              ]);
+              const builtDataset = buildHslTimetablesDataset(mergedDataset);
+              const vehicleScheduleFrames =
+                builtDataset._vehicle_schedule_frames;
+              const winter2022MonFriVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.monFri._blocks.block._vehicle_journeys;
+              const sundayVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.sun._blocks.block._vehicle_journeys;
               const response = await getVehicleSchedulesOnDate(
-                getDbDataWithAdditionalDatasets({
-                  datasets: [
-                    [
-                      {
-                        name: 'service_calendar.substitute_operating_period',
-                        data: [
-                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-                        ],
-                      },
-                      {
-                        name: 'service_calendar.substitute_operating_day_by_line_type',
-                        data: [
-                          {
-                            ...stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-                            substitute_day_of_week: DayOfWeek.Friday,
-                            begin_time: 'PT12H',
-                          },
-                        ],
-                      },
-                    ],
-                  ],
-                }),
+                createHslTableData(builtDataset),
                 journeyPatternRefsByName.route123Inbound.journey_pattern_id,
                 observationDate,
               );
@@ -844,9 +950,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 sortVehicleSchedulesForAssert([
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -854,9 +961,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -864,9 +972,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -876,16 +985,20 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                     vehicle_journey_id: null,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      builtDataset._substitute_operating_periods
+                        .saturday20230520
+                        ._substitute_operating_day_by_line_types
+                        .saturday20230520
+                        .substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                      sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -899,29 +1012,38 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           describe('end_time is before the first departure of target day (Fri)', () => {
             it('should have the generated no-operating row for substitute day (Sat)', async () => {
               const observationDate = DateTime.fromISO('2023-05-20');
+              const saturdaySubstitute =
+                stoppingBusServiceSubstitutesSaturday20230520Dataset
+                  ._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
+              const modifiedSubstituteDataset = {
+                _substitute_operating_periods: {
+                  saturday20230520: {
+                    _substitute_operating_day_by_line_types: {
+                      saturday20230520: {
+                        ...saturdaySubstitute,
+                        substitute_day_of_week: DayOfWeek.Friday,
+                        end_time: Duration.fromISO('PT06H'),
+                      },
+                    },
+                  },
+                },
+              };
+              const mergedDataset = mergeTimetablesDatasets([
+                defaultTimetablesDataset,
+                modifiedSubstituteDataset,
+              ]);
+              const builtDataset = buildHslTimetablesDataset(mergedDataset);
+              const vehicleScheduleFrames =
+                builtDataset._vehicle_schedule_frames;
+              const winter2022MonFriVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.monFri._blocks.block._vehicle_journeys;
+              const sundayVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.sun._blocks.block._vehicle_journeys;
               const response = await getVehicleSchedulesOnDate(
-                getDbDataWithAdditionalDatasets({
-                  datasets: [
-                    [
-                      {
-                        name: 'service_calendar.substitute_operating_period',
-                        data: [
-                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-                        ],
-                      },
-                      {
-                        name: 'service_calendar.substitute_operating_day_by_line_type',
-                        data: [
-                          {
-                            ...stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-                            substitute_day_of_week: DayOfWeek.Friday,
-                            end_time: 'PT06H',
-                          },
-                        ],
-                      },
-                    ],
-                  ],
-                }),
+                createHslTableData(builtDataset),
                 journeyPatternRefsByName.route123Inbound.journey_pattern_id,
                 observationDate,
               );
@@ -935,9 +1057,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 sortVehicleSchedulesForAssert([
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -945,9 +1068,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -955,9 +1079,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -967,16 +1092,20 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                     vehicle_journey_id: null,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      builtDataset._substitute_operating_periods
+                        .saturday20230520
+                        ._substitute_operating_day_by_line_types
+                        .saturday20230520
+                        .substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                      sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -992,29 +1121,41 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           describe('begin_time is after the first departure of target day (Fri)', () => {
             it('should leave out the first target (Fri) departure for substitute day (Sat)', async () => {
               const observationDate = DateTime.fromISO('2023-05-20');
+              const saturdaySubstitute =
+                stoppingBusServiceSubstitutesSaturday20230520Dataset
+                  ._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
+              const modifiedSubstituteDataset = {
+                _substitute_operating_periods: {
+                  saturday20230520: {
+                    _substitute_operating_day_by_line_types: {
+                      saturday20230520: {
+                        ...saturdaySubstitute,
+                        substitute_day_of_week: DayOfWeek.Friday,
+                        begin_time: Duration.fromISO('PT8H'),
+                      },
+                    },
+                  },
+                },
+              };
+              const mergedDataset = mergeTimetablesDatasets([
+                defaultTimetablesDataset,
+                modifiedSubstituteDataset,
+              ]);
+              const builtDataset = buildHslTimetablesDataset(mergedDataset);
+              const vehicleScheduleFrames =
+                builtDataset._vehicle_schedule_frames;
+              const winter2022MonFriVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.monFri._blocks.block._vehicle_journeys;
+              const sundayVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.sun._blocks.block._vehicle_journeys;
+              const saturday20230520SubstituteOperatingDay =
+                builtDataset._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
               const response = await getVehicleSchedulesOnDate(
-                getDbDataWithAdditionalDatasets({
-                  datasets: [
-                    [
-                      {
-                        name: 'service_calendar.substitute_operating_period',
-                        data: [
-                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-                        ],
-                      },
-                      {
-                        name: 'service_calendar.substitute_operating_day_by_line_type',
-                        data: [
-                          {
-                            ...stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-                            substitute_day_of_week: DayOfWeek.Friday,
-                            begin_time: 'PT8H',
-                          },
-                        ],
-                      },
-                    ],
-                  ],
-                }),
+                createHslTableData(builtDataset),
                 journeyPatternRefsByName.route123Inbound.journey_pattern_id,
                 observationDate,
               );
@@ -1028,9 +1169,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 sortVehicleSchedulesForAssert([
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1038,9 +1180,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1048,9 +1191,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1058,29 +1202,31 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      saturday20230520SubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      saturday20230520SubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                      sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1094,29 +1240,41 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           describe('end_time is before the last departure of target day (Fri)', () => {
             it('should leave out the last target (Fri) departure for substitute day (Sat)', async () => {
               const observationDate = DateTime.fromISO('2023-05-20');
+              const saturdaySubstitute =
+                stoppingBusServiceSubstitutesSaturday20230520Dataset
+                  ._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
+              const modifiedSubstituteDataset = {
+                _substitute_operating_periods: {
+                  saturday20230520: {
+                    _substitute_operating_day_by_line_types: {
+                      saturday20230520: {
+                        ...saturdaySubstitute,
+                        substitute_day_of_week: DayOfWeek.Friday,
+                        end_time: Duration.fromISO('PT9H'),
+                      },
+                    },
+                  },
+                },
+              };
+              const mergedDataset = mergeTimetablesDatasets([
+                defaultTimetablesDataset,
+                modifiedSubstituteDataset,
+              ]);
+              const builtDataset = buildHslTimetablesDataset(mergedDataset);
+              const vehicleScheduleFrames =
+                builtDataset._vehicle_schedule_frames;
+              const winter2022MonFriVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.monFri._blocks.block._vehicle_journeys;
+              const sundayVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.sun._blocks.block._vehicle_journeys;
+              const saturday20230520SubstituteOperatingDay =
+                builtDataset._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
               const response = await getVehicleSchedulesOnDate(
-                getDbDataWithAdditionalDatasets({
-                  datasets: [
-                    [
-                      {
-                        name: 'service_calendar.substitute_operating_period',
-                        data: [
-                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-                        ],
-                      },
-                      {
-                        name: 'service_calendar.substitute_operating_day_by_line_type',
-                        data: [
-                          {
-                            ...stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-                            substitute_day_of_week: DayOfWeek.Friday,
-                            end_time: 'PT9H',
-                          },
-                        ],
-                      },
-                    ],
-                  ],
-                }),
+                createHslTableData(builtDataset),
                 journeyPatternRefsByName.route123Inbound.journey_pattern_id,
                 observationDate,
               );
@@ -1130,9 +1288,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 sortVehicleSchedulesForAssert([
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1140,9 +1299,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1150,9 +1310,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1160,29 +1321,31 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      saturday20230520SubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      saturday20230520SubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                      sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1196,30 +1359,42 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           describe('begin_time is after first and end_time is before the last departure of target day (Fri)', () => {
             it('should leave out the first and last target days (Fri) departure for substitute day (Sat)', async () => {
               const observationDate = DateTime.fromISO('2023-05-20');
+              const saturdaySubstitute =
+                stoppingBusServiceSubstitutesSaturday20230520Dataset
+                  ._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
+              const modifiedSubstituteDataset = {
+                _substitute_operating_periods: {
+                  saturday20230520: {
+                    _substitute_operating_day_by_line_types: {
+                      saturday20230520: {
+                        ...saturdaySubstitute,
+                        substitute_day_of_week: DayOfWeek.Friday,
+                        begin_time: Duration.fromISO('PT8H'),
+                        end_time: Duration.fromISO('PT9H'),
+                      },
+                    },
+                  },
+                },
+              };
+              const mergedDataset = mergeTimetablesDatasets([
+                defaultTimetablesDataset,
+                modifiedSubstituteDataset,
+              ]);
+              const builtDataset = buildHslTimetablesDataset(mergedDataset);
+              const vehicleScheduleFrames =
+                builtDataset._vehicle_schedule_frames;
+              const winter2022MonFriVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.monFri._blocks.block._vehicle_journeys;
+              const sundayVehicleJourneys =
+                builtDataset._vehicle_schedule_frames.winter2022
+                  ._vehicle_services.sun._blocks.block._vehicle_journeys;
+              const saturday20230520SubstituteOperatingDay =
+                builtDataset._substitute_operating_periods.saturday20230520
+                  ._substitute_operating_day_by_line_types.saturday20230520;
               const response = await getVehicleSchedulesOnDate(
-                getDbDataWithAdditionalDatasets({
-                  datasets: [
-                    [
-                      {
-                        name: 'service_calendar.substitute_operating_period',
-                        data: [
-                          stoppingBusServiceSaturday20230520SubstituteOperatingPeriod,
-                        ],
-                      },
-                      {
-                        name: 'service_calendar.substitute_operating_day_by_line_type',
-                        data: [
-                          {
-                            ...stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-                            substitute_day_of_week: DayOfWeek.Friday,
-                            begin_time: 'PT8H',
-                            end_time: 'PT9H',
-                          },
-                        ],
-                      },
-                    ],
-                  ],
-                }),
+                createHslTableData(builtDataset),
                 journeyPatternRefsByName.route123Inbound.journey_pattern_id,
                 observationDate,
               );
@@ -1233,9 +1408,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                 sortVehicleSchedulesForAssert([
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound1
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1243,9 +1419,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1253,9 +1430,10 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound3
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,
@@ -1263,19 +1441,20 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                   },
                   {
                     vehicle_journey_id:
-                      vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
+                      winter2022MonFriVehicleJourneys.route123Inbound2
+                        .vehicle_journey_id,
                     vehicle_schedule_frame_id: null,
                     substitute_operating_day_by_line_type_id:
-                      stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+                      saturday20230520SubstituteOperatingDay.substitute_operating_day_by_line_type_id,
                     priority:
                       TimetablePriority.SubstituteOperatingDayByLineType,
                     day_type_id: defaultDayTypeIds.SATURDAY,
                   },
                   {
                     vehicle_journey_id:
-                      hslVehicleJourneysByName.v1SunJourney1.vehicle_journey_id,
+                      sundayVehicleJourneys.route123Inbound.vehicle_journey_id,
                     vehicle_schedule_frame_id:
-                      vehicleScheduleFramesByName.winter2022
+                      vehicleScheduleFrames.winter2022
                         .vehicle_schedule_frame_id,
                     substitute_operating_day_by_line_type_id: null,
                     priority: TimetablePriority.Standard,

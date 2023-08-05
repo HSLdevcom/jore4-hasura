@@ -63,3 +63,32 @@ export const draftSunApril2024Dataset: TableData<HslTimetablesDbTables>[] = [
     data: [...Object.values(draftSunApril2024VehicleJourneysByName)],
   },
 ];
+
+export const draftSunApril2024Timetable = {
+  _vehicle_schedule_frames: {
+    draftSunApril2024: {
+      validity_start: DateTime.fromISO('2024-04-01'),
+      validity_end: DateTime.fromISO('2024-04-30'),
+      priority: TimetablePriority.Draft,
+      name: 'Huhtikuun luonnos sunnuntait 2024',
+      created_at: DateTime.fromISO('2021-01-01T02:34:56.789+02:00'),
+      _vehicle_services: {
+        sun: {
+          day_type_id: defaultDayTypeIds.SUNDAY,
+          _blocks: {
+            block: {
+              _vehicle_journeys: {
+                draftSunApril2024_123Outbound: {
+                  _journey_pattern_ref_name: 'route123Outbound',
+                },
+                draftSunApril2024_123Inbound: {
+                  _journey_pattern_ref_name: 'route123Inbound',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};

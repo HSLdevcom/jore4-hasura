@@ -63,3 +63,34 @@ export const stagingSunApril2024Dataset: TableData<HslTimetablesDbTables>[] = [
     data: [...Object.values(stagingSunApril2024VehicleJourneysByName)],
   },
 ];
+
+export const stagingSunApril2024Timetable = {
+  _vehicle_schedule_frames: {
+    stagingSunApril2024: {
+      validity_start: DateTime.fromISO('2024-04-01'),
+      validity_end: DateTime.fromISO('2024-04-30'),
+      priority: TimetablePriority.Staging,
+      name: 'Huhtikuun (staging) sunnuntait 2024',
+      created_at: DateTime.fromISO('2021-01-01T02:34:56.789+02:00'),
+      _vehicle_services: {
+        sun: {
+          day_type_id: defaultDayTypeIds.SUNDAY,
+          _blocks: {
+            block: {
+              _vehicle_journeys: {
+                route123Inbound: {
+                  _journey_pattern_ref_name: 'route123Inbound',
+                  _passing_times: [],
+                },
+                route123Outbound: {
+                  _journey_pattern_ref_name: 'route123Outbound',
+                  _passing_times: [],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
