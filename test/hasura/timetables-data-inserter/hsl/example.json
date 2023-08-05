@@ -1,0 +1,190 @@
+{
+  "_vehicle_schedule_frames": {
+    "winter2022": {
+      "validity_start": "2022-07-01",
+      "validity_end": "2023-05-31",
+      "name": "Talvi 2022",
+      "created_at": "2021-01-01T02:34:56.789+02:00",
+      "_vehicle_services": {
+        "monFri": {
+          "day_type_id": "MONDAY_FRIDAY",
+          "_blocks": {
+            "block": {
+              "_vehicle_journeys": {
+                "route123Outbound1": {
+                  "_journey_pattern_ref_name": "route123Outbound",
+                  "_passing_times": [
+                    {
+                      "_scheduled_stop_point_label": "H2201",
+                      "arrival_time": null,
+                      "departure_time": "PT7H5M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2202",
+                      "arrival_time": "PT7H15M",
+                      "departure_time": "PT7H15M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2203",
+                      "arrival_time": "PT7H22M",
+                      "departure_time": "PT7H22M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2204",
+                      "arrival_time": "PT7H27M",
+                      "departure_time": null
+                    }
+                  ]
+                },
+                "route123Inbound1": {
+                  "_journey_pattern_ref_name": "route123Inbound",
+                  "_passing_times": [
+                    {
+                      "_scheduled_stop_point_label": "H2204",
+                      "arrival_time": null,
+                      "departure_time": "PT7H5M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2203",
+                      "arrival_time": "PT7H15M",
+                      "departure_time": "PT7H15M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2202",
+                      "arrival_time": "PT7H19M",
+                      "departure_time": "PT7H19M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2201",
+                      "arrival_time": "PT7H25M",
+                      "departure_time": null
+                    }
+                  ]
+                },
+                "route123Outbound2": {
+                  "_journey_pattern_ref_name": "route123Outbound",
+                  "_passing_times": [
+                    {
+                      "_scheduled_stop_point_label": "H2201",
+                      "arrival_time": null,
+                      "departure_time": "PT8H5M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2202",
+                      "arrival_time": "PT8H15M",
+                      "departure_time": "PT8H15M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2203",
+                      "arrival_time": "PT8H22M",
+                      "departure_time": "PT8H22M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2204",
+                      "arrival_time": "PT8H27M",
+                      "departure_time": null
+                    }
+                  ]
+                },
+                "route123Inbound2": {
+                  "_journey_pattern_ref_name": "route123Inbound",
+                  "_passing_times": [
+                    {
+                      "_scheduled_stop_point_label": "H2204",
+                      "arrival_time": null,
+                      "departure_time": "PT8H5M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2203",
+                      "arrival_time": "PT8H15M",
+                      "departure_time": "PT8H15M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2202",
+                      "arrival_time": "PT8H19M",
+                      "departure_time": "PT8H19M"
+                    },
+                    {
+                      "_scheduled_stop_point_label": "H2201",
+                      "arrival_time": "PT8H25M",
+                      "departure_time": null
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "sat": {
+          "day_type_id": "SATURDAY",
+          "_blocks": {
+            "block": {
+              "_vehicle_journeys": {}
+            }
+          }
+        },
+        "sun": {
+          "day_type_id": "SUNDAY",
+          "_blocks": {
+            "block": {
+              "_vehicle_journeys": {}
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "_journey_pattern_refs": {
+    "route123Outbound": {
+      "journey_pattern_id": "55bab728-c76c-4ce6-9cc6-f6e51c1c5dca",
+      "type_of_line": "stopping_bus_service",
+      "observation_timestamp": "2023-07-01T00:00:00+00:00",
+      "snapshot_timestamp": "2023-09-28T00:00:00+00:00",
+
+      "_stop_points": [
+        {
+          "scheduled_stop_point_sequence": 1,
+          "scheduled_stop_point_label": "H2201"
+        },
+        {
+          "scheduled_stop_point_sequence": 2,
+          "scheduled_stop_point_label": "H2202"
+        },
+        {
+          "scheduled_stop_point_sequence": 3,
+          "scheduled_stop_point_label": "H2203"
+        },
+        {
+          "scheduled_stop_point_sequence": 4,
+          "scheduled_stop_point_label": "H2204"
+        }
+      ]
+    },
+    "route123Inbound": {
+      "journey_pattern_id": "34acd9ad-f7c4-4af2-a6d4-f9d69f0288ee",
+      "type_of_line": "stopping_bus_service",
+      "observation_timestamp": "2023-07-01T00:00:00+00:00",
+      "snapshot_timestamp": "2023-09-28T00:00:00+00:00",
+
+      "_stop_points": [
+        {
+          "scheduled_stop_point_sequence": 1,
+          "scheduled_stop_point_label": "H2204"
+        },
+        {
+          "scheduled_stop_point_sequence": 2,
+          "scheduled_stop_point_label": "H2203"
+        },
+        {
+          "scheduled_stop_point_sequence": 3,
+          "scheduled_stop_point_label": "H2202"
+        },
+        {
+          "scheduled_stop_point_sequence": 4,
+          "scheduled_stop_point_label": "H2201"
+        }
+      ]
+    }
+  }
+}
