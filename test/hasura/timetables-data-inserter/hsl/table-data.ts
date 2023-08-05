@@ -18,7 +18,7 @@ import {
   HslVehicleScheduleFrameOutput,
 } from './types';
 
-const flattenHslDataset = <T extends HslTimetablesDatasetOutput>(
+export const flattenHslDataset = <T extends HslTimetablesDatasetOutput>(
   dataset: T,
 ) => {
   const flattened = flattenDatasetBase(dataset);
