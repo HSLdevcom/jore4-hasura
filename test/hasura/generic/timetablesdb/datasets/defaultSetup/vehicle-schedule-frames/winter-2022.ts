@@ -112,6 +112,56 @@ export const winter2022VehicleScheduleFrame = {
                 },
               ],
             },
+            route123Outbound3: {
+              _journey_pattern_ref_name: 'route123Outbound',
+              _passing_times: [
+                {
+                  _scheduled_stop_point_label: 'H2201',
+                  arrival_time: null,
+                  departure_time: Duration.fromISO('PT9H5M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2202',
+                  arrival_time: Duration.fromISO('PT9H15M'),
+                  departure_time: Duration.fromISO('PT9H15M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2203',
+                  arrival_time: Duration.fromISO('PT9H22M'),
+                  departure_time: Duration.fromISO('PT9H22M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2204',
+                  arrival_time: Duration.fromISO('PT9H27M'),
+                  departure_time: null,
+                },
+              ],
+            },
+            route123Inbound3: {
+              _journey_pattern_ref_name: 'route123Inbound',
+              _passing_times: [
+                {
+                  _scheduled_stop_point_label: 'H2204',
+                  arrival_time: null,
+                  departure_time: Duration.fromISO('PT9H5M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2203',
+                  arrival_time: Duration.fromISO('PT9H15M'),
+                  departure_time: Duration.fromISO('PT9H15M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2202',
+                  arrival_time: Duration.fromISO('PT9H19M'),
+                  departure_time: Duration.fromISO('PT9H19M'),
+                },
+                {
+                  _scheduled_stop_point_label: 'H2201',
+                  arrival_time: Duration.fromISO('PT9H25M'),
+                  departure_time: null,
+                },
+              ],
+            },
           },
         },
       },
