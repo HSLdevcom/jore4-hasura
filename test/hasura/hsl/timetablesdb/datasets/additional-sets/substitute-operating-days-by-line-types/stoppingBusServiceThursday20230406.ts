@@ -21,3 +21,17 @@ export const stoppingBusServiceSaturday20230406Dataset: TableData<HslTimetablesD
       ],
     },
   ];
+
+export const stoppingBusServiceSubstitutesSaturday20230406Dataset = {
+  _substitute_operating_periods: {
+    saturday20230406: {
+      _substitute_operating_day_by_line_types: {
+        saturday20230406: {
+          type_of_line: TypeOfLine.StoppingBusService,
+          superseded_date: DateTime.fromISO('2023-04-06'),
+          substitute_day_of_week: DayOfWeek.Sunday,
+        },
+      },
+    },
+  },
+};

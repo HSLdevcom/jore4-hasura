@@ -5,27 +5,16 @@ import { setupDb } from '@util/setup';
 import {
   defaultDayTypeIds,
   journeyPatternRefsByName,
-  vehicleScheduleFramesByName,
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import {
-  draftSunApril2024Dataset,
-  draftSunApril2024VehicleScheduleFrame,
-  expressBusServiceSaturday20230520Dataset,
-  getDbDataWithAdditionalDatasets,
-  stoppingBusServiceSaturday20230520Dataset,
-  stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType,
-  temporarySatFirstHalfApril2023Dataset,
-  temporarySatFirstHalfApril2023VehicleService,
+  draftSunApril2024Timetable,
+  expressBusServiceSubstitutesSaturday20230520Dataset,
+  stoppingBusServiceSubstitutesSaturday20230520Dataset,
+  temporarySatFirstHalfApril2023Timetable,
 } from 'hsl/timetablesdb/datasets/additional-sets';
-import {
-  specialAprilFools2023Dataset,
-  specialAprilFools2023VehicleScheduleFrame,
-} from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
-import { stagingSunApril2024Dataset } from 'hsl/timetablesdb/datasets/additional-sets/timetables/stagingSunApril2024Dataset';
-import {
-  hslVehicleScheduleFramesByName,
-  substituteOperatingDayByLineTypesByName,
-} from 'hsl/timetablesdb/datasets/defaultSetup';
+import { specialAprilFools2023Timetable } from 'hsl/timetablesdb/datasets/additional-sets/timetables/specialAprilFools2023Dataset';
+import { stagingSunApril2024Timetable } from 'hsl/timetablesdb/datasets/additional-sets/timetables/stagingSunApril2024Dataset';
+import { defaultTimetablesDataset } from 'hsl/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
 import { TimetableVersion } from 'hsl/timetablesdb/datasets/types';
 import {
@@ -33,6 +22,12 @@ import {
   sortVersionsForAssert,
 } from 'hsl/timetablesdb/test-utils';
 import { DateTime } from 'luxon';
+import {
+  buildHslTimetablesDataset,
+  createHslTableData,
+  mergeTimetablesDatasets,
+} from 'timetables-data-inserter';
+import { createHslTimetablesDatasetHelper } from 'timetables-data-inserter/hsl/timetables-dataset-helper';
 
 describe('Function get_timetables_and_substitute_operating_days', () => {
   let dbConnection: DbConnection;
@@ -66,16 +61,23 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     it('should return rows for everything else but express bus substitute operating day by line type', async () => {
       const startDate = DateTime.fromISO('2023-01-01');
       const endDate = DateTime.fromISO('2023-12-31');
+
+      const mergedDataset = mergeTimetablesDatasets([
+        defaultTimetablesDataset,
+        temporarySatFirstHalfApril2023Timetable,
+        specialAprilFools2023Timetable,
+        stoppingBusServiceSubstitutesSaturday20230520Dataset,
+        expressBusServiceSubstitutesSaturday20230520Dataset,
+      ]);
+
+      const builtDataset = buildHslTimetablesDataset(mergedDataset);
+      const datasetHelper = createHslTimetablesDatasetHelper(builtDataset);
+
+      const vehicleScheduleFrames = builtDataset._vehicle_schedule_frames;
+
       const response = await getTimetablesAndSubstituteOperatingDays(
-        getDbDataWithAdditionalDatasets({
-          datasets: [
-            specialAprilFools2023Dataset,
-            temporarySatFirstHalfApril2023Dataset,
-            expressBusServiceSaturday20230520Dataset,
-            stoppingBusServiceSaturday20230520Dataset,
-          ],
-        }),
-        [journeyPatternRefsByName.route123Inbound.journey_pattern_id],
+        createHslTableData(builtDataset),
+        [builtDataset._journey_pattern_refs.route123Inbound.journey_pattern_id],
         startDate,
         endDate,
       );
@@ -90,42 +92,44 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           {
             vehicle_schedule_frame_id: null,
             substitute_operating_day_by_line_type_id:
-              stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType.substitute_operating_day_by_line_type_id,
+              datasetHelper.getSubstituteOperatingDayByLineTypes(
+                'saturday20230520',
+              ).substitute_operating_day_by_line_type_id,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id: null,
             substitute_operating_day_by_line_type_id:
-              substituteOperatingDayByLineTypesByName.aprilFools
+              datasetHelper.getSubstituteOperatingDayByLineTypes('aprilFools')
                 .substitute_operating_day_by_line_type_id,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id:
-              vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
+              vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id:
-              vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
+              vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.SUNDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id:
-              vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
+              vehicleScheduleFrames.winter2022.vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id:
-              hslVehicleScheduleFramesByName.specialAscensionDay2023
+              vehicleScheduleFrames.specialAscensionDay2023
                 .vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.THURSDAY,
@@ -133,14 +137,15 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
           },
           {
             vehicle_schedule_frame_id:
-              temporarySatFirstHalfApril2023VehicleService.vehicle_schedule_frame_id,
+              vehicleScheduleFrames.temporaryFirstHalfApril2023
+                .vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,
           },
           {
             vehicle_schedule_frame_id:
-              specialAprilFools2023VehicleScheduleFrame.vehicle_schedule_frame_id,
+              vehicleScheduleFrames.aprilFools2023.vehicle_schedule_frame_id,
             substitute_operating_day_by_line_type_id: null,
             day_type_id: defaultDayTypeIds.SATURDAY,
             in_effect: false,
@@ -155,10 +160,15 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const startDate = DateTime.fromISO('2024-04-01');
       const endDate = DateTime.fromISO('2024-04-30');
 
+      const mergedDataset = mergeTimetablesDatasets([
+        defaultTimetablesDataset,
+        draftSunApril2024Timetable,
+      ]);
+
+      const builtDataset = buildHslTimetablesDataset(mergedDataset);
+
       const response = await getTimetablesAndSubstituteOperatingDays(
-        getDbDataWithAdditionalDatasets({
-          datasets: [draftSunApril2024Dataset],
-        }),
+        createHslTableData(builtDataset),
         [journeyPatternRefsByName.route123Inbound.journey_pattern_id],
         startDate,
         endDate,
@@ -169,7 +179,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       expect(mappedResponse).toEqual([
         {
           vehicle_schedule_frame_id:
-            draftSunApril2024VehicleScheduleFrame.vehicle_schedule_frame_id,
+            builtDataset._vehicle_schedule_frames.draftSunApril2024
+              .vehicle_schedule_frame_id,
           substitute_operating_day_by_line_type_id: null,
           day_type_id: defaultDayTypeIds.SUNDAY,
           in_effect: false,
@@ -181,10 +192,15 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       const startDate = DateTime.fromISO('2024-04-01');
       const endDate = DateTime.fromISO('2024-04-30');
 
+      const mergedDataset = mergeTimetablesDatasets([
+        defaultTimetablesDataset,
+        stagingSunApril2024Timetable,
+      ]);
+
+      const builtDataset = buildHslTimetablesDataset(mergedDataset);
+
       const response = await getTimetablesAndSubstituteOperatingDays(
-        getDbDataWithAdditionalDatasets({
-          datasets: [stagingSunApril2024Dataset],
-        }),
+        createHslTableData(builtDataset),
         [journeyPatternRefsByName.route123Inbound.journey_pattern_id],
         startDate,
         endDate,
