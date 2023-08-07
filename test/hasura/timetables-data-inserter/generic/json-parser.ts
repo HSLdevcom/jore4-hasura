@@ -3,7 +3,6 @@ import { closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { ConnectionConfig } from 'pg';
 import { buildGenericTimetablesDataset } from './dataset';
-import * as test from './example.json';
 import { genericTimetablesJsonSchema } from './json-schemas';
 import { createGenericTableData } from './table-data';
 import { GenericTimetablesDatasetInput } from './types';
@@ -27,9 +26,4 @@ export const insertDatasetFromJson = async (
   await setupDb(dbConnection, tableData);
   closeDbConnection(dbConnection);
   return builtDataset;
-};
-
-// TODO: replicate this in a test.
-export const testParsing = async () => {
-  insertDatasetFromJson(JSON.stringify(test));
 };
