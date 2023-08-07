@@ -2,8 +2,15 @@ import {
   TimetablePriority,
   TypeOfLine,
   VehicleScheduleFrame,
+  vehicleScheduleFrameProps,
 } from 'generic/timetablesdb/datasets/types';
 import { DateTime, Duration } from 'luxon';
+
+export const hslVehicleScheduleFrameProps: Property[] = [
+  ...vehicleScheduleFrameProps,
+  'booking_label',
+  'booking_description_i18n',
+];
 
 export type HslVehicleScheduleFrame = VehicleScheduleFrame & {
   booking_label: string;
