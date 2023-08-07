@@ -1,0 +1,4 @@
+ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
+  DROP CONSTRAINT ck_is_used_as_timing_point_state;
+ALTER TABLE journey_pattern.scheduled_stop_point_in_journey_pattern
+  DROP CONSTRAINT ck_is_regulated_timing_point_state;
