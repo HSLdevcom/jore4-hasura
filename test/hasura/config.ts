@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import { Knex } from 'knex';
-import { DateTime, Settings } from 'luxon';
+import { DateTime, Duration, Settings } from 'luxon';
 import { ConnectionConfig, types } from 'pg';
 
 dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
@@ -11,9 +11,11 @@ Settings.defaultZone = 'Europe/Helsinki';
 
 // Set global pg config: return date(time)s as luxon DateTime objects instead of JS Date.
 const parseToLuxonDateTime = (value: string) => DateTime.fromSQL(value);
+const parseToLuxonDuration = (value: string) => Duration.fromISO(value);
 types.setTypeParser(types.builtins.DATE, parseToLuxonDateTime);
 types.setTypeParser(types.builtins.TIMESTAMP, parseToLuxonDateTime);
 types.setTypeParser(types.builtins.TIMESTAMPTZ, parseToLuxonDateTime);
+types.setTypeParser(types.builtins.INTERVAL, parseToLuxonDuration);
 
 export const networkDbConfig: ConnectionConfig = {
   host: '127.0.0.1',
