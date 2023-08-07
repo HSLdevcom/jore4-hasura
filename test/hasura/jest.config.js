@@ -3,6 +3,8 @@ const { compilerOptions } = require('./tsconfig');
 
 const isHslSchema = process.env.HASURA_DATABASE_SCHEMA === 'hsl';
 const hslTestRootFolder = '<rootDir>/hsl/';
+const hslTimetablesDataInserterFolder =
+  '<rootDir>/timetables-data-inserter/hsl';
 
 const baseConfig = {
   preset: 'ts-jest',
@@ -16,11 +18,15 @@ const baseConfig = {
 };
 const genericConfig = {
   ...baseConfig,
-  testPathIgnorePatterns: ['/node_modules/', hslTestRootFolder],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    hslTestRootFolder,
+    hslTimetablesDataInserterFolder,
+  ],
 };
 const hslConfig = {
   ...baseConfig,
-  roots: [hslTestRootFolder],
+  roots: [hslTestRootFolder, hslTimetablesDataInserterFolder],
 };
 
 module.exports = isHslSchema ? hslConfig : genericConfig;

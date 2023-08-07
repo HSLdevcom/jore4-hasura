@@ -5,6 +5,7 @@
       "validity_end": "2023-05-31",
       "name": "Talvi 2022",
       "created_at": "2021-01-01T02:34:56.789+02:00",
+      "booking_label": "Winter booking label",
       "_vehicle_services": {
         "monFri": {
           "day_type_id": "MONDAY_FRIDAY",
@@ -134,7 +135,6 @@
       }
     }
   },
-
   "_journey_pattern_refs": {
     "route123Outbound": {
       "journey_pattern_id": "55bab728-c76c-4ce6-9cc6-f6e51c1c5dca",
@@ -185,6 +185,17 @@
           "scheduled_stop_point_label": "H2201"
         }
       ]
+    }
+  },
+  "_substitute_operating_periods": {
+    "aprilFools": {
+      "_substitute_operating_day_by_line_types": {
+        "aprilFools": {
+          "type_of_line": "stopping_bus_service",
+          "superseded_date": "2023-04-01",
+          "substitute_day_of_week": 5
+        }
+      }
     }
   }
 }
