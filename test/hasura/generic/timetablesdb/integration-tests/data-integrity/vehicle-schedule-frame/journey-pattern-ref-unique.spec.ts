@@ -8,18 +8,8 @@ import {
 import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { getPartialTableData, insertTableData, setupDb } from '@util/setup';
-import { randomUUID } from 'crypto';
-import {
-  defaultDayTypeIds,
-  defaultGenericTimetablesDbData,
-  journeyPatternRefsByName,
-  scheduledStopPointsInJourneyPatternRefByName,
-  timetabledPassingTimes,
-  vehicleJourneysByName,
-  vehicleScheduleFramesByName,
-  vehicleServiceBlocksByName,
-  vehicleServicesByName,
-} from 'generic/timetablesdb/datasets/defaultSetup';
+import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
+import { defaultTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import {
@@ -29,8 +19,18 @@ import {
   buildUpdateVehicleScheduleFrameMutation,
   buildUpdateVehicleServiceMutation,
 } from 'generic/timetablesdb/mutations';
-import { cloneDeep, merge, pick, without } from 'lodash';
+import { pick, without } from 'lodash';
 import { DateTime } from 'luxon';
+import {
+  buildGenericTimetablesDataset,
+  createGenericTableData,
+  GenericTimetablesDatasetInput,
+  genericVehicleScheduleFrameToDbFormat,
+  timetabledPassingTimeToDbFormat,
+  vehicleJourneyToDbFormat,
+  vehicleServiceBlockToDbFormat,
+  vehicleServiceToDbFormat,
+} from 'timetables-data-inserter';
 
 describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', () => {
   let dbConnection: DbConnection;
@@ -41,48 +41,37 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
 
   afterAll(() => closeDbConnection(dbConnection));
 
-  beforeEach(async () => setupDb(dbConnection, defaultGenericTimetablesDbData));
+  const builtDefaultDataset = buildGenericTimetablesDataset(
+    defaultTimetablesDataset,
+  );
+  beforeEach(async () =>
+    setupDb(dbConnection, createGenericTableData(builtDefaultDataset)),
+  );
 
   const cloneBaseDataset = () => {
-    // Use an existing vehicle schedule frame (winter 2022) as a base.
-    // Clone it and its children, and assign new ids so they can be inserted to DB.
-    const frame = vehicleScheduleFramesByName.winter2022;
-    const service = vehicleServicesByName.v1MonFri;
-    const block = vehicleServiceBlocksByName.v1MonFri;
-    const journey = vehicleJourneysByName.v1MonFriJourney1;
-    const passingTimes = timetabledPassingTimes.filter(
-      (pt) => pt.vehicle_journey_id === journey.vehicle_journey_id,
-    );
-
-    const clonedData = cloneDeep({
-      frame,
-      service,
-      block,
-      journey,
-      passingTimes,
-    });
-
-    const ids = {
-      frame: { vehicle_schedule_frame_id: randomUUID() },
-      service: { vehicle_service_id: randomUUID() },
-      block: { block_id: randomUUID() },
-      journey: { vehicle_journey_id: randomUUID() },
-      passingTimes: passingTimes.map(() => {
-        return { timetabled_passing_time_id: randomUUID() };
-      }),
+    const clonedTimetable: GenericTimetablesDatasetInput = {
+      _vehicle_schedule_frames: {
+        winter2022:
+          defaultTimetablesDataset._vehicle_schedule_frames.winter2022,
+      },
+      // Important: use the *built* version so same journey pattern ref instance that we have already inserted gets used.
+      // We don't actually insert new one anymore, we just need it here so correct foreign keys get assigned for new vehicle journeys.
+      _journey_pattern_refs: builtDefaultDataset._journey_pattern_refs,
     };
+    const builtClonedDataset = buildGenericTimetablesDataset(clonedTimetable);
+    const frame = builtClonedDataset._vehicle_schedule_frames.winter2022;
+    const service = frame._vehicle_services.monFri;
+    const { block } = service._blocks;
+    const journey = block._vehicle_journeys.route123Outbound1;
+    const passingTimes = journey._passing_times;
 
-    merge(clonedData, {
-      frame: { ...ids.frame },
-      service: { ...ids.service, ...ids.frame },
-      block: { ...ids.block, ...ids.service },
-      journey: { ...ids.journey, ...ids.block },
-      passingTimes: ids.passingTimes.map((ptId) => {
-        return { ...ptId, ...ids.journey };
-      }),
-    });
-
-    return clonedData;
+    return {
+      frame: genericVehicleScheduleFrameToDbFormat(frame),
+      service: vehicleServiceToDbFormat(service),
+      block: vehicleServiceBlockToDbFormat(block),
+      journey: vehicleJourneyToDbFormat(journey),
+      passingTimes: passingTimes.map(timetabledPassingTimeToDbFormat),
+    };
   };
 
   const buildTableDataForBaseDataset = (
@@ -135,9 +124,11 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     dataset: ReturnType<typeof cloneBaseDataset>,
   ) => {
     // The stops need to be from same journey pattern as well, not to break other constraints.
+    const journeyPatternRef =
+      builtDefaultDataset._journey_pattern_refs.route234Outbound;
     const newStops = [
-      scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop1,
-      scheduledStopPointsInJourneyPatternRefByName.route234OutboundStop2,
+      journeyPatternRef._stop_points[0],
+      journeyPatternRef._stop_points[1],
     ];
 
     const newStopPoints = [
@@ -162,7 +153,8 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
   ) => {
     const updateMutation = addMutationWrapper(
       buildUpdateVehicleScheduleFrameMutation(
-        vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id,
+        builtDefaultDataset._vehicle_schedule_frames.winter2022
+          .vehicle_schedule_frame_id,
         {
           priority,
         },
@@ -213,9 +205,9 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         prefix: 'conflicting schedules detected: ',
         // The order is random, either of these could be defined first.
         frame1: `vehicle schedule frame ${dataset.frame.vehicle_schedule_frame_id}`,
-        frame2: `vehicle schedule frame ${vehicleScheduleFramesByName.winter2022.vehicle_schedule_frame_id}`,
+        frame2: `vehicle schedule frame ${builtDefaultDataset._vehicle_schedule_frames.winter2022.vehicle_schedule_frame_id}`,
         priority: `priority ${dataset.frame.priority}, `,
-        journey: `journey_pattern_id ${journeyPatternRefsByName.route123Outbound.journey_pattern_id}, `,
+        journey: `journey_pattern_id ${builtDefaultDataset._journey_pattern_refs.route123Outbound.journey_pattern_id}, `,
         validity: `overlapping on ${expectedValidityRange}`,
         weekday: /on day of week [1-5]/, // These conflict on multiple days, so day of week could be between 1-5.
       };
@@ -337,7 +329,8 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         const dataset = cloneBaseDataset();
 
         const newJourneyPatternRefId =
-          journeyPatternRefsByName.route234Outbound.journey_pattern_ref_id;
+          builtDefaultDataset._journey_pattern_refs.route234Outbound
+            .journey_pattern_ref_id;
         dataset.journey.journey_pattern_ref_id = newJourneyPatternRefId;
         useRoute234StopPoints(dataset);
 
@@ -446,8 +439,10 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
 
       it('should run validation when journey_pattern_ref is updated', async () => {
         const dataset = cloneBaseDataset();
-        const baseDatasetRef = journeyPatternRefsByName.route123Outbound;
-        const newScheduleRef = journeyPatternRefsByName.route234Outbound;
+        const baseDatasetRef =
+          builtDefaultDataset._journey_pattern_refs.route123Outbound;
+        const newScheduleRef =
+          builtDefaultDataset._journey_pattern_refs.route234Outbound;
         // Set to inbound so this doesn't conflict with existing schedule.
         expect(dataset.journey.journey_pattern_ref_id).toBe(
           baseDatasetRef.journey_pattern_ref_id,
@@ -495,7 +490,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
 
         const datasetDifferentJourney = cloneBaseDataset();
         datasetDifferentJourney.journey.journey_pattern_ref_id =
-          journeyPatternRefsByName.route234Outbound.journey_pattern_ref_id;
+          builtDefaultDataset._journey_pattern_refs.route234Outbound.journey_pattern_ref_id;
         useRoute234StopPoints(datasetDifferentJourney);
         await expect(
           insertDataset(datasetDifferentJourney),
