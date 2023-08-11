@@ -1,6 +1,7 @@
 import {
   HslVehicleScheduleFrame,
   SubstituteOperatingDayByLineType,
+  SubstituteOperatingPeriod,
 } from 'hsl/timetablesdb/datasets/types';
 import {
   GenericTimetablesDatasetInput,
@@ -26,20 +27,21 @@ export type SubstituteOperatingDayByLineTypeInput =
 export type SubstituteOperatingDayByLineTypeOutput =
   Required<SubstituteOperatingDayByLineTypeWithoutGenerated>;
 
-// TODO: Partial<SubstituteOperatingPeriod> &
-export type SubstituteOperatingPeriodInput = {
-  _substitute_operating_day_by_line_types?: Record<
-    string,
-    SubstituteOperatingDayByLineTypeInput
-  >;
-};
-// TODO: Required<SubstituteOperatingPeriod> &
-export type SubstituteOperatingPeriodOutput = {
-  _substitute_operating_day_by_line_types: Record<
-    string,
-    SubstituteOperatingDayByLineTypeOutput
-  >;
-};
+export type SubstituteOperatingPeriodInput =
+  Partial<SubstituteOperatingPeriod> & {
+    _substitute_operating_day_by_line_types?: Record<
+      string,
+      SubstituteOperatingDayByLineTypeInput
+    >;
+  };
+
+export type SubstituteOperatingPeriodOutput =
+  Required<SubstituteOperatingPeriod> & {
+    _substitute_operating_day_by_line_types: Record<
+      string,
+      SubstituteOperatingDayByLineTypeOutput
+    >;
+  };
 
 export type HslTimetablesDatasetInput = Omit<
   GenericTimetablesDatasetInput,
