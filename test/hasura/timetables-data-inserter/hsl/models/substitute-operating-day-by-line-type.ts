@@ -1,5 +1,8 @@
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
-import { SubstituteOperatingDayByLineType } from 'hsl/timetablesdb/datasets/types';
+import {
+  SubstituteOperatingDayByLineType,
+  SubstituteOperatingPeriod,
+} from 'hsl/timetablesdb/datasets/types';
 import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
@@ -9,7 +12,10 @@ import {
 
 export const processSubstituteOperatingDayByLineType = (
   substituteOperatingDayByLineType: SubstituteOperatingDayByLineTypeInput,
-  // TODO: SubstituteOperatingPeriodInput & id
+  parentPeriod: Pick<
+    SubstituteOperatingPeriod,
+    'substitute_operating_period_id'
+  >,
 ): SubstituteOperatingDayByLineTypeOutput => {
   const idField = 'substitute_operating_day_by_line_type_id';
   const result = assignId(substituteOperatingDayByLineType, idField);
@@ -22,7 +28,7 @@ export const processSubstituteOperatingDayByLineType = (
     end_time: null,
     timezone: 'Europe/Helsinki',
     ...result,
-    // TODO: SubstituteOperatingPeriod id
+    substitute_operating_period_id: parentPeriod.substitute_operating_period_id,
   };
 };
 

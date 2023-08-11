@@ -11,6 +11,7 @@ import { flattenDatasetBase } from 'timetables-data-inserter/generic/table-data'
 import {
   hslVehicleScheduleFrameToDbFormat,
   substituteOperatingDayByLineTypeToDbFormat,
+  substituteOperatingPeriodToDbFormat,
 } from './models';
 import {
   HslTimetablesDatasetOutput,
@@ -75,7 +76,12 @@ export const createHslTableData = (
       name: 'passing_times.timetabled_passing_time',
       data: flattenedDataset.passingTimes.map(timetabledPassingTimeToDbFormat),
     },
-    // TODO: service_calendar.substitute_operating_period
+    {
+      name: 'service_calendar.substitute_operating_period',
+      data: flattenedDataset.substituteOperatingPeriods.map(
+        substituteOperatingPeriodToDbFormat,
+      ),
+    },
     {
       name: 'service_calendar.substitute_operating_day_by_line_type',
       data: flattenedDataset.substituteOperatingDayByLineTypeIds.map(
