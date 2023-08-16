@@ -1,0 +1,1 @@
+ALTER TABLE service_calendar.substitute_operating_period DROP CONSTRAINT substitute_operating_period_period_name_key;
