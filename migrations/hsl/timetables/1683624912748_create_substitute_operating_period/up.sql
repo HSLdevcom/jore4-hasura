@@ -1,6 +1,6 @@
 CREATE TABLE service_calendar.substitute_operating_period (
     substitute_operating_period_id uuid DEFAULT gen_random_uuid(),
-    period_name text UNIQUE NOT NULL,
+    period_name text NOT NULL,
     is_preset boolean NOT NULL DEFAULT FALSE
 );
 
