@@ -44,6 +44,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
   const builtDefaultDataset = buildGenericTimetablesDataset(
     defaultTimetablesDataset,
   );
+
   beforeEach(async () =>
     setupDb(dbConnection, createGenericTableData(builtDefaultDataset)),
   );

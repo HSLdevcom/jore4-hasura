@@ -44,6 +44,7 @@ describe('HSL timetables data inserter json parser', () => {
     describe('vehicle schedule frame', () => {
       let builtDataset: HslTimetablesDatasetOutput;
       let builtVehicleScheduleFrame: HslVehicleScheduleFrameOutput;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtVehicleScheduleFrame =
@@ -81,6 +82,7 @@ describe('HSL timetables data inserter json parser', () => {
     describe('substitute operating day by line type', () => {
       let builtDataset: HslTimetablesDatasetOutput;
       let builtSubstituteOperatingDayByLineType: SubstituteOperatingDayByLineTypeOutput;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtSubstituteOperatingDayByLineType =
