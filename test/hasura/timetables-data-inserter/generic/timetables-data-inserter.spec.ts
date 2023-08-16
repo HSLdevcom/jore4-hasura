@@ -45,6 +45,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('vehicle schedule frame', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtVehicleScheduleFrame: GenericVehicleScheduleFrameOutput;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtVehicleScheduleFrame =
@@ -74,6 +75,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('vehicle services', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtVehicleServices: Record<string, VehicleServiceOutput>;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtVehicleServices =
@@ -123,6 +125,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('vehicle service blocks', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtBlock: VehicleServiceBlockOutput;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtBlock =
@@ -159,6 +162,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('vehicle journeys', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtJourneys: Record<string, VehicleJourneyOutput>;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtJourneys =
@@ -237,6 +241,7 @@ describe('Generic timetables data inserter json parser', () => {
         '_vehicle_schedule_frames.winter2022._vehicle_services.monFri._blocks.block._vehicle_journeys.route123Outbound1._passing_times';
       const inboundPassingTimePath =
         '_vehicle_schedule_frames.winter2022._vehicle_services.monFri._blocks.block._vehicle_journeys.route123Inbound1._passing_times';
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtOutboundPassingTimes = get(builtDataset, outboundPassingTimePath);
@@ -299,6 +304,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('journey pattern refs', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtJourneyPatternRef: JourneyPatternRefOutput;
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtJourneyPatternRef =
@@ -328,6 +334,7 @@ describe('Generic timetables data inserter json parser', () => {
     describe('scheduled stop points', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
       let builtInboundStopPoints: ScheduledStopInJourneyPatternRefOutput[];
+
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
         builtInboundStopPoints =

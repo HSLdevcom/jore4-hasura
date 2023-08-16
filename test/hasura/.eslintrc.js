@@ -12,6 +12,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:eslint-comments/recommended',
     'plugin:jest/recommended',
+    'plugin:jest-formatting/recommended',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -26,7 +27,7 @@ module.exports = {
       },
     },
   },
-  plugins: ['@typescript-eslint', 'jest'],
+  plugins: ['@typescript-eslint', 'jest', 'jest-formatting'],
   ignorePatterns: [
     'dist/*',
     'ui/src/generated/*.tsx',
