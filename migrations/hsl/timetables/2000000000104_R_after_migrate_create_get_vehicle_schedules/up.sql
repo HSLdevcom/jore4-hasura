@@ -1,3 +1,35 @@
+CREATE OR REPLACE FUNCTION internal_service_calendar.get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid)
+RETURNS date
+LANGUAGE SQL
+  STABLE
+AS $$
+  SELECT MIN(superseded_date)
+  FROM service_calendar.substitute_operating_day_by_line_type
+  WHERE substitute_operating_period_id = substitute_operating_period_uuid;
+$$
+;
+
+COMMENT ON FUNCTION internal_service_calendar.get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid)
+IS 'Returns the begin date of a substitute operating period that consists of substitute_operating_day_by_line_types
+(superseded_date).
+';
+
+CREATE OR REPLACE FUNCTION internal_service_calendar.get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid)
+RETURNS date
+LANGUAGE SQL
+  STABLE
+AS $$
+  SELECT MAX(superseded_date)
+  FROM service_calendar.substitute_operating_day_by_line_type
+  WHERE substitute_operating_period_id = substitute_operating_period_uuid;
+$$
+;
+
+COMMENT ON FUNCTION internal_service_calendar.get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid)
+IS 'Returns the last date of a substitute operating period that consists of substitute_operating_day_by_line_types
+(superseded_date).
+';
+
 CREATE OR REPLACE FUNCTION vehicle_journey.get_vehicle_schedules_on_date(journey_pattern_uuid uuid, observation_date date)
   RETURNS SETOF return_value.vehicle_schedule
   LANGUAGE SQL
@@ -6,8 +38,8 @@ AS $$
 WITH substitute_operating_day_by_line_type_vehicle_schedules AS
 (
   SELECT DISTINCT vj.vehicle_journey_id,
-    vsf.validity_start,
-    vsf.validity_end,
+    internal_service_calendar.get_substitute_operating_period_begin_date(sodblt.substitute_operating_period_id),
+    internal_service_calendar.get_substitute_operating_period_end_date(sodblt.substitute_operating_period_id),
     internal_utils.const_timetables_priority_substitute_by_line_type(), -- priority
     ( -- calculate what is the correct day type id for the superseded date
       SELECT day_type_id
@@ -113,3 +145,4 @@ the time range does not return any vehicle journeys (or if the substitute_operat
 a row which does not have vehicle_journey set. This is an indicator that the day type does not have operation on the given day. This is of course overruled
 by special priority schedules, it being a higher priority.
 ';
+
