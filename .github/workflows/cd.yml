@@ -10,7 +10,7 @@ on:
 jobs:
   push_to_registry:
     name: Build & Push docker image to Docker Hub
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -78,7 +78,7 @@ jobs:
   run_e2e_tests:
     needs: push_to_registry
     name: Run e2e tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Extract metadata to env variables
@@ -98,7 +98,7 @@ jobs:
   run_migration_tests:
     needs: push_to_registry
     name: Run migration tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
@@ -123,7 +123,7 @@ jobs:
   run_integration_tests:
     needs: push_to_registry
     name: Run hasura integration tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
