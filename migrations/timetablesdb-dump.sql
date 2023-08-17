@@ -26,10 +26,17 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 --
+-- Name: SCHEMA internal_service_calendar; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA internal_service_calendar IS 'This schema is used for the internal SQL functions that are related to service_calendar schema. These internal functions are
+not exposed to GraphQL API, hence the prefix.';
+
+--
 -- Name: SCHEMA internal_utils; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
-COMMENT ON SCHEMA internal_utils IS 'General utilities';
+COMMENT ON SCHEMA internal_utils IS 'Internal general utilities. Functions in this schema are not exposed to GraphQL API, hence the prefix.';
 
 --
 -- Name: SCHEMA journey_pattern; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -1662,6 +1669,15 @@ CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehic
 --
 
 CREATE UNIQUE INDEX vehicle_type_label_idx ON vehicle_type.vehicle_type USING btree (label);
+
+--
+-- Name: internal_service_calendar; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA internal_service_calendar;
+
+
+ALTER SCHEMA internal_service_calendar OWNER TO dbhasura;
 
 --
 -- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
