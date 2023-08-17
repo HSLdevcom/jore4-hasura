@@ -7,3 +7,4 @@ DROP SCHEMA vehicle_service;
 DROP SCHEMA vehicle_journey;
 DROP SCHEMA passing_times;
 DROP SCHEMA return_value;
+DROP SCHEMA internal_service_calendar;

@@ -1664,6 +1664,15 @@ CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehic
 CREATE UNIQUE INDEX vehicle_type_label_idx ON vehicle_type.vehicle_type USING btree (label);
 
 --
+-- Name: internal_service_calendar; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA internal_service_calendar;
+
+
+ALTER SCHEMA internal_service_calendar OWNER TO dbhasura;
+
+--
 -- Name: internal_utils; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 

@@ -1,43 +1,45 @@
 -- create schemas if they don't yet exist, because the drop function below reference them
 CREATE SCHEMA IF NOT EXISTS route;
-COMMENT ON SCHEMA route 
+COMMENT ON SCHEMA route
 IS 'The route model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:1:3:416';
 
 CREATE SCHEMA IF NOT EXISTS journey_pattern;
-COMMENT ON SCHEMA journey_pattern 
+COMMENT ON SCHEMA journey_pattern
 IS 'The journey pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:1:683 ';
 
 CREATE SCHEMA IF NOT EXISTS service_pattern;
-COMMENT ON SCHEMA service_pattern 
+COMMENT ON SCHEMA service_pattern
 IS 'The service pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:723 ';
 
 CREATE SCHEMA IF NOT EXISTS service_calendar;
-COMMENT ON SCHEMA service_calendar 
+COMMENT ON SCHEMA service_calendar
 IS 'The service calendar model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:3:294 ';
 
 CREATE SCHEMA IF NOT EXISTS vehicle_schedule;
-COMMENT ON SCHEMA vehicle_schedule 
+COMMENT ON SCHEMA vehicle_schedule
 IS 'The vehicle schedule frame adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:7:2:993 ';
 
 CREATE SCHEMA IF NOT EXISTS vehicle_service;
-COMMENT ON SCHEMA vehicle_service 
+COMMENT ON SCHEMA vehicle_service
 IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
 
 CREATE SCHEMA IF NOT EXISTS vehicle_journey;
-COMMENT ON SCHEMA vehicle_journey 
+COMMENT ON SCHEMA vehicle_journey
 IS 'The vehicle journey model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:824 ';
 
 CREATE SCHEMA IF NOT EXISTS passing_times;
-COMMENT ON SCHEMA passing_times 
+COMMENT ON SCHEMA passing_times
 IS 'The passing times model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:939 ';
 
 CREATE SCHEMA IF NOT EXISTS internal_utils;
-COMMENT ON SCHEMA internal_utils 
+COMMENT ON SCHEMA internal_utils
 IS 'General utilities';
 
 CREATE SCHEMA IF NOT EXISTS return_value;
-COMMENT ON SCHEMA return_value 
+COMMENT ON SCHEMA return_value
 IS 'This schema is used for all the SQL functions that need to have a table as return value. Nothing is stored in the tables in this schema.';
+
+CREATE SCHEMA IF NOT EXISTS internal_service_calendar;
 
 -- drop all triggers in jore4 schemas
 -- note: information_schema.triggers is missing TRUNCATE triggers
