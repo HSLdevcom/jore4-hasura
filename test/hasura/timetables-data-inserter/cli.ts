@@ -6,11 +6,19 @@ import { ConnectionConfig } from 'pg';
 import { insertDatasetFromJson as insertGenericDatasetFromJson } from './generic/json-parser';
 import { insertDatasetFromJson as insertHslDatasetFromJson } from './hsl/json-parser';
 
+const getHost = (host: string) => {
+  // "localhost" does not currently seem to be working on node 18.
+  if (host === 'localhost') {
+    return '127.0.0.1';
+  }
+  return host;
+};
+
 const buildDbConfig = (
   options: Record<string, string>,
 ): ConnectionConfig | undefined => {
   const dbConfig = {
-    host: options.host,
+    host: getHost(options.host),
     port: options.port ? parseInt(options.port, 10) : undefined,
     database: options.database,
     user: options.user,
