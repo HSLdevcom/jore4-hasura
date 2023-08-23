@@ -1,0 +1,1 @@
+DROP INDEX service_pattern.idx_scheduled_stop_point_timing_place;

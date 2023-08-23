@@ -1635,6 +1635,12 @@ CREATE INDEX idx_vehicle_journey_block ON vehicle_journey.vehicle_journey USING 
 CREATE INDEX idx_vehicle_journey_journey_pattern_ref ON vehicle_journey.vehicle_journey USING btree (journey_pattern_ref_id);
 
 --
+-- Name: idx_vehicle_journey_journey_type; Type: INDEX; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_journey_journey_type ON vehicle_journey.vehicle_journey USING btree (journey_type);
+
+--
 -- Name: idx_block_vehicle_service; Type: INDEX; Schema: vehicle_service; Owner: dbhasura
 --
 

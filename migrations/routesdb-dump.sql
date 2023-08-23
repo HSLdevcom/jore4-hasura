@@ -3900,6 +3900,12 @@ CREATE INDEX type_of_line_belonging_to_vehicle_mode_idx ON route.type_of_line US
 CREATE INDEX idx_scheduled_stop_point_direction ON service_pattern.scheduled_stop_point USING btree (direction);
 
 --
+-- Name: idx_scheduled_stop_point_timing_place; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE INDEX idx_scheduled_stop_point_timing_place ON service_pattern.scheduled_stop_point USING btree (timing_place_id);
+
+--
 -- Name: scheduled_stop_point_label_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
 --
 
