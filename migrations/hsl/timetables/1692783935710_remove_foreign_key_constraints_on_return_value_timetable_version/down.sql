@@ -1,0 +1,11 @@
+ALTER TABLE return_value.timetable_version
+  ADD CONSTRAINT timetable_version_vehicle_schedule_frame_id_fkey
+  FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+
+ALTER TABLE return_value.timetable_version
+  ADD CONSTRAINT timetable_version_substitute_operating_day_by_line_type_id_fkey
+  FOREIGN KEY (substitute_operating_day_by_line_type_id) REFERENCES service_calendar.substitute_operating_day_by_line_type(substitute_operating_day_by_line_type_id);
+
+ALTER TABLE return_value.timetable_version
+  ADD CONSTRAINT timetable_version_day_type_id_fkey
+  FOREIGN KEY (day_type_id) REFERENCES service_calendar.day_type(day_type_id);
