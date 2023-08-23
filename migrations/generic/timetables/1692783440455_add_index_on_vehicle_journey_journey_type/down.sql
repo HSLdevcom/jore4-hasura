@@ -1,0 +1,1 @@
+DROP INDEX vehicle_journey.idx_vehicle_journey_journey_type;
