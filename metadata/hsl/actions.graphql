@@ -1,0 +1,25 @@
+type Mutation {
+  combineTimetables(arg1: CombineTimetablesInput!): CombineTimetablesOutput
+}
+
+type Mutation {
+  replaceTimetables(arg1: ReplaceTimetablesInput!): ReplaceTimetablesOutput
+}
+
+input CombineTimetablesInput {
+  stagingVehicleScheduleFrameIds: [uuid]!
+  targetPriority: Int!
+}
+
+input ReplaceTimetablesInput {
+  stagingVehicleScheduleFrameIds: [uuid]!
+  targetPriority: Int!
+}
+
+type CombineTimetablesOutput {
+  combinedIntoVehicleScheduleFrameIds: [uuid]!
+}
+
+type ReplaceTimetablesOutput {
+  replacedVehicleScheduleFrameIds: [uuid]!
+}
