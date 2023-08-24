@@ -1,0 +1,34 @@
+actions:
+  - name: combineTimetables
+    definition:
+      kind: synchronous
+      handler: http://host.docker.internal:8080/timetables/combine
+      request_transform:
+        body:
+          action: transform
+          template: "{{$body.input.arg1}}"
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+  - name: replaceTimetables
+    definition:
+      kind: synchronous
+      handler: http://host.docker.internal:8080/timetables/replace
+      request_transform:
+        body:
+          action: transform
+          template: "{{$body.input.arg1}}"
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+custom_types:
+  enums: []
+  input_objects:
+    - name: CombineTimetablesInput
+    - name: ReplaceTimetablesInput
+  objects:
+    - name: CombineTimetablesOutput
+    - name: ReplaceTimetablesOutput
+  scalars: []
