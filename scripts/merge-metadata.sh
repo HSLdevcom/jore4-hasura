@@ -28,3 +28,18 @@ do
     cp "$SOURCE_DIR/$SOURCE_YAML_FILE" "$DESTINATION_DIR/$SOURCE_YAML_FILE"
   fi
 done
+
+for SOURCE_GRAPHQL_FILE in `find . -name "*.graphql"`
+do
+ if [ -f "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE" ]; then
+    # if the file with the same name already exists -> merge them (= just concatenate the file contents)
+    echo "Merging graphql file: $SOURCE_GRAPHQL_FILE"
+
+    echo "" >> $DESTINATION_DIR/$SOURCE_GRAPHQL_FILE
+    cat $SOURCE_DIR/$SOURCE_GRAPHQL_FILE >> $DESTINATION_DIR/$SOURCE_GRAPHQL_FILE
+  else
+    # if the file does not exist yet -> copy it
+    echo "Copying graphql file: $SOURCE_GRAPHQL_FILE"
+    cp "$SOURCE_DIR/$SOURCE_GRAPHQL_FILE" "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE"
+  fi
+done
