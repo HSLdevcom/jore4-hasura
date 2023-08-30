@@ -1,4 +1,14 @@
 {
+  "name": "@hsl/timetables-data-inserter",
+  "version": "1.0.0",
+  "main": "dist/timetables-data-inserter/index.js",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/timetables-data-inserter/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "lint": "eslint './**/*.{ts,tsx}' --max-warnings=0",
     "prettier": "prettier --write .",
