@@ -29,8 +29,8 @@ export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
   label: string;
   name_i18n: LocalizedString;
-  validity_start: DateTime | null;
-  validity_end: DateTime | null;
+  validity_start: DateTime;
+  validity_end: DateTime;
   priority: TimetablePriority;
   created_at?: DateTime;
 };
