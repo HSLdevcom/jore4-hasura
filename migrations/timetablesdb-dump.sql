@@ -80,6 +80,12 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE journey_pattern.journey_pattern_ref T
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE passing_times.timetabled_passing_time TO dbtimetablesapi;
 
 --
+-- Name: TABLE direction; Type: ACL; Schema: route; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE route.direction TO dbtimetablesapi;
+
+--
 -- Name: TABLE type_of_line; Type: ACL; Schema: route; Owner: dbhasura
 --
 
@@ -429,10 +435,28 @@ COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.time
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
 
 --
+-- Name: COLUMN direction.direction; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.direction.direction IS 'The name of the route direction';
+
+--
+-- Name: COLUMN direction.the_opposite_of_direction; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.direction.the_opposite_of_direction IS 'The opposite direction';
+
+--
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
 COMMENT ON COLUMN route.type_of_line.type_of_line IS 'GTFS route type: https://developers.google.com/transit/gtfs/reference/extended-route-types';
+
+--
+-- Name: TABLE direction; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON TABLE route.direction IS 'The route directions from Transmodel';
 
 --
 -- Name: TABLE type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -848,6 +872,13 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_pkey PRIMARY KEY (timetabled_passing_time_id);
 
 --
+-- Name: direction direction_pkey; Type: CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.direction
+    ADD CONSTRAINT direction_pkey PRIMARY KEY (direction);
+
+--
 -- Name: type_of_line type_of_line_pkey; Type: CONSTRAINT; Schema: route; Owner: dbhasura
 --
 
@@ -991,6 +1022,13 @@ CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 --
+-- Name: journey_pattern_ref journey_pattern_ref_route_direction_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY journey_pattern.journey_pattern_ref
+    ADD CONSTRAINT journey_pattern_ref_route_direction_fkey FOREIGN KEY (route_direction) REFERENCES route.direction(direction);
+
+--
 -- Name: journey_pattern_ref journey_pattern_ref_type_of_line_fkey; Type: FK CONSTRAINT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1010,6 +1048,13 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
 
 ALTER TABLE ONLY passing_times.timetabled_passing_time
     ADD CONSTRAINT timetabled_passing_time_vehicle_journey_id_fkey FOREIGN KEY (vehicle_journey_id) REFERENCES vehicle_journey.vehicle_journey(vehicle_journey_id);
+
+--
+-- Name: direction direction_the_opposite_of_direction_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.direction
+    ADD CONSTRAINT direction_the_opposite_of_direction_fkey FOREIGN KEY (the_opposite_of_direction) REFERENCES route.direction(direction);
 
 --
 -- Name: day_type_active_on_day_of_week day_type_active_on_day_of_week_day_type_id_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
@@ -1811,6 +1856,12 @@ ALTER FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() OWN
 CREATE INDEX idx_journey_pattern_ref_journey_pattern_id ON journey_pattern.journey_pattern_ref USING btree (journey_pattern_id);
 
 --
+-- Name: idx_journey_pattern_ref_route_direction; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE INDEX idx_journey_pattern_ref_route_direction ON journey_pattern.journey_pattern_ref USING btree (route_direction);
+
+--
 -- Name: journey_pattern_ref_type_of_line; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1827,6 +1878,12 @@ CREATE INDEX idx_timetabled_passing_time_sspijp_ref ON passing_times.timetabled_
 --
 
 CREATE UNIQUE INDEX timetabled_passing_time_stop_point_unique_idx ON passing_times.timetabled_passing_time USING btree (vehicle_journey_id, scheduled_stop_point_in_journey_pattern_ref_id);
+
+--
+-- Name: idx_direction_the_opposite_of_direction; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_direction_the_opposite_of_direction ON route.direction USING btree (the_opposite_of_direction);
 
 --
 -- Name: service_calendar_day_type_label_idx; Type: INDEX; Schema: service_calendar; Owner: dbhasura
@@ -2038,6 +2095,18 @@ CREATE TABLE passing_times.timetabled_passing_time (
 
 
 ALTER TABLE passing_times.timetabled_passing_time OWNER TO dbhasura;
+
+--
+-- Name: direction; Type: TABLE; Schema: route; Owner: dbhasura
+--
+
+CREATE TABLE route.direction (
+    direction text NOT NULL,
+    the_opposite_of_direction text
+);
+
+
+ALTER TABLE route.direction OWNER TO dbhasura;
 
 --
 -- Name: type_of_line; Type: TABLE; Schema: route; Owner: dbhasura

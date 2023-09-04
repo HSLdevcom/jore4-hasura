@@ -25,6 +25,17 @@ export enum TypeOfLine {
   FerryService = 'ferry_service',
 }
 
+export enum RouteDirection {
+  Inbound = 'inbound',
+  Outbound = 'outbound',
+  Clockwise = 'clockwise',
+  Anticlockwise = 'anticlockwise',
+  Northbound = 'northbound',
+  Southbound = 'southbound',
+  Eastbound = 'eastbound',
+  Westbound = 'westbound',
+}
+
 export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
   label: string;
@@ -128,7 +139,7 @@ export type JourneyPatternRef = {
   journey_pattern_id: UUID;
   type_of_line: TypeOfLine;
   route_label: string;
-  route_direction: string;
+  route_direction: RouteDirection;
   route_validity_start: DateTime | null;
   route_validity_end: DateTime | null;
 };
