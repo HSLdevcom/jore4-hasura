@@ -138,9 +138,13 @@
   "_journey_pattern_refs": {
     "route123Outbound": {
       "journey_pattern_id": "55bab728-c76c-4ce6-9cc6-f6e51c1c5dca",
-      "type_of_line": "stopping_bus_service",
       "observation_timestamp": "2023-07-01T00:00:00+00:00",
       "snapshot_timestamp": "2023-09-28T00:00:00+00:00",
+      "type_of_line": "stopping_bus_service",
+      "route_label": "123",
+      "route_direction": "outbound",
+      "route_validity_start": "2023-06-01T00:00:00+00:00",
+      "route_validity_end": "2051-01-01T00:00:00+00:00",
 
       "_stop_points": [
         {
@@ -163,9 +167,13 @@
     },
     "route123Inbound": {
       "journey_pattern_id": "34acd9ad-f7c4-4af2-a6d4-f9d69f0288ee",
-      "type_of_line": "stopping_bus_service",
       "observation_timestamp": "2023-07-01T00:00:00+00:00",
       "snapshot_timestamp": "2023-09-28T00:00:00+00:00",
+      "type_of_line": "stopping_bus_service",
+      "route_label": "123",
+      "route_direction": "inbound",
+      "route_validity_start": "2023-06-01T00:00:00+00:00",
+      "route_validity_end": "2051-01-01T00:00:00+00:00",
 
       "_stop_points": [
         {

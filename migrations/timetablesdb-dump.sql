@@ -260,6 +260,30 @@ COMMENT ON COLUMN journey_pattern.journey_pattern_ref.journey_pattern_id IS 'The
 COMMENT ON COLUMN journey_pattern.journey_pattern_ref.observation_timestamp IS 'The user-given point of time used to pick one journey pattern (with route and scheduled stop points) among possibly many variants. The selected, unambiguous journey pattern variant is used as a basis for schedule planning.';
 
 --
+-- Name: COLUMN journey_pattern_ref.route_direction; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.journey_pattern_ref.route_direction IS 'The direction of the route associated with the referenced journey pattern';
+
+--
+-- Name: COLUMN journey_pattern_ref.route_label; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.journey_pattern_ref.route_label IS 'The label of the route associated with the referenced journey pattern';
+
+--
+-- Name: COLUMN journey_pattern_ref.route_validity_end; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.journey_pattern_ref.route_validity_end IS 'The end date of the validity period of the route associated with the referenced journey pattern. If NULL, then the end of the validity period is unbounded (infinity).';
+
+--
+-- Name: COLUMN journey_pattern_ref.route_validity_start; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN journey_pattern.journey_pattern_ref.route_validity_start IS 'The start date of the validity period of the route associated with the referenced journey pattern. If NULL, then the start of the validity period is unbounded (-infinity).';
+
+--
 -- Name: COLUMN journey_pattern_ref.snapshot_timestamp; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -1987,7 +2011,11 @@ CREATE TABLE journey_pattern.journey_pattern_ref (
     journey_pattern_id uuid NOT NULL,
     observation_timestamp timestamp with time zone NOT NULL,
     snapshot_timestamp timestamp with time zone NOT NULL,
-    type_of_line text NOT NULL
+    type_of_line text NOT NULL,
+    route_label text NOT NULL,
+    route_direction text NOT NULL,
+    route_validity_start date,
+    route_validity_end date
 );
 
 
