@@ -24,6 +24,10 @@ export const processJourneyPatternRef = (
     type_of_line: TypeOfLine.StoppingBusService,
     observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+    route_label: 'DEFAULT_ROUTE_LABEL',
+    route_direction: 'outbound',
+    route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
+    route_validity_end: DateTime.fromISO('2051-01-01T00:00:00+00:00'),
     ...result,
     _stop_points: stopPoints,
   };

@@ -124,9 +124,13 @@ export const scheduledStopInJourneyPatternRefProps: Property[] = [
 export type JourneyPatternRef = {
   journey_pattern_ref_id: UUID;
   observation_timestamp: DateTime;
-  type_of_line: TypeOfLine;
   snapshot_timestamp: DateTime;
   journey_pattern_id: UUID;
+  type_of_line: TypeOfLine;
+  route_label: string;
+  route_direction: string;
+  route_validity_start: DateTime | null;
+  route_validity_end: DateTime | null;
 };
 
 export const journeyPatternRefProps: Property[] = [
@@ -135,4 +139,8 @@ export const journeyPatternRefProps: Property[] = [
   'snapshot_timestamp',
   'journey_pattern_id',
   'type_of_line',
+  'route_label',
+  'route_direction',
+  'route_validity_start',
+  'route_validity_end',
 ];
