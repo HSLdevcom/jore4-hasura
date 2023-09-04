@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { JourneyPatternRef, TypeOfLine } from '../types';
+import { JourneyPatternRef, RouteDirection, TypeOfLine } from '../types';
 
 export const journeyPatternRefsByName = {
   route123Outbound: {
@@ -9,7 +9,7 @@ export const journeyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '123',
-    route_direction: 'outbound',
+    route_direction: RouteDirection.Outbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
   },
@@ -20,7 +20,7 @@ export const journeyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '123',
-    route_direction: 'inbound',
+    route_direction: RouteDirection.Inbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
   },
@@ -31,7 +31,7 @@ export const journeyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '234',
-    route_direction: 'outbound',
+    route_direction: RouteDirection.Outbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
   },
@@ -99,7 +99,7 @@ export const defaultJourneyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '123',
-    route_direction: 'outbound',
+    route_direction: RouteDirection.Outbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
 
@@ -128,7 +128,7 @@ export const defaultJourneyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '123',
-    route_direction: 'inbound',
+    route_direction: RouteDirection.Inbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
 
@@ -158,7 +158,7 @@ export const defaultJourneyPatternRefsByName = {
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
     type_of_line: TypeOfLine.StoppingBusService,
     route_label: '234',
-    route_direction: 'outbound',
+    route_direction: RouteDirection.Outbound,
     route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
     route_validity_end: DateTime.fromISO('2050-01-01T00:00:00+00:00'),
 
