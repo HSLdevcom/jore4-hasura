@@ -4174,7 +4174,9 @@ CREATE TABLE hdb_catalog.hdb_version (
     version text NOT NULL,
     upgraded_on timestamp with time zone NOT NULL,
     cli_state jsonb DEFAULT '{}'::jsonb NOT NULL,
-    console_state jsonb DEFAULT '{}'::jsonb NOT NULL
+    console_state jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ee_client_id text,
+    ee_client_secret text
 );
 
 
