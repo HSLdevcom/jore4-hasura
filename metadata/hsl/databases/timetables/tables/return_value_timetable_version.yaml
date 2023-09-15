@@ -4,10 +4,25 @@ table:
 object_relationships:
   - name: day_type
     using:
-      foreign_key_constraint_on: day_type_id
-  - name: vehicle_schedule_frame
-    using:
-      foreign_key_constraint_on: vehicle_schedule_frame_id
+      manual_configuration:
+        column_mapping:
+          day_type_id: day_type_id
+        remote_table:
+          name: day_type
+          schema: service_calendar
   - name: substitute_operating_day_by_line_type
     using:
-      foreign_key_constraint_on: substitute_operating_day_by_line_type_id
+      manual_configuration:
+        column_mapping:
+          substitute_operating_day_by_line_type_id: substitute_operating_day_by_line_type_id
+        remote_table:
+          name: substitute_operating_day_by_line_type
+          schema: service_calendar
+  - name: vehicle_schedule_frame
+    using:
+      manual_configuration:
+        column_mapping:
+          vehicle_schedule_frame_id: vehicle_schedule_frame_id
+        remote_table:
+          name: vehicle_schedule_frame
+          schema: vehicle_schedule
