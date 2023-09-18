@@ -1,6 +1,6 @@
 import { writeLatestTimetablesDatasetToFile } from '@config';
-import { randomUUID } from 'crypto';
 import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 export const assignId = <T, K extends keyof T>(item: T, idField: K) => {
   return {
@@ -8,7 +8,7 @@ export const assignId = <T, K extends keyof T>(item: T, idField: K) => {
     // In theory the latter part should be same as Required<Pick<T, K>>, but doesn't seem so.
     ...item,
     ...({
-      [idField]: item[idField] || (randomUUID() as T[K]),
+      [idField]: item[idField] || (uuidv4() as T[K]),
     } as { [P in K]-?: NonNullable<T[P]> }),
   };
 };

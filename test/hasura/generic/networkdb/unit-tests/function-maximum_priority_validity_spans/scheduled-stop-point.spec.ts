@@ -7,7 +7,6 @@ import {
   singleQuery,
 } from '@util/db';
 import { setupDb } from '@util/setup';
-import { randomUUID } from 'crypto';
 import {
   InfrastructureLink,
   JourneyPattern,
@@ -17,10 +16,11 @@ import {
   ScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 
 const defaultRouteLabel = 'route 2';
 const stopLabel = 'stop A';
-const infraLinkId = randomUUID();
+const infraLinkId = uuidv4();
 
 const defaultCommonStopProps: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id: infraLinkId,
@@ -38,8 +38,8 @@ const defaultCommonStopProps: Partial<ScheduledStopPoint> = {
 };
 
 const route: Partial<Route> = {
-  route_id: randomUUID(),
-  on_line_id: randomUUID(),
+  route_id: uuidv4(),
+  on_line_id: uuidv4(),
   label: defaultRouteLabel,
   direction: RouteDirection.Outbound,
   priority: 10,
@@ -49,7 +49,7 @@ const route: Partial<Route> = {
 };
 
 const journeyPattern: Partial<JourneyPattern> = {
-  journey_pattern_id: randomUUID(),
+  journey_pattern_id: uuidv4(),
   on_route_id: route.route_id,
 };
 
@@ -147,8 +147,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |---earlier---|     |----later----|
 
-    const earlierStopId = randomUUID();
-    const laterStopId = randomUUID();
+    const earlierStopId = uuidv4();
+    const laterStopId = uuidv4();
 
     const earlierStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierStopValidityEnd = DateTime.fromISO('2021-04-05');
@@ -197,8 +197,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |---earlier---|----later----|
 
-    const earlierStopId = randomUUID();
-    const laterStopId = randomUUID();
+    const earlierStopId = uuidv4();
+    const laterStopId = uuidv4();
 
     const earlierStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierStopValidityEnd = DateTime.fromISO('2021-04-05');
@@ -245,8 +245,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |--low prio--|---high prio---|
 
-    const earlierLowerPrioStopId = randomUUID();
-    const laterHigherPrioStopId = randomUUID();
+    const earlierLowerPrioStopId = uuidv4();
+    const laterHigherPrioStopId = uuidv4();
 
     const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
@@ -297,8 +297,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |--low prio----|
 
-    const earlierLowerPrioStopId = randomUUID();
-    const laterHigherPrioStopId = randomUUID();
+    const earlierLowerPrioStopId = uuidv4();
+    const laterHigherPrioStopId = uuidv4();
 
     const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
@@ -351,8 +351,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result for label B:
     // (empty)
 
-    const earlierLowerPrioStopId = randomUUID();
-    const laterHigherPrioStopId = randomUUID();
+    const earlierLowerPrioStopId = uuidv4();
+    const laterHigherPrioStopId = uuidv4();
 
     const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
@@ -393,8 +393,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |--low prio--|---high prio---|--low prio---|
 
-    const lowerPrioStopId = randomUUID();
-    const higherPrioStopId = randomUUID();
+    const lowerPrioStopId = uuidv4();
+    const higherPrioStopId = uuidv4();
 
     const lowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
     const lowerPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
@@ -450,8 +450,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result:
     //   |----------------high prio-----------------|
 
-    const lowerPrioStopId = randomUUID();
-    const higherPrioStopId = randomUUID();
+    const lowerPrioStopId = uuidv4();
+    const higherPrioStopId = uuidv4();
 
     const lowerPrioStopValidityStart = DateTime.fromISO('2022-01-04');
     const lowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
@@ -497,8 +497,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     // expected result for priority < 20:
     //                |---prio: 10----|
 
-    const lowerPrioStopId = randomUUID();
-    const higherPrioStopId = randomUUID();
+    const lowerPrioStopId = uuidv4();
+    const higherPrioStopId = uuidv4();
 
     const lowerPrioStopValidityStart = DateTime.fromISO('2022-01-04');
     const lowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');

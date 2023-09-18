@@ -1,9 +1,9 @@
-import { randomUUID } from 'crypto';
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import { JourneyPatternRef } from 'generic/timetablesdb/datasets/types';
 import { omit } from 'lodash';
 import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
+import { v4 as uuidv4 } from 'uuid';
 import { JourneyPatternRefInput, JourneyPatternRefOutput } from '../types';
 import { processScheduledStopPoint } from './scheduled-stop-point';
 
@@ -18,7 +18,7 @@ export const processJourneyPatternRef = (
   );
 
   return {
-    journey_pattern_id: randomUUID(),
+    journey_pattern_id: uuidv4(),
     type_of_line: TypeOfLine.StoppingBusService,
     observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
     snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),

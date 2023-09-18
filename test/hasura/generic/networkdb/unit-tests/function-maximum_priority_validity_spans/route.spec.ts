@@ -3,11 +3,11 @@ import { buildLocalizedString } from '@util/dataset';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
-import { randomUUID } from 'crypto';
 import { Route, RouteDirection } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 
-const dummyLineId = randomUUID();
+const dummyLineId = uuidv4();
 const defaultRouteLabel = 'route 1';
 
 const defaultCommonRouteProps = {
@@ -65,8 +65,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |---earlier---|     |----later----|
 
-    const earlierRouteId = randomUUID();
-    const laterRouteId = randomUUID();
+    const earlierRouteId = uuidv4();
+    const laterRouteId = uuidv4();
 
     const earlierRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierRouteValidityEnd = DateTime.fromISO('2021-04-04');
@@ -115,8 +115,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |---earlier---|----later----|
 
-    const earlierRouteId = randomUUID();
-    const laterRouteId = randomUUID();
+    const earlierRouteId = uuidv4();
+    const laterRouteId = uuidv4();
 
     const earlierRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierRouteValidityEnd = DateTime.fromISO('2021-04-04');
@@ -163,8 +163,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |--low prio--|---high prio---|
 
-    const earlierLowerPrioRouteId = randomUUID();
-    const laterHigherPrioRouteId = randomUUID();
+    const earlierLowerPrioRouteId = uuidv4();
+    const laterHigherPrioRouteId = uuidv4();
 
     const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
@@ -215,8 +215,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |--low prio----|
 
-    const earlierLowerPrioRouteId = randomUUID();
-    const laterHigherPrioRouteId = randomUUID();
+    const earlierLowerPrioRouteId = uuidv4();
+    const laterHigherPrioRouteId = uuidv4();
 
     const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
@@ -270,8 +270,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     //   |--low prio----|
     //   |  label: A    |
 
-    const earlierLowerPrioRouteId = randomUUID();
-    const laterHigherPrioRouteId = randomUUID();
+    const earlierLowerPrioRouteId = uuidv4();
+    const laterHigherPrioRouteId = uuidv4();
 
     const earlierLowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
     const earlierLowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
@@ -318,8 +318,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |--low prio--|---high prio---|--low prio---|
 
-    const lowerPrioRouteId = randomUUID();
-    const higherPrioRouteId = randomUUID();
+    const lowerPrioRouteId = uuidv4();
+    const higherPrioRouteId = uuidv4();
 
     const lowerPrioRouteValidityStart = DateTime.fromISO('2020-01-04');
     const lowerPrioRouteValidityEnd = DateTime.fromISO('2025-04-04');
@@ -375,8 +375,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result:
     //   |----------------high prio-----------------|
 
-    const lowerPrioRouteId = randomUUID();
-    const higherPrioRouteId = randomUUID();
+    const lowerPrioRouteId = uuidv4();
+    const higherPrioRouteId = uuidv4();
 
     const lowerPrioRouteValidityStart = DateTime.fromISO('2022-01-04');
     const lowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
@@ -422,8 +422,8 @@ describe('Function maximum_priority_validity_spans should return correct route r
     // expected result for priority < 20:
     //                |---prio: 10----|
 
-    const lowerPrioRouteId = randomUUID();
-    const higherPrioRouteId = randomUUID();
+    const lowerPrioRouteId = uuidv4();
+    const higherPrioRouteId = uuidv4();
 
     const lowerPrioRouteValidityStart = DateTime.fromISO('2022-01-04');
     const lowerPrioRouteValidityEnd = DateTime.fromISO('2024-04-04');
