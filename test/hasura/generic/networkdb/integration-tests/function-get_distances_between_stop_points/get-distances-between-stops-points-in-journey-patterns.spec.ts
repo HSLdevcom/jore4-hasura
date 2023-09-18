@@ -2,11 +2,10 @@ import * as config from '@config';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
-import { randomUUID } from 'crypto';
 import {
-  infrastructureLinks as sourceInfrastructureLinks,
-  journeyPatterns,
   routesAndJourneyPatternsTableData as baseTableConfig,
+  journeyPatterns,
+  infrastructureLinks as sourceInfrastructureLinks,
   scheduledStopPoints as sourceScheduledStopPoints,
 } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { GenericNetworkDbTables } from 'generic/networkdb/datasets/schema';
@@ -19,6 +18,7 @@ import {
   VehicleSubmodeOnInfrastructureLink,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('Function service_pattern.get_distances_between_stop_points_in_journey_patterns', () => {
   let dbConnection: DbConnection;
@@ -447,7 +447,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
       // Set a different location along the associated infrastructure link.
       const higherPriorityStopVariant: ScheduledStopPoint = {
         ...scheduledStopPoints[7],
-        scheduled_stop_point_id: randomUUID(),
+        scheduled_stop_point_id: uuidv4(),
         priority: newPriority,
         measured_location: {
           type: 'Point',
