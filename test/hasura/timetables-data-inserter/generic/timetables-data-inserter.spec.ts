@@ -1,9 +1,9 @@
 import * as config from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable } from '@util/setup';
-import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import { get } from 'lodash';
+import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import * as testDatasetJson from './example.json';
 import { insertDatasetFromJson } from './json-parser';
 import {

@@ -1,5 +1,5 @@
 import { DateTime, Duration } from 'luxon';
-import { defaultDayTypeIds } from '../day-types';
+import { defaultDayTypeIds } from '../../../../../timetables-data-inserter/day-types';
 
 export const winter2022VehicleScheduleFrame = {
   validity_start: DateTime.fromISO('2022-07-01'),

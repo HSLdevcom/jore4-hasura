@@ -1,8 +1,8 @@
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
-import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import { DateTime, Duration } from 'luxon';
 import { z } from 'zod';
+import { defaultDayTypeIds } from '../day-types';
 
 // TODO: could add some validation?
 export const dateSchema = z

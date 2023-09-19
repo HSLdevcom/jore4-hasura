@@ -1,4 +1,3 @@
-export * from './day-types';
 export * from './journey-pattern-refs';
 export * from './passing-times';
 export * from './stop-points';

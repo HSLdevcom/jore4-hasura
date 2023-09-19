@@ -1,5 +1,5 @@
+import { defaultDayTypeIds } from '../../../../timetables-data-inserter/day-types';
 import { VehicleService } from '../types';
-import { defaultDayTypeIds } from './day-types';
 import { vehicleScheduleFramesByName } from './vehicle-schedules-frames';
 
 export const vehicleServicesByName = {

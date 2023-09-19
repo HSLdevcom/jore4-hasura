@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { defaultDayTypeIds } from '../day-types';
+import { defaultDayTypeIds } from '../../../../../timetables-data-inserter/day-types';
 
 export const summer2023VehicleScheduleFrame = {
   validity_start: DateTime.fromISO('2023-06-01'),

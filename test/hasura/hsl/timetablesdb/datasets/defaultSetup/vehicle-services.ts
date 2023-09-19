@@ -1,8 +1,6 @@
-import {
-  defaultDayTypeIds,
-  vehicleServices,
-} from 'generic/timetablesdb/datasets/defaultSetup';
+import { vehicleServices } from 'generic/timetablesdb/datasets/defaultSetup';
 import { VehicleService } from 'generic/timetablesdb/datasets/types';
+import { defaultDayTypeIds } from '../../../../timetables-data-inserter/day-types';
 import { hslVehicleScheduleFramesByName } from './vehicle-schedule-frames';
 
 export const hslVehicleServicesByName = {
