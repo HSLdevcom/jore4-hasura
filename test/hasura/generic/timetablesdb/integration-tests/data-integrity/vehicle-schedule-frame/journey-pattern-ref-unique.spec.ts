@@ -8,7 +8,6 @@ import {
 import { addMutationWrapper, postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { getPartialTableData, insertTableData, setupDb } from '@util/setup';
-import { defaultDayTypeIds } from 'generic/timetablesdb/datasets/defaultSetup';
 import { defaultTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
@@ -24,6 +23,7 @@ import { DateTime } from 'luxon';
 import {
   buildGenericTimetablesDataset,
   createGenericTableData,
+  defaultDayTypeIds,
   GenericTimetablesDatasetInput,
   genericVehicleScheduleFrameToDbFormat,
   timetabledPassingTimeToDbFormat,

@@ -2,10 +2,7 @@ import * as config from '@config';
 import * as db from '@util/db';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
-import {
-  defaultDayTypeIds,
-  journeyPatternRefsByName,
-} from 'generic/timetablesdb/datasets/defaultSetup';
+import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import {
   draftSunApril2023Timetable,
@@ -26,6 +23,7 @@ import { DateTime, Duration } from 'luxon';
 import {
   buildHslTimetablesDataset,
   createHslTableData,
+  defaultDayTypeIds,
   mergeTimetablesDatasets,
 } from 'timetables-data-inserter';
 
