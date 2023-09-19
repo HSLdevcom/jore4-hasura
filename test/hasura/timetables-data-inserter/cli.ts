@@ -3,8 +3,8 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { ConnectionConfig } from 'pg';
-import { insertDatasetFromJson as insertGenericDatasetFromJson } from './generic/json-parser';
-import { insertDatasetFromJson as insertHslDatasetFromJson } from './hsl/json-parser';
+import { insertDatasetFromJson as insertGenericDatasetFromJson } from './generic/data-insert';
+import { insertDatasetFromJson as insertHslDatasetFromJson } from './hsl/data-insert';
 
 const buildDbConfig = (
   options: Record<string, string>,
