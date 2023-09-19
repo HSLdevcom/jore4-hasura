@@ -4,8 +4,8 @@ import { queryTable } from '@util/setup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import { get } from 'lodash';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
+import { insertDatasetFromJson } from './data-insert';
 import * as testDatasetJson from './example.json';
-import { insertDatasetFromJson } from './json-parser';
 import {
   GenericTimetablesDatasetOutput,
   GenericVehicleScheduleFrameOutput,
