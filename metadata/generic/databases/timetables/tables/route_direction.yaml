@@ -1,0 +1,4 @@
+table:
+  name: direction
+  schema: route
+is_enum: true
