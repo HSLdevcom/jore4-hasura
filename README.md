@@ -489,16 +489,17 @@ the secrets and delivers them to Hasura.
 
 Our Docker image expects the following secrets to be bound to the container:
 
-| Secret file               | Description                                                             |
-| ------------------------- | ----------------------------------------------------------------------- |
-| hasura-admin-secret       | Password with which admins can access the console and other features    |
-| db-hostname               | Hostname/IP address for the default database                            |
-| db-name                   | Name of the database instance to connect to within the default database |
-| db-timetables-name        | Name of the logical database for timetables                             |
-| db-username               | Username for the default database                                       |
-| db-password               | Password for the default database                                       |
-| db-auth-username          | Name of the sql user that is used by the auth backend service           |
-| db-jore3importer-username | Name of the sql user that is used by the jore3 importer service         |
+| Secret file                | Description                                                             |
+| -------------------------- | ----------------------------------------------------------------------- |
+| hasura-admin-secret        | Password with which admins can access the console and other features    |
+| db-hostname                | Hostname/IP address for the default database                            |
+| db-name                    | Name of the database instance to connect to within the default database |
+| db-timetables-name         | Name of the logical database for timetables                             |
+| db-username                | Username for the default database                                       |
+| db-password                | Password for the default database                                       |
+| db-auth-username           | Name of the sql user that is used by the auth backend service           |
+| db-jore3importer-username  | Name of the sql user that is used by the jore3 importer service         |
+| db-timetables-api-username | Name of the sql user that is used by the timetables API service         |
 
 ### Use of the Docker image
 
