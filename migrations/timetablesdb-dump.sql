@@ -14,6 +14,138 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: SCHEMA journey_pattern; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA journey_pattern TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA passing_times; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA passing_times TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA route; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA route TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA service_calendar; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA service_calendar TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA service_pattern; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA service_pattern TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA vehicle_journey; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA vehicle_journey TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA vehicle_schedule; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA vehicle_schedule TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA vehicle_service; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA vehicle_service TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA vehicle_type; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA vehicle_type TO dbtimetablesapi;
+
+--
+-- Name: TABLE journey_pattern_ref; Type: ACL; Schema: journey_pattern; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE journey_pattern.journey_pattern_ref TO dbtimetablesapi;
+
+--
+-- Name: TABLE timetabled_passing_time; Type: ACL; Schema: passing_times; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE passing_times.timetabled_passing_time TO dbtimetablesapi;
+
+--
+-- Name: TABLE type_of_line; Type: ACL; Schema: route; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE route.type_of_line TO dbtimetablesapi;
+
+--
+-- Name: TABLE day_type; Type: ACL; Schema: service_calendar; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.day_type TO dbtimetablesapi;
+
+--
+-- Name: TABLE day_type_active_on_day_of_week; Type: ACL; Schema: service_calendar; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.day_type_active_on_day_of_week TO dbtimetablesapi;
+
+--
+-- Name: TABLE scheduled_stop_point_in_journey_pattern_ref; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref TO dbtimetablesapi;
+
+--
+-- Name: TABLE journey_type; Type: ACL; Schema: vehicle_journey; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_journey.journey_type TO dbtimetablesapi;
+
+--
+-- Name: TABLE vehicle_journey; Type: ACL; Schema: vehicle_journey; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_journey.vehicle_journey TO dbtimetablesapi;
+
+--
+-- Name: TABLE vehicle_schedule_frame; Type: ACL; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_schedule.vehicle_schedule_frame TO dbtimetablesapi;
+
+--
+-- Name: TABLE block; Type: ACL; Schema: vehicle_service; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_service.block TO dbtimetablesapi;
+
+--
+-- Name: TABLE journey_patterns_in_vehicle_service; Type: ACL; Schema: vehicle_service; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_service.journey_patterns_in_vehicle_service TO dbtimetablesapi;
+
+--
+-- Name: TABLE vehicle_service; Type: ACL; Schema: vehicle_service; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_service.vehicle_service TO dbtimetablesapi;
+
+--
+-- Name: TABLE vehicle_type; Type: ACL; Schema: vehicle_type; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE vehicle_type.vehicle_type TO dbtimetablesapi;
+
+--
 -- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -766,6 +898,60 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_type.vehicle_type
     ADD CONSTRAINT vehicle_type_pkey PRIMARY KEY (vehicle_type_id);
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: passing_times; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA passing_times GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_calendar GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: vehicle_journey; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA vehicle_journey GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA vehicle_schedule GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: vehicle_service; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA vehicle_service GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: vehicle_type; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA vehicle_type GRANT SELECT ON TABLES  TO dbtimetablesapi;
 
 --
 -- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
