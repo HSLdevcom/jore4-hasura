@@ -54,3 +54,10 @@ ALTER TABLE journey_pattern.journey_pattern_ref
   FOREIGN KEY (route_direction) REFERENCES route.direction(direction);
 
 CREATE INDEX idx_journey_pattern_ref_route_direction ON journey_pattern.journey_pattern_ref USING btree (route_direction);
+
+---------- Add new columns to Scheduled Stop Point in Journey Pattern Ref ----------
+
+ALTER TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  ADD COLUMN timing_place_label text NULL;
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.timing_place_label IS 'The label of the timing place associated with the referenced scheduled stop point in journey pattern';

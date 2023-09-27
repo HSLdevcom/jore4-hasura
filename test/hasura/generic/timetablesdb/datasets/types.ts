@@ -122,6 +122,7 @@ export type ScheduledStopInJourneyPatternRef = {
   scheduled_stop_point_in_journey_pattern_ref_id: UUID;
   scheduled_stop_point_label: string;
   scheduled_stop_point_sequence: number;
+  timing_place_label: string | null;
   journey_pattern_ref_id: UUID;
 };
 
@@ -129,6 +130,7 @@ export const scheduledStopInJourneyPatternRefProps: Property[] = [
   'scheduled_stop_point_in_journey_pattern_ref_id',
   'scheduled_stop_point_label',
   'scheduled_stop_point_sequence',
+  'timing_place_label',
   'journey_pattern_ref_id',
 ];
 

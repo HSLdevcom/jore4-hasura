@@ -1,3 +1,8 @@
+---------- Drop columns from Scheduled Stop Point in Journey Pattern Ref ----------
+
+ALTER TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  DROP COLUMN timing_place_label;
+
 ---------- Drop columns from Journey Pattern Ref ----------
 
 ALTER TABLE journey_pattern.journey_pattern_ref
