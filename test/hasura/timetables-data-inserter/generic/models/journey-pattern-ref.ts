@@ -1,5 +1,7 @@
-import { TypeOfLine } from 'generic/networkdb/datasets/types';
-import { JourneyPatternRef } from 'generic/timetablesdb/datasets/types';
+import {
+  JourneyPatternRef,
+  TypeOfLine,
+} from 'generic/timetablesdb/datasets/types';
 import { omit } from 'lodash';
 import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
