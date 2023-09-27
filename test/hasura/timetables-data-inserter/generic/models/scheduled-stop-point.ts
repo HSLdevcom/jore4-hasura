@@ -17,6 +17,7 @@ export const processScheduledStopPoint = (
 
   return {
     ...result,
+    timing_place_label: stopPoint.timing_place_label || null,
     journey_pattern_ref_id: parentJourneyPatternRef.journey_pattern_ref_id,
   };
 };

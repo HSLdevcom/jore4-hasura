@@ -51,6 +51,7 @@ export const journeyPatternRefsDataset = {
         {
           scheduled_stop_point_sequence: 1,
           scheduled_stop_point_label: 'H2201',
+          timing_place_label: 'TP001',
         },
         {
           scheduled_stop_point_sequence: 2,
@@ -63,6 +64,7 @@ export const journeyPatternRefsDataset = {
         {
           scheduled_stop_point_sequence: 4,
           scheduled_stop_point_label: 'H2204',
+          timing_place_label: 'TP004',
         },
       ],
     },
@@ -74,6 +76,7 @@ export const journeyPatternRefsDataset = {
         {
           scheduled_stop_point_sequence: 1,
           scheduled_stop_point_label: 'H2204',
+          timing_place_label: 'TP004',
         },
         {
           scheduled_stop_point_sequence: 2,
@@ -86,6 +89,7 @@ export const journeyPatternRefsDataset = {
         {
           scheduled_stop_point_sequence: 4,
           scheduled_stop_point_label: 'H2201',
+          timing_place_label: 'TP001',
         },
       ],
     },
@@ -107,6 +111,7 @@ export const defaultJourneyPatternRefsByName = {
       {
         scheduled_stop_point_sequence: 1,
         scheduled_stop_point_label: 'H2201',
+        timing_place_label: 'TP001',
       },
       {
         scheduled_stop_point_sequence: 2,
@@ -119,6 +124,7 @@ export const defaultJourneyPatternRefsByName = {
       {
         scheduled_stop_point_sequence: 4,
         scheduled_stop_point_label: 'H2204',
+        timing_place_label: 'TP004',
       },
     ],
   },
@@ -136,6 +142,7 @@ export const defaultJourneyPatternRefsByName = {
       {
         scheduled_stop_point_sequence: 1,
         scheduled_stop_point_label: 'H2204',
+        timing_place_label: 'TP004',
       },
       {
         scheduled_stop_point_sequence: 2,
@@ -148,6 +155,7 @@ export const defaultJourneyPatternRefsByName = {
       {
         scheduled_stop_point_sequence: 4,
         scheduled_stop_point_label: 'H2201',
+        timing_place_label: 'TP001',
       },
     ],
   },
@@ -166,10 +174,12 @@ export const defaultJourneyPatternRefsByName = {
       {
         scheduled_stop_point_sequence: 1,
         scheduled_stop_point_label: 'H2201',
+        timing_place_label: 'TP001',
       },
       {
         scheduled_stop_point_sequence: 2,
         scheduled_stop_point_label: 'H2202',
+        timing_place_label: 'TP002',
       },
     ],
   },

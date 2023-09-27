@@ -9,10 +9,12 @@ import {
 } from 'generic/timetablesdb/datasets/types';
 
 // TODO: we should be able to assign at least sequence automagically.
-export type ScheduledStopInJourneyPatternRefInput = RequiredKeys<
-  Partial<ScheduledStopInJourneyPatternRef>,
-  'scheduled_stop_point_label' | 'scheduled_stop_point_sequence'
->;
+export type ScheduledStopInJourneyPatternRefInput =
+  Partial<ScheduledStopInJourneyPatternRef> & {
+    scheduled_stop_point_label: string;
+    scheduled_stop_point_sequence: number;
+    timing_place_label?: string | null;
+  };
 
 export type ScheduledStopInJourneyPatternRefOutput =
   Required<ScheduledStopInJourneyPatternRef>;

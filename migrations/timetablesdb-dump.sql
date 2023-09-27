@@ -519,6 +519,12 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.sc
 COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.scheduled_stop_point_sequence IS 'The order of the SCHEDULED STOP POINT within the JOURNEY PATTERN.';
 
 --
+-- Name: COLUMN scheduled_stop_point_in_journey_pattern_ref.timing_place_label; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.timing_place_label IS 'The label of the timing place associated with the referenced scheduled stop point in journey pattern';
+
+--
 -- Name: FUNCTION queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -2153,7 +2159,8 @@ CREATE TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref (
     scheduled_stop_point_in_journey_pattern_ref_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     journey_pattern_ref_id uuid NOT NULL,
     scheduled_stop_point_label text NOT NULL,
-    scheduled_stop_point_sequence integer NOT NULL
+    scheduled_stop_point_sequence integer NOT NULL,
+    timing_place_label text
 );
 
 
