@@ -2,7 +2,7 @@ actions:
   - name: combineTimetables
     definition:
       kind: synchronous
-      handler: http://host.docker.internal:8080/timetables/combine
+      handler: http://jore4-timetablesapi:8080/timetables/combine
       request_transform:
         body:
           action: transform
@@ -14,7 +14,7 @@ actions:
   - name: replaceTimetables
     definition:
       kind: synchronous
-      handler: http://host.docker.internal:8080/timetables/replace
+      handler: http://jore4-timetablesapi:8080/timetables/replace
       request_transform:
         body:
           action: transform
