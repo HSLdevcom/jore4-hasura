@@ -23,12 +23,29 @@ actions:
         query_params: {}
         template_engine: Kriti
         version: 2
+  - name: toReplaceScheduleVehicleFrameIds
+    definition:
+      kind: ""
+      handler: http://host.docker.internal:8080/timetables/toReplace
+      request_transform:
+        method: GET
+        query_params:
+          stagingVehicleScheduleFrameId: "{{$body.input.arg1.stagingVehicleScheduleFrameId}}"
+          targetPriority: "{{$body.input.arg1.targetPriority}}"
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        version: 2
 custom_types:
   enums: []
   input_objects:
     - name: CombineTimetablesInput
     - name: ReplaceTimetablesInput
+    - name: ToReplaceScheduleVehicleFrameIdsInput
   objects:
     - name: CombineTimetablesOutput
     - name: ReplaceTimetablesOutput
+    - name: ToReplaceScheduleVehicleFrameIdsOutput
   scalars: []
