@@ -1053,7 +1053,7 @@ ALTER TABLE ONLY passing_times.timetabled_passing_time
 --
 
 ALTER TABLE ONLY passing_times.timetabled_passing_time
-    ADD CONSTRAINT timetabled_passing_time_vehicle_journey_id_fkey FOREIGN KEY (vehicle_journey_id) REFERENCES vehicle_journey.vehicle_journey(vehicle_journey_id);
+    ADD CONSTRAINT timetabled_passing_time_vehicle_journey_id_fkey FOREIGN KEY (vehicle_journey_id) REFERENCES vehicle_journey.vehicle_journey(vehicle_journey_id) ON DELETE CASCADE;
 
 --
 -- Name: direction direction_the_opposite_of_direction_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
@@ -1081,7 +1081,7 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point_in_journey_pattern_ref
 --
 
 ALTER TABLE ONLY vehicle_journey.vehicle_journey
-    ADD CONSTRAINT vehicle_journey_block_id_fkey FOREIGN KEY (block_id) REFERENCES vehicle_service.block(block_id);
+    ADD CONSTRAINT vehicle_journey_block_id_fkey FOREIGN KEY (block_id) REFERENCES vehicle_service.block(block_id) ON DELETE CASCADE;
 
 --
 -- Name: vehicle_journey vehicle_journey_journey_pattern_ref_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
@@ -1102,7 +1102,7 @@ ALTER TABLE ONLY vehicle_journey.vehicle_journey
 --
 
 ALTER TABLE ONLY vehicle_service.block
-    ADD CONSTRAINT block_vehicle_service_id_fkey FOREIGN KEY (vehicle_service_id) REFERENCES vehicle_service.vehicle_service(vehicle_service_id);
+    ADD CONSTRAINT block_vehicle_service_id_fkey FOREIGN KEY (vehicle_service_id) REFERENCES vehicle_service.vehicle_service(vehicle_service_id) ON DELETE CASCADE;
 
 --
 -- Name: block vehicle_type_fkey; Type: FK CONSTRAINT; Schema: vehicle_service; Owner: dbhasura
@@ -1130,7 +1130,7 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 --
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
-    ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id);
+    ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id) ON DELETE CASCADE;
 
 --
 -- Name: const_timetables_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
