@@ -23,12 +23,30 @@ actions:
         query_params: {}
         template_engine: Kriti
         version: 2
+  - name: toReplaceVehicleScheduleFrameIds
+    definition:
+      kind: ""
+      handler: http://jore4-timetablesapi:8080/timetables/to-replace
+      request_transform:
+        method: GET
+        query_params:
+          stagingVehicleScheduleFrameId: "{{$body.input.arg1.stagingVehicleScheduleFrameId}}"
+          targetPriority: "{{$body.input.arg1.targetPriority}}"
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        version: 2
 custom_types:
   enums: []
   input_objects:
     - name: CombineTimetablesInput
     - name: ReplaceTimetablesInput
+    - name: ToReplaceVehicleScheduleFrameIdsInput
   objects:
     - name: CombineTimetablesOutput
     - name: ReplaceTimetablesOutput
+    - name: ToReplaceVehicleScheduleFrameIdsOutput
+
   scalars: []
