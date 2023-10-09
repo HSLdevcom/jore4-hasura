@@ -6,6 +6,12 @@ type Mutation {
   replaceTimetables(arg1: ReplaceTimetablesInput!): ReplaceTimetablesOutput
 }
 
+type Query {
+  toReplaceVehicleScheduleFrameIds(
+    arg1: ToReplaceVehicleScheduleFrameIdsInput!
+  ): ToReplaceVehicleScheduleFrameIdsOutput
+}
+
 input CombineTimetablesInput {
   stagingVehicleScheduleFrameIds: [uuid]!
   targetPriority: Int!
@@ -16,10 +22,19 @@ input ReplaceTimetablesInput {
   targetPriority: Int!
 }
 
+input ToReplaceVehicleScheduleFrameIdsInput {
+  stagingVehicleScheduleFrameId: uuid!
+  targetPriority: Int!
+}
+
 type CombineTimetablesOutput {
   combinedIntoVehicleScheduleFrameIds: [uuid]!
 }
 
 type ReplaceTimetablesOutput {
   replacedVehicleScheduleFrameIds: [uuid]!
+}
+
+type ToReplaceVehicleScheduleFrameIdsOutput {
+  toReplaceVehicleScheduleFrameIds: [uuid]!
 }
