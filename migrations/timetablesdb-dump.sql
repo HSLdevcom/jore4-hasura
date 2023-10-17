@@ -2242,7 +2242,12 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     priority integer NOT NULL,
     label text NOT NULL,
     validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT one_day_validity_priorities CHECK (
+CASE
+    WHEN (priority <> internal_utils.const_timetables_priority_staging()) THEN (((validity_start = validity_end) AND (priority = internal_utils.const_timetables_priority_special())) OR ((validity_start <> validity_end) AND (priority <> internal_utils.const_timetables_priority_special())))
+    ELSE true
+END)
 );
 
 

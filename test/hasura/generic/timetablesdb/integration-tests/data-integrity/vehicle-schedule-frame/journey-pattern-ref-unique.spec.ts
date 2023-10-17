@@ -10,7 +10,10 @@ import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { getPartialTableData, insertTableData, setupDb } from '@util/setup';
 import { defaultTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { GenericTimetablesDbTables } from 'generic/timetablesdb/datasets/schema';
-import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
+import {
+  TimetablePriority,
+  VehicleScheduleFrame,
+} from 'generic/timetablesdb/datasets/types';
 import {
   buildUpdateBlockMutation,
   buildUpdateJourneyPatternRefMutation,
@@ -149,15 +152,15 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     dataset.passingTimes.push(...newStopPoints);
   };
 
-  const setBaseDatasetSchedulePriority = async (
-    priority: TimetablePriority,
+  const updateBaseDatasetFrame = async (
+    toUpdate: Partial<VehicleScheduleFrame>,
   ) => {
     const updateMutation = addMutationWrapper(
       buildUpdateVehicleScheduleFrameMutation(
         builtDefaultDataset._vehicle_schedule_frames.winter2022
           .vehicle_schedule_frame_id,
         {
-          priority,
+          ...toUpdate,
         },
       ),
     );
@@ -226,16 +229,25 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       it('should succeed when priorities are different', async () => {
         const dataset = cloneBaseDataset();
         expect(dataset.frame.priority).toBe(TimetablePriority.Standard);
-        dataset.frame.priority = TimetablePriority.Special;
+        dataset.frame.priority = TimetablePriority.Temporary;
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
       });
 
       it('should fail if trying to insert with same priority if priority is Special (or lower)', async () => {
-        await setBaseDatasetSchedulePriority(TimetablePriority.Special);
+        // Special day priority frames must have validity of exactly one day, so need to set that first.
+        const specialDay = DateTime.fromISO('2023-01-23');
+        await updateBaseDatasetFrame({
+          validity_start: specialDay,
+          validity_end: specialDay,
+        });
+
+        await updateBaseDatasetFrame({ priority: TimetablePriority.Special });
 
         const dataset = cloneBaseDataset();
         dataset.frame.priority = TimetablePriority.Special;
+        dataset.frame.validity_start = specialDay;
+        dataset.frame.validity_end = specialDay;
 
         await expect(insertDataset(dataset)).rejects.toThrow(
           'conflicting schedules detected',
@@ -243,7 +255,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       });
 
       it('should successfully insert with same priority if priority is Draft, even if schedule otherwise conflicts', async () => {
-        await setBaseDatasetSchedulePriority(TimetablePriority.Draft);
+        await updateBaseDatasetFrame({ priority: TimetablePriority.Draft });
 
         const dataset = cloneBaseDataset();
         dataset.frame.priority = TimetablePriority.Draft;
@@ -252,7 +264,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       });
 
       it('should successfully insert with same priority if priority is Staging, even if schedule otherwise conflicts', async () => {
-        await setBaseDatasetSchedulePriority(TimetablePriority.Staging);
+        await updateBaseDatasetFrame({ priority: TimetablePriority.Staging });
 
         const dataset = cloneBaseDataset();
         dataset.frame.priority = TimetablePriority.Staging;
