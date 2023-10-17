@@ -17,6 +17,7 @@
     "test-hsl": "HASURA_DATABASE_SCHEMA=hsl yarn test",
     "ts:check": "tsc --noEmit",
     "qa": "yarn lint && yarn prettier:check && yarn ts:check && yarn test",
+    "qa:fix": "yarn lint --fix --cache && yarn prettier --loglevel warn --cache",
     "timetables-data-inserter:build": "tsc -p ./tsconfig-cli.json && tsc-alias -p ./tsconfig-cli.json",
     "timetables-data-inserter:clean": "rm -rf ./dist",
     "timetables-data-inserter:cli": "node dist/timetables-data-inserter/cli.js"
