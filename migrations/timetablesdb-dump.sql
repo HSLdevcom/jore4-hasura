@@ -14,6 +14,18 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: SCHEMA internal_service_calendar; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA internal_service_calendar TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA internal_utils; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA internal_utils TO dbtimetablesapi;
+
+--
 -- Name: SCHEMA journey_pattern; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -24,6 +36,12 @@ GRANT USAGE ON SCHEMA journey_pattern TO dbtimetablesapi;
 --
 
 GRANT USAGE ON SCHEMA passing_times TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA return_value; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA return_value TO dbtimetablesapi;
 
 --
 -- Name: SCHEMA route; Type: ACL; Schema: -; Owner: dbhasura
@@ -962,6 +980,18 @@ ALTER TABLE ONLY vehicle_type.vehicle_type
     ADD CONSTRAINT vehicle_type_pkey PRIMARY KEY (vehicle_type_id);
 
 --
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_calendar GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -972,6 +1002,12 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELEC
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA passing_times GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: return_value; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA return_value GRANT SELECT ON TABLES  TO dbtimetablesapi;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
