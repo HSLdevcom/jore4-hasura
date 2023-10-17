@@ -14,6 +14,18 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: SCHEMA internal_service_calendar; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA internal_service_calendar TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA internal_utils; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA internal_utils TO dbtimetablesapi;
+
+--
 -- Name: SCHEMA journey_pattern; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -24,6 +36,12 @@ GRANT USAGE ON SCHEMA journey_pattern TO dbtimetablesapi;
 --
 
 GRANT USAGE ON SCHEMA passing_times TO dbtimetablesapi;
+
+--
+-- Name: SCHEMA return_value; Type: ACL; Schema: -; Owner: dbhasura
+--
+
+GRANT USAGE ON SCHEMA return_value TO dbtimetablesapi;
 
 --
 -- Name: SCHEMA route; Type: ACL; Schema: -; Owner: dbhasura
@@ -80,6 +98,18 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE journey_pattern.journey_pattern_ref T
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE passing_times.timetabled_passing_time TO dbtimetablesapi;
 
 --
+-- Name: TABLE timetable_version; Type: ACL; Schema: return_value; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE return_value.timetable_version TO dbtimetablesapi;
+
+--
+-- Name: TABLE vehicle_schedule; Type: ACL; Schema: return_value; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE return_value.vehicle_schedule TO dbtimetablesapi;
+
+--
 -- Name: TABLE direction; Type: ACL; Schema: route; Owner: dbhasura
 --
 
@@ -102,6 +132,18 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.day_type TO dbtimeta
 --
 
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.day_type_active_on_day_of_week TO dbtimetablesapi;
+
+--
+-- Name: TABLE substitute_operating_day_by_line_type; Type: ACL; Schema: service_calendar; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.substitute_operating_day_by_line_type TO dbtimetablesapi;
+
+--
+-- Name: TABLE substitute_operating_period; Type: ACL; Schema: service_calendar; Owner: dbhasura
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.substitute_operating_period TO dbtimetablesapi;
 
 --
 -- Name: TABLE scheduled_stop_point_in_journey_pattern_ref; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -229,6 +271,28 @@ COMMENT ON SCHEMA vehicle_schedule IS 'The vehicle schedule frame adapted from T
 --
 
 COMMENT ON SCHEMA vehicle_service IS 'The vehicle service model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:5:947 ';
+
+--
+-- Name: FUNCTION get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid); Type: COMMENT; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_service_calendar.get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid) IS 'Returns the begin date of a substitute operating period that consists of substitute_operating_day_by_line_types
+(superseded_date).
+';
+
+--
+-- Name: FUNCTION get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid); Type: COMMENT; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_service_calendar.get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid) IS 'Returns the last date of a substitute operating period that consists of substitute_operating_day_by_line_types
+(superseded_date).
+';
+
+--
+-- Name: FUNCTION const_default_timezone(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION internal_utils.const_default_timezone() IS 'Get the default timezone of service calendar.';
 
 --
 -- Name: FUNCTION create_validation_queue_temp_tables(); Type: COMMENT; Schema: internal_utils; Owner: dbhasura
@@ -435,6 +499,32 @@ COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.time
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
 
 --
+-- Name: TABLE timetable_version; Type: COMMENT; Schema: return_value; Owner: dbhasura
+--
+
+COMMENT ON TABLE return_value.timetable_version IS 'This return value is used for functions that determine what timetable versions are in effect. In effect will be true for all the timetable version rows that
+are valid on given observation day and are the highest priority of that day type. As an example if we have:
+Saturday Standard priority valid for 1.1.2023 - 30.6.2023
+Saturday Temporary priority valid for 1.5.2023 - 31.5.2023
+Saturday Special priority valid for 20.5.2023 - 20.5.2023
+
+If we check the timetable versions for the date 1.2.2023, for Saturday we only get the Standard priority, beacuse it is the only one valid on that time. So that 
+row would have in_effect = true. 
+If we check the timetable versions for the date 1.5.2023, for Saturday we would get the Standard and the Temporary priority for this date, as they are both valid.
+But only the higher priority is in effect on this date. So the Saturday Temporary priority would have in_effect = true, and the Saturday Standard priority would 
+have in_effect = false.
+If we check the timetable versions for the date 20.5.2023, for Saturday we have all three valid, but only one can be in_effect, and that would be the Special 
+priority in this case.
+';
+
+--
+-- Name: TABLE vehicle_schedule; Type: COMMENT; Schema: return_value; Owner: dbhasura
+--
+
+COMMENT ON TABLE return_value.vehicle_schedule IS 'This return value table is used in function vehicle_journey.get_vehicle_schedules_on_date. It consists of vehicle_journey_id, vehicle_schedule_frame_id or
+substitute_operating_day_by_line_type_id and also enriched with data, which are used in the UI side.';
+
+--
 -- Name: COLUMN direction.direction; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -489,6 +579,86 @@ COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_of_week IS
 COMMENT ON COLUMN service_calendar.day_type_active_on_day_of_week.day_type_id IS 'The DAY TYPE for which we define the activeness';
 
 --
+-- Name: COLUMN substitute_operating_day_by_line_type.begin_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_datetime IS 'Calculated timestamp for the instant from which the substituting public transit comes into effect.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.begin_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.begin_time IS 'The time from which the substituting public transit comes into effect. If NULL, the substitution is in effect from the start of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys prior to this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys before this time are operated as usual.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.end_datetime; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_datetime IS 'Calculated timestamp for the instant (exclusive) until which the substituting public transit is in effect.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.end_time; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.end_time IS 'The time (exclusive) until which the substituting public transit is valid. If NULL, the substitution is in effect until the end of the operating day. When substitute_day_of_week is not NULL (reference day case), vehicle journeys starting from this time are not operated. When substitute_day_of_week is NULL (no traffic case), the vehicle journeys starting from this time are operated as usual.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.substitute_day_of_week; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.substitute_day_of_week IS 'The ISO day of week (1=Monday, ... , 7=Sunday) of the day type used as the basis for operating day substitution. A NULL value indicates that there is no public transit at all, i.e. no vehicle journeys are operated within the given time period.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.substitute_operating_period_id; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.substitute_operating_period_id IS 'The id of the substitute operating period';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.superseded_date; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.superseded_date IS 'The date of operating day being superseded.';
+
+--
+-- Name: COLUMN substitute_operating_day_by_line_type.type_of_line; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_day_by_line_type.type_of_line IS 'The type of line this substitute operating day is bound to.';
+
+--
+-- Name: COLUMN substitute_operating_period.is_preset; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_period.is_preset IS 'Flag indicating whether operating period is preset or not. Preset operating periods have restrictions on the UI';
+
+--
+-- Name: COLUMN substitute_operating_period.period_name; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_calendar.substitute_operating_period.period_name IS 'Substitute operating period''s name';
+
+--
+-- Name: FUNCTION const_operating_day_end_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.const_operating_day_end_time() IS 'Get the (exclusive) end time of operating day.';
+
+--
+-- Name: FUNCTION const_operating_day_start_time(); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.const_operating_day_start_time() IS 'Get the (inclusive) start time of operating day.';
+
+--
+-- Name: FUNCTION get_active_day_types_for_date(observation_date date); Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) IS 'Finds all the day types that are active on the given observation date.
+There might be multiple filter conditions in the future: day of week, day of year, etc.
+See: https://www.transmodel-cen.eu/model/index.htm?goto=1:6:3:294 ';
+
+--
 -- Name: TABLE day_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
 --
 
@@ -499,6 +669,18 @@ COMMENT ON TABLE service_calendar.day_type IS 'A type of day characterised by on
 --
 
 COMMENT ON TABLE service_calendar.day_type_active_on_day_of_week IS 'Tells on which days of week a particular DAY TYPE is active';
+
+--
+-- Name: TABLE substitute_operating_day_by_line_type; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON TABLE service_calendar.substitute_operating_day_by_line_type IS 'Models substitute public transit as (1) a reference day or (2) indicating that public transit does not occur on certain date. Substitute operating days are always bound to a type of line.';
+
+--
+-- Name: TABLE substitute_operating_period; Type: COMMENT; Schema: service_calendar; Owner: dbhasura
+--
+
+COMMENT ON TABLE service_calendar.substitute_operating_period IS 'Models substitute operating period that consists of substitute operating days by line types.';
 
 --
 -- Name: COLUMN scheduled_stop_point_in_journey_pattern_ref.journey_pattern_ref_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -564,6 +746,30 @@ COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.sc
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.block_id IS 'The BLOCK to which this VEHICLE JOURNEY belongs';
 
 --
+-- Name: COLUMN vehicle_journey.displayed_name; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.displayed_name IS 'Displayed name of the journey.';
+
+--
+-- Name: COLUMN vehicle_journey.is_backup_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.is_backup_journey IS 'Is the journey a backup journey.';
+
+--
+-- Name: COLUMN vehicle_journey.is_extra_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.is_extra_journey IS 'Is the journey an extra journey.';
+
+--
+-- Name: COLUMN vehicle_journey.is_vehicle_type_mandatory; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.is_vehicle_type_mandatory IS 'It is required to use the same vehicle type as required in vehicle service.';
+
+--
 -- Name: COLUMN vehicle_journey.journey_name_i18n; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -592,6 +798,19 @@ COMMENT ON COLUMN vehicle_journey.vehicle_journey.layover_time IS 'LAYOVER TIMEs
 --
 
 COMMENT ON COLUMN vehicle_journey.vehicle_journey.turnaround_time IS 'Turnaround time is the time taken by a vehicle to proceed from the end of a ROUTE to the start of another.';
+
+--
+-- Name: FUNCTION get_vehicle_schedules_on_date(journey_pattern_uuid uuid, observation_date date); Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_journey.get_vehicle_schedules_on_date(journey_pattern_uuid uuid, observation_date date) IS 'Returns all valid highest priority vehicle schedules for a journey pattern on an observation date. Uses return_value.vehicle_schedule as the return value
+which is on the vehicle_journey level, but has some enriched data e.g. priority, validity range etc. This function returns all the vehicle journeys for
+vehicle_schedule_frames with the enriched data, but also calculates the correct vehicle_journeys for substitute_operating_day_by_line_type and leaves out
+all the vehicle_journeys that are out of the begin_time, end_time range. If a substitute_operating_day_by_line_type is valid for journey pattern but has
+the time range does not return any vehicle journeys (or if the substitute_operating_day_by_line_type substitute_operating_day_of_week is NULL) we return
+a row which does not have vehicle_journey set. This is an indicator that the day type does not have operation on the given day. This is of course overruled
+by special priority schedules, it being a higher priority.
+';
 
 --
 -- Name: FUNCTION queue_validation_by_vj_id(); Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
@@ -630,6 +849,18 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 
 COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing modified vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
+
+--
+-- Name: COLUMN vehicle_schedule_frame.booking_description_i18n; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.booking_description_i18n IS 'Booking description for the vehicle schedule frame. Comes from BookingRecord vsc_booking_desc field from Hastus.';
+
+--
+-- Name: COLUMN vehicle_schedule_frame.booking_label; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_schedule.vehicle_schedule_frame.booking_label IS 'Booking label for the vehicle schedule frame. Comes from BookingRecord vsc_booking field from Hastus.';
 
 --
 -- Name: COLUMN vehicle_schedule_frame.label; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
@@ -782,6 +1013,30 @@ COMMENT ON COLUMN vehicle_service.vehicle_service.name_i18n IS 'Name for vehicle
 COMMENT ON COLUMN vehicle_service.vehicle_service.vehicle_schedule_frame_id IS 'Human-readable name for the VEHICLE SCHEDULE FRAME';
 
 --
+-- Name: FUNCTION get_timetable_versions_by_journey_pattern_ids(journey_pattern_ids uuid[], start_date date, end_date date, observation_date date); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.get_timetable_versions_by_journey_pattern_ids(journey_pattern_ids uuid[], start_date date, end_date date, observation_date date) IS 'Uses the return_value.timetable_version as the return value. This function will get
+all the data needed for timetable versions including substitute_operating_days. After the data is fetched this function will determine what versions are `in effect` on the given observation date
+The logic for this is that:
+* All the special priorities (priority 25) are always in effect on their validity period.
+* All the substitute priorities (priority 23) are in effect on their validity period and if there is no other version in effect with the exact same day type.
+* All the temporary priorities (priority 20) are in effect on their validity period and if there is no other version in effect with the exact same day type.
+* All the standard priorities (priority 20) are in effect on their validity period and if there is no other version in effect with the exact same day type.
+* Draft priorities will not be set in effect, nor they will affect other priorities';
+
+--
+-- Name: FUNCTION get_timetables_and_substitute_operating_days(journey_pattern_ids uuid[], start_date date, end_date date); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION vehicle_service.get_timetables_and_substitute_operating_days(journey_pattern_ids uuid[], start_date date, end_date date) IS 'Uses return_value.timetable_version as return value. Returns all the corresponding data from
+vehicle_schedule.vehicle_schedule_frame and service_calendar.substitute_operating_day_by_line_type that matches the given timerange and journey_pattern,
+but leaves out staging priorities completely.
+This function will also match the day type for the substitute day by using the superseded date.
+In the return values, either the vehicle_schedule_frame_id OR substitute_operating_day_by_line_type_id will be NULL.
+Also the in_effect value is defaulted here to false and the real value will be calculated in the get_timetable_versions_by_journey_pattern_ids function.';
+
+--
 -- Name: FUNCTION queue_validation_by_block_id(); Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
@@ -852,6 +1107,12 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 COMMENT ON COLUMN vehicle_type.vehicle_type.description_i18n IS 'Description of the vehicle type.';
 
 --
+-- Name: COLUMN vehicle_type.hsl_id; Type: COMMENT; Schema: vehicle_type; Owner: dbhasura
+--
+
+COMMENT ON COLUMN vehicle_type.vehicle_type.hsl_id IS 'ID used in Hastus to represent the vehicle type.';
+
+--
 -- Name: COLUMN vehicle_type.label; Type: COMMENT; Schema: vehicle_type; Owner: dbhasura
 --
 
@@ -904,6 +1165,41 @@ ALTER TABLE ONLY service_calendar.day_type
 
 ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_pkey PRIMARY KEY (day_type_id, day_of_week);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_no_timespan_overlap; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_no_timespan_overlap EXCLUDE USING gist (type_of_line WITH =, tstzrange(begin_datetime, end_datetime) WITH &&);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_pkey PRIMARY KEY (substitute_operating_day_by_line_type_id);
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_unique_dow; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_unique_dow EXCLUDE USING gist (type_of_line WITH =, superseded_date WITH =, COALESCE(substitute_day_of_week, 0) WITH <>);
+
+--
+-- Name: substitute_operating_period substitute_operating_period_period_name_key; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_period
+    ADD CONSTRAINT substitute_operating_period_period_name_key UNIQUE (period_name);
+
+--
+-- Name: substitute_operating_period substitute_operating_period_pkey; Type: CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_period
+    ADD CONSTRAINT substitute_operating_period_pkey PRIMARY KEY (substitute_operating_period_id);
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pattern_ref_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -962,6 +1258,18 @@ ALTER TABLE ONLY vehicle_type.vehicle_type
     ADD CONSTRAINT vehicle_type_pkey PRIMARY KEY (vehicle_type_id);
 
 --
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_calendar GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -972,6 +1280,12 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELEC
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA passing_times GRANT SELECT ON TABLES  TO dbtimetablesapi;
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: return_value; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA return_value GRANT SELECT ON TABLES  TO dbtimetablesapi;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
@@ -1070,6 +1384,20 @@ ALTER TABLE ONLY service_calendar.day_type_active_on_day_of_week
     ADD CONSTRAINT day_type_active_on_day_of_week_day_type_id_fkey FOREIGN KEY (day_type_id) REFERENCES service_calendar.day_type(day_type_id);
 
 --
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_substitute_period_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_substitute_period_fkey FOREIGN KEY (substitute_operating_period_id) REFERENCES service_calendar.substitute_operating_period(substitute_operating_period_id) ON DELETE CASCADE;
+
+--
+-- Name: substitute_operating_day_by_line_type substitute_operating_day_by_line_type_type_of_line_fkey; Type: FK CONSTRAINT; Schema: service_calendar; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_calendar.substitute_operating_day_by_line_type
+    ADD CONSTRAINT substitute_operating_day_by_line_type_type_of_line_fkey FOREIGN KEY (type_of_line) REFERENCES route.type_of_line(type_of_line);
+
+--
 -- Name: scheduled_stop_point_in_journey_pattern_ref scheduled_stop_point_in_journey_pat_journey_pattern_ref_id_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1131,6 +1459,49 @@ ALTER TABLE ONLY vehicle_service.vehicle_service
 
 ALTER TABLE ONLY vehicle_service.vehicle_service
     ADD CONSTRAINT vehicle_service_vehicle_schedule_frame_id_fkey FOREIGN KEY (vehicle_schedule_frame_id) REFERENCES vehicle_schedule.vehicle_schedule_frame(vehicle_schedule_frame_id) ON DELETE CASCADE;
+
+--
+-- Name: get_substitute_operating_period_begin_date(uuid); Type: FUNCTION; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_service_calendar.get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid) RETURNS date
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MIN(superseded_date)
+  FROM service_calendar.substitute_operating_day_by_line_type
+  WHERE substitute_operating_period_id = substitute_operating_period_uuid;
+$$;
+
+
+ALTER FUNCTION internal_service_calendar.get_substitute_operating_period_begin_date(substitute_operating_period_uuid uuid) OWNER TO dbhasura;
+
+--
+-- Name: get_substitute_operating_period_end_date(uuid); Type: FUNCTION; Schema: internal_service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_service_calendar.get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid) RETURNS date
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT MAX(superseded_date)
+  FROM service_calendar.substitute_operating_day_by_line_type
+  WHERE substitute_operating_period_id = substitute_operating_period_uuid;
+$$;
+
+
+ALTER FUNCTION internal_service_calendar.get_substitute_operating_period_end_date(substitute_operating_period_uuid uuid) OWNER TO dbhasura;
+
+--
+-- Name: const_default_timezone(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
+--
+
+CREATE FUNCTION internal_utils.const_default_timezone() RETURNS text
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT 'Europe/Helsinki'
+$$;
+
+
+ALTER FUNCTION internal_utils.const_default_timezone() OWNER TO dbhasura;
 
 --
 -- Name: const_timetables_priority_draft(); Type: FUNCTION; Schema: internal_utils; Owner: dbhasura
@@ -1547,6 +1918,50 @@ $$;
 ALTER FUNCTION passing_times.validate_passing_time_sequences() OWNER TO dbhasura;
 
 --
+-- Name: const_operating_day_end_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.const_operating_day_end_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '28:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.const_operating_day_end_time() OWNER TO dbhasura;
+
+--
+-- Name: const_operating_day_start_time(); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.const_operating_day_start_time() RETURNS interval
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+SELECT interval '04:30:00'
+$$;
+
+
+ALTER FUNCTION service_calendar.const_operating_day_start_time() OWNER TO dbhasura;
+
+--
+-- Name: get_active_day_types_for_date(date); Type: FUNCTION; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) RETURNS SETOF service_calendar.day_type
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT dt.*
+    FROM service_calendar.day_type dt
+    -- in the future, day types might have other filter properties apart from "active on day of week", thus using LEFT JOIN
+    LEFT JOIN service_calendar.day_type_active_on_day_of_week dtaodow ON dtaodow.day_type_id = dt.day_type_id
+    -- day types active on the same day of week as the observation date
+    WHERE extract(isodow FROM observation_date) = dtaodow.day_of_week
+$$;
+
+
+ALTER FUNCTION service_calendar.get_active_day_types_for_date(observation_date date) OWNER TO dbhasura;
+
+--
 -- Name: queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1569,6 +1984,114 @@ $$;
 
 
 ALTER FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() OWNER TO dbhasura;
+
+--
+-- Name: get_vehicle_schedules_on_date(uuid, date); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_journey.get_vehicle_schedules_on_date(journey_pattern_uuid uuid, observation_date date) RETURNS SETOF return_value.vehicle_schedule
+    LANGUAGE sql STABLE
+    AS $$
+WITH substitute_operating_day_by_line_type_vehicle_schedules AS
+(
+  SELECT DISTINCT vj.vehicle_journey_id,
+    internal_service_calendar.get_substitute_operating_period_begin_date(sodblt.substitute_operating_period_id),
+    internal_service_calendar.get_substitute_operating_period_end_date(sodblt.substitute_operating_period_id),
+    internal_utils.const_timetables_priority_substitute_by_line_type(), -- priority
+    ( -- calculate what is the correct day type id for the superseded date
+      SELECT day_type_id
+      FROM service_calendar.get_active_day_types_for_date(sodblt.superseded_date) dt
+        JOIN  service_calendar.day_type_active_on_day_of_week dtaodow USING(day_type_id)
+      GROUP BY day_type_id
+      HAVING count(label) = 1
+    ),
+    NULL::uuid, -- vehicle_schedule_frame_id
+    sodblt.substitute_operating_day_by_line_type_id,
+    sodblt.created_at
+  FROM service_calendar.substitute_operating_day_by_line_type sodblt
+    JOIN journey_pattern.journey_pattern_ref jpr USING(type_of_line)
+    JOIN vehicle_journey.vehicle_journey vj USING(journey_pattern_ref_id)
+    JOIN vehicle_service.block b USING (block_id)
+    JOIN vehicle_service.vehicle_service vs USING (vehicle_service_id)
+    JOIN vehicle_schedule.vehicle_schedule_frame vsf USING (vehicle_schedule_frame_id)
+    JOIN service_calendar.day_type_active_on_day_of_week dtaodow USING (day_type_id)
+  WHERE jpr.journey_pattern_id = journey_pattern_uuid
+    AND sodblt.superseded_date BETWEEN vsf.validity_start AND vsf.validity_end
+    AND sodblt.substitute_day_of_week = dtaodow.day_of_week
+    AND sodblt.superseded_date = observation_date
+    AND vsf.priority != internal_utils.const_timetables_priority_staging()
+    AND vsf.priority != internal_utils.const_timetables_priority_draft()
+    AND (sodblt.begin_time IS NULL OR internal_utils.vehicle_journey_start_time_interval(vj) >= sodblt.begin_time)
+    AND (sodblt.end_time IS NULL OR internal_utils.vehicle_journey_start_time_interval(vj) < sodblt.end_time)
+),
+vehicle_schedules AS
+(
+  SELECT DISTINCT vj.vehicle_journey_id,
+    vsf.validity_start,
+    vsf.validity_end,
+    vsf.priority,
+    dt.day_type_id,
+    vsf.vehicle_schedule_frame_id,
+    NULL:: uuid, -- substitute_operating_day_by_line_type_id
+    vsf.created_at
+  FROM vehicle_schedule.vehicle_schedule_frame vsf
+    JOIN vehicle_service.vehicle_service vs USING (vehicle_schedule_frame_id)
+    JOIN service_calendar.day_type dt USING(day_type_id)
+    JOIN vehicle_service.block b USING(vehicle_service_id)
+    JOIN vehicle_journey.vehicle_journey vj USING(block_id)
+    JOIN journey_pattern.journey_pattern_ref jpr USING (journey_pattern_ref_id)
+  WHERE jpr.journey_pattern_id = journey_pattern_uuid
+    AND vsf.priority != internal_utils.const_timetables_priority_staging()
+    AND vsf.priority != internal_utils.const_timetables_priority_draft()
+    AND observation_date BETWEEN vsf.validity_start AND vsf.validity_end
+  UNION
+  -- Get possible vehicle schedules from substitute operating day by line type
+  SELECT *
+  FROM substitute_operating_day_by_line_type_vehicle_schedules
+  UNION
+  -- If there is substitute operating day by line type set for observation day
+  -- but it yields no vehicle schedules, we return one row without vehicle_journey_id
+  -- to indicate that there is no traffic on that day.
+  SELECT NULL::uuid, -- vehile_journey_id
+    superseded_date,
+    superseded_date,
+    internal_utils.const_timetables_priority_substitute_by_line_type(), -- priority
+    ( -- calculate what is the correct day type id for the superseded date
+      SELECT day_type_id
+      FROM service_calendar.get_active_day_types_for_date(sodblt.superseded_date) dt
+        JOIN  service_calendar.day_type_active_on_day_of_week dtaodow USING(day_type_id)
+      GROUP BY day_type_id
+      HAVING count(label) = 1
+    ),
+    NULL::uuid, -- vehicle_schedule_frame_id
+    substitute_operating_day_by_line_type_id,
+    created_at
+  FROM service_calendar.substitute_operating_day_by_line_type sodblt
+  WHERE NOT EXISTS
+  (
+    SELECT * FROM substitute_operating_day_by_line_type_vehicle_schedules
+  )
+  AND EXISTS
+  (
+    SELECT 1
+    FROM service_calendar.substitute_operating_day_by_line_type sodblt
+    JOIN journey_pattern.journey_pattern_ref jpr USING (type_of_line)
+    WHERE jpr.journey_pattern_id = journey_pattern_uuid
+      AND sodblt.superseded_date = observation_date
+  )
+  AND superseded_date = observation_date
+)
+SELECT *
+FROM vehicle_schedules
+WHERE (priority, day_type_id) IN (
+  SELECT MAX(priority), day_type_id
+  FROM vehicle_schedules
+  GROUP BY day_type_id
+);
+$$;
+
+
+ALTER FUNCTION vehicle_journey.get_vehicle_schedules_on_date(journey_pattern_uuid uuid, observation_date date) OWNER TO dbhasura;
 
 --
 -- Name: queue_validation_by_vj_id(); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
@@ -1773,6 +2296,99 @@ $$;
 ALTER FUNCTION vehicle_schedule.validate_queued_schedules_uniqueness() OWNER TO dbhasura;
 
 --
+-- Name: get_timetable_versions_by_journey_pattern_ids(uuid[], date, date, date); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.get_timetable_versions_by_journey_pattern_ids(journey_pattern_ids uuid[], start_date date, end_date date, observation_date date) RETURNS SETOF return_value.timetable_version
+    LANGUAGE sql STABLE
+    AS $$
+WITH timetable_versions AS
+(
+  SELECT gen_random_uuid() AS id, *
+  FROM vehicle_service.get_timetables_and_substitute_operating_days(journey_pattern_ids, start_date, end_date)
+)
+SELECT
+  timetable_versions.vehicle_schedule_frame_id,
+  timetable_versions.substitute_operating_day_by_line_type_id,
+  timetable_versions.validity_start,
+  timetable_versions.validity_end,
+  timetable_versions.priority,
+  ( -- calculate the in_effect value
+    timetable_versions.validity_start <= observation_date
+    AND timetable_versions.validity_end >= observation_date
+    AND timetable_versions.priority != internal_utils.const_timetables_priority_draft() -- do not set in effect value to drafts, staging priority is already omitted in get_timetables_and_substitute_operating_days
+    AND
+    (
+      timetable_versions.priority = internal_utils.const_timetables_priority_special()
+      OR NOT EXISTS
+      (
+        SELECT 1
+        FROM timetable_versions overriding_tv
+        WHERE
+          overriding_tv.id != timetable_versions.id
+          AND overriding_tv.day_type_id = timetable_versions.day_type_id
+          AND overriding_tv.priority != internal_utils.const_timetables_priority_draft() -- do not override other priorities with draft priority
+          AND overriding_tv.priority > timetable_versions.priority
+          AND overriding_tv.validity_start <= observation_date
+          AND overriding_tv.validity_end >= observation_date
+      )
+    )
+  ) AS in_effect,
+  timetable_versions.day_type_id
+FROM timetable_versions;
+$$;
+
+
+ALTER FUNCTION vehicle_service.get_timetable_versions_by_journey_pattern_ids(journey_pattern_ids uuid[], start_date date, end_date date, observation_date date) OWNER TO dbhasura;
+
+--
+-- Name: get_timetables_and_substitute_operating_days(uuid[], date, date); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_service.get_timetables_and_substitute_operating_days(journey_pattern_ids uuid[], start_date date, end_date date) RETURNS SETOF return_value.timetable_version
+    LANGUAGE sql STABLE
+    AS $$
+SELECT DISTINCT vsf.vehicle_schedule_frame_id, -- vehicle_schedule_frame_id
+  NULL::uuid, -- substitute_operating_day_by_line_type_id is NULL for this type
+  vsf.validity_start, -- validity_start
+  vsf.validity_end, -- validity_end
+  vsf.priority, -- priority
+  false, -- in_effect default value
+  dt.day_type_id -- day_type_id
+    FROM vehicle_schedule.vehicle_schedule_frame vsf
+      JOIN vehicle_service.vehicle_service vs USING (vehicle_schedule_frame_id)
+      JOIN service_calendar.day_type dt USING(day_type_id)
+      JOIN vehicle_service.journey_patterns_in_vehicle_service jp_in_vs USING(vehicle_service_id)
+    WHERE jp_in_vs.journey_pattern_id = ANY(journey_pattern_ids)
+    AND vsf.validity_end >= start_date
+    AND vsf.validity_start <= end_date
+    AND vsf.priority != internal_utils.const_timetables_priority_staging() -- ignore staging priorities completely, since they are not shown anywhere
+UNION
+SELECT DISTINCT
+  NULL::uuid, -- vehicle_schedule_frame_id is null for this type
+  sodblt.substitute_operating_day_by_line_type_id, -- substitute_operating_day_by_line_type_id
+  sodblt.superseded_date, -- validity start is the superseded date for substitute operating day by line type
+  sodblt.superseded_date, -- validity end is the superseded date for substitute operating day by line type
+  internal_utils.const_timetables_priority_substitute_by_line_type(), -- priority for these are substitute by line type
+  false, -- in_effect default value.
+  ( -- calculate what is the correct day type id for the superseded date
+    SELECT day_type_id
+    FROM service_calendar.get_active_day_types_for_date(sodblt.superseded_date) dt
+      JOIN  service_calendar.day_type_active_on_day_of_week dtaodow USING(day_type_id)
+      GROUP BY day_type_id
+      HAVING count(label) = 1
+  )
+FROM journey_pattern.journey_pattern_ref jpr
+  JOIN service_calendar.substitute_operating_day_by_line_type sodblt USING(type_of_line)
+  WHERE jpr.journey_pattern_id = ANY(journey_pattern_ids)
+  AND sodblt.superseded_date >= start_date
+  AND sodblt.superseded_date <= end_date
+$$;
+
+
+ALTER FUNCTION vehicle_service.get_timetables_and_substitute_operating_days(journey_pattern_ids uuid[], start_date date, end_date date) OWNER TO dbhasura;
+
+--
 -- Name: queue_validation_by_block_id(); Type: FUNCTION; Schema: vehicle_service; Owner: dbhasura
 --
 
@@ -1898,6 +2514,18 @@ CREATE INDEX idx_direction_the_opposite_of_direction ON route.direction USING bt
 CREATE UNIQUE INDEX service_calendar_day_type_label_idx ON service_calendar.day_type USING btree (label);
 
 --
+-- Name: substitute_operating_day_by_line_type_substitute_period; Type: INDEX; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE INDEX substitute_operating_day_by_line_type_substitute_period ON service_calendar.substitute_operating_day_by_line_type USING btree (substitute_operating_period_id);
+
+--
+-- Name: substitute_operating_day_by_line_type_type_of_line; Type: INDEX; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE INDEX substitute_operating_day_by_line_type_type_of_line ON service_calendar.substitute_operating_day_by_line_type USING btree (type_of_line);
+
+--
 -- Name: service_pattern_scheduled_stop_point_in_journey_pattern_ref_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -1950,6 +2578,12 @@ CREATE INDEX idx_vehicle_service_day_type ON vehicle_service.vehicle_service USI
 --
 
 CREATE INDEX idx_vehicle_service_vehicle_schedule_frame ON vehicle_service.vehicle_service USING btree (vehicle_schedule_frame_id);
+
+--
+-- Name: vehicle_type_hsl_id_idx; Type: INDEX; Schema: vehicle_type; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX vehicle_type_hsl_id_idx ON vehicle_type.vehicle_type USING btree (hsl_id);
 
 --
 -- Name: vehicle_type_label_idx; Type: INDEX; Schema: vehicle_type; Owner: dbhasura
@@ -2103,6 +2737,41 @@ CREATE TABLE passing_times.timetabled_passing_time (
 ALTER TABLE passing_times.timetabled_passing_time OWNER TO dbhasura;
 
 --
+-- Name: timetable_version; Type: TABLE; Schema: return_value; Owner: dbhasura
+--
+
+CREATE TABLE return_value.timetable_version (
+    vehicle_schedule_frame_id uuid,
+    substitute_operating_day_by_line_type_id uuid,
+    validity_start date NOT NULL,
+    validity_end date NOT NULL,
+    priority integer NOT NULL,
+    in_effect boolean NOT NULL,
+    day_type_id uuid NOT NULL
+);
+
+
+ALTER TABLE return_value.timetable_version OWNER TO dbhasura;
+
+--
+-- Name: vehicle_schedule; Type: TABLE; Schema: return_value; Owner: dbhasura
+--
+
+CREATE TABLE return_value.vehicle_schedule (
+    vehicle_journey_id uuid,
+    validity_start date NOT NULL,
+    validity_end date NOT NULL,
+    priority integer NOT NULL,
+    day_type_id uuid NOT NULL,
+    vehicle_schedule_frame_id uuid,
+    substitute_operating_day_by_line_type_id uuid,
+    created_at timestamp with time zone
+);
+
+
+ALTER TABLE return_value.vehicle_schedule OWNER TO dbhasura;
+
+--
 -- Name: direction; Type: TABLE; Schema: route; Owner: dbhasura
 --
 
@@ -2152,6 +2821,43 @@ CREATE TABLE service_calendar.day_type_active_on_day_of_week (
 ALTER TABLE service_calendar.day_type_active_on_day_of_week OWNER TO dbhasura;
 
 --
+-- Name: substitute_operating_day_by_line_type; Type: TABLE; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE TABLE service_calendar.substitute_operating_day_by_line_type (
+    substitute_operating_day_by_line_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    type_of_line text NOT NULL,
+    superseded_date date NOT NULL,
+    substitute_day_of_week integer,
+    begin_time interval,
+    end_time interval,
+    timezone text DEFAULT internal_utils.const_default_timezone() NOT NULL,
+    begin_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(begin_time, service_calendar.const_operating_day_start_time()) + superseded_date))) STORED NOT NULL,
+    end_datetime timestamp with time zone GENERATED ALWAYS AS (timezone(timezone, (COALESCE(end_time, service_calendar.const_operating_day_end_time()) + superseded_date))) STORED NOT NULL,
+    substitute_operating_period_id uuid NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT substitute_operating_day_by_line_type_valid_begin_time CHECK (((begin_time >= service_calendar.const_operating_day_start_time()) AND (begin_time < COALESCE(end_time, service_calendar.const_operating_day_end_time())))),
+    CONSTRAINT substitute_operating_day_by_line_type_valid_dow CHECK (((substitute_day_of_week >= 1) AND (substitute_day_of_week <= 7))),
+    CONSTRAINT substitute_operating_day_by_line_type_valid_end_time CHECK (((end_time > COALESCE(begin_time, service_calendar.const_operating_day_start_time())) AND (end_time <= service_calendar.const_operating_day_end_time())))
+);
+
+
+ALTER TABLE service_calendar.substitute_operating_day_by_line_type OWNER TO dbhasura;
+
+--
+-- Name: substitute_operating_period; Type: TABLE; Schema: service_calendar; Owner: dbhasura
+--
+
+CREATE TABLE service_calendar.substitute_operating_period (
+    substitute_operating_period_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    period_name text NOT NULL,
+    is_preset boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE service_calendar.substitute_operating_period OWNER TO dbhasura;
+
+--
 -- Name: scheduled_stop_point_in_journey_pattern_ref; Type: TABLE; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -2188,7 +2894,11 @@ CREATE TABLE vehicle_journey.vehicle_journey (
     journey_name_i18n jsonb,
     turnaround_time interval,
     layover_time interval,
-    journey_type text DEFAULT 'STANDARD'::text NOT NULL
+    journey_type text DEFAULT 'STANDARD'::text NOT NULL,
+    displayed_name text,
+    is_vehicle_type_mandatory boolean DEFAULT false NOT NULL,
+    is_backup_journey boolean DEFAULT false NOT NULL,
+    is_extra_journey boolean DEFAULT false NOT NULL
 );
 
 
@@ -2205,6 +2915,8 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     validity_end date NOT NULL,
     priority integer NOT NULL,
     label text NOT NULL,
+    booking_label text DEFAULT ''::text NOT NULL,
+    booking_description_i18n jsonb,
     validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -2262,7 +2974,8 @@ ALTER TABLE vehicle_service.vehicle_service OWNER TO dbhasura;
 CREATE TABLE vehicle_type.vehicle_type (
     vehicle_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     label text NOT NULL,
-    description_i18n jsonb
+    description_i18n jsonb,
+    hsl_id smallint NOT NULL
 );
 
 

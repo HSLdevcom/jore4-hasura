@@ -212,6 +212,12 @@ COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and rever
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 --
+-- Name: SCHEMA hsl_route; Type: COMMENT; Schema: -; Owner: dbhasura
+--
+
+COMMENT ON SCHEMA hsl_route IS 'HSL specific route related additions to the base schema.';
+
+--
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
 --
 
@@ -258,6 +264,18 @@ COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Trans
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+--
+-- Name: TABLE legacy_hsl_municipality_code; Type: COMMENT; Schema: hsl_route; Owner: dbhasura
+--
+
+COMMENT ON TABLE hsl_route.legacy_hsl_municipality_code IS 'Legacy, avoid using. Main use nowadays is to enable support for eg. data exports that still need this. Originally this was used to represent the primary region for routes/lines.';
+
+--
+-- Name: TABLE transport_target; Type: COMMENT; Schema: hsl_route; Owner: dbhasura
+--
+
+COMMENT ON TABLE hsl_route.transport_target IS 'Transport target, can be used e.g. for cost sharing.';
 
 --
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -686,6 +704,12 @@ COMMENT ON COLUMN route.infrastructure_link_along_route.route_id IS 'The ID of t
 COMMENT ON COLUMN route.line.label IS 'The label of the line definition. The label is unique for a certain priority and validity period.';
 
 --
+-- Name: COLUMN line.legacy_hsl_municipality_code; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.line.legacy_hsl_municipality_code IS 'Defines the legacy municipality that is mainly used for data exports.';
+
+--
 -- Name: COLUMN line.line_id; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -752,6 +776,12 @@ COMMENT ON COLUMN route.route.direction IS 'The direction of the route definitio
 COMMENT ON COLUMN route.route.label IS 'The label of the route definition.';
 
 --
+-- Name: COLUMN route.legacy_hsl_municipality_code; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.legacy_hsl_municipality_code IS 'Defines the legacy municipality that is mainly used for data exports.';
+
+--
 -- Name: COLUMN route.on_line_id; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -773,7 +803,7 @@ COMMENT ON COLUMN route.route.route_id IS 'The ID of the route.';
 -- Name: COLUMN route.unique_label; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
-COMMENT ON COLUMN route.route.unique_label IS 'Derived from label. Routes are unique for each unique label for a certain direction, priority and validity period';
+COMMENT ON COLUMN route.route.unique_label IS 'Derived from label and variant. Routes are unique for each unique label for a certain direction, priority and validity period';
 
 --
 -- Name: COLUMN route.validity_end; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -786,6 +816,12 @@ COMMENT ON COLUMN route.route.validity_end IS 'The point in time (inclusive) fro
 --
 
 COMMENT ON COLUMN route.route.validity_start IS 'The point in time (inclusive) when the route becomes valid. If NULL, the route has been always valid before end time of validity period.';
+
+--
+-- Name: COLUMN route.variant; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.route.variant IS 'The variant for route definition.';
 
 --
 -- Name: COLUMN type_of_line.type_of_line; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -1169,6 +1205,20 @@ ALTER TABLE ONLY hdb_catalog.hdb_version
     ADD CONSTRAINT hdb_version_pkey PRIMARY KEY (hasura_uuid);
 
 --
+-- Name: legacy_hsl_municipality_code legacy_hsl_municipality_code_pkey; Type: CONSTRAINT; Schema: hsl_route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY hsl_route.legacy_hsl_municipality_code
+    ADD CONSTRAINT legacy_hsl_municipality_code_pkey PRIMARY KEY (hsl_municipality);
+
+--
+-- Name: transport_target transport_target_pkey; Type: CONSTRAINT; Schema: hsl_route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY hsl_route.transport_target
+    ADD CONSTRAINT transport_target_pkey PRIMARY KEY (transport_target);
+
+--
 -- Name: direction direction_pkey; Type: CONSTRAINT; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -1491,11 +1541,25 @@ ALTER TABLE ONLY route.infrastructure_link_along_route
     ADD CONSTRAINT infrastructure_link_along_route_route_id_fkey FOREIGN KEY (route_id) REFERENCES route.route(route_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
+-- Name: line line_legacy_hsl_municipality_code_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.line
+    ADD CONSTRAINT line_legacy_hsl_municipality_code_fkey FOREIGN KEY (legacy_hsl_municipality_code) REFERENCES hsl_route.legacy_hsl_municipality_code(hsl_municipality);
+
+--
 -- Name: line line_primary_vehicle_mode_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
 --
 
 ALTER TABLE ONLY route.line
     ADD CONSTRAINT line_primary_vehicle_mode_fkey FOREIGN KEY (primary_vehicle_mode) REFERENCES reusable_components.vehicle_mode(vehicle_mode);
+
+--
+-- Name: line line_transport_target_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.line
+    ADD CONSTRAINT line_transport_target_fkey FOREIGN KEY (transport_target) REFERENCES hsl_route.transport_target(transport_target);
 
 --
 -- Name: line line_type_of_line_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
@@ -1510,6 +1574,13 @@ ALTER TABLE ONLY route.line
 
 ALTER TABLE ONLY route.route
     ADD CONSTRAINT route_direction_fkey FOREIGN KEY (direction) REFERENCES route.direction(direction);
+
+--
+-- Name: route route_legacy_hsl_municipality_code_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
+--
+
+ALTER TABLE ONLY route.route
+    ADD CONSTRAINT route_legacy_hsl_municipality_code_fkey FOREIGN KEY (legacy_hsl_municipality_code) REFERENCES hsl_route.legacy_hsl_municipality_code(hsl_municipality);
 
 --
 -- Name: route route_on_line_id_fkey; Type: FK CONSTRAINT; Schema: route; Owner: dbhasura
@@ -3810,6 +3881,12 @@ CREATE INDEX vehicle_submode_belonging_to_vehicle_mode_idx ON reusable_component
 CREATE INDEX idx_direction_the_opposite_of_direction ON route.direction USING btree (the_opposite_of_direction);
 
 --
+-- Name: idx_line_legacy_hsl_municipality_code; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_line_legacy_hsl_municipality_code ON route.line USING btree (legacy_hsl_municipality_code);
+
+--
 -- Name: idx_line_name_i18n; Type: INDEX; Schema: route; Owner: dbhasura
 --
 
@@ -3826,6 +3903,12 @@ CREATE INDEX idx_line_primary_vehicle_mode ON route.line USING btree (primary_ve
 --
 
 CREATE INDEX idx_line_short_name_i18n ON route.line USING gin (short_name_i18n);
+
+--
+-- Name: idx_line_transport_target; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_line_transport_target ON route.line USING btree (transport_target);
 
 --
 -- Name: idx_line_type_of_line; Type: INDEX; Schema: route; Owner: dbhasura
@@ -3850,6 +3933,12 @@ CREATE INDEX idx_route_destination_short_name_i18n ON route.route USING gin (des
 --
 
 CREATE INDEX idx_route_direction ON route.route USING btree (direction);
+
+--
+-- Name: idx_route_legacy_hsl_municipality_code; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_route_legacy_hsl_municipality_code ON route.route USING btree (legacy_hsl_municipality_code);
 
 --
 -- Name: idx_route_name_i18n; Type: INDEX; Schema: route; Owner: dbhasura
@@ -3943,6 +4032,15 @@ CREATE SCHEMA hdb_catalog;
 
 
 ALTER SCHEMA hdb_catalog OWNER TO dbhasura;
+
+--
+-- Name: hsl_route; Type: SCHEMA; Schema: -; Owner: dbhasura
+--
+
+CREATE SCHEMA hsl_route;
+
+
+ALTER SCHEMA hsl_route OWNER TO dbhasura;
 
 --
 -- Name: infrastructure_network; Type: SCHEMA; Schema: -; Owner: dbhasura
@@ -4183,6 +4281,30 @@ CREATE TABLE hdb_catalog.hdb_version (
 ALTER TABLE hdb_catalog.hdb_version OWNER TO dbhasura;
 
 --
+-- Name: legacy_hsl_municipality_code; Type: TABLE; Schema: hsl_route; Owner: dbhasura
+--
+
+CREATE TABLE hsl_route.legacy_hsl_municipality_code (
+    hsl_municipality text NOT NULL,
+    jore3_code smallint NOT NULL,
+    CONSTRAINT hsl_route_legacy_hsl_muhnicipality_code_digit_check CHECK (((0 <= jore3_code) AND (jore3_code <= 9)))
+);
+
+
+ALTER TABLE hsl_route.legacy_hsl_municipality_code OWNER TO dbhasura;
+
+--
+-- Name: transport_target; Type: TABLE; Schema: hsl_route; Owner: dbhasura
+--
+
+CREATE TABLE hsl_route.transport_target (
+    transport_target text NOT NULL
+);
+
+
+ALTER TABLE hsl_route.transport_target OWNER TO dbhasura;
+
+--
 -- Name: direction; Type: TABLE; Schema: infrastructure_network; Owner: dbhasura
 --
 
@@ -4328,7 +4450,9 @@ CREATE TABLE route.line (
     validity_end date,
     priority integer NOT NULL,
     label text NOT NULL,
-    type_of_line text NOT NULL
+    type_of_line text NOT NULL,
+    transport_target text NOT NULL,
+    legacy_hsl_municipality_code text
 );
 
 
@@ -4352,7 +4476,14 @@ CREATE TABLE route.route (
     origin_short_name_i18n jsonb,
     destination_name_i18n jsonb,
     destination_short_name_i18n jsonb,
-    unique_label text GENERATED ALWAYS AS (label) STORED
+    variant smallint,
+    unique_label text GENERATED ALWAYS AS ((label ||
+CASE
+    WHEN (variant IS NULL) THEN ''::text
+    ELSE ('_'::text || (variant)::text)
+END)) STORED,
+    legacy_hsl_municipality_code text,
+    CONSTRAINT route_variant_unsigned_check CHECK ((variant >= 0))
 );
 
 
