@@ -2206,7 +2206,8 @@ CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
     priority integer NOT NULL,
     label text NOT NULL,
     validity_range daterange GENERATED ALWAYS AS (daterange(validity_start, validity_end, '[]'::text)) STORED NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT special_priority_validity_exactly_one_day CHECK ((NOT ((priority = internal_utils.const_timetables_priority_special()) AND (validity_start <> validity_end))))
 );
 
 
