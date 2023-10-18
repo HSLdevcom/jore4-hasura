@@ -24,7 +24,7 @@ jobs:
         run: ./scripts/generate-dumps.sh
 
       - name: Verify that generate dump command made no changes
-        run: '[ -z "$(git status --porcelain)" ]'
+        run: 'if [ -n "$(git status --porcelain)" ]; then git diff; exit 1; fi'
 
       - name: Remove the hasura container
         run: docker rm --force hasura && docker volume prune --force
@@ -38,4 +38,4 @@ jobs:
         run: ./scripts/generate-dumps.sh
 
       - name: Verify that generate dump command still made no changes
-        run: '[ -z "$(git status --porcelain)" ]'
+        run: 'if [ -n "$(git status --porcelain)" ]; then git diff; exit 1; fi'
