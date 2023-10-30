@@ -296,7 +296,7 @@ describe('Generic timetables data inserter json parser', () => {
             builtInboundPassingTimes[3].timetabled_passing_time_id,
         );
         expect(inboundPassingTime).toBeTruthy();
-        expect(inboundPassingTime.arrival_time.toISO()).toBe('PT7H25M');
+        expect(inboundPassingTime.arrival_time.toISO()).toBe('PT7H55M');
         expect(inboundPassingTime.departure_time).toBeNull();
       });
     });
