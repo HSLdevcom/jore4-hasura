@@ -49,7 +49,7 @@ export const timetabledPassingTimesByName = {
   v1MonFriJourney2Stop1: {
     timetabled_passing_time_id: 'fadf979b-f258-418d-9084-d65cecfefa50',
     arrival_time: null,
-    departure_time: Duration.fromISO('PT7H5M'),
+    departure_time: Duration.fromISO('PT7H35M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -58,8 +58,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney2Stop2: {
     timetabled_passing_time_id: '1ee02695-3c91-48a3-a235-6b86dfef0145',
-    arrival_time: Duration.fromISO('PT7H15M'),
-    departure_time: Duration.fromISO('PT7H15M'),
+    arrival_time: Duration.fromISO('PT7H45M'),
+    departure_time: Duration.fromISO('PT7H45M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -68,8 +68,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney2Stop3: {
     timetabled_passing_time_id: 'adccf185-045e-4a1f-b5cf-be638789f82c',
-    arrival_time: Duration.fromISO('PT7H19M'),
-    departure_time: Duration.fromISO('PT7H19M'),
+    arrival_time: Duration.fromISO('PT7H49M'),
+    departure_time: Duration.fromISO('PT7H49M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -78,7 +78,7 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney2Stop4: {
     timetabled_passing_time_id: 'ae7e9200-7818-4cb5-b1f2-ace8a676b71b',
-    arrival_time: Duration.fromISO('PT7H25M'),
+    arrival_time: Duration.fromISO('PT7H55M'),
     departure_time: null,
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney2.vehicle_journey_id,
@@ -131,7 +131,7 @@ export const timetabledPassingTimesByName = {
   v1MonFriJourney4Stop1: {
     timetabled_passing_time_id: 'ed25e196-2f70-49dc-9dba-760820738bd7',
     arrival_time: null,
-    departure_time: Duration.fromISO('PT8H5M'),
+    departure_time: Duration.fromISO('PT8H35M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -140,8 +140,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney4Stop2: {
     timetabled_passing_time_id: '4020319f-3122-4fd6-87d0-14d959b7022d',
-    arrival_time: Duration.fromISO('PT8H15M'),
-    departure_time: Duration.fromISO('PT8H15M'),
+    arrival_time: Duration.fromISO('PT8H45M'),
+    departure_time: Duration.fromISO('PT8H45M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -150,8 +150,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney4Stop3: {
     timetabled_passing_time_id: '942e7d51-5105-43e0-b8a6-9591e299d232',
-    arrival_time: Duration.fromISO('PT8H19M'),
-    departure_time: Duration.fromISO('PT8H19M'),
+    arrival_time: Duration.fromISO('PT8H49M'),
+    departure_time: Duration.fromISO('PT8H49M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -160,7 +160,7 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney4Stop4: {
     timetabled_passing_time_id: '5e2772ee-bfec-4af4-abf2-7cca2ccc7c27',
-    arrival_time: Duration.fromISO('PT8H25M'),
+    arrival_time: Duration.fromISO('PT8H55M'),
     departure_time: null,
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney4.vehicle_journey_id,
@@ -213,7 +213,7 @@ export const timetabledPassingTimesByName = {
   v1MonFriJourney6Stop1: {
     timetabled_passing_time_id: 'a29031cd-3311-4c75-b405-c0fd416be6d0',
     arrival_time: null,
-    departure_time: Duration.fromISO('PT9H5M'),
+    departure_time: Duration.fromISO('PT9H35M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -222,8 +222,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney6Stop2: {
     timetabled_passing_time_id: '8a3b1d75-6031-4e35-a16b-9e93d1330ce9',
-    arrival_time: Duration.fromISO('PT9H15M'),
-    departure_time: Duration.fromISO('PT9H15M'),
+    arrival_time: Duration.fromISO('PT9H45M'),
+    departure_time: Duration.fromISO('PT9H45M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -232,8 +232,8 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney6Stop3: {
     timetabled_passing_time_id: 'b9640d77-2989-46dd-8baf-6191a300336f',
-    arrival_time: Duration.fromISO('PT9H19M'),
-    departure_time: Duration.fromISO('PT9H19M'),
+    arrival_time: Duration.fromISO('PT9H49M'),
+    departure_time: Duration.fromISO('PT9H49M'),
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id:
@@ -242,7 +242,7 @@ export const timetabledPassingTimesByName = {
   },
   v1MonFriJourney6Stop4: {
     timetabled_passing_time_id: 'fb141d82-4953-4e62-bfdb-1edcab25fb19',
-    arrival_time: Duration.fromISO('PT9H25M'),
+    arrival_time: Duration.fromISO('PT9H55M'),
     departure_time: null,
     vehicle_journey_id:
       vehicleJourneysByName.v1MonFriJourney6.vehicle_journey_id,

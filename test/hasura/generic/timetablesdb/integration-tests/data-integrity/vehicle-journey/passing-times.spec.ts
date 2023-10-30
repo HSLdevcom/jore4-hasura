@@ -342,12 +342,12 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       // but passing time as a whole is not since they overlap:
       // bus would arrive to stop3 before departing from stop2.
       const stop2PassingTimeUpdate = {
-        arrival_time: Duration.fromISO('PT7H16M'),
-        departure_time: Duration.fromISO('PT7H19M'),
+        arrival_time: Duration.fromISO('PT7H46M'),
+        departure_time: Duration.fromISO('PT7H49M'),
       };
       const stop3PassingTimeUpdate = {
-        arrival_time: Duration.fromISO('PT7H18M'),
-        departure_time: Duration.fromISO('PT7H20M'),
+        arrival_time: Duration.fromISO('PT7H48M'),
+        departure_time: Duration.fromISO('PT7H50M'),
       };
 
       // Setup, nothing wrong with this yet.

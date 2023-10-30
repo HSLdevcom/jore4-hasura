@@ -22,7 +22,7 @@ import {
   buildUpdateVehicleServiceMutation,
 } from 'generic/timetablesdb/mutations';
 import { pick, without } from 'lodash';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import {
   buildGenericTimetablesDataset,
   createGenericTableData,
@@ -138,11 +138,15 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
     const newStopPoints = [
       {
         ...dataset.passingTimes[0],
+        arrival_time: null,
+        departure_time: Duration.fromISO('PT18H12M'),
         scheduled_stop_point_in_journey_pattern_ref_id:
           newStops[0].scheduled_stop_point_in_journey_pattern_ref_id,
       },
       {
         ...dataset.passingTimes[3], // Last stop.
+        arrival_time: Duration.fromISO('PT18H23M'),
+        departure_time: null,
         scheduled_stop_point_in_journey_pattern_ref_id:
           newStops[1].scheduled_stop_point_in_journey_pattern_ref_id,
       },
