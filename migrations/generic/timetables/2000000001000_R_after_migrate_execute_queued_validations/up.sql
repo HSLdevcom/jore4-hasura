@@ -14,6 +14,9 @@ BEGIN
   -- RAISE LOG 'before vehicle_schedule.validate_queued_schedules_uniqueness()';
   PERFORM vehicle_schedule.validate_queued_schedules_uniqueness();
 
+  -- RAISE LOG 'before vehicle_service.validate_service_sequential_integrity()';
+  PERFORM vehicle_service.validate_service_sequential_integrity();
+
   -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
 
   RETURN NULL;
