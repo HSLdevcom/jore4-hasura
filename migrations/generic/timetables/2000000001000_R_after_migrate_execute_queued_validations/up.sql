@@ -17,6 +17,9 @@ BEGIN
   -- RAISE LOG 'before passing_times.validate_passing_time_sequences()';
   PERFORM passing_times.validate_passing_time_sequences();
 
+  -- RAISE LOG 'before vehicle_service.validate_service_sequential_integrity()';
+  PERFORM vehicle_service.validate_service_sequential_integrity();
+
   -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
 
   RETURN NULL;
