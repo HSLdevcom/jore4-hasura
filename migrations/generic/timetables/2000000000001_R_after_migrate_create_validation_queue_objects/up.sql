@@ -272,56 +272,56 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 
 -- timetabled_passing_time (NOTE: these queue the whole vehicle_journey for validation):
 
-DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time;
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
+DROP TRIGGER IF EXISTS queue_vj_validation_on_pt_update_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_vj_validation_on_pt_update_trigger
   AFTER UPDATE ON passing_times.timetabled_passing_time
   REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
-IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
+COMMENT ON TRIGGER queue_vj_validation_on_pt_update_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times update.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
-DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
+DROP TRIGGER IF EXISTS queue_vj_validation_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_vj_validation_on_pt_insert_trigger
   AFTER INSERT ON passing_times.timetabled_passing_time
   REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
-IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
+COMMENT ON TRIGGER queue_vj_validation_on_pt_insert_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times insert.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
-DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
+DROP TRIGGER IF EXISTS queue_vj_validation_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_vj_validation_on_pt_delete_trigger
   AFTER DELETE ON passing_times.timetabled_passing_time
   REFERENCING OLD TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
-IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
+COMMENT ON TRIGGER queue_vj_validation_on_pt_delete_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times delete.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- scheduled_stop_point_in_journey_pattern_ref (NOTE: these queue the whole journey_pattern_ref for validation):
 
-DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
+DROP TRIGGER IF EXISTS queue_jpr_validation_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_jpr_validation_on_ssp_update_trigger
   AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
-IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
+COMMENT ON TRIGGER queue_jpr_validation_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of parent journey_pattern_ref on scheduled_stop_point_in_journey_pattern_ref update.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
-DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
+DROP TRIGGER IF EXISTS queue_jpr_validation_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_jpr_validation_on_ssp_insert_trigger
   AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
-IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
+COMMENT ON TRIGGER queue_jpr_validation_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of parent journey_pattern_ref on scheduled_stop_point_in_journey_pattern_ref insert.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- End of statement validation triggers:
@@ -379,22 +379,22 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger
 COMMENT ON TRIGGER process_queued_validation_on_jpr_trigger ON journey_pattern.journey_pattern_ref
 IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
-DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time;
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
+DROP TRIGGER IF EXISTS process_queued_validation_on_pt_trigger ON passing_times.timetabled_passing_time;
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_pt_trigger
   AFTER UPDATE OR INSERT OR DELETE ON passing_times.timetabled_passing_time
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
+COMMENT ON TRIGGER process_queued_validation_on_pt_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
-DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
+DROP TRIGGER IF EXISTS process_queued_validation_on_ssp_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_ssp_trigger
   AFTER UPDATE OR INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+COMMENT ON TRIGGER process_queued_validation_on_ssp_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';

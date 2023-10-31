@@ -407,31 +407,31 @@ COMMENT ON FUNCTION passing_times.validate_passing_time_sequences() IS 'Perform 
 COMMENT ON TABLE passing_times.timetabled_passing_time IS 'Long-term planned time data concerning public transport vehicles passing a particular POINT IN JOURNEY PATTERN on a specified VEHICLE JOURNEY for a certain DAY TYPE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:4:946 ';
 
 --
--- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
+-- Name: TRIGGER process_queued_validation_on_pt_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
+COMMENT ON TRIGGER process_queued_validation_on_pt_trigger ON passing_times.timetabled_passing_time IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
+
+--
+-- Name: TRIGGER queue_vj_validation_on_pt_delete_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_vj_validation_on_pt_delete_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times delete.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
--- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
+-- Name: TRIGGER queue_vj_validation_on_pt_insert_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
+COMMENT ON TRIGGER queue_vj_validation_on_pt_insert_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times insert.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
--- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
+-- Name: TRIGGER queue_vj_validation_on_pt_update_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
+COMMENT ON TRIGGER queue_vj_validation_on_pt_update_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of parent vehicle_journey on timetabled_passing_times update.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
-
---
--- Name: TRIGGER validate_passing_times_sequence_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
---
-
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
 -- Name: COLUMN direction.direction; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -530,24 +530,24 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.ti
 COMMENT ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Reference the a SCHEDULED STOP POINT within a JOURNEY PATTERN. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:4:729 ';
 
 --
--- Name: TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: TRIGGER process_queued_validation_on_ssp_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
+COMMENT ON TRIGGER process_queued_validation_on_ssp_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
+
+--
+-- Name: TRIGGER queue_jpr_validation_on_ssp_insert_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER queue_jpr_validation_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of parent journey_pattern_ref on scheduled_stop_point_in_journey_pattern_ref insert.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
--- Name: TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+-- Name: TRIGGER queue_jpr_validation_on_ssp_update_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
+COMMENT ON TRIGGER queue_jpr_validation_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of parent journey_pattern_ref on scheduled_stop_point_in_journey_pattern_ref update.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
-
---
--- Name: TRIGGER validate_passing_times_sequence_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
 -- Name: COLUMN vehicle_journey.block_id; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
@@ -2203,46 +2203,46 @@ CREATE TRIGGER queue_jpr_validation_on_insert_trigger AFTER INSERT ON journey_pa
 CREATE TRIGGER queue_jpr_validation_on_update_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
--- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
+-- Name: timetabled_passing_time process_queued_validation_on_pt_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_pt_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_insert_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
+-- Name: timetabled_passing_time queue_vj_validation_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_vj_validation_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
--- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_update_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
+-- Name: timetabled_passing_time queue_vj_validation_on_pt_insert_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_vj_validation_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
--- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
+-- Name: timetabled_passing_time queue_vj_validation_on_pt_update_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+CREATE TRIGGER queue_vj_validation_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
--- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+-- Name: scheduled_stop_point_in_journey_pattern_ref process_queued_validation_on_ssp_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_ssp_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
--- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_update_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+-- Name: scheduled_stop_point_in_journey_pattern_ref queue_jpr_validation_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE TRIGGER queue_jpr_validation_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
--- Name: scheduled_stop_point_in_journey_pattern_ref validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+-- Name: scheduled_stop_point_in_journey_pattern_ref queue_jpr_validation_on_ssp_update_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+CREATE TRIGGER queue_jpr_validation_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: vehicle_journey process_queued_validation_on_vj_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
