@@ -59,6 +59,8 @@ export const processVehicleJourney = (
   });
 
   return {
+    turnaround_time: null,
+    layover_time: null,
     ...result,
     block_id: parentBlock.block_id,
     _passing_times: processedPassingTimes,

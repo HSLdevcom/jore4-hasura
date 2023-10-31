@@ -82,6 +82,8 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         block_id: vehicleServiceBlocksByName.v1MonFri.block_id,
         journey_pattern_ref_id:
           journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+        turnaround_time: null,
+        layover_time: null,
       };
       const insertMutation = addMutationWrapper(
         buildInsertVehicleJourneyMutation(newVehicleJourney),
@@ -110,6 +112,8 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         block_id: vehicleServiceBlocksByName.v1Sat.block_id,
         journey_pattern_ref_id:
           journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
+        turnaround_time: null,
+        layover_time: null,
       };
       const insertMutation = addMutationWrapper(
         buildInsertVehicleJourneyMutation(newVehicleJourney),
