@@ -1257,6 +1257,9 @@ BEGIN
   -- RAISE LOG 'before vehicle_schedule.validate_queued_schedules_uniqueness()';
   PERFORM vehicle_schedule.validate_queued_schedules_uniqueness();
 
+  -- RAISE LOG 'before passing_times.validate_passing_time_sequences()';
+  PERFORM passing_times.validate_passing_time_sequences();
+
   -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
 
   RETURN NULL;
@@ -1471,7 +1474,7 @@ ALTER FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_jo
 -- Name: validate_passing_time_sequences(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE FUNCTION passing_times.validate_passing_time_sequences() RETURNS trigger
+CREATE FUNCTION passing_times.validate_passing_time_sequences() RETURNS void
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -1544,8 +1547,6 @@ BEGIN
         row_validation_data.vehicle_journey_id;
     END IF;
   END LOOP;
-
-  RETURN NULL;
 END;
 $$;
 
@@ -2315,7 +2316,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER 
 -- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
@@ -2333,7 +2334,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER
 -- Name: scheduled_stop_point_in_journey_pattern_ref validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
 -- Name: vehicle_journey process_queued_validation_on_vj_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
