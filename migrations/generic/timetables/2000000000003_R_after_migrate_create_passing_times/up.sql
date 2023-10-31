@@ -108,44 +108,6 @@ $$;
 COMMENT ON FUNCTION passing_times.passing_times_sequence_already_validated()
 IS 'Keep track of whether the passing times sequence validation has already been performed in this transaction';
 
-CREATE OR REPLACE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  -- RAISE NOTICE 'passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()';
-
-  PERFORM internal_utils.create_validation_queue_temp_tables();
-
-  INSERT INTO modified_vehicle_journey (vehicle_journey_id)
-  SELECT DISTINCT vehicle_journey_id
-  FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
-  ON CONFLICT DO NOTHING;
-
-  RETURN NULL;
-END;
-$$;
-COMMENT ON FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()
-IS 'Queue modified vehicle journeys for passing time sequence validation which is performed at the end of transaction.';
-
-CREATE OR REPLACE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  -- RAISE NOTICE 'service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()';
-
-  PERFORM internal_utils.create_validation_queue_temp_tables();
-
-  INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
-  SELECT DISTINCT journey_pattern_ref_id
-  FROM new_table
-  ON CONFLICT DO NOTHING;
-
-  RETURN NULL;
-END;
-$$;
-COMMENT ON FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()
-IS 'Queue modified journey pattern refs for passing time sequence validation which is performed at the end of transaction.';
-
 CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS VOID
     LANGUAGE plpgsql
     AS $$
@@ -247,9 +209,9 @@ IS 'Perform validation of all passing time sequences that have been added to the
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
   AFTER UPDATE ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS modified_table
+  REFERENCING NEW TABLE AS new_table
   FOR EACH STATEMENT
-  EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
@@ -257,9 +219,9 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on upd
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
   AFTER INSERT ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS modified_table
+  REFERENCING NEW TABLE AS new_table
   FOR EACH STATEMENT
-  EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
@@ -267,9 +229,9 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on ins
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
   AFTER DELETE ON passing_times.timetabled_passing_time
-  REFERENCING OLD TABLE AS modified_table
+  REFERENCING OLD TABLE AS new_table -- FIXME! "old is new"
   FOR EACH STATEMENT
-  EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
@@ -290,7 +252,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
   AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   REFERENCING NEW TABLE AS new_table
   FOR EACH STATEMENT
-  EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+  EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
@@ -300,7 +262,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
   AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   REFERENCING NEW TABLE AS new_table
   FOR EACH STATEMENT
-  EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+  EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
     Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
