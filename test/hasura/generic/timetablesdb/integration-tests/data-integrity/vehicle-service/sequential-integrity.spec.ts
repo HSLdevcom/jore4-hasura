@@ -77,13 +77,16 @@ describe('Vehicle service sequential integrity', () => {
   const createJourney = (journey: {
     journeyPatternRefName: string;
     direction?: RouteDirection;
-    // TODO!
-    // layover?: string;
-    // turnaround?: string;
+    layover?: string | null;
+    turnaround?: string | null;
     times: Array<PassingTimeParameters>;
   }): VehicleJourneyInput => {
     return {
       _journey_pattern_ref_name: journey.journeyPatternRefName,
+      layover_time: journey.layover ? createDuration(journey.layover) : null,
+      turnaround_time: journey.turnaround
+        ? createDuration(journey.turnaround)
+        : null,
       _passing_times: journey.times.map(([label, arrival, departure]) => {
         return {
           _scheduled_stop_point_label: label,
@@ -133,6 +136,54 @@ describe('Vehicle service sequential integrity', () => {
       },
     };
 
+    return dataset;
+  };
+
+  // Exactly half an hour of empty time between blocks, before any preparation times.
+  const createDatasetWithPreparationTimes = ({
+    firstTurnaround,
+    firstFinishing,
+    secondPreparing,
+    secondLayover,
+  }: {
+    firstTurnaround?: string | null;
+    firstFinishing?: string | null;
+    secondPreparing?: string | null;
+    secondLayover?: string | null;
+  }) => {
+    const dataset = createBaseDataset();
+    dataset._vehicle_schedule_frames.frame._vehicle_services.monFri._blocks = {
+      block1: {
+        block_id: '11111111-fc80-4f3a-9ac2-111111111111',
+        finishing_time: firstFinishing && createDuration(firstFinishing),
+        _vehicle_journeys: {
+          1: createJourney({
+            journeyPatternRefName: 'route123Outbound',
+            turnaround: firstTurnaround,
+            times: [
+              ['H2201', null, '7:00'],
+              ['H2202', '7:15', '7:15'],
+              ['H2204', '7:30', null],
+            ],
+          }),
+        },
+      },
+      block2: {
+        block_id: '22222222-49c7-477d-8991-222222222222',
+        preparing_time: secondPreparing && createDuration(secondPreparing),
+        _vehicle_journeys: {
+          1: createJourney({
+            journeyPatternRefName: 'route123Inbound',
+            layover: secondLayover,
+            times: [
+              ['H2204', null, '8:00'],
+              ['H2202', '8:15', '8:15'],
+              ['H2201', '8:30', null],
+            ],
+          }),
+        },
+      },
+    };
     return dataset;
   };
 
@@ -218,9 +269,43 @@ describe('Vehicle service sequential integrity', () => {
     await expect(insertTestData(dataset)).resolves.not.toThrow();
   });
 
-  it.todo(
-    'should allow consecutive blocks that do not overlap, with all preparation time fields',
-  );
+  it('should allow consecutive blocks that do not overlap, with all preparation time fields', async () => {
+    const dataset = createBaseDataset();
+    dataset._vehicle_schedule_frames.frame._vehicle_services.monFri._blocks = {
+      block1: {
+        block_id: '11111111-fc80-4f3a-9ac2-111111111111',
+        finishing_time: createDuration('0:05'),
+        _vehicle_journeys: {
+          1: createJourney({
+            turnaround: '0:05',
+            journeyPatternRefName: 'route123Outbound',
+            times: [
+              ['H2201', null, '7:00'],
+              ['H2202', '7:15', '7:15'],
+              ['H2204', '7:30', null], // With finishing and turnaround, actually ends at 7:40.
+            ],
+          }),
+        },
+      },
+      block2: {
+        block_id: '22222222-49c7-477d-8991-222222222222',
+        preparing_time: createDuration('0:05'),
+        _vehicle_journeys: {
+          1: createJourney({
+            journeyPatternRefName: 'route123Inbound',
+            layover: '0:05',
+            times: [
+              ['H2204', null, '8:00'], // With preparing and layover, actually starts at 7:50
+              ['H2202', '8:15', '8:15'],
+              ['H2201', '8:30', null],
+            ],
+          }),
+        },
+      },
+    };
+
+    await expect(insertTestData(dataset)).resolves.not.toThrow();
+  });
 
   describe('blocks', () => {
     it('should allow next block to start exactly when previous one ends', async () => {
@@ -351,46 +436,140 @@ describe('Vehicle service sequential integrity', () => {
     });
 
     describe('with preparing and finishing times', () => {
-      it.todo(
-        'should allow next block to start exactly when previous one ends',
-      );
+      it('should allow next block to start exactly when previous one ends', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstFinishing: '0:15',
+          secondPreparing: '0:15',
+        });
 
-      it.todo('should fail if preparing time overlaps with previous block');
+        await expect(insertTestData(dataset)).resolves.not.toThrow();
+      });
 
-      it.todo('should fail if finishing time overlaps with next block');
+      it('should fail if preparing time overlaps with previous block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstFinishing: null,
+          secondPreparing: '0:31',
+        });
 
-      it.todo(
-        'should fail blocks overlap when both preparing and finishing time are considered',
-      );
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail if finishing time overlaps with next block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstFinishing: '0:31',
+          secondPreparing: null,
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail if blocks overlap when both preparing and finishing time are considered', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstFinishing: '0:11',
+          secondPreparing: '0:20',
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
     });
 
     // Test only cases when these make two blocks overlap.
     describe('with layover and turnaround times', () => {
-      it.todo(
-        'should allow next block to start exactly when previous one ends',
-      );
+      it('should allow next block to start exactly when previous one ends', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:15',
+          secondLayover: '0:15',
+        });
 
-      it.todo('should fail if layover time overlaps with previous block');
+        await expect(insertTestData(dataset)).resolves.not.toThrow();
+      });
 
-      it.todo('should fail if turnaround time overlaps with next block');
+      it('should fail if layover time overlaps with previous block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: null,
+          secondLayover: '0:31',
+        });
 
-      it.todo(
-        'should fail blocks overlap when both layover and turnaround time are considered',
-      );
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail if turnaround time overlaps with next block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:31',
+          secondLayover: null,
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail if blocks overlap when both layover and turnaround time are considered', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:11',
+          secondLayover: '0:20',
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
     });
 
     describe('with all preparation time fields', () => {
-      it.todo(
-        'should allow next block to start exactly when previous one ends',
-      );
+      it('should allow next block to start exactly when previous one ends', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:05',
+          firstFinishing: '0:10',
+          secondPreparing: '0:10',
+          secondLayover: '0:05',
+        });
 
-      it.todo('should fail if actual start time overlaps with previous block');
+        await expect(insertTestData(dataset)).resolves.not.toThrow();
+      });
 
-      it.todo('should fail if actual end time overlaps with next block');
+      it('should fail if actual start time overlaps with previous block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          secondPreparing: '0:21',
+          secondLayover: '0:10',
+        });
 
-      it.todo(
-        'should fail blocks overlap when all preparation time fields are considered',
-      );
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail if actual end time overlaps with next block', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:10',
+          firstFinishing: '0:21',
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
+
+      it('should fail blocks overlap when all preparation time fields are considered', async () => {
+        const dataset = createDatasetWithPreparationTimes({
+          firstTurnaround: '0:06',
+          firstFinishing: '0:11',
+          secondPreparing: '0:11',
+          secondLayover: '0:06',
+        });
+
+        await expect(insertTestData(dataset)).rejects.toThrow(
+          'Sequential integrity issues detected',
+        );
+      });
     });
   });
 
@@ -445,13 +624,84 @@ describe('Vehicle service sequential integrity', () => {
       );
     });
 
-    it.todo('should fail if layover time overlaps with previous journey');
+    it('should fail if layover time overlaps with previous journey', async () => {
+      const dataset = createSingleBlockDatasetWithJourneys({
+        1: createJourney({
+          journeyPatternRefName: 'route123Outbound',
+          times: [
+            ['H2201', null, '7:00'],
+            ['H2202', '7:15', '7:15'],
+            ['H2204', '7:30', null],
+          ],
+        }),
+        2: createJourney({
+          journeyPatternRefName: 'route123Inbound',
+          layover: '0:15',
+          times: [
+            ['H2204', null, '7:40'],
+            ['H2202', '7:45', '7:45'],
+            ['H2201', '8:00', null],
+          ],
+        }),
+      });
 
-    it.todo('should fail if turnaround time overlaps with next journey');
+      await expect(insertTestData(dataset)).rejects.toThrow(
+        'Sequential integrity issues detected',
+      );
+    });
 
-    it.todo(
-      'should fail if journeys overlap when both layover and turnaround time are considered',
-    );
+    it('should fail if turnaround time overlaps with next journey', async () => {
+      const dataset = createSingleBlockDatasetWithJourneys({
+        1: createJourney({
+          journeyPatternRefName: 'route123Outbound',
+          turnaround: '0:15',
+          times: [
+            ['H2201', null, '7:00'],
+            ['H2202', '7:15', '7:15'],
+            ['H2204', '7:30', null],
+          ],
+        }),
+        2: createJourney({
+          journeyPatternRefName: 'route123Inbound',
+          times: [
+            ['H2204', null, '7:40'],
+            ['H2202', '7:45', '7:45'],
+            ['H2201', '8:00', null],
+          ],
+        }),
+      });
+
+      await expect(insertTestData(dataset)).rejects.toThrow(
+        'Sequential integrity issues detected',
+      );
+    });
+
+    it('should fail if journeys overlap when both layover and turnaround time are considered', async () => {
+      const dataset = createSingleBlockDatasetWithJourneys({
+        1: createJourney({
+          journeyPatternRefName: 'route123Outbound',
+          turnaround: '0:06',
+          times: [
+            ['H2201', null, '7:00'],
+            ['H2202', '7:15', '7:15'],
+            ['H2204', '7:30', null],
+          ],
+        }),
+        2: createJourney({
+          journeyPatternRefName: 'route123Inbound',
+          layover: '0:06',
+          times: [
+            ['H2204', null, '7:40'],
+            ['H2202', '7:45', '7:45'],
+            ['H2201', '8:00', null],
+          ],
+        }),
+      });
+
+      await expect(insertTestData(dataset)).rejects.toThrow(
+        'Sequential integrity issues detected',
+      );
+    });
   });
 
   // Note: these are handled by a different constraint. Just checking that they actually are.
@@ -530,9 +780,36 @@ describe('Vehicle service sequential integrity', () => {
       insertedDataset = await insertTestData(dataset);
     });
 
-    it.todo('should trigger on block modifications');
+    it('should trigger on block modifications', async () => {
+      const datasetHelper = createTimetablesDatasetHelper(insertedDataset);
+      const firstBlock = datasetHelper.getBlock('block1');
 
-    it.todo('should trigger on vehicle_journey modifications');
+      // Update finishing time to make first block longer -> overlaps with second one.
+      await expect(
+        singleQuery(
+          dbConnection,
+          `UPDATE vehicle_service.block
+           SET "finishing_time" = 'PT12M'
+           WHERE "block_id" = '${firstBlock.block_id}'`,
+        ),
+      ).rejects.toThrow('Sequential integrity issues detected');
+    });
+
+    it('should trigger on vehicle_journey modifications', async () => {
+      const datasetHelper = createTimetablesDatasetHelper(insertedDataset);
+      const secondBlockFirstJourney =
+        datasetHelper.getBlock('block2')._vehicle_journeys[1];
+
+      // Update layover time to make second journey longer -> makes whole block longer -> overlaps with first one.
+      await expect(
+        singleQuery(
+          dbConnection,
+          `UPDATE vehicle_journey.vehicle_journey
+             SET "layover_time" = 'PT12M'
+             WHERE "vehicle_journey_id" = '${secondBlockFirstJourney.vehicle_journey_id}'`,
+        ),
+      ).rejects.toThrow('Sequential integrity issues detected');
+    });
 
     it('should trigger on timetabled_passing_time modifications', async () => {
       const datasetHelper = createTimetablesDatasetHelper(insertedDataset);
