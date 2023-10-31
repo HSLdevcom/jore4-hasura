@@ -393,12 +393,6 @@ COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_ve
   in same order by passing_time as their corresponding stop points (scheduled_stop_point_in_journey_pattern_ref).';
 
 --
--- Name: FUNCTION passing_times_sequence_already_validated(); Type: COMMENT; Schema: passing_times; Owner: dbhasura
---
-
-COMMENT ON FUNCTION passing_times.passing_times_sequence_already_validated() IS 'Keep track of whether the passing times sequence validation has already been performed in this transaction';
-
---
 -- Name: FUNCTION validate_passing_time_sequences(); Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
@@ -1411,30 +1405,6 @@ $$;
 ALTER FUNCTION passing_times.get_passing_time_order_validity_data(filter_vehicle_journey_ids uuid[], filter_journey_pattern_ref_ids uuid[]) OWNER TO dbhasura;
 
 --
--- Name: passing_times_sequence_already_validated(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
---
-
-CREATE FUNCTION passing_times.passing_times_sequence_already_validated() RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  passing_times_sequence_already_validated BOOLEAN;
-BEGIN
-  passing_times_sequence_already_validated := NULLIF(current_setting('passing_times_vars.passing_times_sequence_already_validated', TRUE), '');
-  IF passing_times_sequence_already_validated IS TRUE THEN
-    RETURN TRUE;
-  ELSE
-    -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
-    SET LOCAL passing_times_vars.passing_times_sequence_already_validated = TRUE;
-    RETURN FALSE;
-  END IF;
-END
-$$;
-
-
-ALTER FUNCTION passing_times.passing_times_sequence_already_validated() OWNER TO dbhasura;
-
---
 -- Name: validate_passing_time_sequences(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
 --
 
@@ -2256,7 +2226,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER 
 -- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR DELETE OR UPDATE ON passing_times.timetabled_passing_time DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
@@ -2274,7 +2244,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER
 -- Name: scheduled_stop_point_in_journey_pattern_ref validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT passing_times.passing_times_sequence_already_validated())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
 -- Name: vehicle_journey process_queued_validation_on_vj_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
