@@ -1,20 +1,30 @@
+-- This migration contains necessary triggers for queueing modified rows for later validation.
+--
 -- Since there will be lots of rows modified, ROW level triggers would be inefficient.
 -- We can't use STATEMENT level triggers for validation because constraint triggers
 -- can only be specified FOR EACH ROW, not STATEMENT level.
 --
--- Overall the process goes like this, two triggers are involved:
--- 1. queue_validate_passing_times_sequence_on_pt_update_trigger (or insert_trigger: these need to be separate because PostgreSQL doesn't accept INSERT OR UPDATE here)
--- * note that this is NOT DEFERRABLE (default)
--- --> calls queue_validate_passing_times_sequence_by_vehicle_journey_id:
--- * creates queue tables if needed ( passing_times.create_validate_passing_times_sequence_queue_temp_table )
--- * this queues vehicle journeys to be validated by inserting their ids to the queue temp table, no actual validation performed yet.
--- 2. validate_passing_times_sequence_trigger
--- * checked at end of transaction (INITIALLY DEFERRED).
--- * internal_utils.queued_validations_already_processed handles that we only do the validation once, even if trigger is set up to fire FOR EACH ROW
--- --> calls validate_passing_time_sequences
--- * validates all entries previously added to the queue temp table.
+-- Overall the process goes like this, two types of triggers are involved:
 --
--- Similar setup exists for scheduled_stop_point_in_journey_pattern_ref tables.
+-- 1. queue_xx_on_update/insert/delete_trigger
+-- * Note: these need to be separate for each operation
+--         because PostgreSQL doesn't accept eg. INSERT OR UPDATE here
+-- * Note: this is NOT DEFERRABLE (default)
+-- --> Calls create_validation_queue_temp_tables:
+-- * Creates queue tables if needed (one for each real table involved here)
+--   - These are temporary tables only for the current transaction.
+-- * This queues rows to be validated by inserting their ids to the appropriate queue temp table,
+--   no actual validation gets performed yet.
+--
+-- 2. process_queued_validation_on_xxx_trigger
+-- * Executed at end of transaction (INITIALLY DEFERRED).
+-- * Internal_utils.queued_validations_already_processed handles that we only do the validation once,
+--   even if trigger is set up to fire FOR EACH ROW
+-- --> Calls internal_utils.execute_queued_validations
+-- * Note: this is defined in a separate migration.
+-- * This then calls all necessary validation functions.
+-- * Each validation function typically fetches necessary modified entries
+--   that were previously added to the queue temp tables and performs its validation on them.
 
 -- Create queue tables.
 
