@@ -89,26 +89,7 @@ COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_ve
   and whether all passing times for the vehicle journey are in stop point sequence order, that is,
   in same order by passing_time as their corresponding stop points (scheduled_stop_point_in_journey_pattern_ref).';
 
-CREATE OR REPLACE FUNCTION passing_times.passing_times_sequence_already_validated() RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  passing_times_sequence_already_validated BOOLEAN;
-BEGIN
-  passing_times_sequence_already_validated := NULLIF(current_setting('passing_times_vars.passing_times_sequence_already_validated', TRUE), '');
-  IF passing_times_sequence_already_validated IS TRUE THEN
-    RETURN TRUE;
-  ELSE
-    -- SET LOCAL = only for this transaction. https://www.postgresql.org/docs/current/sql-set.html
-    SET LOCAL passing_times_vars.passing_times_sequence_already_validated = TRUE;
-    RETURN FALSE;
-  END IF;
-END
-$$;
-COMMENT ON FUNCTION passing_times.passing_times_sequence_already_validated()
-IS 'Keep track of whether the passing times sequence validation has already been performed in this transaction';
-
-CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS VOID
+CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS void
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -200,7 +181,7 @@ IS 'Perform validation of all passing time sequences that have been added to the
 -- * this queues vehicle journeys to be validated by inserting their ids to the queue temp table, no actual validation performed yet.
 -- 2. validate_passing_times_sequence_trigger
 -- * checked at end of transaction (INITIALLY DEFERRED).
--- * passing_times_sequence_already_validated handles that we only do the validation once, even if trigger is set up to fire FOR EACH ROW
+-- * internal_utils.queued_validations_already_processed handles that we only do the validation once, even if trigger is set up to fire FOR EACH ROW
 -- --> calls validate_passing_time_sequences
 -- * validates all entries previously added to the queue temp table.
 --
@@ -241,7 +222,7 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   AFTER UPDATE OR INSERT OR DELETE ON passing_times.timetabled_passing_time
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
-  WHEN (NOT passing_times.passing_times_sequence_already_validated())
+  WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
@@ -272,7 +253,7 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   AFTER UPDATE OR INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
-  WHEN (NOT passing_times.passing_times_sequence_already_validated())
+  WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
