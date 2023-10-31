@@ -89,25 +89,6 @@ COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_ve
   and whether all passing times for the vehicle journey are in stop point sequence order, that is,
   in same order by passing_time as their corresponding stop points (scheduled_stop_point_in_journey_pattern_ref).';
 
-CREATE OR REPLACE FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_tables() RETURNS void
-    LANGUAGE sql PARALLEL SAFE
-    AS $$
-
-  CREATE TEMP TABLE IF NOT EXISTS updated_vehicle_journey
-  (
-    vehicle_journey_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-
-  CREATE TEMP TABLE IF NOT EXISTS updated_journey_pattern_ref
-  (
-    journey_pattern_ref_id UUID UNIQUE
-  )
-  ON COMMIT DELETE ROWS;
-  $$;
-COMMENT ON FUNCTION passing_times.create_validate_passing_times_sequence_queue_temp_tables()
-IS 'Create the temp tables used to enqueue validation of the changed vehicle journeys and journey pattern refs from statement-level triggers';
-
 CREATE OR REPLACE FUNCTION passing_times.passing_times_sequence_already_validated() RETURNS boolean
     LANGUAGE plpgsql
     AS $$
@@ -133,9 +114,9 @@ CREATE OR REPLACE FUNCTION passing_times.queue_validate_passing_times_sequence_b
 BEGIN
   -- RAISE NOTICE 'passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()';
 
-  PERFORM passing_times.create_validate_passing_times_sequence_queue_temp_tables();
+  PERFORM internal_utils.create_validation_queue_temp_tables();
 
-  INSERT INTO updated_vehicle_journey (vehicle_journey_id)
+  INSERT INTO modified_vehicle_journey (vehicle_journey_id)
   SELECT DISTINCT vehicle_journey_id
   FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
   ON CONFLICT DO NOTHING;
@@ -152,9 +133,9 @@ CREATE OR REPLACE FUNCTION service_pattern.queue_validate_passing_times_sequence
 BEGIN
   -- RAISE NOTICE 'service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()';
 
-  PERFORM passing_times.create_validate_passing_times_sequence_queue_temp_tables();
+  PERFORM internal_utils.create_validation_queue_temp_tables();
 
-  INSERT INTO updated_journey_pattern_ref (journey_pattern_ref_id)
+  INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
   SELECT DISTINCT journey_pattern_ref_id
   FROM new_table
   ON CONFLICT DO NOTHING;
@@ -178,11 +159,11 @@ BEGIN
   FOR row_validation_data IN (
     WITH filter_vehicle_journey_ids AS (
       SELECT array_agg(DISTINCT vehicle_journey_id) AS ids
-      FROM updated_vehicle_journey
+      FROM modified_vehicle_journey
     ),
     filter_journey_pattern_ref_ids AS (
       SELECT array_agg(DISTINCT journey_pattern_ref_id) AS ids
-      FROM updated_journey_pattern_ref
+      FROM modified_journey_pattern_ref
     )
 
     SELECT *
