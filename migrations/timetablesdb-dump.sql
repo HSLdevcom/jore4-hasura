@@ -1325,7 +1325,7 @@ CREATE FUNCTION journey_pattern.queue_validation_by_jpr_id() RETURNS trigger
 
     INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
     SELECT DISTINCT journey_pattern_ref_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -1531,7 +1531,7 @@ CREATE FUNCTION vehicle_journey.queue_validation_by_vj_id() RETURNS trigger
 
     INSERT INTO modified_vehicle_journey (vehicle_journey_id)
     SELECT DISTINCT vehicle_journey_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -1657,7 +1657,7 @@ CREATE FUNCTION vehicle_schedule.queue_validation_by_vsf_id() RETURNS trigger
 
     INSERT INTO modified_vehicle_schedule_frame (vehicle_schedule_frame_id)
     SELECT DISTINCT vehicle_schedule_frame_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -1733,7 +1733,7 @@ CREATE FUNCTION vehicle_service.queue_validation_by_block_id() RETURNS trigger
 
     INSERT INTO modified_block (block_id)
     SELECT DISTINCT block_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -1757,7 +1757,7 @@ CREATE FUNCTION vehicle_service.queue_validation_by_vs_id() RETURNS trigger
 
     INSERT INTO modified_vehicle_service (vehicle_service_id)
     SELECT DISTINCT vehicle_service_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -2226,31 +2226,31 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger AFTER UPDATE 
 -- Name: journey_pattern_ref queue_jpr_validation_on_insert_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_jpr_validation_on_insert_trigger AFTER INSERT ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE TRIGGER queue_jpr_validation_on_insert_trigger AFTER INSERT ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: journey_pattern_ref queue_jpr_validation_on_update_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_jpr_validation_on_update_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE TRIGGER queue_jpr_validation_on_update_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_insert_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_update_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
@@ -2262,13 +2262,13 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT O
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_update_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
@@ -2286,13 +2286,13 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_vj_trigger AFTER INSERT O
 -- Name: vehicle_journey queue_vj_validation_on_insert_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_vj_validation_on_insert_trigger AFTER INSERT ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_vj_validation_on_insert_trigger AFTER INSERT ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: vehicle_journey queue_vj_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_vj_validation_on_update_trigger AFTER UPDATE ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+CREATE TRIGGER queue_vj_validation_on_update_trigger AFTER UPDATE ON vehicle_journey.vehicle_journey REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: vehicle_schedule_frame process_queued_validation_on_vsf_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
@@ -2304,13 +2304,13 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_vsf_trigger AFTER INSERT 
 -- Name: vehicle_schedule_frame queue_vsf_validation_on_insert_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_vsf_validation_on_insert_trigger AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
+CREATE TRIGGER queue_vsf_validation_on_insert_trigger AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 
 --
 -- Name: vehicle_schedule_frame queue_vsf_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_vsf_validation_on_update_trigger AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
+CREATE TRIGGER queue_vsf_validation_on_update_trigger AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 
 --
 -- Name: block process_queued_validation_on_block_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
@@ -2322,7 +2322,7 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_block_trigger AFTER UPDAT
 -- Name: block queue_block_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_block_validation_on_update_trigger AFTER UPDATE ON vehicle_service.block REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
+CREATE TRIGGER queue_block_validation_on_update_trigger AFTER UPDATE ON vehicle_service.block REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
 
 --
 -- Name: vehicle_service process_queued_validation_on_vs_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
@@ -2334,7 +2334,7 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_vs_trigger AFTER UPDATE O
 -- Name: vehicle_service queue_vs_validation_on_update_trigger; Type: TRIGGER; Schema: vehicle_service; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_vs_validation_on_update_trigger AFTER UPDATE ON vehicle_service.vehicle_service REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
+CREATE TRIGGER queue_vs_validation_on_update_trigger AFTER UPDATE ON vehicle_service.vehicle_service REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
 
 --
 -- Sorted dump complete
