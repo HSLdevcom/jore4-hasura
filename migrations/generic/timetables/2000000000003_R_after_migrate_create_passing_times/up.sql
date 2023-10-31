@@ -209,7 +209,7 @@ IS 'Perform validation of all passing time sequences that have been added to the
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
   AFTER UPDATE ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
@@ -219,7 +219,7 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on upd
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
   AFTER INSERT ON passing_times.timetabled_passing_time
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
@@ -229,7 +229,7 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on ins
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
   AFTER DELETE ON passing_times.timetabled_passing_time
-  REFERENCING OLD TABLE AS new_table -- FIXME! "old is new"
+  REFERENCING OLD TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
@@ -250,7 +250,7 @@ IS 'Trigger to validate the passing time <-> stop point sequence after modificat
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
   AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
@@ -260,7 +260,7 @@ IS 'Trigger to queue validation of passing times <-> stop point sequences on sto
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
   AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref

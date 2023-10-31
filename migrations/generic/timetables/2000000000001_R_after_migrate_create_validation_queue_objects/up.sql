@@ -38,7 +38,7 @@ CREATE OR REPLACE FUNCTION vehicle_schedule.queue_validation_by_vsf_id() RETURNS
 
     INSERT INTO modified_vehicle_schedule_frame (vehicle_schedule_frame_id)
     SELECT DISTINCT vehicle_schedule_frame_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -57,7 +57,7 @@ CREATE OR REPLACE FUNCTION vehicle_service.queue_validation_by_vs_id() RETURNS t
 
     INSERT INTO modified_vehicle_service (vehicle_service_id)
     SELECT DISTINCT vehicle_service_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -76,7 +76,7 @@ CREATE OR REPLACE FUNCTION vehicle_service.queue_validation_by_block_id() RETURN
 
     INSERT INTO modified_block (block_id)
     SELECT DISTINCT block_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -95,7 +95,7 @@ CREATE OR REPLACE FUNCTION vehicle_journey.queue_validation_by_vj_id() RETURNS t
 
     INSERT INTO modified_vehicle_journey (vehicle_journey_id)
     SELECT DISTINCT vehicle_journey_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -114,7 +114,7 @@ CREATE OR REPLACE FUNCTION journey_pattern.queue_validation_by_jpr_id() RETURNS 
 
     INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
     SELECT DISTINCT journey_pattern_ref_id
-    FROM new_table
+    FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
     ON CONFLICT DO NOTHING;
 
     RETURN NULL;
@@ -161,7 +161,7 @@ CREATE OR REPLACE FUNCTION internal_utils.execute_queued_validations() RETURNS t
 DROP TRIGGER IF EXISTS queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame;
 CREATE TRIGGER queue_vsf_validation_on_insert_trigger
   AFTER INSERT ON vehicle_schedule.vehicle_schedule_frame
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 COMMENT ON TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame
@@ -171,7 +171,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame;
 CREATE TRIGGER queue_vsf_validation_on_update_trigger
   AFTER UPDATE ON vehicle_schedule.vehicle_schedule_frame
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame
@@ -182,7 +182,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service;
 CREATE TRIGGER queue_vs_validation_on_update_trigger
   AFTER UPDATE ON vehicle_service.vehicle_service
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
 COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service
@@ -193,7 +193,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_block_validation_on_update_trigger ON vehicle_service.block;
 CREATE TRIGGER queue_block_validation_on_update_trigger
   AFTER UPDATE ON vehicle_service.block
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
 COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block
@@ -204,7 +204,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey;
 CREATE TRIGGER queue_vj_validation_on_insert_trigger
   AFTER INSERT ON vehicle_journey.vehicle_journey
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey
@@ -214,7 +214,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey;
 CREATE TRIGGER queue_vj_validation_on_update_trigger
   AFTER UPDATE ON vehicle_journey.vehicle_journey
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey
@@ -225,7 +225,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref;
 CREATE TRIGGER queue_jpr_validation_on_update_trigger
   AFTER UPDATE ON journey_pattern.journey_pattern_ref
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref
@@ -235,7 +235,7 @@ Actual validation is performed at the end of transaction by execute_queued_valid
 DROP TRIGGER IF EXISTS queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref;
 CREATE TRIGGER queue_jpr_validation_on_insert_trigger
   AFTER INSERT ON journey_pattern.journey_pattern_ref
-  REFERENCING NEW TABLE AS new_table
+  REFERENCING NEW TABLE AS modified_table
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref
