@@ -14,6 +14,9 @@ BEGIN
   -- RAISE LOG 'before vehicle_schedule.validate_queued_schedules_uniqueness()';
   PERFORM vehicle_schedule.validate_queued_schedules_uniqueness();
 
+  -- RAISE LOG 'before passing_times.validate_passing_time_sequences()';
+  PERFORM passing_times.validate_passing_time_sequences();
+
   -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
 
   RETURN NULL;

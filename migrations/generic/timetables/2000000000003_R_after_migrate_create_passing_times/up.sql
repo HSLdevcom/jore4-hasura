@@ -146,7 +146,7 @@ $$;
 COMMENT ON FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()
 IS 'Queue modified journey pattern refs for passing time sequence validation which is performed at the end of transaction.';
 
-CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS trigger
+CREATE OR REPLACE FUNCTION passing_times.validate_passing_time_sequences() RETURNS VOID
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -219,8 +219,6 @@ BEGIN
         row_validation_data.vehicle_journey_id;
     END IF;
   END LOOP;
-
-  RETURN NULL;
 END;
 $$;
 COMMENT ON FUNCTION passing_times.validate_passing_time_sequences()
@@ -282,7 +280,7 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   WHEN (NOT passing_times.passing_times_sequence_already_validated())
-  EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+  EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
@@ -313,7 +311,7 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   WHEN (NOT passing_times.passing_times_sequence_already_validated())
-  EXECUTE FUNCTION passing_times.validate_passing_time_sequences();
+  EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
     This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
