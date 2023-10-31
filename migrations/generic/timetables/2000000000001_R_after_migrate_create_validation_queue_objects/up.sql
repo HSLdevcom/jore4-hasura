@@ -280,7 +280,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
@@ -290,7 +290,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
@@ -300,7 +300,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
 IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- scheduled_stop_point_in_journey_pattern_ref (NOTE: these queue the whole journey_pattern_ref for validation):
 
@@ -312,7 +312,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
 CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
@@ -322,7 +322,7 @@ CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
 IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- End of statement validation triggers:
 
@@ -387,8 +387,7 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
-IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
-    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
 CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
@@ -398,5 +397,4 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
   WHEN (NOT internal_utils.queued_validations_already_processed())
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
-IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
-    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';

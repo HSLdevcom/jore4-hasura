@@ -411,28 +411,27 @@ COMMENT ON TABLE passing_times.timetabled_passing_time IS 'Long-term planned tim
 --
 
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER validate_passing_times_sequence_trigger ON timetabled_passing_time; Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
-    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
 -- Name: COLUMN direction.direction; Type: COMMENT; Schema: route; Owner: dbhasura
@@ -535,21 +534,20 @@ COMMENT ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 
 --
 
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
 COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
-    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER validate_passing_times_sequence_trigger ON scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
-    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
 
 --
 -- Name: COLUMN vehicle_journey.block_id; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
