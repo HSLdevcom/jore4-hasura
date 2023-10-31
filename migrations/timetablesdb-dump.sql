@@ -399,12 +399,6 @@ COMMENT ON FUNCTION passing_times.get_passing_time_order_validity_data(filter_ve
 COMMENT ON FUNCTION passing_times.passing_times_sequence_already_validated() IS 'Keep track of whether the passing times sequence validation has already been performed in this transaction';
 
 --
--- Name: FUNCTION queue_validate_passing_times_sequence_by_vehicle_journey_id(); Type: COMMENT; Schema: passing_times; Owner: dbhasura
---
-
-COMMENT ON FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id() IS 'Queue modified vehicle journeys for passing time sequence validation which is performed at the end of transaction.';
-
---
 -- Name: FUNCTION validate_passing_time_sequences(); Type: COMMENT; Schema: passing_times; Owner: dbhasura
 --
 
@@ -535,12 +529,6 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.sc
 --
 
 COMMENT ON COLUMN service_pattern.scheduled_stop_point_in_journey_pattern_ref.timing_place_label IS 'The label of the timing place associated with the referenced scheduled stop point in journey pattern';
-
---
--- Name: FUNCTION queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: COMMENT; Schema: service_pattern; Owner: dbhasura
---
-
-COMMENT ON FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() IS 'Queue modified journey pattern refs for passing time sequence validation which is performed at the end of transaction.';
 
 --
 -- Name: TABLE scheduled_stop_point_in_journey_pattern_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
@@ -1447,30 +1435,6 @@ $$;
 ALTER FUNCTION passing_times.passing_times_sequence_already_validated() OWNER TO dbhasura;
 
 --
--- Name: queue_validate_passing_times_sequence_by_vehicle_journey_id(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
---
-
-CREATE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  -- RAISE NOTICE 'passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id()';
-
-  PERFORM internal_utils.create_validation_queue_temp_tables();
-
-  INSERT INTO modified_vehicle_journey (vehicle_journey_id)
-  SELECT DISTINCT vehicle_journey_id
-  FROM modified_table -- either the NEW TABLE on INSERT/UPDATE, or OLD TABLE on DELETE.
-  ON CONFLICT DO NOTHING;
-
-  RETURN NULL;
-END;
-$$;
-
-
-ALTER FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id() OWNER TO dbhasura;
-
---
 -- Name: validate_passing_time_sequences(); Type: FUNCTION; Schema: passing_times; Owner: dbhasura
 --
 
@@ -1552,30 +1516,6 @@ $$;
 
 
 ALTER FUNCTION passing_times.validate_passing_time_sequences() OWNER TO dbhasura;
-
---
--- Name: queue_validate_passing_times_sequence_by_journey_pattern_ref_id(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
---
-
-CREATE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  -- RAISE NOTICE 'service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id()';
-
-  PERFORM internal_utils.create_validation_queue_temp_tables();
-
-  INSERT INTO modified_journey_pattern_ref (journey_pattern_ref_id)
-  SELECT DISTINCT journey_pattern_ref_id
-  FROM new_table
-  ON CONFLICT DO NOTHING;
-
-  RETURN NULL;
-END;
-$$;
-
-
-ALTER FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id() OWNER TO dbhasura;
 
 --
 -- Name: queue_validation_by_vj_id(); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
@@ -2298,19 +2238,19 @@ CREATE TRIGGER queue_jpr_validation_on_update_trigger AFTER UPDATE ON journey_pa
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_delete_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger AFTER DELETE ON passing_times.timetabled_passing_time REFERENCING OLD TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_insert_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger AFTER INSERT ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time queue_validate_passing_times_sequence_on_pt_update_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION passing_times.queue_validate_passing_times_sequence_by_vehicle_journey_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger AFTER UPDATE ON passing_times.timetabled_passing_time REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 
 --
 -- Name: timetabled_passing_time validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: passing_times; Owner: dbhasura
@@ -2322,13 +2262,13 @@ CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger AFTER INSERT O
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_insert_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref queue_validate_passing_times_sequence_on_ssp_update_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
 --
 
-CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION service_pattern.queue_validate_passing_times_sequence_by_journey_pattern_ref_id();
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS new_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern_ref validate_passing_times_sequence_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
