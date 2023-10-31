@@ -7,6 +7,8 @@ export const hslVehicleServiceBlocksByName = {
   v1Ascension: {
     block_id: 'd911c6eb-35c1-4bd5-9268-6daf3d52ed55',
     vehicle_service_id: hslVehicleServicesByName.v1Ascension.vehicle_service_id,
+    preparing_time: null,
+    finishing_time: null,
   },
 };
 

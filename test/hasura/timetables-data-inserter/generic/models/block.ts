@@ -25,6 +25,8 @@ export const processBlock = (
   );
 
   return {
+    preparing_time: null,
+    finishing_time: null,
     ...result,
     vehicle_service_id: parentVehicleService.vehicle_service_id,
     _vehicle_journeys: processedVehicleJourneys,

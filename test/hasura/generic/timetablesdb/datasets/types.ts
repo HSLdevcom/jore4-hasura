@@ -83,23 +83,31 @@ export const journeyPatternsInVehicleServiceProps: Property[] = [
 export type VehicleServiceBlock = {
   block_id: UUID;
   vehicle_service_id: UUID;
+  preparing_time: Duration | null;
+  finishing_time: Duration | null;
 };
 
 export const vehicleServiceBlockProps: Property[] = [
   'block_id',
   'vehicle_service_id',
+  'preparing_time',
+  'finishing_time',
 ];
 
 export type VehicleJourney = {
   vehicle_journey_id: UUID;
   block_id: UUID;
   journey_pattern_ref_id: UUID;
+  layover_time: Duration | null;
+  turnaround_time: Duration | null;
 };
 
 export const vehicleJourneyProps: Property[] = [
   'vehicle_journey_id',
   'block_id',
   'journey_pattern_ref_id',
+  'layover_time',
+  'turnaround_time',
 ];
 
 export type TimetabledPassingTime = {
