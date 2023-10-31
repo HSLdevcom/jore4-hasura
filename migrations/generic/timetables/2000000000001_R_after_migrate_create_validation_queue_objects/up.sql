@@ -1,3 +1,21 @@
+-- Since there will be lots of rows modified, ROW level triggers would be inefficient.
+-- We can't use STATEMENT level triggers for validation because constraint triggers
+-- can only be specified FOR EACH ROW, not STATEMENT level.
+--
+-- Overall the process goes like this, two triggers are involved:
+-- 1. queue_validate_passing_times_sequence_on_pt_update_trigger (or insert_trigger: these need to be separate because PostgreSQL doesn't accept INSERT OR UPDATE here)
+-- * note that this is NOT DEFERRABLE (default)
+-- --> calls queue_validate_passing_times_sequence_by_vehicle_journey_id:
+-- * creates queue tables if needed ( passing_times.create_validate_passing_times_sequence_queue_temp_table )
+-- * this queues vehicle journeys to be validated by inserting their ids to the queue temp table, no actual validation performed yet.
+-- 2. validate_passing_times_sequence_trigger
+-- * checked at end of transaction (INITIALLY DEFERRED).
+-- * internal_utils.queued_validations_already_processed handles that we only do the validation once, even if trigger is set up to fire FOR EACH ROW
+-- --> calls validate_passing_time_sequences
+-- * validates all entries previously added to the queue temp table.
+--
+-- Similar setup exists for scheduled_stop_point_in_journey_pattern_ref tables.
+
 -- Create queue tables.
 
 CREATE OR REPLACE FUNCTION internal_utils.create_validation_queue_temp_tables() RETURNS void
@@ -242,6 +260,60 @@ COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.jou
 IS 'Trigger for queuing modified journey pattern refs for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
+-- timetabled_passing_time (NOTE: these queue the whole vehicle_journey for validation):
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger
+  AFTER UPDATE ON passing_times.timetabled_passing_time
+  REFERENCING NEW TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_update_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of passing times <-> stop point sequences on update.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger
+  AFTER INSERT ON passing_times.timetabled_passing_time
+  REFERENCING NEW TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_insert_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of passing times <-> stop point sequences on insert.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger
+  AFTER DELETE ON passing_times.timetabled_passing_time
+  REFERENCING OLD TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_pt_delete_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to queue validation of passing times <-> stop point sequences on delete.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+-- scheduled_stop_point_in_journey_pattern_ref (NOTE: these queue the whole journey_pattern_ref for validation):
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger
+  AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  REFERENCING NEW TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_update_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point update.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
+DROP TRIGGER IF EXISTS queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger
+  AFTER INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  REFERENCING NEW TABLE AS modified_table
+  FOR EACH STATEMENT
+  EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+COMMENT ON TRIGGER queue_validate_passing_times_sequence_on_ssp_insert_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to queue validation of passing times <-> stop point sequences on stop point insert.
+    Actual validation is triggered later by deferred validate_passing_times_sequence_trigger() trigger';
+
 -- End of statement validation triggers:
 
 DROP TRIGGER IF EXISTS process_queued_validation_on_vsf_trigger ON vehicle_schedule.vehicle_schedule_frame;
@@ -296,3 +368,25 @@ CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger
   EXECUTE FUNCTION internal_utils.execute_queued_validations();
 COMMENT ON TRIGGER process_queued_validation_on_jpr_trigger ON journey_pattern.journey_pattern_ref
 IS 'Trigger to execute queued validations at the end of the transaction that were registered earlier by statement level triggers';
+
+DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time;
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
+  AFTER UPDATE OR INSERT OR DELETE ON passing_times.timetabled_passing_time
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW
+  WHEN (NOT internal_utils.queued_validations_already_processed())
+  EXECUTE FUNCTION internal_utils.execute_queued_validations();
+COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON passing_times.timetabled_passing_time
+IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
+    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
+
+DROP TRIGGER IF EXISTS validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref;
+CREATE CONSTRAINT TRIGGER validate_passing_times_sequence_trigger
+  AFTER UPDATE OR INSERT ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW
+  WHEN (NOT internal_utils.queued_validations_already_processed())
+  EXECUTE FUNCTION internal_utils.execute_queued_validations();
+COMMENT ON TRIGGER validate_passing_times_sequence_trigger ON service_pattern.scheduled_stop_point_in_journey_pattern_ref
+IS 'Trigger to validate the passing time <-> stop point sequence after modifications on the passing time table.
+    This trigger will cause those vehicle journeys to be checked, whose ID was queued to be checked by a statement level trigger.';
