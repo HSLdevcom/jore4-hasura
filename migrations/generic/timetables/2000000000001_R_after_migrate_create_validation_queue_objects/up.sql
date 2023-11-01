@@ -193,7 +193,7 @@ CREATE TRIGGER queue_vsf_validation_on_insert_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 COMMENT ON TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame
-IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+IS 'Trigger for queuing inserted vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame;
@@ -203,7 +203,7 @@ CREATE TRIGGER queue_vsf_validation_on_update_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_schedule.queue_validation_by_vsf_id();
 COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame
-IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+IS 'Trigger for queuing updated vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- vehicle_service:
@@ -214,7 +214,7 @@ CREATE TRIGGER queue_vs_validation_on_update_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_service.queue_validation_by_vs_id();
 COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service
-IS 'Trigger for queuing modified vehicle schedules for later validation.
+IS 'Trigger for queuing updated vehicle services for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- block:
@@ -225,7 +225,7 @@ CREATE TRIGGER queue_block_validation_on_update_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_service.queue_validation_by_block_id();
 COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block
-IS 'Trigger for queuing modified vehicle service blocks for later validation.
+IS 'Trigger for queuing updated vehicle service blocks for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- vehicle_journey:
@@ -236,7 +236,7 @@ CREATE TRIGGER queue_vj_validation_on_insert_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey
-IS 'Trigger for queuing modified vehicle journeys for later validation.
+IS 'Trigger for queuing inserted vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey;
@@ -246,7 +246,7 @@ CREATE TRIGGER queue_vj_validation_on_update_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION vehicle_journey.queue_validation_by_vj_id();
 COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey
-IS 'Trigger for queuing modified vehicle journeys for later validation.
+IS 'Trigger for queuing updated vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- journey_pattern_ref:
@@ -257,7 +257,7 @@ CREATE TRIGGER queue_jpr_validation_on_update_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref
-IS 'Trigger for queuing modified journey pattern refs for later validation.
+IS 'Trigger for queuing updated journey pattern refs for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 DROP TRIGGER IF EXISTS queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref;
@@ -267,7 +267,7 @@ CREATE TRIGGER queue_jpr_validation_on_insert_trigger
   FOR EACH STATEMENT
   EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
 COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref
-IS 'Trigger for queuing modified journey pattern refs for later validation.
+IS 'Trigger for queuing inserted journey pattern refs for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 -- timetabled_passing_time (NOTE: these queue the whole vehicle_journey for validation):
