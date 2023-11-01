@@ -2188,7 +2188,7 @@ ALTER TABLE vehicle_type.vehicle_type OWNER TO dbhasura;
 -- Name: journey_pattern_ref process_queued_validation_on_jpr_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
-CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger AFTER UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
+CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger AFTER INSERT OR UPDATE ON journey_pattern.journey_pattern_ref DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT internal_utils.queued_validations_already_processed())) EXECUTE FUNCTION internal_utils.execute_queued_validations();
 
 --
 -- Name: journey_pattern_ref queue_jpr_validation_on_insert_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura

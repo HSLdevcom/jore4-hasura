@@ -371,7 +371,7 @@ IS 'Trigger to execute queued validations at the end of the transaction that wer
 
 DROP TRIGGER IF EXISTS process_queued_validation_on_jpr_trigger ON journey_pattern.journey_pattern_ref;
 CREATE CONSTRAINT TRIGGER process_queued_validation_on_jpr_trigger
-  AFTER UPDATE ON journey_pattern.journey_pattern_ref
+  AFTER UPDATE OR INSERT ON journey_pattern.journey_pattern_ref
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   WHEN (NOT internal_utils.queued_validations_already_processed())
