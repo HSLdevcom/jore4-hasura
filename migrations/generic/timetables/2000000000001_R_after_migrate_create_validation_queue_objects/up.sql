@@ -149,7 +149,7 @@ CREATE OR REPLACE FUNCTION journey_pattern.queue_validation_by_jpr_id() RETURNS 
   END;
   $$;
 COMMENT ON FUNCTION journey_pattern.queue_validation_by_jpr_id()
-IS 'Queue modified vehicle schedule frames for validation which is performed at the end of transaction.';
+IS 'Queue modified journey pattern refs for validation which is performed at the end of transaction.';
 
 CREATE OR REPLACE FUNCTION internal_utils.queued_validations_already_processed() RETURNS boolean
   LANGUAGE plpgsql
