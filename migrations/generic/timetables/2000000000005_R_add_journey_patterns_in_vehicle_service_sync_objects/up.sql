@@ -10,7 +10,7 @@ ALTER TABLE vehicle_service.journey_patterns_in_vehicle_service
 -- it might make sense to rethink these triggers, possibly optimizing them
 -- to only refresh necessary parts of the journey_patterns_in_vehicle_service table.
 -- The reference_count can probably be utilized for such purpose.
-CREATE OR REPLACE FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() RETURNS VOID
+CREATE OR REPLACE FUNCTION vehicle_service.refresh_journey_patterns_in_vehicle_service() RETURNS void
   LANGUAGE plpgsql
   VOLATILE PARALLEL UNSAFE
 AS $$
