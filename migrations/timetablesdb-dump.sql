@@ -341,14 +341,14 @@ COMMENT ON TRIGGER process_queued_validation_on_jpr_trigger ON journey_pattern.j
 -- Name: TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing modified journey pattern refs for later validation.
+COMMENT ON TRIGGER queue_jpr_validation_on_insert_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing inserted journey pattern refs for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing modified journey pattern refs for later validation.
+COMMENT ON TRIGGER queue_jpr_validation_on_update_trigger ON journey_pattern.journey_pattern_ref IS 'Trigger for queuing updated journey pattern refs for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
@@ -613,14 +613,14 @@ COMMENT ON TRIGGER process_queued_validation_on_vj_trigger ON vehicle_journey.ve
 -- Name: TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing modified vehicle journeys for later validation.
+COMMENT ON TRIGGER queue_vj_validation_on_insert_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing inserted vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing modified vehicle journeys for later validation.
+COMMENT ON TRIGGER queue_vj_validation_on_update_trigger ON vehicle_journey.vehicle_journey IS 'Trigger for queuing updated vehicle journeys for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
@@ -707,14 +707,14 @@ COMMENT ON TRIGGER process_queued_validation_on_vsf_trigger ON vehicle_schedule.
 -- Name: TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+COMMENT ON TRIGGER queue_vsf_validation_on_insert_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing inserted vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule_frame; Type: COMMENT; Schema: vehicle_schedule; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing modified vehicle schedule frames for later validation.
+COMMENT ON TRIGGER queue_vsf_validation_on_update_trigger ON vehicle_schedule.vehicle_schedule_frame IS 'Trigger for queuing updated vehicle schedule frames for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
@@ -827,14 +827,14 @@ COMMENT ON TRIGGER process_queued_validation_on_vs_trigger ON vehicle_service.ve
 -- Name: TRIGGER queue_block_validation_on_update_trigger ON block; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block IS 'Trigger for queuing modified vehicle service blocks for later validation.
+COMMENT ON TRIGGER queue_block_validation_on_update_trigger ON vehicle_service.block IS 'Trigger for queuing updated vehicle service blocks for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
 -- Name: TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service; Type: COMMENT; Schema: vehicle_service; Owner: dbhasura
 --
 
-COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service IS 'Trigger for queuing modified vehicle schedules for later validation.
+COMMENT ON TRIGGER queue_vs_validation_on_update_trigger ON vehicle_service.vehicle_service IS 'Trigger for queuing updated vehicle services for later validation.
 Actual validation is performed at the end of transaction by execute_queued_validations().';
 
 --
