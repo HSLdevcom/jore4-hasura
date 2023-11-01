@@ -323,7 +323,7 @@ COMMENT ON COLUMN journey_pattern.journey_pattern_ref.type_of_line IS 'The type 
 -- Name: FUNCTION queue_validation_by_jpr_id(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION journey_pattern.queue_validation_by_jpr_id() IS 'Queue modified vehicle schedule frames for validation which is performed at the end of transaction.';
+COMMENT ON FUNCTION journey_pattern.queue_validation_by_jpr_id() IS 'Queue modified journey pattern refs for validation which is performed at the end of transaction.';
 
 --
 -- Name: TABLE journey_pattern_ref; Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
