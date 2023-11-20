@@ -1,5 +1,8 @@
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
-import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
+import {
+  RouteDirection,
+  TimetablePriority,
+} from 'generic/timetablesdb/datasets/types';
 import { DateTime, Duration } from 'luxon';
 import { z } from 'zod';
 import { defaultDayTypeIds } from '../day-types';
@@ -50,11 +53,23 @@ const defaultDayTypeIdKeys = [
   'SUNDAY',
 ] as const;
 
+const routeDirections = [
+  'inbound',
+  'outbound',
+  'clockwise',
+  'anticlockwise',
+  'northbound',
+  'southbound',
+  'eastbound',
+  'westbound',
+] as const;
+
 export type testType = typeof test;
 const stopPointSchema = z
   .object({
     scheduled_stop_point_label: z.string(),
     scheduled_stop_point_sequence: z.number(),
+    timing_place_label: z.string().optional(),
   })
   .strict();
 
@@ -65,6 +80,13 @@ const journeyPatternRefSchema = z
     type_of_line: z.nativeEnum(TypeOfLine).optional(),
     snapshot_timestamp: dateTimeSchema.optional(),
     journey_pattern_id: z.string().uuid().optional(),
+    route_label: z.string().optional(),
+    route_direction: z
+      .enum(routeDirections)
+      .transform((direction) => direction as RouteDirection)
+      .optional(),
+    route_validity_start: dateSchema.optional(),
+    route_validity_end: dateSchema.optional(),
 
     _stop_points: z.array(stopPointSchema).optional(),
   })

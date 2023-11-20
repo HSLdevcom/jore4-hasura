@@ -3,6 +3,7 @@ import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable } from '@util/setup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import { get } from 'lodash';
+import { DateTime } from 'luxon';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import { insertDatasetFromJson } from './data-insert';
 import testDatasetJson from './example.json';
@@ -328,6 +329,22 @@ describe('Generic timetables data inserter json parser', () => {
             builtJourneyPatternRef.journey_pattern_ref_id,
         );
         expect(inboundRef).toBeTruthy();
+
+        expect(inboundRef.observation_timestamp).toEqual(
+          DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+        );
+        expect(inboundRef.snapshot_timestamp).toEqual(
+          DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+        );
+        expect(inboundRef.type_of_line).toBe('stopping_bus_service');
+        expect(inboundRef.route_label).toBe('123');
+        expect(inboundRef.route_direction).toBe('inbound');
+        expect(inboundRef.route_validity_start).toEqual(
+          DateTime.fromISO('2023-06-01'),
+        );
+        expect(inboundRef.route_validity_end).toEqual(
+          DateTime.fromISO('2051-01-01'),
+        );
       });
     });
 
