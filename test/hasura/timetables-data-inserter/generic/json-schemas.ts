@@ -55,7 +55,7 @@ const stopPointSchema = z.object({
   scheduled_stop_point_sequence: z.number(),
 });
 
-const journeyPatternRefSchema = {
+const journeyPatternRefSchema = z.object({
   journey_pattern_ref_id: z.string().uuid().optional(),
   observation_timestamp: dateTimeSchema.optional(),
   type_of_line: z.nativeEnum(TypeOfLine).optional(),
@@ -63,7 +63,7 @@ const journeyPatternRefSchema = {
   journey_pattern_id: z.string().uuid().optional(),
 
   _stop_points: z.array(stopPointSchema).optional(),
-};
+});
 
 export const timetabledPassingTimeSchema = z.object({
   timetabled_passing_time_id: z.string().uuid().optional(),
@@ -120,5 +120,5 @@ export const vehicleScheduleFrameSchema = z.object({
 
 export const genericTimetablesJsonSchema = z.object({
   _vehicle_schedule_frames: z.record(vehicleScheduleFrameSchema).optional(),
-  _journey_pattern_refs: z.record(z.object(journeyPatternRefSchema)).optional(),
+  _journey_pattern_refs: z.record(journeyPatternRefSchema).optional(),
 });
