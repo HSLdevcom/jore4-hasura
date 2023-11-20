@@ -3,7 +3,7 @@ import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable } from '@util/setup';
 import { hslTimetablesDbSchema } from 'hsl/timetablesdb/datasets/schema';
 import { insertDatasetFromJson } from './data-insert';
-import * as testDatasetJson from './example.json';
+import testDatasetJson from './example.json';
 import {
   HslTimetablesDatasetOutput,
   HslVehicleScheduleFrameOutput,
