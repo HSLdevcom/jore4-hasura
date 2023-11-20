@@ -64,7 +64,6 @@ const routeDirections = [
   'westbound',
 ] as const;
 
-export type testType = typeof test;
 const stopPointSchema = z
   .object({
     scheduled_stop_point_label: z.string(),
