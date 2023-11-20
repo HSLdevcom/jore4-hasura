@@ -182,7 +182,8 @@
         },
         {
           "scheduled_stop_point_sequence": 2,
-          "scheduled_stop_point_label": "H2203"
+          "scheduled_stop_point_label": "H2203",
+          "timing_place_label": "TP001"
         },
         {
           "scheduled_stop_point_sequence": 3,
