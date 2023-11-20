@@ -23,21 +23,25 @@ const hslVehicleScheduleFramesSchema = genericVehicleScheduleFrameSchema.extend(
   },
 );
 
-const substituteOperatingDayByLineTypeSchema = z.object({
-  substitute_operating_day_by_line_type_id: z.string().uuid().optional(),
-  type_of_line: z.nativeEnum(TypeOfLine).optional(),
-  superseded_date: dateSchema.optional(),
-  substitute_day_of_week: z.nativeEnum(DayOfWeek).nullable().optional(),
-  begin_time: durationSchema.nullable().optional(),
-  end_time: durationSchema.nullable().optional(),
-  timezone: timezoneSchema.optional(),
-});
+const substituteOperatingDayByLineTypeSchema = z
+  .object({
+    substitute_operating_day_by_line_type_id: z.string().uuid().optional(),
+    type_of_line: z.nativeEnum(TypeOfLine).optional(),
+    superseded_date: dateSchema.optional(),
+    substitute_day_of_week: z.nativeEnum(DayOfWeek).nullable().optional(),
+    begin_time: durationSchema.nullable().optional(),
+    end_time: durationSchema.nullable().optional(),
+    timezone: timezoneSchema.optional(),
+  })
+  .strict();
 
-const substituteOperatingPeriodSchema = z.object({
-  _substitute_operating_day_by_line_types: z
-    .record(substituteOperatingDayByLineTypeSchema)
-    .optional(),
-});
+const substituteOperatingPeriodSchema = z
+  .object({
+    _substitute_operating_day_by_line_types: z
+      .record(substituteOperatingDayByLineTypeSchema)
+      .optional(),
+  })
+  .strict();
 
 export const hslTimetablesJsonSchema = genericTimetablesJsonSchema.extend({
   _vehicle_schedule_frames: z.record(hslVehicleScheduleFramesSchema).optional(),
