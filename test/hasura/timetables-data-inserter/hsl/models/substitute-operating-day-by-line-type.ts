@@ -10,6 +10,15 @@ import {
   SubstituteOperatingDayByLineTypeOutput,
 } from '../types';
 
+const getSubstituteOperatingDayByLineTypeDefaults = () => ({
+  type_of_line: TypeOfLine.StoppingBusService,
+  superseded_date: DateTime.fromISO('2023-01-01'),
+  substitute_day_of_week: null,
+  begin_time: null,
+  end_time: null,
+  timezone: 'Europe/Helsinki',
+});
+
 export const processSubstituteOperatingDayByLineType = (
   substituteOperatingDayByLineType: SubstituteOperatingDayByLineTypeInput,
   parentPeriod: Pick<
@@ -21,12 +30,7 @@ export const processSubstituteOperatingDayByLineType = (
   const result = assignId(substituteOperatingDayByLineType, idField);
 
   return {
-    type_of_line: TypeOfLine.StoppingBusService,
-    superseded_date: DateTime.fromISO('2023-01-01'),
-    substitute_day_of_week: null,
-    begin_time: null,
-    end_time: null,
-    timezone: 'Europe/Helsinki',
+    ...getSubstituteOperatingDayByLineTypeDefaults(),
     ...result,
     substitute_operating_period_id: parentPeriod.substitute_operating_period_id,
   };

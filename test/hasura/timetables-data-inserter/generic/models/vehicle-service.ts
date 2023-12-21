@@ -9,6 +9,10 @@ import { assignId } from 'timetables-data-inserter/utils';
 import { VehicleServiceInput, VehicleServiceOutput } from '../types';
 import { processBlock } from './block';
 
+const getVehicleServiceDefaults = () => ({
+  day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+});
+
 export const processVehicleService = (
   vehicleService: VehicleServiceInput,
   parentVehicleScheduleFrame: Pick<
@@ -29,7 +33,7 @@ export const processVehicleService = (
   );
 
   return {
-    day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
+    ...getVehicleServiceDefaults(),
     ...result,
     vehicle_schedule_frame_id:
       parentVehicleScheduleFrame.vehicle_schedule_frame_id,

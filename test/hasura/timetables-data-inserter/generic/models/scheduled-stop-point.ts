@@ -8,6 +8,10 @@ import {
   ScheduledStopInJourneyPatternRefOutput,
 } from '../types';
 
+const getScheduledStopPointDefaults = () => ({
+  timing_place_label: null,
+});
+
 export const processScheduledStopPoint = (
   stopPoint: ScheduledStopInJourneyPatternRefInput,
   parentJourneyPatternRef: Pick<JourneyPatternRef, 'journey_pattern_ref_id'>,
@@ -16,8 +20,8 @@ export const processScheduledStopPoint = (
   const result = assignId(stopPoint, idField);
 
   return {
+    ...getScheduledStopPointDefaults(),
     ...result,
-    timing_place_label: stopPoint.timing_place_label || null,
     journey_pattern_ref_id: parentJourneyPatternRef.journey_pattern_ref_id,
   };
 };

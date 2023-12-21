@@ -11,6 +11,10 @@ import {
   HslVehicleScheduleFrameOutput,
 } from '../types';
 
+const getVehicleScheduleFrameDefaults = (vehicleScheduleFrame: EntityName) => ({
+  booking_label: buildName(vehicleScheduleFrame).fi_FI,
+});
+
 export const processHslVehicleScheduleFrame = <
   T extends HslVehicleScheduleFrameInput,
 >(
@@ -23,7 +27,7 @@ export const processHslVehicleScheduleFrame = <
   );
 
   return {
-    booking_label: buildName(vehicleScheduleFrame as EntityName).fi_FI,
+    ...getVehicleScheduleFrameDefaults(vehicleScheduleFrame as EntityName),
     ...genericFrame,
   };
 };

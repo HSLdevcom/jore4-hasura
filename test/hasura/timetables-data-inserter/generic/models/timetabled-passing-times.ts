@@ -9,6 +9,11 @@ import {
   TimetabledPassingTimeOutput,
 } from '../types';
 
+const getTimetabledPassingTimeDefaults = () => ({
+  arrival_time: null,
+  departure_time: null,
+});
+
 export const processTimetabledPassingTime = (
   passingTime: TimetabledPassingTimeInput,
   parentVehicleJourney: Pick<VehicleJourney, 'vehicle_journey_id'>,
@@ -18,8 +23,7 @@ export const processTimetabledPassingTime = (
   const result = assignId(passingTime, idField);
 
   return {
-    arrival_time: null,
-    departure_time: null,
+    ...getTimetabledPassingTimeDefaults(),
     ...omit(result, '_scheduled_stop_point_label'),
     vehicle_journey_id: parentVehicleJourney.vehicle_journey_id,
     scheduled_stop_point_in_journey_pattern_ref_id: matchingStopPointId,
