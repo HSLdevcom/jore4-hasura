@@ -4,6 +4,7 @@ import {
 } from 'generic/timetablesdb/datasets/schema';
 import {
   SubstituteOperatingPeriodProps,
+  hslVehicleJourneyProps,
   hslVehicleScheduleFrameProps,
   substituteOperatingDayByLineTypeProps,
 } from './types';
@@ -28,5 +29,9 @@ export const hslTimetablesDbSchema: TableSchemaMap<HslTimetablesDbTables> = {
   'service_calendar.substitute_operating_period': {
     name: 'service_calendar.substitute_operating_period',
     props: SubstituteOperatingPeriodProps,
+  },
+  'vehicle_journey.vehicle_journey': {
+    name: 'vehicle_journey.vehicle_journey',
+    props: hslVehicleJourneyProps,
   },
 };

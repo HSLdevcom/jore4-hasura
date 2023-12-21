@@ -71,12 +71,12 @@ ON CONFLICT DO NOTHING;
 
 -- TODO create function for generating these below
 INSERT INTO vehicle_journey.vehicle_journey
-  (vehicle_journey_id, journey_pattern_ref_id, block_id)
+  (vehicle_journey_id, journey_pattern_ref_id, block_id, contract_number)
 VALUES
   -- lähtö1
-  ('f8cfea28-29b8-4495-a707-93aea5673b06', '77a30292-807a-4cce-b4e2-e95049d3f096', 'a77a5e0c-9d49-4ecc-8dd6-0f63b079a11d'),
+  ('f8cfea28-29b8-4495-a707-93aea5673b06', '77a30292-807a-4cce-b4e2-e95049d3f096', 'a77a5e0c-9d49-4ecc-8dd6-0f63b079a11d', 'SUMMER23'),
   -- lähtö2
-  ('45ddcbd4-ac23-48e0-a989-8666bc3d7673', '77a30292-807a-4cce-b4e2-e95049d3f096', 'a77a5e0c-9d49-4ecc-8dd6-0f63b079a11d')
+  ('45ddcbd4-ac23-48e0-a989-8666bc3d7673', '77a30292-807a-4cce-b4e2-e95049d3f096', 'a77a5e0c-9d49-4ecc-8dd6-0f63b079a11d', 'SUMMER23')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO passing_times.timetabled_passing_time

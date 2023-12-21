@@ -1,6 +1,8 @@
 import {
   TimetablePriority,
   TypeOfLine,
+  VehicleJourney,
+  vehicleJourneyProps,
   VehicleScheduleFrame,
   vehicleScheduleFrameProps,
 } from 'generic/timetablesdb/datasets/types';
@@ -84,4 +86,13 @@ export type SubstituteOperatingPeriod = {
   substitute_operating_period_id: UUID;
   period_name: string;
   is_preset: boolean;
+};
+
+export const hslVehicleJourneyProps: Property[] = [
+  ...vehicleJourneyProps,
+  'contract_number',
+];
+
+export type HslVehicleJourney = VehicleJourney & {
+  contract_number: string;
 };
