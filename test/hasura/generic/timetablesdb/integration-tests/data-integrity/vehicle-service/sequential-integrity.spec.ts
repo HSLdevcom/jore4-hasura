@@ -12,7 +12,7 @@ import { Duration } from 'luxon';
 import {
   GenericTimetablesDatasetInput,
   GenericTimetablesDatasetOutput,
-  VehicleJourneyInput,
+  GenericVehicleJourneyInput,
   buildGenericTimetablesDataset,
   createGenericTableData,
   defaultDayTypeIds,
@@ -80,7 +80,7 @@ describe('Vehicle service sequential integrity', () => {
     turnaround?: string | null;
     layover?: string | null;
     times: Array<PassingTimeParameters>;
-  }): VehicleJourneyInput => {
+  }): GenericVehicleJourneyInput => {
     return {
       _journey_pattern_ref_name: journey.journeyPatternRefName,
       layover_time: journey.layover ? createDuration(journey.layover) : null,
@@ -126,7 +126,7 @@ describe('Vehicle service sequential integrity', () => {
   };
 
   const createSingleBlockDatasetWithJourneys = (
-    journeys: Record<string, VehicleJourneyInput>,
+    journeys: Record<string, GenericVehicleJourneyInput>,
   ) => {
     const dataset = createBaseDataset();
     dataset._vehicle_schedule_frames.frame._vehicle_services.monFri._blocks = {

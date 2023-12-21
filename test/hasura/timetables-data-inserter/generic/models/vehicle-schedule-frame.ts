@@ -11,7 +11,7 @@ import {
   GenericVehicleScheduleFrameInput,
   GenericVehicleScheduleFrameOutput,
 } from '../types';
-import { processVehicleService } from './vehicle-service';
+import { processGenericVehicleService } from './vehicle-service';
 
 const getVehicleScheduleFrameDefaults = (result: EntityName) => ({
   label: buildName(result).fi_FI,
@@ -32,7 +32,7 @@ export const processGenericVehicleScheduleFrame = (
   const processedVehicleServices = Object.fromEntries(
     Object.values(vehicleServices).map((child, i) => [
       Object.keys(vehicleServices)[i],
-      processVehicleService(child, result, datasetInput),
+      processGenericVehicleService(child, result, datasetInput),
     ]),
   );
 

@@ -5,19 +5,22 @@ import {
 import { omit } from 'lodash';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { assignId } from 'timetables-data-inserter/utils';
-import { VehicleServiceBlockInput, VehicleServiceBlockOutput } from '../types';
-import { processVehicleJourney } from './vehicle-journey';
+import {
+  GenericVehicleServiceBlockInput,
+  GenericVehicleServiceBlockOutput,
+} from '../types';
+import { processGenericVehicleJourney } from './vehicle-journey';
 
 const getBlockDefaults = () => ({
   preparing_time: null,
   finishing_time: null,
 });
 
-export const processBlock = (
-  block: VehicleServiceBlockInput,
+export const processGenericBlock = (
+  block: GenericVehicleServiceBlockInput,
   parentVehicleService: Pick<VehicleService, 'vehicle_service_id'>,
   datasetInput: TimetablesDatasetInput,
-): VehicleServiceBlockOutput => {
+): GenericVehicleServiceBlockOutput => {
   const idField = 'block_id';
   const result = assignId(block, idField);
 
@@ -25,7 +28,7 @@ export const processBlock = (
   const processedVehicleJourneys = Object.fromEntries(
     Object.values(vehicleJourneys).map((child, i) => [
       Object.keys(vehicleJourneys)[i],
-      processVehicleJourney(child, result, datasetInput),
+      processGenericVehicleJourney(child, result, datasetInput),
     ]),
   );
 
@@ -38,7 +41,7 @@ export const processBlock = (
 };
 
 export const vehicleServiceBlockToDbFormat = (
-  block: VehicleServiceBlockOutput,
+  block: GenericVehicleServiceBlockOutput,
 ): VehicleServiceBlock => {
   return omit(block, '_vehicle_journeys');
 };

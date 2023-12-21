@@ -4,18 +4,18 @@ import {
 } from 'generic/timetablesdb/datasets/types';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
-  ScheduledStopInJourneyPatternRefInput,
-  ScheduledStopInJourneyPatternRefOutput,
+  GenericScheduledStopInJourneyPatternRefInput,
+  GenericScheduledStopInJourneyPatternRefOutput,
 } from '../types';
 
 const getScheduledStopPointDefaults = () => ({
   timing_place_label: null,
 });
 
-export const processScheduledStopPoint = (
-  stopPoint: ScheduledStopInJourneyPatternRefInput,
+export const processGenericScheduledStopPoint = (
+  stopPoint: GenericScheduledStopInJourneyPatternRefInput,
   parentJourneyPatternRef: Pick<JourneyPatternRef, 'journey_pattern_ref_id'>,
-): ScheduledStopInJourneyPatternRefOutput => {
+): GenericScheduledStopInJourneyPatternRefOutput => {
   const idField = 'scheduled_stop_point_in_journey_pattern_ref_id';
   const result = assignId(stopPoint, idField);
 
@@ -27,7 +27,7 @@ export const processScheduledStopPoint = (
 };
 
 export const scheduledStopPointToDbFormat = (
-  stopPoint: ScheduledStopInJourneyPatternRefOutput,
+  stopPoint: GenericScheduledStopInJourneyPatternRefOutput,
 ): ScheduledStopInJourneyPatternRef => {
   return stopPoint;
 };

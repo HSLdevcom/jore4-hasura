@@ -3,25 +3,25 @@ import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
 import {
   processGenericVehicleScheduleFrame,
-  processJourneyPatternRef,
+  processGenericJourneyPatternRef,
 } from './models';
 import {
   GenericTimetablesDatasetInput,
   GenericTimetablesDatasetOutput,
   GenericVehicleScheduleFrameInput,
-  JourneyPatternRefInput,
-  JourneyPatternRefOutput,
+  GenericJourneyPatternRefInput,
+  GenericJourneyPatternRefOutput,
 } from './types';
 
 export const processDatasetJourneyPatternRefs = <
-  T extends JourneyPatternRefInput,
+  T extends GenericJourneyPatternRefInput,
 >(
   journeyPatternRefsByName: Record<string, T>,
 ) => {
   return Object.fromEntries(
     Object.values(journeyPatternRefsByName).map((child, i) => [
       Object.keys(journeyPatternRefsByName)[i],
-      processJourneyPatternRef(child),
+      processGenericJourneyPatternRef(child),
     ]),
   );
 };
@@ -31,7 +31,7 @@ export const processDatasetGenericVehicleScheduleFrames = <
 >(
   vehicleScheduleFrames: Record<string, T>,
   datasetInput: GenericTimetablesDatasetInput,
-  processedJourneyPatternRefs: Record<string, JourneyPatternRefOutput>,
+  processedJourneyPatternRefs: Record<string, GenericJourneyPatternRefOutput>,
 ) => {
   // Ids for JPRs are required during VSF processing.
   const inputWithJourneyPatternRefs = {

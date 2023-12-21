@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 import {
-  JourneyPatternRefOutput,
+  GenericJourneyPatternRefOutput,
   processDatasetJourneyPatternRefs,
 } from 'timetables-data-inserter/generic';
 import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
@@ -20,7 +20,7 @@ const processDatasetHslVehicleScheduleFrames = <
 >(
   vehicleScheduleFrames: Record<string, T>,
   datasetInput: HslTimetablesDatasetInput,
-  processedJourneyPatternRefs: Record<string, JourneyPatternRefOutput>,
+  processedJourneyPatternRefs: Record<string, GenericJourneyPatternRefOutput>,
 ) => {
   // Ids for JPRs are required during VSF processing.
   const inputWithJourneyPatternRefs = {
