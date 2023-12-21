@@ -10,6 +10,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { JourneyPatternRefInput, JourneyPatternRefOutput } from '../types';
 import { processScheduledStopPoint } from './scheduled-stop-point';
 
+const getJourneyPatternRefDefaults = () => ({
+  journey_pattern_id: uuidv4(),
+  type_of_line: TypeOfLine.StoppingBusService,
+  observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+  snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+  route_label: 'DEFAULT_ROUTE_LABEL',
+  route_direction: RouteDirection.Outbound,
+  route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
+  route_validity_end: DateTime.fromISO('2051-01-01T00:00:00+00:00'),
+});
+
 export const processJourneyPatternRef = (
   journeyPatternRef: JourneyPatternRefInput,
 ): JourneyPatternRefOutput => {
@@ -21,14 +32,7 @@ export const processJourneyPatternRef = (
   );
 
   return {
-    journey_pattern_id: uuidv4(),
-    type_of_line: TypeOfLine.StoppingBusService,
-    observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
-    snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
-    route_label: 'DEFAULT_ROUTE_LABEL',
-    route_direction: RouteDirection.Outbound,
-    route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
-    route_validity_end: DateTime.fromISO('2051-01-01T00:00:00+00:00'),
+    ...getJourneyPatternRefDefaults(),
     ...result,
     _stop_points: stopPoints,
   };

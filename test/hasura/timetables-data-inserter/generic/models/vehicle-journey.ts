@@ -8,6 +8,11 @@ import { assignForeignKey, assignId } from 'timetables-data-inserter/utils';
 import { VehicleJourneyInput, VehicleJourneyOutput } from '../types';
 import { processTimetabledPassingTime } from './timetabled-passing-times';
 
+const getVehicleJourneyDefaults = () => ({
+  turnaround_time: null,
+  layover_time: null,
+});
+
 export const processVehicleJourney = (
   vehicleJourney: VehicleJourneyInput,
   parentBlock: Pick<VehicleServiceBlock, 'block_id'>,
@@ -59,8 +64,7 @@ export const processVehicleJourney = (
   });
 
   return {
-    turnaround_time: null,
-    layover_time: null,
+    ...getVehicleJourneyDefaults(),
     ...result,
     block_id: parentBlock.block_id,
     _passing_times: processedPassingTimes,
