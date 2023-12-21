@@ -6,21 +6,24 @@ import { omit } from 'lodash';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { assignId } from 'timetables-data-inserter/utils';
-import { VehicleServiceInput, VehicleServiceOutput } from '../types';
-import { processBlock } from './block';
+import {
+  GenericVehicleServiceInput,
+  GenericVehicleServiceOutput,
+} from '../types';
+import { processGenericBlock } from './block';
 
 const getVehicleServiceDefaults = () => ({
   day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
 });
 
-export const processVehicleService = (
-  vehicleService: VehicleServiceInput,
+export const processGenericVehicleService = (
+  vehicleService: GenericVehicleServiceInput,
   parentVehicleScheduleFrame: Pick<
     VehicleScheduleFrame,
     'vehicle_schedule_frame_id'
   >,
   datasetInput: TimetablesDatasetInput,
-): VehicleServiceOutput => {
+): GenericVehicleServiceOutput => {
   const idField = 'vehicle_service_id';
   const result = assignId(vehicleService, idField);
 
@@ -28,7 +31,7 @@ export const processVehicleService = (
   const processedBlocks = Object.fromEntries(
     Object.values(blocks).map((child, i) => [
       Object.keys(blocks)[i],
-      processBlock(child, result, datasetInput),
+      processGenericBlock(child, result, datasetInput),
     ]),
   );
 
@@ -42,7 +45,7 @@ export const processVehicleService = (
 };
 
 export const vehicleServiceToDbFormat = (
-  vehicleService: VehicleServiceOutput,
+  vehicleService: GenericVehicleServiceOutput,
 ): VehicleService => {
   return omit(vehicleService, '_blocks');
 };

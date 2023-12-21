@@ -7,8 +7,11 @@ import { omit } from 'lodash';
 import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
 import { v4 as uuidv4 } from 'uuid';
-import { JourneyPatternRefInput, JourneyPatternRefOutput } from '../types';
-import { processScheduledStopPoint } from './scheduled-stop-point';
+import {
+  GenericJourneyPatternRefInput,
+  GenericJourneyPatternRefOutput,
+} from '../types';
+import { processGenericScheduledStopPoint } from './scheduled-stop-point';
 
 const getJourneyPatternRefDefaults = () => ({
   journey_pattern_id: uuidv4(),
@@ -21,14 +24,14 @@ const getJourneyPatternRefDefaults = () => ({
   route_validity_end: DateTime.fromISO('2051-01-01T00:00:00+00:00'),
 });
 
-export const processJourneyPatternRef = (
-  journeyPatternRef: JourneyPatternRefInput,
-): JourneyPatternRefOutput => {
+export const processGenericJourneyPatternRef = (
+  journeyPatternRef: GenericJourneyPatternRefInput,
+): GenericJourneyPatternRefOutput => {
   const idField = 'journey_pattern_ref_id';
   const result = assignId(journeyPatternRef, idField);
 
   const stopPoints = (result._stop_points || []).map((child) =>
-    processScheduledStopPoint(child, result),
+    processGenericScheduledStopPoint(child, result),
   );
 
   return {
@@ -39,7 +42,7 @@ export const processJourneyPatternRef = (
 };
 
 export const journeyPatternRefToDbFormat = (
-  journeyPatternRef: JourneyPatternRefOutput,
+  journeyPatternRef: GenericJourneyPatternRefOutput,
 ): JourneyPatternRef => {
   return omit(journeyPatternRef, '_stop_points');
 };

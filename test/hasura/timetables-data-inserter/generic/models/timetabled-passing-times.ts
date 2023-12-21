@@ -5,8 +5,8 @@ import {
 import { omit } from 'lodash';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
-  TimetabledPassingTimeInput,
-  TimetabledPassingTimeOutput,
+  GenericTimetabledPassingTimeInput,
+  GenericTimetabledPassingTimeOutput,
 } from '../types';
 
 const getTimetabledPassingTimeDefaults = () => ({
@@ -14,11 +14,11 @@ const getTimetabledPassingTimeDefaults = () => ({
   departure_time: null,
 });
 
-export const processTimetabledPassingTime = (
-  passingTime: TimetabledPassingTimeInput,
+export const processGenericTimetabledPassingTime = (
+  passingTime: GenericTimetabledPassingTimeInput,
   parentVehicleJourney: Pick<VehicleJourney, 'vehicle_journey_id'>,
   matchingStopPointId: UUID,
-): TimetabledPassingTimeOutput => {
+): GenericTimetabledPassingTimeOutput => {
   const idField = 'timetabled_passing_time_id';
   const result = assignId(passingTime, idField);
 
@@ -31,7 +31,7 @@ export const processTimetabledPassingTime = (
 };
 
 export const timetabledPassingTimeToDbFormat = (
-  passingTime: TimetabledPassingTimeOutput,
+  passingTime: GenericTimetabledPassingTimeOutput,
 ): TimetabledPassingTime => {
   return omit(passingTime, '_scheduled_stop_point_label');
 };

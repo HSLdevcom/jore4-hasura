@@ -1,9 +1,9 @@
 import { flattenGenericDataset } from './table-data';
 import {
   GenericTimetablesDatasetOutput,
-  VehicleJourneyOutput,
-  VehicleServiceBlockOutput,
-  VehicleServiceOutput,
+  GenericVehicleJourneyOutput,
+  GenericVehicleServiceBlockOutput,
+  GenericVehicleServiceOutput,
 } from './types';
 
 /**
@@ -46,7 +46,7 @@ export const createTimetablesDatasetHelper = <
         ...result,
         [label]: labelGroup,
       };
-    }, {} as Record<string, VehicleServiceOutput[]>);
+    }, {} as Record<string, GenericVehicleServiceOutput[]>);
 
   const blocksByLabel = flattened.vehicleServices
     .flatMap((vs) => Object.entries(vs._blocks))
@@ -57,7 +57,7 @@ export const createTimetablesDatasetHelper = <
         ...result,
         [label]: labelGroup,
       };
-    }, {} as Record<string, VehicleServiceBlockOutput[]>);
+    }, {} as Record<string, GenericVehicleServiceBlockOutput[]>);
 
   const vehicleJourneysByLabel = flattened.blocks
     .flatMap((block) => Object.entries(block._vehicle_journeys))
@@ -68,21 +68,21 @@ export const createTimetablesDatasetHelper = <
         ...result,
         [label]: labelGroup,
       };
-    }, {} as Record<string, VehicleJourneyOutput[]>);
+    }, {} as Record<string, GenericVehicleJourneyOutput[]>);
 
   return {
     ...builtDataset,
-    getVehicleService(label: string): VehicleServiceOutput {
+    getVehicleService(label: string): GenericVehicleServiceOutput {
       const forLabel = vehicleServicesByLabel[label];
       sanityCheckLabelGroupResult('vehicle service', label, forLabel);
       return forLabel[0];
     },
-    getBlock(label: string): VehicleServiceBlockOutput {
+    getBlock(label: string): GenericVehicleServiceBlockOutput {
       const forLabel = blocksByLabel[label];
       sanityCheckLabelGroupResult('vehicle service', label, forLabel);
       return forLabel[0];
     },
-    getVehicleJourney(label: string): VehicleJourneyOutput {
+    getVehicleJourney(label: string): GenericVehicleJourneyOutput {
       const forLabel = vehicleJourneysByLabel[label];
       sanityCheckLabelGroupResult('vehicle service', label, forLabel);
       return forLabel[0];

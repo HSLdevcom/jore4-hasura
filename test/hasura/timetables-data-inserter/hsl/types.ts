@@ -1,4 +1,5 @@
 import {
+  HslVehicleJourney,
   HslVehicleScheduleFrame,
   SubstituteOperatingDayByLineType,
   SubstituteOperatingPeriod,
@@ -6,17 +7,54 @@ import {
 import {
   GenericTimetablesDatasetInput,
   GenericTimetablesDatasetOutput,
+  GenericVehicleJourneyInput,
+  GenericVehicleJourneyOutput,
   GenericVehicleScheduleFrameInput,
   GenericVehicleScheduleFrameOutput,
+  GenericVehicleServiceBlockInput,
+  GenericVehicleServiceBlockOutput,
+  GenericVehicleServiceInput,
+  GenericVehicleServiceOutput,
 } from 'timetables-data-inserter/generic/types';
 
-export type HslVehicleScheduleFrameInput = GenericVehicleScheduleFrameInput &
-  Partial<
+export type HslVehicleScheduleFrameInput = Omit<
+  GenericVehicleScheduleFrameInput,
+  '_vehicle_services'
+> & { _vehicle_services?: Record<string, HslVehicleServiceInput> } & Partial<
     Pick<HslVehicleScheduleFrame, 'booking_label' | 'booking_description_i18n'>
   >;
 
-export type HslVehicleScheduleFrameOutput = GenericVehicleScheduleFrameOutput &
-  Pick<HslVehicleScheduleFrame, 'booking_label' | 'booking_description_i18n'>;
+export type HslVehicleScheduleFrameOutput = Omit<
+  GenericVehicleScheduleFrameOutput,
+  '_vehicle_services'
+> & { _vehicle_services: Record<string, HslVehicleServiceOutput> } & Pick<
+    HslVehicleScheduleFrame,
+    'booking_label' | 'booking_description_i18n'
+  >;
+
+export type HslVehicleServiceInput = Omit<
+  GenericVehicleServiceInput,
+  '_blocks'
+> & { _blocks?: Record<string, HslVehicleServiceBlockInput> };
+
+export type HslVehicleServiceOutput = Omit<
+  GenericVehicleServiceOutput,
+  '_blocks'
+> & { _blocks: Record<string, HslVehicleServiceBlockOutput> };
+
+export type HslVehicleServiceBlockInput = Omit<
+  GenericVehicleServiceBlockInput,
+  '_vehicle_journeys'
+> & { _vehicle_journeys?: Record<string, HslVehicleJourneyInput> };
+
+export type HslVehicleServiceBlockOutput = Omit<
+  GenericVehicleServiceBlockOutput,
+  '_vehicle_journeys'
+> & { _vehicle_journeys: Record<string, HslVehicleJourneyOutput> };
+
+export type HslVehicleJourneyInput = GenericVehicleJourneyInput;
+
+export type HslVehicleJourneyOutput = GenericVehicleJourneyOutput;
 
 type SubstituteOperatingDayByLineTypeWithoutGenerated = Omit<
   SubstituteOperatingDayByLineType,

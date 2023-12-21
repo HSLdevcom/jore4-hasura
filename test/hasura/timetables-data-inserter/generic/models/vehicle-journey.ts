@@ -5,19 +5,22 @@ import {
 import { omit } from 'lodash';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { assignForeignKey, assignId } from 'timetables-data-inserter/utils';
-import { VehicleJourneyInput, VehicleJourneyOutput } from '../types';
-import { processTimetabledPassingTime } from './timetabled-passing-times';
+import {
+  GenericVehicleJourneyInput,
+  GenericVehicleJourneyOutput,
+} from '../types';
+import { processGenericTimetabledPassingTime } from './timetabled-passing-times';
 
 const getVehicleJourneyDefaults = () => ({
   turnaround_time: null,
   layover_time: null,
 });
 
-export const processVehicleJourney = (
-  vehicleJourney: VehicleJourneyInput,
+export const processGenericVehicleJourney = (
+  vehicleJourney: GenericVehicleJourneyInput,
   parentBlock: Pick<VehicleServiceBlock, 'block_id'>,
   datasetInput: TimetablesDatasetInput,
-): VehicleJourneyOutput => {
+): GenericVehicleJourneyOutput => {
   const idField = 'vehicle_journey_id';
   const vjWithId = assignId(vehicleJourney, idField);
 
@@ -56,7 +59,7 @@ export const processVehicleJourney = (
       );
     }
 
-    return processTimetabledPassingTime(
+    return processGenericTimetabledPassingTime(
       pt,
       result,
       matchingStopPoint.scheduled_stop_point_in_journey_pattern_ref_id,
@@ -72,7 +75,7 @@ export const processVehicleJourney = (
 };
 
 export const vehicleJourneyToDbFormat = (
-  vehicleJourney: VehicleJourneyOutput,
+  vehicleJourney: GenericVehicleJourneyOutput,
 ): VehicleJourney => {
   return omit(vehicleJourney, '_journey_pattern_ref_name', '_passing_times');
 };
