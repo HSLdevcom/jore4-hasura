@@ -4,6 +4,9 @@ import {
   dateSchema,
   durationSchema,
   genericTimetablesJsonSchema,
+  vehicleServiceBlockSchema as genericVehicleServiceBlockSchema,
+  vehicleServiceSchema as genericVehicleServiceSchema,
+  vehicleJourneySchema as genericVehicleJourneySchema,
   vehicleScheduleFrameSchema as genericVehicleScheduleFrameSchema,
   localizedStringSchema,
 } from 'timetables-data-inserter/generic/json-schemas';
@@ -16,10 +19,22 @@ export const timezoneSchema = z
   .string()
   .refine((timezone) => validTimezones.includes(timezone));
 
+export const hslVehicleJourneySchema = genericVehicleJourneySchema.extend({});
+
+export const hslVehicleServiceBlockSchema =
+  genericVehicleServiceBlockSchema.extend({
+    _vehicle_journeys: z.record(hslVehicleJourneySchema).optional(),
+  });
+
+export const hslVehicleServiceSchema = genericVehicleServiceSchema.extend({
+  _blocks: z.record(hslVehicleServiceBlockSchema).optional(),
+});
+
 const hslVehicleScheduleFramesSchema = genericVehicleScheduleFrameSchema.extend(
   {
     booking_label: z.string().optional(),
     booking_description_i18n: localizedStringSchema.optional(),
+    _vehicle_services: z.record(hslVehicleServiceSchema).optional(),
   },
 );
 
