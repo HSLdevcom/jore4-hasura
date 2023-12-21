@@ -19,7 +19,9 @@ export const timezoneSchema = z
   .string()
   .refine((timezone) => validTimezones.includes(timezone));
 
-export const hslVehicleJourneySchema = genericVehicleJourneySchema.extend({});
+export const hslVehicleJourneySchema = genericVehicleJourneySchema.extend({
+  contract_number: z.string().optional(),
+});
 
 export const hslVehicleServiceBlockSchema =
   genericVehicleServiceBlockSchema.extend({

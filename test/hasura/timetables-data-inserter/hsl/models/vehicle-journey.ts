@@ -6,7 +6,9 @@ import {
   HslVehicleJourneyOutput,
 } from '../types';
 
-const getVehicleJourneyDefaults = () => ({});
+const getVehicleJourneyDefaults = () => ({
+  contract_number: 'DEFAULT_CONTRACT',
+});
 
 export const processHslVehicleJourney = (
   vehicleJourney: HslVehicleJourneyInput,

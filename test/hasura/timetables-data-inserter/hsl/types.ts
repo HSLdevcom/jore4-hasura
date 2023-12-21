@@ -1,4 +1,5 @@
 import {
+  HslVehicleJourney,
   HslVehicleScheduleFrame,
   SubstituteOperatingDayByLineType,
   SubstituteOperatingPeriod,
@@ -51,9 +52,11 @@ export type HslVehicleServiceBlockOutput = Omit<
   '_vehicle_journeys'
 > & { _vehicle_journeys: Record<string, HslVehicleJourneyOutput> };
 
-export type HslVehicleJourneyInput = GenericVehicleJourneyInput;
+export type HslVehicleJourneyInput = GenericVehicleJourneyInput &
+  Partial<Pick<HslVehicleJourney, 'contract_number'>>;
 
-export type HslVehicleJourneyOutput = GenericVehicleJourneyOutput;
+export type HslVehicleJourneyOutput = GenericVehicleJourneyOutput &
+  Pick<HslVehicleJourney, 'contract_number'>;
 
 type SubstituteOperatingDayByLineTypeWithoutGenerated = Omit<
   SubstituteOperatingDayByLineType,
