@@ -13,6 +13,14 @@ import {
 } from '../types';
 import { processVehicleService } from './vehicle-service';
 
+const getVehicleScheduleFrameDefaults = (result: EntityName) => ({
+  label: buildName(result).fi_FI,
+  name_i18n: buildName(result),
+  validity_start: DateTime.fromISO('2023-01-01'),
+  validity_end: DateTime.fromISO('2023-12-31'),
+  priority: TimetablePriority.Standard,
+});
+
 export const processGenericVehicleScheduleFrame = (
   vehicleScheduleFrame: GenericVehicleScheduleFrameInput,
   datasetInput: GenericTimetablesDatasetInput,
@@ -29,11 +37,7 @@ export const processGenericVehicleScheduleFrame = (
   );
 
   return {
-    label: buildName(result as EntityName).fi_FI,
-    name_i18n: buildName(result as EntityName),
-    validity_start: DateTime.fromISO('2023-01-01'),
-    validity_end: DateTime.fromISO('2023-12-31'),
-    priority: TimetablePriority.Standard,
+    ...getVehicleScheduleFrameDefaults(result as EntityName),
     ...omit(result, 'name'),
     _vehicle_services: processedVehicleServices,
   };

@@ -8,6 +8,11 @@ import { assignId } from 'timetables-data-inserter/utils';
 import { VehicleServiceBlockInput, VehicleServiceBlockOutput } from '../types';
 import { processVehicleJourney } from './vehicle-journey';
 
+const getBlockDefaults = () => ({
+  preparing_time: null,
+  finishing_time: null,
+});
+
 export const processBlock = (
   block: VehicleServiceBlockInput,
   parentVehicleService: Pick<VehicleService, 'vehicle_service_id'>,
@@ -25,8 +30,7 @@ export const processBlock = (
   );
 
   return {
-    preparing_time: null,
-    finishing_time: null,
+    ...getBlockDefaults(),
     ...result,
     vehicle_service_id: parentVehicleService.vehicle_service_id,
     _vehicle_journeys: processedVehicleJourneys,

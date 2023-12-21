@@ -7,6 +7,11 @@ import {
 } from '../types';
 import { processSubstituteOperatingDayByLineType } from './substitute-operating-day-by-line-type';
 
+const getSubstituteOperatingPeriodDefaults = () => ({
+  period_name: 'default period',
+  is_preset: false,
+});
+
 export const processSubstituteOperatingPeriod = (
   substituteOperatingPeriod: SubstituteOperatingPeriodInput,
 ): SubstituteOperatingPeriodOutput => {
@@ -25,8 +30,7 @@ export const processSubstituteOperatingPeriod = (
   );
 
   return {
-    period_name: 'default period',
-    is_preset: false,
+    ...getSubstituteOperatingPeriodDefaults(),
     ...result,
     _substitute_operating_day_by_line_types:
       processedSubstituteOperatingDayByLineTypes,
