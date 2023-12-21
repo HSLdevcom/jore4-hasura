@@ -14,6 +14,7 @@
               "_vehicle_journeys": {
                 "route123Outbound1": {
                   "_journey_pattern_ref_name": "route123Outbound",
+                  "contract_number": "CONTRACT 123",
                   "_passing_times": [
                     {
                       "_scheduled_stop_point_label": "H2201",
