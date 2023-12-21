@@ -10,12 +10,12 @@ import testDatasetJson from './example.json';
 import {
   GenericTimetablesDatasetOutput,
   GenericVehicleScheduleFrameOutput,
-  JourneyPatternRefOutput,
-  ScheduledStopInJourneyPatternRefOutput,
-  TimetabledPassingTimeOutput,
-  VehicleJourneyOutput,
-  VehicleServiceBlockOutput,
-  VehicleServiceOutput,
+  GenericJourneyPatternRefOutput,
+  GenericScheduledStopInJourneyPatternRefOutput,
+  GenericTimetabledPassingTimeOutput,
+  GenericVehicleJourneyOutput,
+  GenericVehicleServiceBlockOutput,
+  GenericVehicleServiceOutput,
 } from './types';
 
 describe('Generic timetables data inserter json parser', () => {
@@ -75,7 +75,7 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('vehicle services', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtVehicleServices: Record<string, VehicleServiceOutput>;
+      let builtVehicleServices: Record<string, GenericVehicleServiceOutput>;
 
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
@@ -111,7 +111,7 @@ describe('Generic timetables data inserter json parser', () => {
         expect(vehicleServices.rowCount).toBe(3);
 
         const saturdayService = vehicleServices.rows.find(
-          (vs: VehicleServiceOutput) =>
+          (vs: GenericVehicleServiceOutput) =>
             vs.vehicle_service_id ===
             builtVehicleServices.sat.vehicle_service_id,
         );
@@ -125,7 +125,7 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('vehicle service blocks', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtBlock: VehicleServiceBlockOutput;
+      let builtBlock: GenericVehicleServiceBlockOutput;
 
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
@@ -151,7 +151,8 @@ describe('Generic timetables data inserter json parser', () => {
         expect(blocks.rowCount).toBe(3);
 
         const monFriBlock = blocks.rows.find(
-          (b: VehicleServiceBlockOutput) => b.block_id === builtBlock.block_id,
+          (b: GenericVehicleServiceBlockOutput) =>
+            b.block_id === builtBlock.block_id,
         );
         expect(monFriBlock).toBeTruthy();
         expect(monFriBlock.vehicle_service_id).toBe(
@@ -162,7 +163,7 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('vehicle journeys', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtJourneys: Record<string, VehicleJourneyOutput>;
+      let builtJourneys: Record<string, GenericVehicleJourneyOutput>;
 
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
@@ -220,7 +221,7 @@ describe('Generic timetables data inserter json parser', () => {
         expect(vehicleJourneys.rowCount).toBe(4);
 
         const monFriInboundJourney = vehicleJourneys.rows.find(
-          (vj: VehicleJourneyOutput) =>
+          (vj: GenericVehicleJourneyOutput) =>
             vj.vehicle_journey_id ===
             builtJourneys.route123Inbound1.vehicle_journey_id,
         );
@@ -236,8 +237,8 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('timetabled passing times', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtOutboundPassingTimes: TimetabledPassingTimeOutput[];
-      let builtInboundPassingTimes: TimetabledPassingTimeOutput[];
+      let builtOutboundPassingTimes: GenericTimetabledPassingTimeOutput[];
+      let builtInboundPassingTimes: GenericTimetabledPassingTimeOutput[];
       const outboundPassingTimePath =
         '_vehicle_schedule_frames.winter2022._vehicle_services.monFri._blocks.block._vehicle_journeys.route123Outbound1._passing_times';
       const inboundPassingTimePath =
@@ -292,7 +293,7 @@ describe('Generic timetables data inserter json parser', () => {
 
         expect(passingTimes.rowCount).toBe(16);
         const inboundPassingTime = passingTimes.rows.find(
-          (pt: TimetabledPassingTimeOutput) =>
+          (pt: GenericTimetabledPassingTimeOutput) =>
             pt.timetabled_passing_time_id ===
             builtInboundPassingTimes[3].timetabled_passing_time_id,
         );
@@ -304,7 +305,7 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('journey pattern refs', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtJourneyPatternRef: JourneyPatternRefOutput;
+      let builtJourneyPatternRef: GenericJourneyPatternRefOutput;
 
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
@@ -324,7 +325,7 @@ describe('Generic timetables data inserter json parser', () => {
 
         expect(journeyPatternRefs.rowCount).toBe(3);
         const inboundRef = journeyPatternRefs.rows.find(
-          (jpr: JourneyPatternRefOutput) =>
+          (jpr: GenericJourneyPatternRefOutput) =>
             jpr.journey_pattern_ref_id ===
             builtJourneyPatternRef.journey_pattern_ref_id,
         );
@@ -350,7 +351,7 @@ describe('Generic timetables data inserter json parser', () => {
 
     describe('scheduled stop points', () => {
       let builtDataset: GenericTimetablesDatasetOutput;
-      let builtInboundStopPoints: ScheduledStopInJourneyPatternRefOutput[];
+      let builtInboundStopPoints: GenericScheduledStopInJourneyPatternRefOutput[];
 
       beforeAll(async () => {
         builtDataset = await insertTestDataset();
@@ -380,7 +381,7 @@ describe('Generic timetables data inserter json parser', () => {
 
         expect(stopPoints.rowCount).toBe(10);
         const dbStopPoint = stopPoints.rows.find(
-          (sp: ScheduledStopInJourneyPatternRefOutput) =>
+          (sp: GenericScheduledStopInJourneyPatternRefOutput) =>
             sp.scheduled_stop_point_in_journey_pattern_ref_id ===
             builtInboundStopPoints[2]
               .scheduled_stop_point_in_journey_pattern_ref_id,
