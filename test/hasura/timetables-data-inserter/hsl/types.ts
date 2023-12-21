@@ -1,5 +1,4 @@
 import {
-  HslVehicleJourney,
   HslVehicleScheduleFrame,
   SubstituteOperatingDayByLineType,
   SubstituteOperatingPeriod,

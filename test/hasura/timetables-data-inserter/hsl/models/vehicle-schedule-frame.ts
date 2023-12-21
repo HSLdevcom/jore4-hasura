@@ -10,6 +10,7 @@ import {
   HslVehicleScheduleFrameInput,
   HslVehicleScheduleFrameOutput,
 } from '../types';
+import { processHslVehicleService } from './vehicle-service';
 
 const getVehicleScheduleFrameDefaults = (vehicleScheduleFrame: EntityName) => ({
   booking_label: buildName(vehicleScheduleFrame).fi_FI,
@@ -25,10 +26,20 @@ export const processHslVehicleScheduleFrame = <
     vehicleScheduleFrame,
     datasetInput,
   );
+  const result = genericFrame;
+
+  const vehicleServices = vehicleScheduleFrame._vehicle_services || {};
+  const processedVehicleServices = Object.fromEntries(
+    Object.values(vehicleServices).map((child, i) => [
+      Object.keys(vehicleServices)[i],
+      processHslVehicleService(child, result, datasetInput),
+    ]),
+  );
 
   return {
     ...getVehicleScheduleFrameDefaults(vehicleScheduleFrame as EntityName),
-    ...genericFrame,
+    ...result,
+    _vehicle_services: processedVehicleServices,
   };
 };
 
