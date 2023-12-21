@@ -4,6 +4,7 @@ import {
   vehicleServiceBlocksByName,
 } from 'generic/timetablesdb/datasets/defaultSetup';
 import { VehicleJourney } from 'generic/timetablesdb/datasets/types';
+import { buildHslVehicleJourney } from '../factories';
 import { hslVehicleServiceBlocksByName } from './vehicle-services-blocks';
 
 export const hslVehicleJourneysByName = {
@@ -14,6 +15,7 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
   v1SatJourney2: {
     vehicle_journey_id: '9bdac86c-f7a0-46ac-9d79-65ac9907c4bb',
@@ -22,6 +24,7 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
   v1SunJourney1: {
     vehicle_journey_id: '40690cb5-dadd-46bd-9f44-62ca072e902c',
@@ -30,6 +33,7 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
   v1SunJourney2: {
     vehicle_journey_id: '1c71002e-25b6-47b9-b90c-42c868ddb7c8',
@@ -38,6 +42,7 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
   v1AscensionDayJourney1: {
     vehicle_journey_id: 'feb60181-3313-43a7-bdae-07508e2cebca',
@@ -46,6 +51,7 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Inbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
   v1AscensionDayJourney2: {
     vehicle_journey_id: '9947bacd-353b-4489-84e8-26492b69b8b6',
@@ -54,10 +60,10 @@ export const hslVehicleJourneysByName = {
       journeyPatternRefsByName.route123Outbound.journey_pattern_ref_id,
     turnaround_time: null,
     layover_time: null,
+    contract_number: 'CONTRACT',
   },
 };
 
-// TODO: Add actual conversion to hsl model when needed
-export const hslVehicleJourneys: VehicleJourney[] = vehicleJourneys.concat(
-  Object.values(hslVehicleJourneysByName),
-);
+export const hslVehicleJourneys: VehicleJourney[] = vehicleJourneys
+  .map(buildHslVehicleJourney)
+  .concat(Object.values(hslVehicleJourneysByName));
