@@ -75,10 +75,10 @@ const stopPointSchema = z
 const journeyPatternRefSchema = z
   .object({
     journey_pattern_ref_id: z.string().uuid().optional(),
-    observation_timestamp: dateTimeSchema.optional(),
-    type_of_line: z.nativeEnum(TypeOfLine).optional(),
-    snapshot_timestamp: dateTimeSchema.optional(),
     journey_pattern_id: z.string().uuid().optional(),
+    observation_timestamp: dateTimeSchema.optional(),
+    snapshot_timestamp: dateTimeSchema.optional(),
+    type_of_line: z.nativeEnum(TypeOfLine).optional(),
     route_label: z.string().optional(),
     route_direction: z
       .enum(routeDirections)
