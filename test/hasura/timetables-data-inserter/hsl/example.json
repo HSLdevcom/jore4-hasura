@@ -4,6 +4,7 @@
       "validity_start": "2022-07-01",
       "validity_end": "2023-05-31",
       "name": "Talvi 2022",
+      "priority": "Standard",
       "created_at": "2021-01-01T02:34:56.789+02:00",
       "booking_label": "Winter booking label",
       "_vehicle_services": {
@@ -202,7 +203,10 @@
         "aprilFools": {
           "type_of_line": "stopping_bus_service",
           "superseded_date": "2023-04-01",
-          "substitute_day_of_week": 5
+          "substitute_day_of_week": 5,
+          "begin_time": "PT8H5M",
+          "end_time": "PT10H30M",
+          "timezone": "Europe/Helsinki"
         }
       }
     }
