@@ -53,17 +53,6 @@ const defaultDayTypeIdKeys = [
   'SUNDAY',
 ] as const;
 
-const routeDirections = [
-  'inbound',
-  'outbound',
-  'clockwise',
-  'anticlockwise',
-  'northbound',
-  'southbound',
-  'eastbound',
-  'westbound',
-] as const;
-
 const stopPointSchema = z
   .object({
     scheduled_stop_point_label: z.string(),
@@ -80,10 +69,7 @@ const journeyPatternRefSchema = z
     snapshot_timestamp: dateTimeSchema.optional(),
     type_of_line: z.nativeEnum(TypeOfLine).optional(),
     route_label: z.string().optional(),
-    route_direction: z
-      .enum(routeDirections)
-      .transform((direction) => direction as RouteDirection)
-      .optional(),
+    route_direction: z.nativeEnum(RouteDirection).optional(),
     route_validity_start: dateSchema.optional(),
     route_validity_end: dateSchema.optional(),
 
