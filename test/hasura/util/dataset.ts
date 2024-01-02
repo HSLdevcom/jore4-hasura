@@ -34,11 +34,13 @@ export const serializePlainObject = (
 
 // serializes values sent to SQL INSERT INTO commands
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
-  if (value instanceof DateTime) {
-    return value.toISO();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (value && (value as any).isLuxonDateTime) {
+    return (value as DateTime).toISO();
   }
-  if (value instanceof Duration) {
-    return value.toString();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (value && (value as any).isLuxonDuration) {
+    return (value as Duration).toString();
   }
   if (isGeometryObject(value)) {
     return asEwkb(value);
