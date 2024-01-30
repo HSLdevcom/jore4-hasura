@@ -12,6 +12,8 @@ services:
     depends_on:
       jore4-testdb:
         condition: service_healthy
+      jore4-tiamat:
+        condition: service_healthy
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
