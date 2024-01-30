@@ -1,1 +1,10 @@
-[]
+- name: Tiamat
+  definition:
+    url: http://jore4-tiamat:1888/services/stop_places/graphql
+    timeout_seconds: 60
+    customization:
+      root_fields_namespace: stopdb
+      type_names:
+        mapping: {}
+        prefix: stopdb_
+  comment: "Remote schema for Entur Tiamat Stop Place Register"
