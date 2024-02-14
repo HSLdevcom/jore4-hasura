@@ -943,6 +943,12 @@ COMMENT ON COLUMN service_pattern.scheduled_stop_point.measured_location IS 'The
 COMMENT ON COLUMN service_pattern.scheduled_stop_point.scheduled_stop_point_id IS 'The ID of the scheduled stop point.';
 
 --
+-- Name: COLUMN scheduled_stop_point.stop_place_ref; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
+--
+
+COMMENT ON COLUMN service_pattern.scheduled_stop_point.stop_place_ref IS 'The id of the related stop place in stop registry database.';
+
+--
 -- Name: COLUMN scheduled_stop_point.timing_place_id; Type: COMMENT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -3930,6 +3936,12 @@ CREATE INDEX scheduled_stop_point_measured_location_idx ON service_pattern.sched
 CREATE INDEX scheduled_stop_point_serviced_vehicle_mode_scheduled_stop_p_idx ON service_pattern.vehicle_mode_on_scheduled_stop_point USING btree (vehicle_mode, scheduled_stop_point_id);
 
 --
+-- Name: scheduled_stop_point_stop_place_ref_idx; Type: INDEX; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE UNIQUE INDEX scheduled_stop_point_stop_place_ref_idx ON service_pattern.scheduled_stop_point USING btree (stop_place_ref) WHERE (stop_place_ref IS NOT NULL);
+
+--
 -- Name: timing_place_label_idx; Type: INDEX; Schema: timing_pattern; Owner: dbhasura
 --
 
@@ -4401,7 +4413,8 @@ CREATE TABLE service_pattern.scheduled_stop_point (
     validity_start date,
     validity_end date,
     priority integer NOT NULL,
-    timing_place_id uuid
+    timing_place_id uuid,
+    stop_place_ref text
 );
 
 
