@@ -47,3 +47,14 @@ computed_fields:
       function:
         name: ssp_relative_distance_from_infrastructure_link_start
         schema: service_pattern
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - stop_place_ref
+        remote_field:
+          stopPlace:
+            arguments:
+              id: $stop_place_ref
+        remote_schema: Tiamat
+    name: stop_place

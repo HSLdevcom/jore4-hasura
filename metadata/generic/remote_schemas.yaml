@@ -7,4 +7,17 @@
       type_names:
         mapping: {}
         prefix: stop_registry_
-  comment: "Remote schema for Entur Tiamat Stop Place Register"
+  comment: Remote schema for Entur Tiamat Stop Place Register
+  remote_relationships:
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: stop_place_ref
+              relationship_type: object
+              source: default
+              table:
+                name: scheduled_stop_point
+                schema: service_pattern
+          name: scheduled_stop_point
+      type_name: StopPlace
