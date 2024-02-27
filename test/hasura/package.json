@@ -2,6 +2,7 @@
   "name": "@hsl/timetables-data-inserter",
   "version": "1.0.0",
   "main": "dist/timetables-data-inserter/index.js",
+  "license": "EUPL-1.2",
   "typesVersions": {
     "*": {
       "*": [
