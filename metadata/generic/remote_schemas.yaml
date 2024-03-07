@@ -1,6 +1,6 @@
 - name: Tiamat
   definition:
-    url: http://jore4-tiamat:1888/services/stop_places/graphql
+    url_from_env: HASURA_TIAMAT_SCHEMA_URL
     timeout_seconds: 60
     customization:
       root_fields_namespace: stop_registry
