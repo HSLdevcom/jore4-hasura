@@ -2,7 +2,7 @@ actions:
   - name: combineTimetables
     definition:
       kind: synchronous
-      handler: http://jore4-timetablesapi:8080/timetables/combine
+      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/combine"
       request_transform:
         body:
           action: transform
@@ -14,7 +14,7 @@ actions:
   - name: replaceTimetables
     definition:
       kind: synchronous
-      handler: http://jore4-timetablesapi:8080/timetables/replace
+      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/replace"
       request_transform:
         body:
           action: transform
@@ -26,7 +26,7 @@ actions:
   - name: toCombineTargetVehicleScheduleFrameId
     definition:
       kind: ""
-      handler: http://jore4-timetablesapi:8080/timetables/to-combine
+      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/to-combine"
       request_transform:
         method: GET
         query_params:
@@ -41,7 +41,7 @@ actions:
   - name: toReplaceVehicleScheduleFrameIds
     definition:
       kind: ""
-      handler: http://jore4-timetablesapi:8080/timetables/to-replace
+      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/to-replace"
       request_transform:
         method: GET
         query_params:
