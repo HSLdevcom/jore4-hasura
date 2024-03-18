@@ -1,0 +1,3 @@
+table:
+  name: parking_adjacent_sites
+  schema: public

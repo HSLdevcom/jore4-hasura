@@ -1,0 +1,3 @@
+table:
+  name: check_constraint_key_values
+  schema: public

@@ -1,0 +1,7 @@
+table:
+  name: value_items
+  schema: public
+object_relationships:
+  - name: value
+    using:
+      foreign_key_constraint_on: value_id

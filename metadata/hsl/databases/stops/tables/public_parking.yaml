@@ -1,0 +1,66 @@
+table:
+  name: parking
+  schema: public
+object_relationships:
+  - name: accessibility_assessment
+    using:
+      foreign_key_constraint_on: accessibility_assessment_id
+  - name: installed_equipment_version_structure
+    using:
+      foreign_key_constraint_on: place_equipments_id
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+  - name: topographic_place
+    using:
+      foreign_key_constraint_on: topographic_place_id
+array_relationships:
+  - name: parking_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_alternative_names
+          schema: public
+  - name: parking_equipment_places
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_equipment_places
+          schema: public
+  - name: parking_key_values
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_key_values
+          schema: public
+  - name: parking_parking_areas
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_parking_areas
+          schema: public
+  - name: parking_parking_payment_processes
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_parking_payment_process
+          schema: public
+  - name: parking_parking_properties
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_parking_properties
+          schema: public
+  - name: parking_parking_vehicle_types
+    using:
+      foreign_key_constraint_on:
+        column: parking_id
+        table:
+          name: parking_parking_vehicle_types
+          schema: public

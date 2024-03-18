@@ -1,0 +1,22 @@
+table:
+  name: equipment_place
+  schema: public
+object_relationships:
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: equipment_place_equipment_positions
+    using:
+      foreign_key_constraint_on:
+        column: equipment_place_id
+        table:
+          name: equipment_place_equipment_positions
+          schema: public
+  - name: equipment_place_key_values
+    using:
+      foreign_key_constraint_on:
+        column: equipment_place_id
+        table:
+          name: equipment_place_key_values
+          schema: public

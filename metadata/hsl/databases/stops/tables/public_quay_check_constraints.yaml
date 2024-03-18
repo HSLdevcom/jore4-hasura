@@ -1,0 +1,3 @@
+table:
+  name: quay_check_constraints
+  schema: public

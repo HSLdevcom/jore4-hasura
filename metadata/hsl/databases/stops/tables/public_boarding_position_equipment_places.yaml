@@ -1,0 +1,7 @@
+table:
+  name: boarding_position_equipment_places
+  schema: public
+object_relationships:
+  - name: equipment_place
+    using:
+      foreign_key_constraint_on: equipment_places_id

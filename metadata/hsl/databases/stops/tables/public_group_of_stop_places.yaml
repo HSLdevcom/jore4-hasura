@@ -1,0 +1,25 @@
+table:
+  name: group_of_stop_places
+  schema: public
+array_relationships:
+  - name: group_of_stop_places_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: group_of_stop_places_id
+        table:
+          name: group_of_stop_places_alternative_names
+          schema: public
+  - name: group_of_stop_places_key_values
+    using:
+      foreign_key_constraint_on:
+        column: group_of_stop_places_id
+        table:
+          name: group_of_stop_places_key_values
+          schema: public
+  - name: group_of_stop_places_members
+    using:
+      foreign_key_constraint_on:
+        column: group_of_stop_places_id
+        table:
+          name: group_of_stop_places_members
+          schema: public

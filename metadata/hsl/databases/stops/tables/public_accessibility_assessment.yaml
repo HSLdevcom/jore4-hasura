@@ -1,0 +1,11 @@
+table:
+  name: accessibility_assessment
+  schema: public
+array_relationships:
+  - name: accessibility_assessment_limitations
+    using:
+      foreign_key_constraint_on:
+        column: accessibility_assessment_id
+        table:
+          name: accessibility_assessment_limitations
+          schema: public

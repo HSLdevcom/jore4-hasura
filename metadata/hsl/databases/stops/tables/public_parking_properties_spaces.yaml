@@ -1,0 +1,3 @@
+table:
+  name: parking_properties_spaces
+  schema: public

@@ -1,0 +1,32 @@
+table:
+  name: boarding_position
+  schema: public
+object_relationships:
+  - name: installed_equipment_version_structure
+    using:
+      foreign_key_constraint_on: place_equipments_id
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: boarding_position_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: boarding_position_id
+        table:
+          name: boarding_position_alternative_names
+          schema: public
+  - name: boarding_position_equipment_places
+    using:
+      foreign_key_constraint_on:
+        column: boarding_position_id
+        table:
+          name: boarding_position_equipment_places
+          schema: public
+  - name: boarding_position_key_values
+    using:
+      foreign_key_constraint_on:
+        column: boarding_position_id
+        table:
+          name: boarding_position_key_values
+          schema: public

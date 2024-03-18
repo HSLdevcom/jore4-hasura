@@ -1,0 +1,18 @@
+table:
+  name: group_of_tariff_zones
+  schema: public
+array_relationships:
+  - name: group_of_tariff_zones_key_values
+    using:
+      foreign_key_constraint_on:
+        column: group_of_tariff_zones_id
+        table:
+          name: group_of_tariff_zones_key_values
+          schema: public
+  - name: group_of_tariff_zones_members
+    using:
+      foreign_key_constraint_on:
+        column: group_of_tariff_zones_id
+        table:
+          name: group_of_tariff_zones_members
+          schema: public

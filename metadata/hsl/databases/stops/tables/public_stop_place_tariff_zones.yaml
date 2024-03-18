@@ -1,0 +1,3 @@
+table:
+  name: stop_place_tariff_zones
+  schema: public

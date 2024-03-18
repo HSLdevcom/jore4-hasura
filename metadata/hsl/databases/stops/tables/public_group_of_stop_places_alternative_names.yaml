@@ -1,0 +1,7 @@
+table:
+  name: group_of_stop_places_alternative_names
+  schema: public
+object_relationships:
+  - name: alternative_name
+    using:
+      foreign_key_constraint_on: alternative_names_id
