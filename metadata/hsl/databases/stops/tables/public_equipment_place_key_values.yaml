@@ -1,0 +1,7 @@
+table:
+  name: equipment_place_key_values
+  schema: public
+object_relationships:
+  - name: value
+    using:
+      foreign_key_constraint_on: key_values_id

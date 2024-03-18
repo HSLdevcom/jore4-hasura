@@ -1,3 +1,18 @@
+- name: metadata
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_GRAPHQL_METADATA_DATABASE_URL
+      isolation_level: serializable
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  tables: []
+  functions: []
 - name: default
   kind: postgres
   configuration:

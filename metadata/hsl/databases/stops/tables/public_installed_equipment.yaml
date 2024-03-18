@@ -1,0 +1,3 @@
+table:
+  name: installed_equipment
+  schema: public

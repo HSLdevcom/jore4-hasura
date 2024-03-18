@@ -1,0 +1,7 @@
+table:
+  name: quay_boarding_positions
+  schema: public
+object_relationships:
+  - name: boarding_position
+    using:
+      foreign_key_constraint_on: boarding_positions_id

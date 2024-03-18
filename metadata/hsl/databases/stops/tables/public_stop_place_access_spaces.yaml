@@ -1,0 +1,7 @@
+table:
+  name: stop_place_access_spaces
+  schema: public
+object_relationships:
+  - name: access_space
+    using:
+      foreign_key_constraint_on: access_spaces_id

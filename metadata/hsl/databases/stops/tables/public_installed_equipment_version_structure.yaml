@@ -1,0 +1,11 @@
+table:
+  name: installed_equipment_version_structure
+  schema: public
+array_relationships:
+  - name: installed_equipment_version_structure_installed_equipments
+    using:
+      foreign_key_constraint_on:
+        column: place_equipment_id
+        table:
+          name: installed_equipment_version_structure_installed_equipment
+          schema: public

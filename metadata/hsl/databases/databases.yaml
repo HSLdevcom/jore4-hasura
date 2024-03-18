@@ -1,0 +1,16 @@
+- name: stops
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_TIAMAT_DATABASE_URL
+      isolation_level: serializable
+      use_prepared_statements: false
+  customization:
+    naming_convention: hasura-default
+    root_fields:
+      namespace: stops_database
+      prefix: stops_database_
+    type_names:
+      prefix: stops_database_
+  tables: "!include stops/tables/tables.yaml"

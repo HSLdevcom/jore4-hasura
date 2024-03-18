@@ -1,0 +1,3 @@
+table:
+  name: parking_properties_parking_user_types
+  schema: public

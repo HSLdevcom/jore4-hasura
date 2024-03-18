@@ -1,0 +1,15 @@
+table:
+  name: equipment_position
+  schema: public
+object_relationships:
+  - name: multilingual_string_entity
+    using:
+      foreign_key_constraint_on: description_id
+array_relationships:
+  - name: equipment_position_key_values
+    using:
+      foreign_key_constraint_on:
+        column: equipment_position_id
+        table:
+          name: equipment_position_key_values
+          schema: public

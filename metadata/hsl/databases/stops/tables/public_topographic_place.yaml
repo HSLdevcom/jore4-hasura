@@ -1,0 +1,15 @@
+table:
+  name: topographic_place
+  schema: public
+object_relationships:
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: topographic_place_key_values
+    using:
+      foreign_key_constraint_on:
+        column: topographic_place_id
+        table:
+          name: topographic_place_key_values
+          schema: public

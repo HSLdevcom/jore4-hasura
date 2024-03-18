@@ -1,0 +1,35 @@
+table:
+  name: access_space
+  schema: public
+object_relationships:
+  - name: accessibility_assessment
+    using:
+      foreign_key_constraint_on: accessibility_assessment_id
+  - name: installed_equipment_version_structure
+    using:
+      foreign_key_constraint_on: place_equipments_id
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: access_space_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: access_space_id
+        table:
+          name: access_space_alternative_names
+          schema: public
+  - name: access_space_equipment_places
+    using:
+      foreign_key_constraint_on:
+        column: access_space_id
+        table:
+          name: access_space_equipment_places
+          schema: public
+  - name: access_space_key_values
+    using:
+      foreign_key_constraint_on:
+        column: access_space_id
+        table:
+          name: access_space_key_values
+          schema: public

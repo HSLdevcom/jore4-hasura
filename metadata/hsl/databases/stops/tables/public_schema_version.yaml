@@ -1,0 +1,3 @@
+table:
+  name: schema_version
+  schema: public

@@ -1,0 +1,3 @@
+table:
+  name: id_generator
+  schema: public
