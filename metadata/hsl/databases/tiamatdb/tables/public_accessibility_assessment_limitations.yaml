@@ -1,0 +1,7 @@
+table:
+  name: accessibility_assessment_limitations
+  schema: public
+object_relationships:
+  - name: accessibility_limitation
+    using:
+      foreign_key_constraint_on: limitations_id

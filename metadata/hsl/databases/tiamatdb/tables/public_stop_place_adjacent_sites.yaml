@@ -1,0 +1,3 @@
+table:
+  name: stop_place_adjacent_sites
+  schema: public

@@ -1,0 +1,45 @@
+table:
+  name: parking_area
+  schema: public
+object_relationships:
+  - name: accessibility_assessment
+    using:
+      foreign_key_constraint_on: accessibility_assessment_id
+  - name: installed_equipment_version_structure
+    using:
+      foreign_key_constraint_on: place_equipments_id
+  - name: parking_parking_area
+    using:
+      foreign_key_constraint_on:
+        column: parking_areas_id
+        table:
+          name: parking_parking_areas
+          schema: public
+  - name: parking_property
+    using:
+      foreign_key_constraint_on: parking_properties_id
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: parking_area_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: parking_area_id
+        table:
+          name: parking_area_alternative_names
+          schema: public
+  - name: parking_area_equipment_places
+    using:
+      foreign_key_constraint_on:
+        column: parking_area_id
+        table:
+          name: parking_area_equipment_places
+          schema: public
+  - name: parking_area_key_values
+    using:
+      foreign_key_constraint_on:
+        column: parking_area_id
+        table:
+          name: parking_area_key_values
+          schema: public

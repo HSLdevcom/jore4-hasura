@@ -1,0 +1,7 @@
+table:
+  name: stop_place_quays
+  schema: public
+object_relationships:
+  - name: quay
+    using:
+      foreign_key_constraint_on: quays_id

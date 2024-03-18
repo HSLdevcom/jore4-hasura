@@ -1,0 +1,7 @@
+table:
+  name: group_of_tariff_zones_members
+  schema: public
+object_relationships:
+  - name: group_of_tariff_zone
+    using:
+      foreign_key_constraint_on: group_of_tariff_zones_id

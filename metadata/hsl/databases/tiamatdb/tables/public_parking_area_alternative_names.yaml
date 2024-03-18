@@ -1,0 +1,7 @@
+table:
+  name: parking_area_alternative_names
+  schema: public
+object_relationships:
+  - name: alternative_name
+    using:
+      foreign_key_constraint_on: alternative_names_id

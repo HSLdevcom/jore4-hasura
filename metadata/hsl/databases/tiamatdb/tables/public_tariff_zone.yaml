@@ -1,0 +1,15 @@
+table:
+  name: tariff_zone
+  schema: public
+object_relationships:
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: tariff_zone_key_values
+    using:
+      foreign_key_constraint_on:
+        column: tariff_zone_id
+        table:
+          name: tariff_zone_key_values
+          schema: public

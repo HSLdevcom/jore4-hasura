@@ -1,0 +1,16 @@
+- name: tiamatdb
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_TIAMAT_DATABASE_URL
+      isolation_level: read-committed
+      use_prepared_statements: false
+  customization:
+    naming_convention: hasura-default
+    root_fields:
+      namespace: stop_database
+      prefix: stop_database_
+    type_names:
+      prefix: stop_database_
+  tables: "!include tiamatdb/tables/tables.yaml"

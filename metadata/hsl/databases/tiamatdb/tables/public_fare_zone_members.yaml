@@ -1,0 +1,7 @@
+table:
+  name: fare_zone_members
+  schema: public
+object_relationships:
+  - name: fare_zone
+    using:
+      foreign_key_constraint_on: fare_zone_id

@@ -1,0 +1,21 @@
+table:
+  name: level
+  schema: public
+object_relationships:
+  - name: multilingualStringEntityByNameId
+    using:
+      foreign_key_constraint_on: name_id
+  - name: multilingualStringEntityByShortNameId
+    using:
+      foreign_key_constraint_on: short_name_id
+  - name: multilingual_string_entity
+    using:
+      foreign_key_constraint_on: description_id
+array_relationships:
+  - name: level_key_values
+    using:
+      foreign_key_constraint_on:
+        column: level_id
+        table:
+          name: level_key_values
+          schema: public

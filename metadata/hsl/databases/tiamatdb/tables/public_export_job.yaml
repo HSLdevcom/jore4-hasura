@@ -1,0 +1,3 @@
+table:
+  name: export_job
+  schema: public

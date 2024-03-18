@@ -501,6 +501,12 @@ Our Docker image expects the following secrets to be bound to the container:
 | db-jore3importer-username  | Name of the sql user that is used by the jore3 importer service         |
 | db-timetables-api-username | Name of the sql user that is used by the timetables API service         |
 
+Additionally, when using HSL schema, the following secrets should be bound:
+
+| Secret file    | Description                                    |
+| -------------- | ---------------------------------------------- |
+| db-tiamat-name | Name of the logical database for stop registry |
+
 ### Use of the Docker image
 
 The Docker image expects the following values for the following environment

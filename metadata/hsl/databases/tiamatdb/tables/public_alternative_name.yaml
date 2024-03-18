@@ -1,0 +1,3 @@
+table:
+  name: alternative_name
+  schema: public

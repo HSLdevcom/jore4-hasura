@@ -1,0 +1,73 @@
+table:
+  name: stop_place
+  schema: public
+object_relationships:
+  - name: accessibility_assessment
+    using:
+      foreign_key_constraint_on: accessibility_assessment_id
+  - name: installed_equipment_version_structure
+    using:
+      foreign_key_constraint_on: place_equipments_id
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+  - name: stop_place_child
+    using:
+      foreign_key_constraint_on:
+        column: children_id
+        table:
+          name: stop_place_children
+          schema: public
+  - name: topographic_place
+    using:
+      foreign_key_constraint_on: topographic_place_id
+array_relationships:
+  - name: stop_place_access_spaces
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_access_spaces
+          schema: public
+  - name: stop_place_alternative_names
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_alternative_names
+          schema: public
+  - name: stop_place_children
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_children
+          schema: public
+  - name: stop_place_equipment_places
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_equipment_places
+          schema: public
+  - name: stop_place_key_values
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_key_values
+          schema: public
+  - name: stop_place_quays
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_quays
+          schema: public
+  - name: stop_place_tariff_zones
+    using:
+      foreign_key_constraint_on:
+        column: stop_place_id
+        table:
+          name: stop_place_tariff_zones
+          schema: public

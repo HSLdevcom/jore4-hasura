@@ -1,0 +1,7 @@
+table:
+  name: stop_place_children
+  schema: public
+object_relationships:
+  - name: stop_place
+    using:
+      foreign_key_constraint_on: children_id

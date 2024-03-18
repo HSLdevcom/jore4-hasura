@@ -1,0 +1,3 @@
+table:
+  name: destination_display_view
+  schema: public

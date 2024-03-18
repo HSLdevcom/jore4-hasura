@@ -1,0 +1,29 @@
+table:
+  name: fare_zone
+  schema: public
+object_relationships:
+  - name: persistable_polygon
+    using:
+      foreign_key_constraint_on: polygon_id
+array_relationships:
+  - name: fare_zone_key_values
+    using:
+      foreign_key_constraint_on:
+        column: fare_zone_id
+        table:
+          name: fare_zone_key_values
+          schema: public
+  - name: fare_zone_members
+    using:
+      foreign_key_constraint_on:
+        column: fare_zone_id
+        table:
+          name: fare_zone_members
+          schema: public
+  - name: fare_zone_neighbours
+    using:
+      foreign_key_constraint_on:
+        column: fare_zone_id
+        table:
+          name: fare_zone_neighbours
+          schema: public

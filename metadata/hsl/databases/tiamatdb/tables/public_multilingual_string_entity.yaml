@@ -1,0 +1,3 @@
+table:
+  name: multilingual_string_entity
+  schema: public
