@@ -1,4 +1,4 @@
-FROM hasura/graphql-engine:v2.33.3-ce.cli-migrations-v3.ubuntu AS hasura-generic
+FROM hasura/graphql-engine:v2.38.1-ce.cli-migrations-v3.ubuntu AS hasura-generic
 
 # needed for enabling namespacing for logical databases. This env variable should be removed when this feature becomes stable
 ENV HASURA_GRAPHQL_EXPERIMENTAL_FEATURES="naming_convention"
