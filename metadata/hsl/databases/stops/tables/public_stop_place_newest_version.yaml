@@ -1,0 +1,88 @@
+table:
+  name: stop_place_newest_version
+  schema: public
+array_relationships:
+  - name: stop_place_access_spaces
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_access_spaces
+          schema: public
+  - name: stop_place_alternative_names
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_alternative_names
+          schema: public
+  - name: stop_place_children
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_children
+          schema: public
+  - name: stop_place_equipment_places
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_equipment_places
+          schema: public
+  - name: stop_place_key_values
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_key_values
+          schema: public
+  - name: stop_place_quays
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_quays
+          schema: public
+  - name: stop_place_tariff_zones
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_tariff_zones
+          schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - netex_id
+        remote_field:
+          stopPlace:
+            arguments:
+              id: $netex_id
+        remote_schema: Tiamat
+    name: TiamatStopPlace
+  - definition:
+      to_source:
+        field_mapping:
+          netex_id: stop_place_ref
+        relationship_type: object
+        source: default
+        table:
+          name: scheduled_stop_point
+          schema: service_pattern
+    name: scheduled_stop_point_instance
