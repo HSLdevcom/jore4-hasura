@@ -1,14 +1,24 @@
 name: Push image to Docker hub and run e2e tests
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
 jobs:
+  check-prettify:
+    name: Check prettify
+    uses: ./.github/workflows/check-prettify.yml
+
+  run-docker-image-tests:
+    needs:
+      - check-prettify
+    name: Run docker image tests
+    uses: ./.github/workflows/ci.yml
+
   push_to_registry:
+    needs:
+      - check-prettify
+      - run-docker-image-tests
     name: Build & Push docker image to Docker Hub
     runs-on: ubuntu-22.04
 
@@ -72,25 +82,16 @@ jobs:
 
   run_dump_tests:
     needs:
+      - check-prettify
+      - run-docker-image-tests
       - push_to_registry
     uses: ./.github/workflows/check-dump.yml
 
-  run_e2e_tests:
-    needs: push_to_registry
-    name: Run e2e tests
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Extract metadata to env variables
-        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
-
-      - name: Run e2e tests
-        uses: HSLdevcom/jore4-tools/github-actions/run-ci@main
-        with:
-          hasura_version: '${{ env.IMAGE_NAME }}:hsl-${{ env.COMMIT_ID }}'
-
   run_migration_tests:
-    needs: push_to_registry
+    needs:
+      - check-prettify
+      - run-docker-image-tests
+      - push_to_registry
     name: Run migration tests
     runs-on: ubuntu-22.04
 
@@ -115,7 +116,10 @@ jobs:
         run: ./scripts/test-migrations.sh
 
   run_integration_tests:
-    needs: push_to_registry
+    needs:
+      - check-prettify
+      - run-docker-image-tests
+      - push_to_registry
     name: Run hasura integration tests
     runs-on: ubuntu-22.04
 
@@ -144,3 +148,23 @@ jobs:
           cd test/hasura
           yarn --frozen-lockfile
           ${{ matrix.testCommand }}
+
+  run_e2e_tests:
+    needs:
+      - check-prettify
+      - run-docker-image-tests
+      - push_to_registry
+      - run_dump_tests
+      - run_migration_tests
+      - run_integration_tests
+    name: Run e2e tests
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Extract metadata to env variables
+        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
+
+      - name: Run e2e tests
+        uses: HSLdevcom/jore4-tools/github-actions/run-ci@main
+        with:
+          hasura_version: '${{ env.IMAGE_NAME }}:hsl-${{ env.COMMIT_ID }}'

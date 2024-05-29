@@ -1,7 +1,9 @@
 name: Check if sources have been prettified
 
 on:
-  pull_request:
+  # this workflow is only called by others, won't be executed on itself
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
   check_prettify:
