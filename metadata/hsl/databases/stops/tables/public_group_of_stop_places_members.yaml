@@ -1,3 +1,13 @@
 table:
   name: group_of_stop_places_members
   schema: public
+object_relationships:
+  - name: stop_place
+    using:
+      manual_configuration:
+        column_mapping:
+          ref: netex_id
+        insertion_order: null
+        remote_table:
+          name: stop_place
+          schema: public
