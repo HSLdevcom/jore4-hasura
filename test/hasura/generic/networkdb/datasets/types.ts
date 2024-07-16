@@ -1,6 +1,19 @@
 import { GeometryObject } from 'geojson';
 import { DateTime } from 'luxon';
 
+export type NamedCoordinateReferenceSystemObject = {
+  type: 'name';
+  properties: {
+    name: string;
+  };
+};
+
+// The Coordinate reference system was dropped from the GeoJSON spec RFC7946.
+// Thus the @types/geojson types do not support them
+export type GeometryObjectWithOptionalCRS = GeometryObject & {
+  crs?: NamedCoordinateReferenceSystemObject;
+};
+
 export function isGeoProperty(prop: Property): prop is GeoProperty {
   return Object.prototype.hasOwnProperty.call(prop, 'isGeoProp');
 }
@@ -60,7 +73,7 @@ export enum TypeOfLine {
 export type InfrastructureLink = {
   infrastructure_link_id: string;
   direction: LinkDirection;
-  shape: GeometryObject;
+  shape: GeometryObjectWithOptionalCRS;
   estimated_length_in_metres: number | null;
   external_link_source: string;
   external_link_id: string;
@@ -92,7 +105,7 @@ export type ScheduledStopPoint = {
   scheduled_stop_point_id: string;
   located_on_infrastructure_link_id: string;
   direction: LinkDirection;
-  measured_location: GeometryObject;
+  measured_location: GeometryObjectWithOptionalCRS;
   label: string;
   priority: number;
   validity_start: DateTime | null;
