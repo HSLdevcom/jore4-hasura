@@ -39,36 +39,45 @@ export const createTimetablesDatasetHelper = <
   // TODO: could these be done with generics?..
   const vehicleServicesByLabel = flattened.vehicleScheduleFrames
     .flatMap((vsf) => Object.entries(vsf._vehicle_services))
-    .reduce((result, [label, vss]) => {
-      const labelGroup = result[label] || [];
-      labelGroup.push(vss);
-      return {
-        ...result,
-        [label]: labelGroup,
-      };
-    }, {} as Record<string, GenericVehicleServiceOutput[]>);
+    .reduce(
+      (result, [label, vss]) => {
+        const labelGroup = result[label] || [];
+        labelGroup.push(vss);
+        return {
+          ...result,
+          [label]: labelGroup,
+        };
+      },
+      {} as Record<string, GenericVehicleServiceOutput[]>,
+    );
 
   const blocksByLabel = flattened.vehicleServices
     .flatMap((vs) => Object.entries(vs._blocks))
-    .reduce((result, [label, block]) => {
-      const labelGroup = result[label] || [];
-      labelGroup.push(block);
-      return {
-        ...result,
-        [label]: labelGroup,
-      };
-    }, {} as Record<string, GenericVehicleServiceBlockOutput[]>);
+    .reduce(
+      (result, [label, block]) => {
+        const labelGroup = result[label] || [];
+        labelGroup.push(block);
+        return {
+          ...result,
+          [label]: labelGroup,
+        };
+      },
+      {} as Record<string, GenericVehicleServiceBlockOutput[]>,
+    );
 
   const vehicleJourneysByLabel = flattened.blocks
     .flatMap((block) => Object.entries(block._vehicle_journeys))
-    .reduce((result, [label, vj]) => {
-      const labelGroup = result[label] || [];
-      labelGroup.push(vj);
-      return {
-        ...result,
-        [label]: labelGroup,
-      };
-    }, {} as Record<string, GenericVehicleJourneyOutput[]>);
+    .reduce(
+      (result, [label, vj]) => {
+        const labelGroup = result[label] || [];
+        labelGroup.push(vj);
+        return {
+          ...result,
+          [label]: labelGroup,
+        };
+      },
+      {} as Record<string, GenericVehicleJourneyOutput[]>,
+    );
 
   return {
     ...builtDataset,

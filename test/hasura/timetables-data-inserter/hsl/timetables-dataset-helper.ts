@@ -19,14 +19,17 @@ export const createHslTimetablesDatasetHelper = (
       .flatMap((sop) =>
         Object.entries(sop._substitute_operating_day_by_line_types),
       )
-      .reduce((result, [label, sodblt]) => {
-        const labelGroup = result[label] || [];
-        labelGroup.push(sodblt);
-        return {
-          ...result,
-          [label]: labelGroup,
-        };
-      }, {} as Record<string, SubstituteOperatingDayByLineTypeOutput[]>);
+      .reduce(
+        (result, [label, sodblt]) => {
+          const labelGroup = result[label] || [];
+          labelGroup.push(sodblt);
+          return {
+            ...result,
+            [label]: labelGroup,
+          };
+        },
+        {} as Record<string, SubstituteOperatingDayByLineTypeOutput[]>,
+      );
 
   const genericTimetablesHelper = createTimetablesDatasetHelper(builtDataset);
 
