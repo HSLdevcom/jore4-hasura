@@ -100,5 +100,9 @@ module.exports = {
       },
     ],
     'jest/expect-expect': 'off', // most of the tests call the assertions through an external function
+
+    // Previously enabled by-default by the recommended rule set.
+    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
   },
 };
