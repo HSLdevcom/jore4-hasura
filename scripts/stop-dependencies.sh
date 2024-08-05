@@ -5,4 +5,4 @@ WD=$(dirname "$0")
 cd "${WD}/.."
 
 # stop the dependencies
-docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.custom.yml down
+docker compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.custom.yml down
