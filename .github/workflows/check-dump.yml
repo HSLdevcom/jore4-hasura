@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Extract metadata to env variables
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
