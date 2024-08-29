@@ -1,0 +1,3 @@
+table:
+  name: stop_place_organisations
+  schema: public
