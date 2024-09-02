@@ -2,6 +2,15 @@ table:
   name: stop_place_newest_version
   schema: public
 array_relationships:
+  - name: group_of_stop_places_members
+    using:
+      manual_configuration:
+        column_mapping:
+          netex_id: ref
+        insertion_order: null
+        remote_table:
+          name: group_of_stop_places_members
+          schema: public
   - name: stop_place_access_spaces
     using:
       manual_configuration:
