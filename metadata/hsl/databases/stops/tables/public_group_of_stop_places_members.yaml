@@ -2,6 +2,9 @@ table:
   name: group_of_stop_places_members
   schema: public
 object_relationships:
+  - name: group_of_stop_place
+    using:
+      foreign_key_constraint_on: group_of_stop_places_id
   - name: stop_place_newest_version
     using:
       manual_configuration:
