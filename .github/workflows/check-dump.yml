@@ -6,11 +6,14 @@ on:
 jobs:
   check_dumps:
     name: Check if the generated dumps are up to date
+    # These must run on ubuntu 22.04 or older.
+    # The MS SQL server used by jore4-jore3-importer,
+    # does not run on Linux kernels newer than 6.6.x.
     runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Extract metadata to env variables
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
