@@ -2,4 +2,8 @@
 
 set -eu
 
-npx prettier@2.8.3 --write .
+# allow running from any working directory
+WD=$(dirname "$0")
+cd "${WD}/../test/hasura"
+
+yarn prettier
