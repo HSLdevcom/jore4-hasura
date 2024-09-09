@@ -14,8 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prettify sources
-        run: ./scripts/prettify.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.0'
+          cache: 'yarn'
+          cache-dependency-path: test/hasura/yarn.lock
 
-      - name: Verify that prettify command made no changes
-        run: '[ -z "$(git status --porcelain)" ]'
+      - name: Install node_modules
+        run: cd test/hasura && yarn install --frozen-lockfile
+
+      - name: Verify that prettier has been run
+        run: cd test/hasura && yarn prettier:check
