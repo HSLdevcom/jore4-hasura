@@ -96,10 +96,7 @@ jobs:
       - run-docker-image-tests
       - push_to_registry
     name: Run migration tests
-    # These must run on ubuntu 22.04 or older.
-    # The MS SQL server used by jore4-jore3-importer,
-    # does not run on Linux kernels newer than 6.6.x.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -113,7 +110,7 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v6
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
@@ -127,10 +124,7 @@ jobs:
       - run-docker-image-tests
       - push_to_registry
     name: Run hasura integration tests
-    # These must run on ubuntu 22.04 or older.
-    # The MS SQL server used by jore4-jore3-importer,
-    # does not run on Linux kernels newer than 6.6.x.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -148,7 +142,7 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v6
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
@@ -167,10 +161,7 @@ jobs:
       - run_migration_tests
       - run_integration_tests
     name: Run e2e tests
-    # These must run on ubuntu 22.04 or older.
-    # The MS SQL server used by jore4-jore3-importer,
-    # does not run on Linux kernels newer than 6.6.x.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Extract metadata to env variables

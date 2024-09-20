@@ -6,10 +6,7 @@ on:
 jobs:
   check_dumps:
     name: Check if the generated dumps are up to date
-    # These must run on ubuntu 22.04 or older.
-    # The MS SQL server used by jore4-jore3-importer,
-    # does not run on Linux kernels newer than 6.6.x.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -19,7 +16,7 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v6
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:generic-${{ env.COMMIT_ID }}'
 
@@ -33,7 +30,7 @@ jobs:
         run: docker rm --force hasura && docker volume prune --force
 
       - name: Restart the hasura container to rerun the repeatable migrations
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v6
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:generic-${{ env.COMMIT_ID }}'
 
