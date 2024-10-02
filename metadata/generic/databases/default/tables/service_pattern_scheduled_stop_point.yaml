@@ -49,6 +49,16 @@ computed_fields:
         schema: service_pattern
 remote_relationships:
   - definition:
+      to_source:
+        field_mapping:
+          stop_place_ref: netex_id
+        relationship_type: object
+        source: stops
+        table:
+          name: stop_place_newest_version
+          schema: public
+    name: newest_stop_place
+  - definition:
       to_remote_schema:
         lhs_fields:
           - stop_place_ref
