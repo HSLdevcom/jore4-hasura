@@ -38,6 +38,7 @@
 - "!include public_group_of_tariff_zones_members.yaml"
 - "!include public_hsl_accessibility_properties.yaml"
 - "!include public_id_generator.yaml"
+- "!include public_info_spot_poster.yaml"
 - "!include public_installed_equipment.yaml"
 - "!include public_installed_equipment_version_structure.yaml"
 - "!include public_installed_equipment_version_structure_installed_equipment.yaml"
