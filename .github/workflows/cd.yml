@@ -110,7 +110,7 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v8
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
@@ -142,7 +142,7 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v7
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v8
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
