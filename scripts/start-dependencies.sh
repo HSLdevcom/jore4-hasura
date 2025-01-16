@@ -6,13 +6,21 @@ set -euo pipefail
 WD=$(dirname "$0")
 cd "${WD}/.."
 
+# By default, the tip of the main branch of the jore4-docker-compose-bundle
+# repository is used as the commit reference, which determines the version of
+# the Docker Compose bundle to download. For debugging purposes, this default
+# can be overridden by some other commit reference (e.g., commit SHA or its
+# initial substring), which you can pass via the `BUNDLE_REF` environment
+# variable.
+DOCKER_COMPOSE_BUNDLE_REF=${BUNDLE_REF:-main}
+
 # Download Docker Compose bundle from the "jore4-docker-compose-bundle"
 # repository. GitHub CLI is required to be installed.
 #
-# A commit reference can be given as an argument. It can contain, for example,
-# only a substring of an actual SHA digest.
+# A commit reference is read from global `DOCKER_COMPOSE_BUNDLE_REF` variable,
+# which should be set based on the script execution arguments.
 download_docker_compose_bundle() {
-  local commit_ref="${1:-main}"
+  local commit_ref="$DOCKER_COMPOSE_BUNDLE_REF"
 
   local repo_name="jore4-docker-compose-bundle"
   local repo_owner="HSLdevcom"
@@ -75,11 +83,6 @@ download_docker_compose_bundle() {
   echo "$commit_sha" > ./docker/RELEASE_VERSION.txt
 }
 
-# By default, the tip of the main branch of the jore4-docker-compose-bundle
-# repository is used as the commit reference, which specifies the Docker Compose
-# bundle version to fetch. For debugging purposes, this default can be
-# overridden by passing some commit SHA (or its initial substring) to the
-# download function.
 download_docker_compose_bundle
 
 # start up test database and hasura for migrations
