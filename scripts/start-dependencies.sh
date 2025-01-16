@@ -49,14 +49,17 @@ download_docker_compose_bundle() {
 
   echo "Downloading the JORE4 Docker Compose bundle..."
 
-  # Download the latest Docker Compose bundle from the
-  # jore4-docker-compose-bundle repository as a ZIP file and extract its
-  # contents to a temporary directory.
-  gh api "repos/${repo_owner}/${repo_name}/zipball/${commit_sha}" > "$zip_file" \
-    && unzip -q "$zip_file" -d /tmp
+  # Download Docker Compose bundle from the jore4-docker-compose-bundle
+  # repository as a ZIP file.
+  gh api "repos/${repo_owner}/${repo_name}/zipball/${commit_sha}" > "$zip_file"
+
+  # Extract ZIP file contents to a temporary directory.
+  unzip -q "$zip_file" -d /tmp
 
   # Clean untracked files from `docker` directory even if they are git-ignored.
   git clean -fx ./docker
+
+  echo "Copying JORE4 Docker Compose bundle files to ./docker directory..."
 
   # Copy files from the `docker-compose` directory of the ZIP file to your
   # local `docker` directory.
