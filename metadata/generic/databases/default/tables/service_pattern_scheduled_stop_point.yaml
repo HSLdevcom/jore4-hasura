@@ -59,12 +59,12 @@ remote_relationships:
           schema: public
     name: newest_stop_place
   - definition:
-      to_source:
-        field_mapping:
-          stop_place_ref: netex_id
-        relationship_type: object
-        source: stops
-        table:
-          name: quay
-          schema: public
+      to_remote_schema:
+        lhs_fields:
+          - stop_place_ref
+        remote_field:
+          stopPlace:
+            arguments:
+              query: $stop_place_ref
+        remote_schema: Tiamat
     name: stop_place
