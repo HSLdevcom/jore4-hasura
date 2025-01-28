@@ -1,3 +1,13 @@
 table:
   name: quay_newest_version
   schema: public
+object_relationships:
+  - name: equipment
+    using:
+      manual_configuration:
+        column_mapping:
+          place_equipments_id: id
+        insertion_order: null
+        remote_table:
+          name: place_equipment
+          schema: public
