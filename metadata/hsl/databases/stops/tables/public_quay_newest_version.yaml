@@ -1,0 +1,3 @@
+table:
+  name: quay_newest_version
+  schema: public
