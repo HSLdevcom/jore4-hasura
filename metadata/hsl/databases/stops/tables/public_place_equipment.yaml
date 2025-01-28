@@ -1,0 +1,3 @@
+table:
+  name: place_equipment
+  schema: public
