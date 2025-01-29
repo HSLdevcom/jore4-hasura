@@ -11,3 +11,42 @@ object_relationships:
         remote_table:
           name: place_equipment
           schema: public
+  - name: stop_place_quay
+    using:
+      manual_configuration:
+        column_mapping:
+          id: quays_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_quays
+          schema: public
+array_relationships:
+  - name: quay_alternative_names
+    using:
+      manual_configuration:
+        column_mapping:
+          id: quay_id
+        insertion_order: null
+        remote_table:
+          name: quay_alternative_names
+          schema: public
+  - name: quay_key_values
+    using:
+      manual_configuration:
+        column_mapping:
+          id: quay_id
+        insertion_order: null
+        remote_table:
+          name: quay_key_values
+          schema: public
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          netex_id: stop_place_ref
+        relationship_type: object
+        source: default
+        table:
+          name: scheduled_stop_point
+          schema: service_pattern
+    name: scheduled_stop_point_instance
