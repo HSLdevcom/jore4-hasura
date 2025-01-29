@@ -11,14 +11,14 @@ object_relationships:
         remote_table:
           name: place_equipment
           schema: public
-  - name: stop_place_quay
+  - name: stop_place
     using:
       manual_configuration:
         column_mapping:
-          id: quays_id
+          stop_place_id: id
         insertion_order: null
         remote_table:
-          name: stop_place_quays
+          name: stop_place
           schema: public
 array_relationships:
   - name: quay_alternative_names
