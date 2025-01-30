@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 # This script is used to enable repeatable migrations in Hasura. It does the following:
 # 1. checks if Hasura migrations have ever been run. If not, there's no need for any tweaks
@@ -25,7 +25,7 @@ HDB_CATALOG_EXISTS=`PGPASSWORD="${DB_PASSWORD}" ${PSQL_CMD} -t -c "${HDB_CATALOG
 echo "HDB_CATALOG_EXISTS: $HDB_CATALOG_EXISTS"
 
 # 1. hdb catalog does not exist (yet), no need to tweak migrations. Exit with success
-if [ $HDB_CATALOG_EXISTS != "t" ]; then
+if [ "$HDB_CATALOG_EXISTS" != "t" ]; then
   echo "hdb_catalog does not exist (yet), no need to tweak migrations"
   exit 0;
 fi

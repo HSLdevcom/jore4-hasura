@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 # Merge HSL-specific metadata with generic metadata
 # 1. If the file with the same name already exists both in the generic and in the HSL metadata,
@@ -35,8 +35,8 @@ do
     # if the file with the same name already exists -> merge them (= just concatenate the file contents)
     echo "Merging graphql file: $SOURCE_GRAPHQL_FILE"
 
-    echo "" >> $DESTINATION_DIR/$SOURCE_GRAPHQL_FILE
-    cat $SOURCE_DIR/$SOURCE_GRAPHQL_FILE >> $DESTINATION_DIR/$SOURCE_GRAPHQL_FILE
+    echo "" >> "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE"
+    cat "$SOURCE_DIR/$SOURCE_GRAPHQL_FILE" >> "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE"
   else
     # if the file does not exist yet -> copy it
     echo "Copying graphql file: $SOURCE_GRAPHQL_FILE"
