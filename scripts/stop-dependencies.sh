@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # allow running from any working directory
 WD=$(dirname "$0")
