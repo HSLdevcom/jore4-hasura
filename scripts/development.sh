@@ -94,6 +94,11 @@ start_docker_containers() {
 
   $DOCKER_COMPOSE_CMD up -d jore4-testdb jore4-auth jore4-tiamat
   $DOCKER_COMPOSE_CMD up --build -d jore4-hasura
+
+  # Start additional images if given as argument.
+  if [[ $# -ne 0 ]]; then
+    $DOCKER_COMPOSE_CMD up -d "$@"
+  fi
 }
 
 stop_docker_containers() {
@@ -108,8 +113,11 @@ print_usage() {
   echo "
   Usage: $(basename "$0") <command>
 
-  start
+  start [<additional Docker Compose services>]
     Start Docker containers for the dependencies and the Hasura service.
+
+    You can pass additional Docker Compose services as arguments (separated by
+    spaces), which can be found in docker-compose.yml.
 
   stop
     Stop all related Docker containers.
@@ -127,10 +135,16 @@ if [[ $# -eq 0 ]]; then
   exit 1
 fi
 
-case "$1" in
+COMMAND=${1:-}
+
+# Shift other arguments after the command so that we can refer to them later
+# with "$@".
+shift
+
+case "$COMMAND" in
 start)
   download_docker_compose_bundle
-  start_docker_containers
+  start_docker_containers "$@"
   ;;
 
 stop)
@@ -147,7 +161,7 @@ help)
 
 *)
   echo ""
-  echo "Unknown command: '${1}'"
+  echo "Unknown command: '${COMMAND}'"
   print_usage
   exit 1
   ;;
