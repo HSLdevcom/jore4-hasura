@@ -6,4 +6,4 @@ set -e
 WD=$(dirname "$0")
 cd "${WD}/.."
 
-scripts/development.sh start
+scripts/development.sh remove
