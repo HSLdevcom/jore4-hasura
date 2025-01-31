@@ -6,4 +6,5 @@ set -euo pipefail
 WD=$(dirname "$0")
 cd "${WD}/.."
 
-scripts/development.sh start
+# Additional Docker Compose services can be passed as argument.
+scripts/development.sh start "$@"
