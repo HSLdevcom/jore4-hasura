@@ -6,5 +6,4 @@ set -e
 WD=$(dirname "$0")
 cd "${WD}/.."
 
-# Additional Docker Compose services can be passed as argument.
-scripts/development.sh start "$@"
+scripts/development.sh remove
