@@ -6,4 +6,4 @@ set -euo pipefail
 WD=$(dirname "$0")
 cd "${WD}/.."
 
-scripts/development.sh stop
+scripts/development.sh remove
