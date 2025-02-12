@@ -1,4 +1,4 @@
-- "!include substitute_operating_day_by_line_type.yaml"
 - "!include return_value_timetable_version.yaml"
 - "!include return_value_vehicle_schedule.yaml"
-- "!include substitute_operating_period.yaml"
+- "!include service_calendar_substitute_operating_day_by_line_type.yaml"
+- "!include service_calendar_substitute_operating_period.yaml"

@@ -1,9 +1,13 @@
 type Mutation {
-  combineTimetables(arg1: CombineTimetablesInput!): CombineTimetablesOutput
+  combineTimetables(
+    arg1: CombineTimetablesInput!
+  ): CombineTimetablesOutput
 }
 
 type Mutation {
-  replaceTimetables(arg1: ReplaceTimetablesInput!): ReplaceTimetablesOutput
+  replaceTimetables(
+    arg1: ReplaceTimetablesInput!
+  ): ReplaceTimetablesOutput
 }
 
 type Query {
@@ -53,3 +57,4 @@ type ToCombineTargetVehicleScheduleFrameIdOutput {
 type ToReplaceVehicleScheduleFrameIdsOutput {
   toReplaceVehicleScheduleFrameIds: [uuid]!
 }
+

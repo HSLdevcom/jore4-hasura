@@ -7,6 +7,7 @@ object_relationships:
       manual_configuration:
         column_mapping:
           day_type_id: day_type_id
+        insertion_order: null
         remote_table:
           name: day_type
           schema: service_calendar
@@ -15,6 +16,7 @@ object_relationships:
       manual_configuration:
         column_mapping:
           vehicle_journey_id: vehicle_journey_id
+        insertion_order: null
         remote_table:
           name: vehicle_journey
           schema: vehicle_journey

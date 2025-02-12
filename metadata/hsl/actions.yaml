@@ -2,11 +2,11 @@ actions:
   - name: combineTimetables
     definition:
       kind: synchronous
-      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/combine"
+      handler: '{{HASURA_TIMETABLESAPI_URL}}/timetables/combine'
       request_transform:
         body:
           action: transform
-          template: "{{$body.input.arg1}}"
+          template: '{{$body.input.arg1}}'
         method: POST
         query_params: {}
         template_engine: Kriti
@@ -14,11 +14,11 @@ actions:
   - name: replaceTimetables
     definition:
       kind: synchronous
-      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/replace"
+      handler: '{{HASURA_TIMETABLESAPI_URL}}/timetables/replace'
       request_transform:
         body:
           action: transform
-          template: "{{$body.input.arg1}}"
+          template: '{{$body.input.arg1}}'
         method: POST
         query_params: {}
         template_engine: Kriti
@@ -26,12 +26,12 @@ actions:
   - name: toCombineTargetVehicleScheduleFrameId
     definition:
       kind: ""
-      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/to-combine"
+      handler: '{{HASURA_TIMETABLESAPI_URL}}/timetables/to-combine'
       request_transform:
         method: GET
         query_params:
-          stagingVehicleScheduleFrameId: "{{$body.input.arg1.stagingVehicleScheduleFrameId}}"
-          targetPriority: "{{$body.input.arg1.targetPriority}}"
+          stagingVehicleScheduleFrameId: '{{$body.input.arg1.stagingVehicleScheduleFrameId}}'
+          targetPriority: '{{$body.input.arg1.targetPriority}}'
         request_headers:
           add_headers: {}
           remove_headers:
@@ -41,12 +41,12 @@ actions:
   - name: toReplaceVehicleScheduleFrameIds
     definition:
       kind: ""
-      handler: "{{HASURA_TIMETABLESAPI_URL}}/timetables/to-replace"
+      handler: '{{HASURA_TIMETABLESAPI_URL}}/timetables/to-replace'
       request_transform:
         method: GET
         query_params:
-          stagingVehicleScheduleFrameId: "{{$body.input.arg1.stagingVehicleScheduleFrameId}}"
-          targetPriority: "{{$body.input.arg1.targetPriority}}"
+          stagingVehicleScheduleFrameId: '{{$body.input.arg1.stagingVehicleScheduleFrameId}}'
+          targetPriority: '{{$body.input.arg1.targetPriority}}'
         request_headers:
           add_headers: {}
           remove_headers:
