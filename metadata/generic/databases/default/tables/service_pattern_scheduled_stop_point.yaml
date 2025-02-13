@@ -55,7 +55,7 @@ remote_relationships:
         relationship_type: object
         source: stops
         table:
-          name: stop_place_newest_version
+          name: quay_newest_version
           schema: public
     name: newest_stop_place
   - definition:
@@ -65,6 +65,16 @@ remote_relationships:
         remote_field:
           stopPlace:
             arguments:
-              id: $stop_place_ref
+              query: $stop_place_ref
         remote_schema: Tiamat
     name: stop_place
+  - definition:
+      to_source:
+        field_mapping:
+          stop_place_ref: netex_id
+        relationship_type: object
+        source: stops
+        table:
+          name: quay_newest_version
+          schema: public
+    name: newest_quay
