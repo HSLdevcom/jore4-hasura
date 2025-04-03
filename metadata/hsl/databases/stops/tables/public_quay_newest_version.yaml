@@ -20,6 +20,15 @@ object_relationships:
         remote_table:
           name: stop_place
           schema: public
+  - name: stop_place_newest_version
+    using:
+      manual_configuration:
+        column_mapping:
+          stop_place_id: id
+        insertion_order: null
+        remote_table:
+          name: stop_place_newest_version
+          schema: public
 array_relationships:
   - name: quay_alternative_names
     using:
