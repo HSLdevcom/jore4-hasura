@@ -83,6 +83,42 @@ jobs:
             --tag $IMAGE_NAME:latest \
             .
 
+  publish_generic_docker_image_to_acr:
+    needs:
+      - check-prettify
+      - run-docker-image-tests
+    name: Publish Generic Docker image to ACR
+    permissions:
+      id-token: write
+      contents: read
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    with:
+      docker_image_name: jore4-generic-hasura
+      build_arm64_image: true
+      target: hasura-generic
+    secrets:
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  publish_hsl_docker_image_to_acr:
+    needs:
+      - check-prettify
+      - run-docker-image-tests
+    name: Publish HSL Docker image to ACR
+    permissions:
+      id-token: write
+      contents: read
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    with:
+      docker_image_name: jore4-hsl-hasura
+      build_arm64_image: true
+      target: hasura-hsl
+    secrets:
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
   run_dump_tests:
     needs:
       - check-prettify
