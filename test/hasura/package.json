@@ -46,6 +46,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
     "@types/luxon": "^3.6.2",
@@ -55,10 +56,10 @@
     "@types/uuid-validate": "^0.0.3",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.2",
-    "eslint-import-resolver-typescript": "^3.10.0",
+    "eslint-import-resolver-typescript": "^4.3.2",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest": "^28.11.0",
