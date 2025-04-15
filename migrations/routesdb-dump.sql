@@ -38,6 +38,13 @@ GRANT USAGE ON SCHEMA internal_utils TO dbimporter;
 GRANT USAGE ON SCHEMA journey_pattern TO dbimporter;
 
 --
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dbadmin
+--
+
+GRANT ALL ON SCHEMA public TO dbhasura;
+GRANT USAGE ON SCHEMA public TO dbimporter;
+
+--
 -- Name: SCHEMA reusable_components; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -96,6 +103,7644 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE journey_pattern.journey_patt
 --
 
 GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE journey_pattern.scheduled_stop_point_in_journey_pattern TO dbimporter;
+
+--
+-- Name: TABLE pg_aggregate; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_aggregate TO dbhasura;
+
+--
+-- Name: TABLE pg_am; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_am TO dbhasura;
+
+--
+-- Name: TABLE pg_amop; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_amop TO dbhasura;
+
+--
+-- Name: TABLE pg_amproc; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_amproc TO dbhasura;
+
+--
+-- Name: TABLE pg_attrdef; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_attrdef TO dbhasura;
+
+--
+-- Name: TABLE pg_attribute; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_attribute TO dbhasura;
+
+--
+-- Name: TABLE pg_auth_members; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_auth_members TO dbhasura;
+
+--
+-- Name: TABLE pg_authid; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_authid TO dbhasura;
+
+--
+-- Name: TABLE pg_available_extension_versions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_available_extension_versions TO dbhasura;
+
+--
+-- Name: TABLE pg_available_extensions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_available_extensions TO dbhasura;
+
+--
+-- Name: TABLE pg_backend_memory_contexts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_backend_memory_contexts TO dbhasura;
+
+--
+-- Name: TABLE pg_cast; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_cast TO dbhasura;
+
+--
+-- Name: TABLE pg_class; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_class TO dbhasura;
+
+--
+-- Name: TABLE pg_collation; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_collation TO dbhasura;
+
+--
+-- Name: TABLE pg_config; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_config TO dbhasura;
+
+--
+-- Name: TABLE pg_constraint; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_constraint TO dbhasura;
+
+--
+-- Name: TABLE pg_conversion; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_conversion TO dbhasura;
+
+--
+-- Name: TABLE pg_cursors; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_cursors TO dbhasura;
+
+--
+-- Name: TABLE pg_database; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_database TO dbhasura;
+
+--
+-- Name: TABLE pg_db_role_setting; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_db_role_setting TO dbhasura;
+
+--
+-- Name: TABLE pg_default_acl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_default_acl TO dbhasura;
+
+--
+-- Name: TABLE pg_depend; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_depend TO dbhasura;
+
+--
+-- Name: TABLE pg_description; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_description TO dbhasura;
+
+--
+-- Name: TABLE pg_enum; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_enum TO dbhasura;
+
+--
+-- Name: TABLE pg_event_trigger; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_event_trigger TO dbhasura;
+
+--
+-- Name: TABLE pg_extension; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_extension TO dbhasura;
+
+--
+-- Name: TABLE pg_file_settings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_file_settings TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_data_wrapper; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_data_wrapper TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_server; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_server TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_table; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_table TO dbhasura;
+
+--
+-- Name: TABLE pg_group; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_group TO dbhasura;
+
+--
+-- Name: TABLE pg_hba_file_rules; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_hba_file_rules TO dbhasura;
+
+--
+-- Name: TABLE pg_ident_file_mappings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ident_file_mappings TO dbhasura;
+
+--
+-- Name: TABLE pg_index; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_index TO dbhasura;
+
+--
+-- Name: TABLE pg_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_inherits; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_inherits TO dbhasura;
+
+--
+-- Name: TABLE pg_init_privs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_init_privs TO dbhasura;
+
+--
+-- Name: TABLE pg_language; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_language TO dbhasura;
+
+--
+-- Name: TABLE pg_largeobject; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_largeobject TO dbhasura;
+
+--
+-- Name: TABLE pg_largeobject_metadata; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_largeobject_metadata TO dbhasura;
+
+--
+-- Name: TABLE pg_locks; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_locks TO dbhasura;
+
+--
+-- Name: TABLE pg_matviews; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_matviews TO dbhasura;
+
+--
+-- Name: TABLE pg_namespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_namespace TO dbhasura;
+
+--
+-- Name: TABLE pg_opclass; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_opclass TO dbhasura;
+
+--
+-- Name: TABLE pg_operator; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_operator TO dbhasura;
+
+--
+-- Name: TABLE pg_opfamily; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_opfamily TO dbhasura;
+
+--
+-- Name: TABLE pg_parameter_acl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_parameter_acl TO dbhasura;
+
+--
+-- Name: TABLE pg_partitioned_table; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_partitioned_table TO dbhasura;
+
+--
+-- Name: TABLE pg_policies; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_policies TO dbhasura;
+
+--
+-- Name: TABLE pg_policy; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_policy TO dbhasura;
+
+--
+-- Name: TABLE pg_prepared_statements; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_prepared_statements TO dbhasura;
+
+--
+-- Name: TABLE pg_prepared_xacts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_prepared_xacts TO dbhasura;
+
+--
+-- Name: TABLE pg_proc; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_proc TO dbhasura;
+
+--
+-- Name: TABLE pg_publication; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_namespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_namespace TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_rel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_rel TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_range; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_range TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_origin; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_origin TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_origin_status; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_origin_status TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_slots; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_slots TO dbhasura;
+
+--
+-- Name: TABLE pg_rewrite; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_rewrite TO dbhasura;
+
+--
+-- Name: TABLE pg_roles; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_roles TO dbhasura;
+
+--
+-- Name: TABLE pg_rules; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_rules TO dbhasura;
+
+--
+-- Name: TABLE pg_seclabel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_seclabel TO dbhasura;
+
+--
+-- Name: TABLE pg_seclabels; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_seclabels TO dbhasura;
+
+--
+-- Name: TABLE pg_sequence; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_sequence TO dbhasura;
+
+--
+-- Name: TABLE pg_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_settings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_settings TO dbhasura;
+
+--
+-- Name: TABLE pg_shadow; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shadow TO dbhasura;
+
+--
+-- Name: TABLE pg_shdepend; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shdepend TO dbhasura;
+
+--
+-- Name: TABLE pg_shdescription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shdescription TO dbhasura;
+
+--
+-- Name: TABLE pg_shmem_allocations; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shmem_allocations TO dbhasura;
+
+--
+-- Name: TABLE pg_shseclabel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shseclabel TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_activity; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_activity TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_all_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_all_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_archiver; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_archiver TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_bgwriter; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_bgwriter TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_database; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_database TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_database_conflicts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_database_conflicts TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_gssapi; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_gssapi TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_analyze; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_analyze TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_basebackup; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_basebackup TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_cluster; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_cluster TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_copy; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_copy TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_create_index; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_create_index TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_vacuum; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_vacuum TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_recovery_prefetch; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_recovery_prefetch TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_replication; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_replication TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_replication_slots; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_replication_slots TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_slru; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_slru TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_ssl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_ssl TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_subscription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_subscription TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_subscription_stats; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_subscription_stats TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_sys_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_sys_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_functions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_functions TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_wal; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_wal TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_wal_receiver; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_wal_receiver TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_user_functions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_user_functions TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic_ext; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic_ext TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic_ext_data; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic_ext_data TO dbhasura;
+
+--
+-- Name: TABLE pg_stats; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats TO dbhasura;
+
+--
+-- Name: TABLE pg_stats_ext; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats_ext TO dbhasura;
+
+--
+-- Name: TABLE pg_stats_ext_exprs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats_ext_exprs TO dbhasura;
+
+--
+-- Name: TABLE pg_subscription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_subscription TO dbhasura;
+
+--
+-- Name: TABLE pg_subscription_rel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_subscription_rel TO dbhasura;
+
+--
+-- Name: TABLE pg_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_tablespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_tablespace TO dbhasura;
+
+--
+-- Name: TABLE pg_timezone_abbrevs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_timezone_abbrevs TO dbhasura;
+
+--
+-- Name: TABLE pg_timezone_names; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_timezone_names TO dbhasura;
+
+--
+-- Name: TABLE pg_transform; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_transform TO dbhasura;
+
+--
+-- Name: TABLE pg_trigger; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_trigger TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_config; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_config TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_config_map; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_config_map TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_dict; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_dict TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_parser; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_parser TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_template; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_template TO dbhasura;
+
+--
+-- Name: TABLE pg_type; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_type TO dbhasura;
+
+--
+-- Name: TABLE pg_user; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user TO dbhasura;
+
+--
+-- Name: TABLE pg_user_mapping; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user_mapping TO dbhasura;
+
+--
+-- Name: TABLE pg_user_mappings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user_mappings TO dbhasura;
+
+--
+-- Name: TABLE pg_views; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_views TO dbhasura;
+
+--
+-- Name: FUNCTION _postgis_deprecate(oldname text, newname text, version text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_deprecate(oldname text, newname text, version text) TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_deprecate(oldname text, newname text, version text) TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_index_extent(tbl regclass, col text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_index_extent(tbl regclass, col text) TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_index_extent(tbl regclass, col text) TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_join_selectivity(regclass, text, regclass, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_join_selectivity(regclass, text, regclass, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_join_selectivity(regclass, text, regclass, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_pgsql_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_pgsql_version() TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_pgsql_version() TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_scripts_pgsql_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_scripts_pgsql_version() TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_scripts_pgsql_version() TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_selectivity(tbl regclass, att_name text, geom public.geometry, mode text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_selectivity(tbl regclass, att_name text, geom public.geometry, mode text) TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_selectivity(tbl regclass, att_name text, geom public.geometry, mode text) TO dbimporter;
+
+--
+-- Name: FUNCTION _postgis_stats(tbl regclass, att_name text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._postgis_stats(tbl regclass, att_name text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public._postgis_stats(tbl regclass, att_name text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_3dintersects(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_3dintersects(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_3dintersects(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_asgml(integer, public.geometry, integer, integer, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_asgml(integer, public.geometry, integer, integer, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_asgml(integer, public.geometry, integer, integer, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_asx3d(integer, public.geometry, integer, integer, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_asx3d(integer, public.geometry, integer, integer, text) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_asx3d(integer, public.geometry, integer, integer, text) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_bestsrid(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_bestsrid(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_bestsrid(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_bestsrid(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_bestsrid(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_bestsrid(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_concavehull(param_inputgeom public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_concavehull(param_inputgeom public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_concavehull(param_inputgeom public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_contains(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_contains(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_contains(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_containsproperly(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_containsproperly(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_containsproperly(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_coveredby(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_coveredby(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_coveredby(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_coveredby(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_coveredby(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_coveredby(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_covers(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_covers(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_covers(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_covers(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_covers(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_covers(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_crosses(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_distancetree(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_distancetree(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_distancetree(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_distancetree(public.geography, public.geography, double precision, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_distancetree(public.geography, public.geography, double precision, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_distancetree(public.geography, public.geography, double precision, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_distanceuncached(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_distanceuncached(public.geography, public.geography, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_distanceuncached(public.geography, public.geography, double precision, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography, double precision, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_distanceuncached(public.geography, public.geography, double precision, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_dwithinuncached(public.geography, public.geography, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_dwithinuncached(public.geography, public.geography, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_dwithinuncached(public.geography, public.geography, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_dwithinuncached(public.geography, public.geography, double precision, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_dwithinuncached(public.geography, public.geography, double precision, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_dwithinuncached(public.geography, public.geography, double precision, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_equals(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_equals(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_equals(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_expand(public.geography, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_expand(public.geography, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_expand(public.geography, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_geomfromgml(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_geomfromgml(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_geomfromgml(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_intersects(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_intersects(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_intersects(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_linecrossingdirection(line1 public.geometry, line2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_linecrossingdirection(line1 public.geometry, line2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_linecrossingdirection(line1 public.geometry, line2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_longestline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_longestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_longestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_maxdistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_maxdistance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_maxdistance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_orderingequals(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_orderingequals(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_orderingequals(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_overlaps(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_pointoutside(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_pointoutside(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_pointoutside(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_sortablehash(geom public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_sortablehash(geom public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_sortablehash(geom public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_touches(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_touches(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_touches(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_voronoi(g1 public.geometry, clip public.geometry, tolerance double precision, return_polygons boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_voronoi(g1 public.geometry, clip public.geometry, tolerance double precision, return_polygons boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_voronoi(g1 public.geometry, clip public.geometry, tolerance double precision, return_polygons boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION _st_within(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public._st_within(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public._st_within(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION addauth(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.addauth(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.addauth(text) TO dbimporter;
+
+--
+-- Name: FUNCTION addgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer, new_type character varying, new_dim integer, use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.addgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.addgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION addgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.addgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.addgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION addgeometrycolumn(table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.addgeometrycolumn(table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.addgeometrycolumn(table_name character varying, column_name character varying, new_srid integer, new_type character varying, new_dim integer, use_typmod boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION armor(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.armor(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.armor(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION armor(bytea, text[], text[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.armor(bytea, text[], text[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.armor(bytea, text[], text[]) TO dbimporter;
+
+--
+-- Name: FUNCTION box(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION box(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.box(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION box2d(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2d(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2d(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION box2d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION box2d_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2d_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2d_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION box2d_out(public.box2d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2d_out(public.box2d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2d_out(public.box2d) TO dbimporter;
+
+--
+-- Name: FUNCTION box2df_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2df_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2df_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION box2df_out(public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box2df_out(public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.box2df_out(public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION box3d(public.box2d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box3d(public.box2d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box3d(public.box2d) TO dbimporter;
+
+--
+-- Name: FUNCTION box3d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box3d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.box3d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION box3d_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box3d_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.box3d_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION box3d_out(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box3d_out(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box3d_out(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION box3dtobox(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.box3dtobox(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.box3dtobox(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION bytea(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.bytea(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.bytea(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION bytea(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.bytea(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.bytea(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION cash_dist(money, money); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbhasura;
+GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbimporter;
+
+--
+-- Name: FUNCTION checkauth(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.checkauth(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.checkauth(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION checkauth(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.checkauth(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.checkauth(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION checkauthtrigger(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.checkauthtrigger() TO dbhasura;
+GRANT ALL ON FUNCTION public.checkauthtrigger() TO dbimporter;
+
+--
+-- Name: FUNCTION contains_2d(public.box2df, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.contains_2d(public.box2df, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.contains_2d(public.box2df, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION contains_2d(public.box2df, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.contains_2d(public.box2df, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.contains_2d(public.box2df, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION contains_2d(public.geometry, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.contains_2d(public.geometry, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.contains_2d(public.geometry, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION crypt(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.crypt(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.crypt(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION date_dist(date, date); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.date_dist(date, date) TO dbhasura;
+GRANT ALL ON FUNCTION public.date_dist(date, date) TO dbimporter;
+
+--
+-- Name: FUNCTION dearmor(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dearmor(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.dearmor(text) TO dbimporter;
+
+--
+-- Name: FUNCTION decrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.decrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.decrypt(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION decrypt_iv(bytea, bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION digest(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.digest(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.digest(bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION digest(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.digest(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.digest(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION disablelongtransactions(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.disablelongtransactions() TO dbhasura;
+GRANT ALL ON FUNCTION public.disablelongtransactions() TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(schema_name character varying, table_name character varying, column_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrycolumn(table_name character varying, column_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(table_name character varying, column_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrycolumn(table_name character varying, column_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrytable(catalog_name character varying, schema_name character varying, table_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrytable(catalog_name character varying, schema_name character varying, table_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrytable(catalog_name character varying, schema_name character varying, table_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrytable(schema_name character varying, table_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrytable(schema_name character varying, table_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrytable(schema_name character varying, table_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION dropgeometrytable(table_name character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dropgeometrytable(table_name character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.dropgeometrytable(table_name character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION enablelongtransactions(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.enablelongtransactions() TO dbhasura;
+GRANT ALL ON FUNCTION public.enablelongtransactions() TO dbimporter;
+
+--
+-- Name: FUNCTION encrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.encrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.encrypt(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION encrypt_iv(bytea, bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION equals(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.equals(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.equals(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION find_srid(character varying, character varying, character varying); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.find_srid(character varying, character varying, character varying) TO dbhasura;
+GRANT ALL ON FUNCTION public.find_srid(character varying, character varying, character varying) TO dbimporter;
+
+--
+-- Name: FUNCTION float4_dist(real, real); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.float4_dist(real, real) TO dbhasura;
+GRANT ALL ON FUNCTION public.float4_dist(real, real) TO dbimporter;
+
+--
+-- Name: FUNCTION float8_dist(double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.float8_dist(double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.float8_dist(double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_consistent(internal, bit, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_consistent(internal, bit, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_consistent(internal, bit, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_consistent(internal, boolean, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_consistent(internal, boolean, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_consistent(internal, boolean, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bool_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bpchar_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bpchar_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bpchar_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bpchar_consistent(internal, character, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_consistent(internal, bytea, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_consistent(internal, bytea, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_consistent(internal, bytea, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_consistent(internal, money, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_consistent(internal, money, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_consistent(internal, money, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_distance(internal, money, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_distance(internal, money, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_distance(internal, money, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_cash_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_consistent(internal, date, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_consistent(internal, date, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_consistent(internal, date, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_distance(internal, date, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_distance(internal, date, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_distance(internal, date, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_decompress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_consistent(internal, anyenum, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_consistent(internal, anyenum, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_consistent(internal, anyenum, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_enum_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_consistent(internal, real, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_consistent(internal, real, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_consistent(internal, real, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_distance(internal, real, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_distance(internal, real, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_distance(internal, real, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_consistent(internal, double precision, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_consistent(internal, double precision, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_consistent(internal, double precision, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_distance(internal, double precision, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_distance(internal, double precision, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_distance(internal, double precision, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_consistent(internal, inet, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_consistent(internal, inet, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_consistent(internal, inet, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_consistent(internal, smallint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_consistent(internal, smallint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_consistent(internal, smallint, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_distance(internal, smallint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_distance(internal, smallint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_distance(internal, smallint, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int2_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_consistent(internal, integer, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_consistent(internal, integer, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_consistent(internal, integer, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_distance(internal, integer, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_distance(internal, integer, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_distance(internal, integer, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_consistent(internal, bigint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_consistent(internal, bigint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_consistent(internal, bigint, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_distance(internal, bigint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_distance(internal, bigint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_distance(internal, bigint, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_consistent(internal, interval, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_consistent(internal, interval, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_consistent(internal, interval, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_decompress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_distance(internal, interval, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_distance(internal, interval, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_distance(internal, interval, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_intv_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_consistent(internal, macaddr, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_consistent(internal, macaddr, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_consistent(internal, macaddr, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_consistent(internal, numeric, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_consistent(internal, numeric, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_consistent(internal, numeric, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_consistent(internal, oid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_consistent(internal, oid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_consistent(internal, oid, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_distance(internal, oid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_distance(internal, oid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_distance(internal, oid, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_oid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_consistent(internal, text, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_consistent(internal, text, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_consistent(internal, text, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_consistent(internal, time without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_consistent(internal, time without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_consistent(internal, time without time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_distance(internal, time without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_distance(internal, time without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_distance(internal, time without time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_timetz_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_timetz_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_timetz_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_ts_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_tstz_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_consistent(internal, uuid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_consistent(internal, uuid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_consistent(internal, uuid, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_uuid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_union(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_var_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_var_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_var_decompress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_var_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey16_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey16_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey16_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey16_out(public.gbtreekey16); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey16_out(public.gbtreekey16) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey16_out(public.gbtreekey16) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey2_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey2_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey2_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey2_out(public.gbtreekey2); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey2_out(public.gbtreekey2) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey2_out(public.gbtreekey2) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey32_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey32_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey32_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey32_out(public.gbtreekey32); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey32_out(public.gbtreekey32) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey32_out(public.gbtreekey32) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey4_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey4_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey4_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey4_out(public.gbtreekey4); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey4_out(public.gbtreekey4) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey4_out(public.gbtreekey4) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey8_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey8_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey8_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey8_out(public.gbtreekey8); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey8_out(public.gbtreekey8) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey8_out(public.gbtreekey8) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey_var_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey_var_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey_var_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gbtreekey_var_out(public.gbtreekey_var); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey_var_out(public.gbtreekey_var) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey_var_out(public.gbtreekey_var) TO dbimporter;
+
+--
+-- Name: FUNCTION gen_random_bytes(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_random_bytes(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_random_bytes(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION gen_random_uuid(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_random_uuid() TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_random_uuid() TO dbimporter;
+
+--
+-- Name: FUNCTION gen_salt(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_salt(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_salt(text) TO dbimporter;
+
+--
+-- Name: FUNCTION gen_salt(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_salt(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_salt(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geog_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geog_brin_inclusion_add_value(internal, internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geog_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION geography(public.geography, integer, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography(public.geography, integer, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography(public.geography, integer, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION geography(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_analyze(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_analyze(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_analyze(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_cmp(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_cmp(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_cmp(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_distance_knn(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_distance_knn(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_distance_knn(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_eq(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_eq(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_eq(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_ge(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_ge(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_ge(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_compress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_consistent(internal, public.geography, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_consistent(internal, public.geography, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_consistent(internal, public.geography, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_decompress(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_distance(internal, public.geography, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_distance(internal, public.geography, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_distance(internal, public.geography, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_penalty(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_picksplit(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_same(public.box2d, public.box2d, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_same(public.box2d, public.box2d, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_same(public.box2d, public.box2d, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gist_union(bytea, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gist_union(bytea, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gist_union(bytea, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_gt(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_gt(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_gt(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_in(cstring, oid, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_in(cstring, oid, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_in(cstring, oid, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_le(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_le(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_le(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_lt(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_lt(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_lt(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_out(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_out(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_out(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_overlaps(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_overlaps(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_overlaps(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_recv(internal, oid, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_recv(internal, oid, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_recv(internal, oid, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_send(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_send(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_send(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_choose_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_choose_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_choose_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_compress_nd(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_compress_nd(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_compress_nd(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_config_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_config_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_config_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_inner_consistent_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_inner_consistent_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_inner_consistent_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_leaf_consistent_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_leaf_consistent_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_leaf_consistent_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_spgist_picksplit_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_spgist_picksplit_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_spgist_picksplit_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_typmod_in(cstring[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_typmod_in(cstring[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_typmod_in(cstring[]) TO dbimporter;
+
+--
+-- Name: FUNCTION geography_typmod_out(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geography_typmod_out(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geography_typmod_out(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geom2d_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geom3d_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geom4d_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(path); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(path) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(path) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(point); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(point) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(point) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(polygon); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(polygon) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(polygon) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(public.box2d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(public.box2d) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(public.box2d) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(public.geometry, integer, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(public.geometry, integer, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(public.geometry, integer, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry(text) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_above(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_above(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_above(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_analyze(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_analyze(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_analyze(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_below(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_below(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_below(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_cmp(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_cmp(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_cmp(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_contained_3d(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_contained_3d(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_contained_3d(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_contains(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_contains(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_contains(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_contains_3d(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_contains_3d(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_contains_3d(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_contains_nd(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_contains_nd(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_contains_nd(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_distance_box(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_distance_box(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_distance_box(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_distance_centroid(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_distance_centroid(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_distance_centroid(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_distance_centroid_nd(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_distance_centroid_nd(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_distance_centroid_nd(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_distance_cpa(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_distance_cpa(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_distance_cpa(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_eq(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_eq(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_eq(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_ge(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_ge(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_ge(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_compress_2d(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_compress_2d(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_compress_2d(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_compress_nd(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_compress_nd(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_compress_nd(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_consistent_2d(internal, public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_consistent_2d(internal, public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_consistent_2d(internal, public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_consistent_nd(internal, public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_consistent_nd(internal, public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_consistent_nd(internal, public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_decompress_2d(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_decompress_2d(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_decompress_2d(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_decompress_nd(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_decompress_nd(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_decompress_nd(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_distance_2d(internal, public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_distance_2d(internal, public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_distance_2d(internal, public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_distance_nd(internal, public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_distance_nd(internal, public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_distance_nd(internal, public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_penalty_2d(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_penalty_2d(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_penalty_2d(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_penalty_nd(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_penalty_nd(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_penalty_nd(internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_picksplit_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_picksplit_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_picksplit_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_picksplit_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_picksplit_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_picksplit_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_same_2d(geom1 public.geometry, geom2 public.geometry, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_same_2d(geom1 public.geometry, geom2 public.geometry, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_same_2d(geom1 public.geometry, geom2 public.geometry, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_same_nd(public.geometry, public.geometry, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_same_nd(public.geometry, public.geometry, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_same_nd(public.geometry, public.geometry, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_sortsupport_2d(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_sortsupport_2d(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_sortsupport_2d(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_union_2d(bytea, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_union_2d(bytea, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_union_2d(bytea, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gist_union_nd(bytea, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gist_union_nd(bytea, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gist_union_nd(bytea, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_gt(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_gt(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_gt(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_hash(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_hash(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_hash(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_le(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_le(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_le(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_left(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_left(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_left(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_lt(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_lt(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_lt(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_out(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_out(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_out(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overabove(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overabove(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overabove(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overbelow(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overbelow(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overbelow(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overlaps(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overlaps_3d(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overlaps_3d(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overlaps_3d(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overlaps_nd(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overlaps_nd(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overlaps_nd(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overleft(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overleft(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overleft(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_overright(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_overright(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_overright(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_recv(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_recv(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_recv(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_right(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_right(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_right(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_same(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_same(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_same(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_same_3d(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_same_3d(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_same_3d(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_same_nd(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_same_nd(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_same_nd(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_send(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_send(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_send(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_sortsupport(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_choose_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_choose_3d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_3d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_3d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_choose_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_choose_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_compress_2d(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_2d(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_2d(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_compress_3d(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_3d(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_3d(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_compress_nd(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_nd(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_compress_nd(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_config_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_config_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_config_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_config_3d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_config_3d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_config_3d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_config_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_config_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_config_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_inner_consistent_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_inner_consistent_3d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_3d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_3d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_inner_consistent_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_inner_consistent_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_leaf_consistent_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_leaf_consistent_3d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_3d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_3d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_leaf_consistent_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_leaf_consistent_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_picksplit_2d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_2d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_2d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_picksplit_3d(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_3d(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_3d(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_spgist_picksplit_nd(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_nd(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_spgist_picksplit_nd(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_typmod_in(cstring[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_typmod_in(cstring[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_typmod_in(cstring[]) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_typmod_out(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_typmod_out(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_typmod_out(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_within(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_within(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_within(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometry_within_nd(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_within_nd(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_within_nd(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geometrytype(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometrytype(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometrytype(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION geometrytype(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometrytype(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometrytype(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION geomfromewkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geomfromewkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.geomfromewkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION geomfromewkt(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geomfromewkt(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.geomfromewkt(text) TO dbimporter;
+
+--
+-- Name: FUNCTION get_proj4_from_srid(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.get_proj4_from_srid(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.get_proj4_from_srid(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION gettransactionid(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gettransactionid() TO dbhasura;
+GRANT ALL ON FUNCTION public.gettransactionid() TO dbimporter;
+
+--
+-- Name: FUNCTION gidx_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gidx_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gidx_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION gidx_out(public.gidx); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gidx_out(public.gidx) TO dbhasura;
+GRANT ALL ON FUNCTION public.gidx_out(public.gidx) TO dbimporter;
+
+--
+-- Name: FUNCTION gserialized_gist_joinsel_2d(internal, oid, internal, smallint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gserialized_gist_joinsel_2d(internal, oid, internal, smallint) TO dbhasura;
+GRANT ALL ON FUNCTION public.gserialized_gist_joinsel_2d(internal, oid, internal, smallint) TO dbimporter;
+
+--
+-- Name: FUNCTION gserialized_gist_joinsel_nd(internal, oid, internal, smallint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gserialized_gist_joinsel_nd(internal, oid, internal, smallint) TO dbhasura;
+GRANT ALL ON FUNCTION public.gserialized_gist_joinsel_nd(internal, oid, internal, smallint) TO dbimporter;
+
+--
+-- Name: FUNCTION gserialized_gist_sel_2d(internal, oid, internal, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gserialized_gist_sel_2d(internal, oid, internal, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gserialized_gist_sel_2d(internal, oid, internal, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION gserialized_gist_sel_nd(internal, oid, internal, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gserialized_gist_sel_nd(internal, oid, internal, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gserialized_gist_sel_nd(internal, oid, internal, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION hmac(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.hmac(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.hmac(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION hmac(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.hmac(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.hmac(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION int2_dist(smallint, smallint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int2_dist(smallint, smallint) TO dbhasura;
+GRANT ALL ON FUNCTION public.int2_dist(smallint, smallint) TO dbimporter;
+
+--
+-- Name: FUNCTION int4_dist(integer, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int4_dist(integer, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.int4_dist(integer, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION int8_dist(bigint, bigint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int8_dist(bigint, bigint) TO dbhasura;
+GRANT ALL ON FUNCTION public.int8_dist(bigint, bigint) TO dbimporter;
+
+--
+-- Name: FUNCTION interval_dist(interval, interval); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.interval_dist(interval, interval) TO dbhasura;
+GRANT ALL ON FUNCTION public.interval_dist(interval, interval) TO dbimporter;
+
+--
+-- Name: FUNCTION is_contained_2d(public.box2df, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.is_contained_2d(public.box2df, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.is_contained_2d(public.box2df, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION is_contained_2d(public.box2df, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.is_contained_2d(public.box2df, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.is_contained_2d(public.box2df, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION is_contained_2d(public.geometry, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.is_contained_2d(public.geometry, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.is_contained_2d(public.geometry, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION json(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.json(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.json(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION jsonb(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.jsonb(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.jsonb(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION lockrow(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.lockrow(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.lockrow(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION lockrow(text, text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION lockrow(text, text, text, text, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, text, timestamp without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, text, timestamp without time zone) TO dbimporter;
+
+--
+-- Name: FUNCTION lockrow(text, text, text, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, timestamp without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.lockrow(text, text, text, timestamp without time zone) TO dbimporter;
+
+--
+-- Name: FUNCTION longtransactionsenabled(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.longtransactionsenabled() TO dbhasura;
+GRANT ALL ON FUNCTION public.longtransactionsenabled() TO dbimporter;
+
+--
+-- Name: FUNCTION oid_dist(oid, oid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.oid_dist(oid, oid) TO dbhasura;
+GRANT ALL ON FUNCTION public.oid_dist(oid, oid) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_2d(public.box2df, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_2d(public.box2df, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_2d(public.box2df, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_2d(public.box2df, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_2d(public.box2df, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_2d(public.box2df, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_2d(public.geometry, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_2d(public.geometry, public.box2df) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_2d(public.geometry, public.box2df) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_geog(public.geography, public.gidx); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_geog(public.geography, public.gidx) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_geog(public.geography, public.gidx) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_geog(public.gidx, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_geog(public.gidx, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_geog(public.gidx, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_geog(public.gidx, public.gidx); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_geog(public.gidx, public.gidx) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_geog(public.gidx, public.gidx) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_nd(public.geometry, public.gidx); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_nd(public.geometry, public.gidx) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_nd(public.geometry, public.gidx) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_nd(public.gidx, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_nd(public.gidx, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_nd(public.gidx, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION overlaps_nd(public.gidx, public.gidx); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.overlaps_nd(public.gidx, public.gidx) TO dbhasura;
+GRANT ALL ON FUNCTION public.overlaps_nd(public.gidx, public.gidx) TO dbimporter;
+
+--
+-- Name: FUNCTION path(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.path(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.path(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asflatgeobuf_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asflatgeobuf_transfn(internal, anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asflatgeobuf_transfn(internal, anyelement, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asflatgeobuf_transfn(internal, anyelement, boolean, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement, boolean, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asflatgeobuf_transfn(internal, anyelement, boolean, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asgeobuf_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asgeobuf_transfn(internal, anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_transfn(internal, anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_transfn(internal, anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asgeobuf_transfn(internal, anyelement, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_transfn(internal, anyelement, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asgeobuf_transfn(internal, anyelement, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_combinefn(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_combinefn(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_combinefn(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_deserialfn(bytea, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_deserialfn(bytea, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_deserialfn(bytea, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_serialfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_serialfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_serialfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_transfn(internal, anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_transfn(internal, anyelement, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_transfn(internal, anyelement, text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_transfn(internal, anyelement, text, integer, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_asmvt_transfn(internal, anyelement, text, integer, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_asmvt_transfn(internal, anyelement, text, integer, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_accum_transfn(internal, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_accum_transfn(internal, public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_accum_transfn(internal, public.geometry, double precision, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry, double precision, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_accum_transfn(internal, public.geometry, double precision, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_clusterintersecting_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_clusterintersecting_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_clusterintersecting_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_clusterwithin_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_clusterwithin_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_clusterwithin_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_collect_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_collect_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_collect_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_makeline_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_makeline_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_makeline_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_polygonize_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_polygonize_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_polygonize_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_combinefn(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_combinefn(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_combinefn(internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_deserialfn(bytea, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_deserialfn(bytea, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_deserialfn(bytea, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_serialfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_serialfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_serialfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_transfn(internal, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_transfn(internal, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_transfn(internal, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_union_parallel_transfn(internal, public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_transfn(internal, public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_union_parallel_transfn(internal, public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_armor_headers(text, OUT key text, OUT value text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_armor_headers(text, OUT key text, OUT value text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_armor_headers(text, OUT key text, OUT value text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_key_id(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_key_id(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_key_id(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt(text, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt(text, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt_bytea(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt_bytea(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt_bytea(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt_bytea(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt_bytea(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) TO dbimporter;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt_bytea(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION point(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.point(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.point(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION polygon(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.polygon(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.polygon(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION populate_geometry_columns(tbl_oid oid, use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.populate_geometry_columns(tbl_oid oid, use_typmod boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.populate_geometry_columns(tbl_oid oid, use_typmod boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION populate_geometry_columns(use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.populate_geometry_columns(use_typmod boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.populate_geometry_columns(use_typmod boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_addbbox(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_addbbox(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_addbbox(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_cache_bbox(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_cache_bbox() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_cache_bbox() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_constraint_dims(geomschema text, geomtable text, geomcolumn text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_constraint_dims(geomschema text, geomtable text, geomcolumn text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_constraint_dims(geomschema text, geomtable text, geomcolumn text) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_constraint_srid(geomschema text, geomtable text, geomcolumn text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_constraint_srid(geomschema text, geomtable text, geomcolumn text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_constraint_srid(geomschema text, geomtable text, geomcolumn text) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_constraint_type(geomschema text, geomtable text, geomcolumn text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_constraint_type(geomschema text, geomtable text, geomcolumn text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_constraint_type(geomschema text, geomtable text, geomcolumn text) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_dropbbox(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_dropbbox(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_dropbbox(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_extensions_upgrade(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_extensions_upgrade() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_extensions_upgrade() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_full_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_full_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_full_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_geos_noop(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_geos_noop(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_geos_noop(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_geos_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_geos_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_geos_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_getbbox(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_getbbox(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_getbbox(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_hasbbox(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_hasbbox(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_hasbbox(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_index_supportfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_index_supportfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_index_supportfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_lib_build_date(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_lib_build_date() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_lib_build_date() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_lib_revision(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_lib_revision() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_lib_revision() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_lib_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_lib_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_lib_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_libjson_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_libjson_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_libjson_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_liblwgeom_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_liblwgeom_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_liblwgeom_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_libprotobuf_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_libprotobuf_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_libprotobuf_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_libxml_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_libxml_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_libxml_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_noop(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_noop(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_noop(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_proj_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_proj_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_proj_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_scripts_build_date(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_scripts_build_date() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_scripts_build_date() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_scripts_installed(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_scripts_installed() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_scripts_installed() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_scripts_released(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_scripts_released() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_scripts_released() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_svn_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_svn_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_svn_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_transform_geometry(geom public.geometry, text, text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_transform_geometry(geom public.geometry, text, text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_transform_geometry(geom public.geometry, text, text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_type_name(geomname character varying, coord_dimension integer, use_new_name boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_type_name(geomname character varying, coord_dimension integer, use_new_name boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_type_name(geomname character varying, coord_dimension integer, use_new_name boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_typmod_dims(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_typmod_dims(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_typmod_dims(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_typmod_srid(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_typmod_srid(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_typmod_srid(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_typmod_type(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_typmod_type(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_typmod_type(integer) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_wagyu_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_wagyu_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_wagyu_version() TO dbimporter;
+
+--
+-- Name: FUNCTION spheroid_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.spheroid_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.spheroid_in(cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION spheroid_out(public.spheroid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.spheroid_out(public.spheroid) TO dbhasura;
+GRANT ALL ON FUNCTION public.spheroid_out(public.spheroid) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dclosestpoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dclosestpoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dclosestpoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3ddfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3ddistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3ddistance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3ddistance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3ddwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dextent(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dextent(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dextent(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dintersects(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dintersects(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dintersects(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dlength(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dlength(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dlength(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dlineinterpolatepoint(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dlineinterpolatepoint(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dlineinterpolatepoint(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dlongestline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dlongestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dlongestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dmakebox(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dmakebox(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dmakebox(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dmaxdistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dmaxdistance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dmaxdistance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dperimeter(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dperimeter(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dperimeter(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_3dshortestline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_3dshortestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_3dshortestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_addmeasure(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_addmeasure(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_addmeasure(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_addpoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_addpoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_addpoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_addpoint(geom1 public.geometry, geom2 public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_addpoint(geom1 public.geometry, geom2 public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_addpoint(geom1 public.geometry, geom2 public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_affine(public.geometry, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_angle(line1 public.geometry, line2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_angle(line1 public.geometry, line2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_angle(line1 public.geometry, line2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_angle(pt1 public.geometry, pt2 public.geometry, pt3 public.geometry, pt4 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_angle(pt1 public.geometry, pt2 public.geometry, pt3 public.geometry, pt4 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_angle(pt1 public.geometry, pt2 public.geometry, pt3 public.geometry, pt4 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_area(geog public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_area(geog public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_area(geog public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_area(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_area(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_area(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_area(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_area(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_area(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_area2d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_area2d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_area2d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asbinary(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asbinary(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asbinary(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asbinary(public.geography, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asbinary(public.geography, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asbinary(public.geography, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asbinary(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asbinary(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asbinary(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asbinary(public.geometry, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asbinary(public.geometry, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asbinary(public.geometry, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asencodedpolyline(geom public.geometry, nprecision integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asencodedpolyline(geom public.geometry, nprecision integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asencodedpolyline(geom public.geometry, nprecision integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkb(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkb(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkb(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkb(public.geometry, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkb(public.geometry, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkb(public.geometry, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkt(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkt(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkt(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkt(public.geography, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkt(public.geography, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkt(public.geography, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkt(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkt(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkt(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkt(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkt(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkt(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asewkt(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asewkt(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asewkt(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asflatgeobuf(anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asflatgeobuf(anyelement, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asflatgeobuf(anyelement, boolean, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement, boolean, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asflatgeobuf(anyelement, boolean, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeobuf(anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeobuf(anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeobuf(anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeobuf(anyelement, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeobuf(anyelement, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeobuf(anyelement, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeojson(geog public.geography, maxdecimaldigits integer, options integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeojson(geog public.geography, maxdecimaldigits integer, options integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeojson(geog public.geography, maxdecimaldigits integer, options integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeojson(geom public.geometry, maxdecimaldigits integer, options integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeojson(geom public.geometry, maxdecimaldigits integer, options integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeojson(geom public.geometry, maxdecimaldigits integer, options integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgeojson(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgeojson(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeojson(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgml(geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgml(geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgml(geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgml(geom public.geometry, maxdecimaldigits integer, options integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgml(geom public.geometry, maxdecimaldigits integer, options integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgml(geom public.geometry, maxdecimaldigits integer, options integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgml(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgml(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgml(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgml(version integer, geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgml(version integer, geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgml(version integer, geog public.geography, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asgml(version integer, geom public.geometry, maxdecimaldigits integer, options integer, nprefix text, id text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asgml(version integer, geom public.geometry, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgml(version integer, geom public.geometry, maxdecimaldigits integer, options integer, nprefix text, id text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ashexewkb(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ashexewkb(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ashexewkb(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ashexewkb(public.geometry, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ashexewkb(public.geometry, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ashexewkb(public.geometry, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_askml(geog public.geography, maxdecimaldigits integer, nprefix text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_askml(geog public.geography, maxdecimaldigits integer, nprefix text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_askml(geog public.geography, maxdecimaldigits integer, nprefix text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_askml(geom public.geometry, maxdecimaldigits integer, nprefix text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_askml(geom public.geometry, maxdecimaldigits integer, nprefix text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_askml(geom public.geometry, maxdecimaldigits integer, nprefix text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_askml(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_askml(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_askml(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_aslatlontext(geom public.geometry, tmpl text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_aslatlontext(geom public.geometry, tmpl text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_aslatlontext(geom public.geometry, tmpl text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmarc21(geom public.geometry, format text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmarc21(geom public.geometry, format text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmarc21(geom public.geometry, format text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvt(anyelement); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvt(anyelement, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvt(anyelement, text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvt(anyelement, text, integer, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvt(anyelement, text, integer, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvt(anyelement, text, integer, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asmvtgeom(geom public.geometry, bounds public.box2d, extent integer, buffer integer, clip_geom boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asmvtgeom(geom public.geometry, bounds public.box2d, extent integer, buffer integer, clip_geom boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asmvtgeom(geom public.geometry, bounds public.box2d, extent integer, buffer integer, clip_geom boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_assvg(geog public.geography, rel integer, maxdecimaldigits integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_assvg(geog public.geography, rel integer, maxdecimaldigits integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_assvg(geog public.geography, rel integer, maxdecimaldigits integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_assvg(geom public.geometry, rel integer, maxdecimaldigits integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_assvg(geom public.geometry, rel integer, maxdecimaldigits integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_assvg(geom public.geometry, rel integer, maxdecimaldigits integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_assvg(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_assvg(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_assvg(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astext(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astext(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astext(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astext(public.geography, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astext(public.geography, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astext(public.geography, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astext(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astext(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astext(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astext(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astext(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astext(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astwkb(geom public.geometry, prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astwkb(geom public.geometry, prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astwkb(geom public.geometry, prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_astwkb(geom public.geometry[], ids bigint[], prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_astwkb(geom public.geometry[], ids bigint[], prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_astwkb(geom public.geometry[], ids bigint[], prec integer, prec_z integer, prec_m integer, with_sizes boolean, with_boxes boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_asx3d(geom public.geometry, maxdecimaldigits integer, options integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_asx3d(geom public.geometry, maxdecimaldigits integer, options integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asx3d(geom public.geometry, maxdecimaldigits integer, options integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_azimuth(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_azimuth(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_azimuth(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_azimuth(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_azimuth(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_azimuth(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_bdmpolyfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_bdmpolyfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_bdmpolyfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_bdpolyfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_bdpolyfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_bdpolyfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_boundary(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_boundary(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_boundary(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_boundingdiagonal(geom public.geometry, fits boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_boundingdiagonal(geom public.geometry, fits boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_boundingdiagonal(geom public.geometry, fits boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_box2dfromgeohash(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_box2dfromgeohash(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_box2dfromgeohash(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(geom public.geometry, radius double precision, options text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(geom public.geometry, radius double precision, options text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(geom public.geometry, radius double precision, options text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(geom public.geometry, radius double precision, quadsegs integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(geom public.geometry, radius double precision, quadsegs integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(geom public.geometry, radius double precision, quadsegs integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(public.geography, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(public.geography, double precision, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(public.geography, double precision, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(public.geography, double precision, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(text, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(text, double precision, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buffer(text, double precision, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buffer(text, double precision, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_buildarea(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_buildarea(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_buildarea(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_centroid(public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_centroid(public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_centroid(public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_centroid(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_centroid(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_centroid(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_centroid(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_centroid(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_centroid(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_chaikinsmoothing(public.geometry, integer, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_chaikinsmoothing(public.geometry, integer, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_chaikinsmoothing(public.geometry, integer, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_cleangeometry(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_cleangeometry(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_cleangeometry(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clipbybox2d(geom public.geometry, box public.box2d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clipbybox2d(geom public.geometry, box public.box2d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clipbybox2d(geom public.geometry, box public.box2d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_closestpoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_closestpoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_closestpoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_closestpointofapproach(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_closestpointofapproach(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_closestpointofapproach(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterdbscan(public.geometry, eps double precision, minpoints integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterdbscan(public.geometry, eps double precision, minpoints integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterdbscan(public.geometry, eps double precision, minpoints integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterintersecting(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterintersecting(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterkmeans(geom public.geometry, k integer, max_radius double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterkmeans(geom public.geometry, k integer, max_radius double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterkmeans(geom public.geometry, k integer, max_radius double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterwithin(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterwithin(public.geometry[], double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry[], double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry[], double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collect(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collect(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collect(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collect(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collect(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collect(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collect(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collect(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collect(public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collectionextract(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collectionextract(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collectionextract(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collectionextract(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collectionextract(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collectionextract(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_collectionhomogenize(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_collectionhomogenize(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_collectionhomogenize(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_combinebbox(public.box2d, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box2d, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box2d, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_combinebbox(public.box3d, public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box3d, public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box3d, public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_combinebbox(public.box3d, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box3d, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_combinebbox(public.box3d, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_concavehull(param_geom public.geometry, param_pctconvex double precision, param_allow_holes boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_concavehull(param_geom public.geometry, param_pctconvex double precision, param_allow_holes boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_concavehull(param_geom public.geometry, param_pctconvex double precision, param_allow_holes boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_contains(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_contains(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_contains(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_containsproperly(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_containsproperly(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_containsproperly(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_convexhull(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_convexhull(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_convexhull(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coorddim(geometry public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coveredby(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coveredby(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coveredby(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coveredby(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coveredby(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coveredby(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coveredby(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coveredby(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coveredby(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_covers(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_covers(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_covers(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_covers(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_covers(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_covers(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_covers(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_covers(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_covers(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_cpawithin(public.geometry, public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_cpawithin(public.geometry, public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_cpawithin(public.geometry, public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_crosses(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_curvetoline(geom public.geometry, tol double precision, toltype integer, flags integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_curvetoline(geom public.geometry, tol double precision, toltype integer, flags integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_curvetoline(geom public.geometry, tol double precision, toltype integer, flags integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_delaunaytriangles(g1 public.geometry, tolerance double precision, flags integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_delaunaytriangles(g1 public.geometry, tolerance double precision, flags integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_delaunaytriangles(g1 public.geometry, tolerance double precision, flags integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dfullywithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_difference(geom1 public.geometry, geom2 public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_difference(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_difference(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dimension(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dimension(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dimension(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_disjoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_disjoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_disjoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distance(geog1 public.geography, geog2 public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distance(geog1 public.geography, geog2 public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distance(geog1 public.geography, geog2 public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distance(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distance(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distance(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distancecpa(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distancecpa(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distancecpa(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distancesphere(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distancesphere(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distancesphere(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distancesphere(geom1 public.geometry, geom2 public.geometry, radius double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distancesphere(geom1 public.geometry, geom2 public.geometry, radius double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distancesphere(geom1 public.geometry, geom2 public.geometry, radius double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distancespheroid(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distancespheroid(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distancespheroid(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_distancespheroid(geom1 public.geometry, geom2 public.geometry, public.spheroid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_distancespheroid(geom1 public.geometry, geom2 public.geometry, public.spheroid) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_distancespheroid(geom1 public.geometry, geom2 public.geometry, public.spheroid) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dump(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dump(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dump(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dumppoints(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dumppoints(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dumppoints(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dumprings(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dumprings(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dumprings(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dumpsegments(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dumpsegments(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dumpsegments(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dwithin(geog1 public.geography, geog2 public.geography, tolerance double precision, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dwithin(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_dwithin(text, text, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_dwithin(text, text, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_dwithin(text, text, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_endpoint(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_endpoint(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_endpoint(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_envelope(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_envelope(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_envelope(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_equals(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_equals(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_equals(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_estimatedextent(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_estimatedextent(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_estimatedextent(text, text, text, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text, text, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_estimatedextent(text, text, text, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(box public.box2d, dx double precision, dy double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(box public.box2d, dx double precision, dy double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(box public.box2d, dx double precision, dy double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(box public.box3d, dx double precision, dy double precision, dz double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(box public.box3d, dx double precision, dy double precision, dz double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(box public.box3d, dx double precision, dy double precision, dz double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(geom public.geometry, dx double precision, dy double precision, dz double precision, dm double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(geom public.geometry, dx double precision, dy double precision, dz double precision, dm double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(geom public.geometry, dx double precision, dy double precision, dz double precision, dm double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(public.box2d, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(public.box2d, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(public.box2d, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(public.box3d, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(public.box3d, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(public.box3d, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_expand(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_expand(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_expand(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_extent(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_extent(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_extent(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_exteriorring(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_exteriorring(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_exteriorring(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_filterbym(public.geometry, double precision, double precision, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_filterbym(public.geometry, double precision, double precision, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_filterbym(public.geometry, double precision, double precision, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_findextent(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_findextent(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_findextent(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_findextent(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_findextent(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_findextent(text, text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_flipcoordinates(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_flipcoordinates(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_flipcoordinates(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_force2d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_force2d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_force2d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_force3d(geom public.geometry, zvalue double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_force3d(geom public.geometry, zvalue double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_force3d(geom public.geometry, zvalue double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_force3dm(geom public.geometry, mvalue double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_force3dm(geom public.geometry, mvalue double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_force3dm(geom public.geometry, mvalue double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_force3dz(geom public.geometry, zvalue double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_force3dz(geom public.geometry, zvalue double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_force3dz(geom public.geometry, zvalue double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_force4d(geom public.geometry, zvalue double precision, mvalue double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_force4d(geom public.geometry, zvalue double precision, mvalue double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_force4d(geom public.geometry, zvalue double precision, mvalue double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcecollection(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcecollection(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcecollection(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcecurve(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcecurve(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcecurve(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcepolygonccw(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcepolygonccw(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcepolygonccw(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcepolygoncw(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcepolygoncw(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcepolygoncw(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcerhr(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcerhr(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcerhr(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcesfs(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcesfs(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcesfs(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_forcesfs(public.geometry, version text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_forcesfs(public.geometry, version text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_forcesfs(public.geometry, version text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_frechetdistance(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_frechetdistance(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_frechetdistance(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_fromflatgeobuf(anyelement, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_fromflatgeobuf(anyelement, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_fromflatgeobuf(anyelement, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_fromflatgeobuftotable(text, text, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_fromflatgeobuftotable(text, text, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_fromflatgeobuftotable(text, text, bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_generatepoints(area public.geometry, npoints integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_generatepoints(area public.geometry, npoints integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_generatepoints(area public.geometry, npoints integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_generatepoints(area public.geometry, npoints integer, seed integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_generatepoints(area public.geometry, npoints integer, seed integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_generatepoints(area public.geometry, npoints integer, seed integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geogfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geogfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geogfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geogfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geogfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geogfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geographyfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geographyfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geographyfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geohash(geog public.geography, maxchars integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geohash(geog public.geography, maxchars integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geohash(geog public.geography, maxchars integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geohash(geom public.geometry, maxchars integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geohash(geom public.geometry, maxchars integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geohash(geom public.geometry, maxchars integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomcollfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomcollfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomcollfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomcollfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomcollfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomcollfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomcollfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomcollfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomcollfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomcollfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomcollfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomcollfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geometricmedian(g public.geometry, tolerance double precision, max_iter integer, fail_if_not_converged boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geometricmedian(g public.geometry, tolerance double precision, max_iter integer, fail_if_not_converged boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geometricmedian(g public.geometry, tolerance double precision, max_iter integer, fail_if_not_converged boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geometryfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geometryfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geometryfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geometryfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geometryfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geometryfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geometryn(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geometryn(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geometryn(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geometrytype(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geometrytype(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geometrytype(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromewkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromewkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromewkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromewkt(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromewkt(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromewkt(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgeohash(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgeohash(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgeohash(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgeojson(json); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(json) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(json) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgeojson(jsonb); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(jsonb) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(jsonb) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgeojson(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgeojson(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgml(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgml(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgml(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromgml(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromgml(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromgml(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromkml(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromkml(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromkml(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfrommarc21(marc21xml text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfrommarc21(marc21xml text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfrommarc21(marc21xml text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromtwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromtwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromtwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_geomfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_geomfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_geomfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_gmltosql(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_gmltosql(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_gmltosql(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_gmltosql(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_gmltosql(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_gmltosql(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hasarc(geometry public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hasarc(geometry public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hasarc(geometry public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hexagon(size double precision, cell_i integer, cell_j integer, origin public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hexagon(size double precision, cell_i integer, cell_j integer, origin public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hexagon(size double precision, cell_i integer, cell_j integer, origin public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hexagongrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hexagongrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hexagongrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_interiorringn(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_interiorringn(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_interiorringn(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_interpolatepoint(line public.geometry, point public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_interpolatepoint(line public.geometry, point public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_interpolatepoint(line public.geometry, point public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersection(geom1 public.geometry, geom2 public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersection(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersection(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersection(public.geography, public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersection(public.geography, public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersection(public.geography, public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersection(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersection(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersection(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersects(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersects(geog1 public.geography, geog2 public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersects(geog1 public.geography, geog2 public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersects(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersects(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersects(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_intersects(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_intersects(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_intersects(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isclosed(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isclosed(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isclosed(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_iscollection(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_iscollection(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_iscollection(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isempty(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isempty(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isempty(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ispolygonccw(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ispolygonccw(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ispolygonccw(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ispolygoncw(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ispolygoncw(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ispolygoncw(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isring(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isring(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isring(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_issimple(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_issimple(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_issimple(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvalid(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvalid(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvalid(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvalid(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvalid(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvalid(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvaliddetail(geom public.geometry, flags integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvaliddetail(geom public.geometry, flags integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvaliddetail(geom public.geometry, flags integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvalidreason(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvalidreason(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvalidreason(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvalidreason(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvalidreason(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvalidreason(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_isvalidtrajectory(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_isvalidtrajectory(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_isvalidtrajectory(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_length(geog public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_length(geog public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_length(geog public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_length(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_length(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_length(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_length(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_length(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_length(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_length2d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_length2d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_length2d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_length2dspheroid(public.geometry, public.spheroid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_length2dspheroid(public.geometry, public.spheroid) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_length2dspheroid(public.geometry, public.spheroid) TO dbimporter;
+
+--
+-- Name: FUNCTION st_lengthspheroid(public.geometry, public.spheroid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lengthspheroid(public.geometry, public.spheroid) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lengthspheroid(public.geometry, public.spheroid) TO dbimporter;
+
+--
+-- Name: FUNCTION st_letters(letters text, font json); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_letters(letters text, font json) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_letters(letters text, font json) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linecrossingdirection(line1 public.geometry, line2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linecrossingdirection(line1 public.geometry, line2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linecrossingdirection(line1 public.geometry, line2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefromencodedpolyline(txtin text, nprecision integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefromencodedpolyline(txtin text, nprecision integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefromencodedpolyline(txtin text, nprecision integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefrommultipoint(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefrommultipoint(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefrommultipoint(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linefromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linefromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linefromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_lineinterpolatepoint(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_lineinterpolatepoints(public.geometry, double precision, repeat boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geometry, double precision, repeat boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geometry, double precision, repeat boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linelocatepoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linelocatepoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linelocatepoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linemerge(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linemerge(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linemerge(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linemerge(public.geometry, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linemerge(public.geometry, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linemerge(public.geometry, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linestringfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linestringfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linesubstring(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linesubstring(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linesubstring(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linetocurve(geometry public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linetocurve(geometry public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linetocurve(geometry public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_locatealong(geometry public.geometry, measure double precision, leftrightoffset double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_locatealong(geometry public.geometry, measure double precision, leftrightoffset double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_locatealong(geometry public.geometry, measure double precision, leftrightoffset double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_locatebetween(geometry public.geometry, frommeasure double precision, tomeasure double precision, leftrightoffset double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_locatebetween(geometry public.geometry, frommeasure double precision, tomeasure double precision, leftrightoffset double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_locatebetween(geometry public.geometry, frommeasure double precision, tomeasure double precision, leftrightoffset double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_locatebetweenelevations(geometry public.geometry, fromelevation double precision, toelevation double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_locatebetweenelevations(geometry public.geometry, fromelevation double precision, toelevation double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_locatebetweenelevations(geometry public.geometry, fromelevation double precision, toelevation double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_longestline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_longestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_longestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_m(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_m(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_m(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makebox2d(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makebox2d(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makebox2d(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makeenvelope(double precision, double precision, double precision, double precision, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makeenvelope(double precision, double precision, double precision, double precision, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makeenvelope(double precision, double precision, double precision, double precision, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makeline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makeline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makeline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makeline(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makeline(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makeline(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makeline(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makeline(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makeline(public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepoint(double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepoint(double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepoint(double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepoint(double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepointm(double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepointm(double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepointm(double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepolygon(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepolygon(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepolygon(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makepolygon(public.geometry, public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makepolygon(public.geometry, public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makepolygon(public.geometry, public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makevalid(geom public.geometry, params text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makevalid(geom public.geometry, params text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makevalid(geom public.geometry, params text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_makevalid(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_makevalid(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_makevalid(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_maxdistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_maxdistance(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_maxdistance(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_maximuminscribedcircle(public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_maximuminscribedcircle(public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_maximuminscribedcircle(public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_memcollect(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_memcollect(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_memcollect(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_memsize(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_memsize(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_memsize(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_memunion(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_memunion(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_memunion(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_minimumboundingcircle(inputgeom public.geometry, segs_per_quarter integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_minimumboundingcircle(inputgeom public.geometry, segs_per_quarter integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_minimumboundingcircle(inputgeom public.geometry, segs_per_quarter integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_minimumboundingradius(public.geometry, OUT center public.geometry, OUT radius double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_minimumboundingradius(public.geometry, OUT center public.geometry, OUT radius double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_minimumboundingradius(public.geometry, OUT center public.geometry, OUT radius double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_minimumclearance(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_minimumclearance(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_minimumclearance(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_minimumclearanceline(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_minimumclearanceline(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_minimumclearanceline(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mlinefromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mlinefromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mlinefromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mlinefromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mlinefromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mlinefromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mlinefromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mlinefromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mlinefromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mlinefromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mlinefromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mlinefromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpointfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpointfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpointfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpointfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpointfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpointfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpointfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpointfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpointfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpointfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpointfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpointfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpolyfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpolyfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpolyfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpolyfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpolyfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpolyfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpolyfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpolyfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpolyfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_mpolyfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_mpolyfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_mpolyfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multi(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multi(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multi(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multilinefromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multilinefromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multilinefromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multilinestringfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multilinestringfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multilinestringfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multilinestringfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multilinestringfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multilinestringfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipointfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipointfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipointfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipointfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipointfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipointfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipointfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipointfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipointfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipolyfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipolyfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipolyfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipolyfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipolyfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipolyfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipolygonfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipolygonfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipolygonfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_multipolygonfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_multipolygonfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_multipolygonfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ndims(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ndims(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ndims(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_node(g public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_node(g public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_node(g public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_normalize(geom public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_normalize(geom public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_normalize(geom public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_npoints(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_npoints(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_npoints(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_nrings(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_nrings(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_nrings(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_numgeometries(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numgeometries(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numgeometries(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_numinteriorring(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numinteriorring(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numinteriorring(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_numinteriorrings(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numinteriorrings(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numinteriorrings(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_numpatches(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numpatches(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numpatches(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_numpoints(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numpoints(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numpoints(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_offsetcurve(line public.geometry, distance double precision, params text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_offsetcurve(line public.geometry, distance double precision, params text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_offsetcurve(line public.geometry, distance double precision, params text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_orderingequals(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_orderingequals(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_orderingequals(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_orientedenvelope(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_orientedenvelope(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_orientedenvelope(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_overlaps(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_overlaps(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_patchn(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_patchn(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_patchn(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_perimeter(geog public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_perimeter(geog public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_perimeter(geog public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_perimeter(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_perimeter(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_perimeter(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_perimeter2d(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_perimeter2d(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_perimeter2d(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_point(double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_point(double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_point(double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_point(double precision, double precision, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_point(double precision, double precision, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_point(double precision, double precision, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointfromgeohash(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointfromgeohash(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointfromgeohash(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointinsidecircle(public.geometry, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointinsidecircle(public.geometry, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointinsidecircle(public.geometry, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointm(xcoordinate double precision, ycoordinate double precision, mcoordinate double precision, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointm(xcoordinate double precision, ycoordinate double precision, mcoordinate double precision, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointm(xcoordinate double precision, ycoordinate double precision, mcoordinate double precision, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointn(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointn(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointn(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointonsurface(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointonsurface(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointonsurface(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_points(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_points(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_points(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointz(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointz(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointz(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_pointzm(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, mcoordinate double precision, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_pointzm(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, mcoordinate double precision, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_pointzm(xcoordinate double precision, ycoordinate double precision, zcoordinate double precision, mcoordinate double precision, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polyfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polyfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polyfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polyfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polyfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polyfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polyfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polyfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polyfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polyfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polyfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polyfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygon(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygon(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygon(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonfromtext(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonfromtext(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonfromtext(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonfromtext(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonfromtext(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonfromtext(text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonfromwkb(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonfromwkb(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonfromwkb(bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonfromwkb(bytea, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonfromwkb(bytea, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonfromwkb(bytea, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonize(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonize(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonize(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_polygonize(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_polygonize(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_polygonize(public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_project(geog public.geography, distance double precision, azimuth double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_project(geog public.geography, distance double precision, azimuth double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_project(geog public.geography, distance double precision, azimuth double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_quantizecoordinates(g public.geometry, prec_x integer, prec_y integer, prec_z integer, prec_m integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_quantizecoordinates(g public.geometry, prec_x integer, prec_y integer, prec_z integer, prec_m integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_quantizecoordinates(g public.geometry, prec_x integer, prec_y integer, prec_z integer, prec_m integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_reduceprecision(geom public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_reduceprecision(geom public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_reduceprecision(geom public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_relate(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_relate(geom1 public.geometry, geom2 public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_relate(geom1 public.geometry, geom2 public.geometry, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_relate(geom1 public.geometry, geom2 public.geometry, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_relatematch(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_relatematch(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_relatematch(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_removepoint(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_removepoint(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_removepoint(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_removerepeatedpoints(geom public.geometry, tolerance double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_removerepeatedpoints(geom public.geometry, tolerance double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_removerepeatedpoints(geom public.geometry, tolerance double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_reverse(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_reverse(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_reverse(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotate(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotate(public.geometry, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotate(public.geometry, double precision, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotate(public.geometry, double precision, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotatex(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotatex(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotatex(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotatey(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotatey(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotatey(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_rotatez(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_rotatez(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_rotatez(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_scale(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_scale(public.geometry, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_scale(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_scale(public.geometry, public.geometry, origin public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, public.geometry, origin public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_scale(public.geometry, public.geometry, origin public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_scroll(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_scroll(public.geometry, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_scroll(public.geometry, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_segmentize(geog public.geography, max_segment_length double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_segmentize(geog public.geography, max_segment_length double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_segmentize(geog public.geography, max_segment_length double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_segmentize(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_segmentize(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_segmentize(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_seteffectivearea(public.geometry, double precision, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_seteffectivearea(public.geometry, double precision, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_seteffectivearea(public.geometry, double precision, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_setpoint(public.geometry, integer, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_setpoint(public.geometry, integer, public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_setpoint(public.geometry, integer, public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_setsrid(geog public.geography, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_setsrid(geog public.geography, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_setsrid(geog public.geography, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_setsrid(geom public.geometry, srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_setsrid(geom public.geometry, srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_setsrid(geom public.geometry, srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_sharedpaths(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_sharedpaths(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_sharedpaths(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_shiftlongitude(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_shiftlongitude(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_shiftlongitude(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_shortestline(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_shortestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_shortestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_simplify(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_simplify(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_simplify(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_simplify(public.geometry, double precision, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_simplify(public.geometry, double precision, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_simplify(public.geometry, double precision, boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_simplifypolygonhull(geom public.geometry, vertex_fraction double precision, is_outer boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_simplifypolygonhull(geom public.geometry, vertex_fraction double precision, is_outer boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_simplifypolygonhull(geom public.geometry, vertex_fraction double precision, is_outer boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_simplifypreservetopology(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_simplifypreservetopology(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_simplifypreservetopology(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_simplifyvw(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_simplifyvw(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_simplifyvw(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_snap(geom1 public.geometry, geom2 public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_snap(geom1 public.geometry, geom2 public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_snap(geom1 public.geometry, geom2 public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_snaptogrid(geom1 public.geometry, geom2 public.geometry, double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_snaptogrid(geom1 public.geometry, geom2 public.geometry, double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_snaptogrid(geom1 public.geometry, geom2 public.geometry, double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_snaptogrid(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_snaptogrid(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_snaptogrid(public.geometry, double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_snaptogrid(public.geometry, double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_split(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_split(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_split(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_square(size double precision, cell_i integer, cell_j integer, origin public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_square(size double precision, cell_i integer, cell_j integer, origin public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_square(size double precision, cell_i integer, cell_j integer, origin public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_squaregrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_squaregrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_squaregrid(size double precision, bounds public.geometry, OUT geom public.geometry, OUT i integer, OUT j integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_srid(geog public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_srid(geog public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_srid(geog public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_srid(geom public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_srid(geom public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_srid(geom public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_startpoint(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_startpoint(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_startpoint(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_subdivide(geom public.geometry, maxvertices integer, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_subdivide(geom public.geometry, maxvertices integer, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_subdivide(geom public.geometry, maxvertices integer, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_summary(public.geography); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_summary(public.geography) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_summary(public.geography) TO dbimporter;
+
+--
+-- Name: FUNCTION st_summary(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_summary(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_summary(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_swapordinates(geom public.geometry, ords cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_swapordinates(geom public.geometry, ords cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_swapordinates(geom public.geometry, ords cstring) TO dbimporter;
+
+--
+-- Name: FUNCTION st_symdifference(geom1 public.geometry, geom2 public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_symdifference(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_symdifference(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_symmetricdifference(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_symmetricdifference(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_symmetricdifference(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_tileenvelope(zoom integer, x integer, y integer, bounds public.geometry, margin double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_tileenvelope(zoom integer, x integer, y integer, bounds public.geometry, margin double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_tileenvelope(zoom integer, x integer, y integer, bounds public.geometry, margin double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_touches(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_touches(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_touches(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transform(geom public.geometry, from_proj text, to_proj text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, from_proj text, to_proj text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, from_proj text, to_proj text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transform(geom public.geometry, from_proj text, to_srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, from_proj text, to_srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, from_proj text, to_srid integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transform(geom public.geometry, to_proj text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, to_proj text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, to_proj text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transform(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transform(public.geometry, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transform(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_translate(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_translate(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_translate(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_translate(public.geometry, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_translate(public.geometry, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_translate(public.geometry, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transscale(public.geometry, double precision, double precision, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transscale(public.geometry, double precision, double precision, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transscale(public.geometry, double precision, double precision, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_triangulatepolygon(g1 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_triangulatepolygon(g1 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_triangulatepolygon(g1 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_unaryunion(public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_unaryunion(public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_unaryunion(public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_union(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_union(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_union(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_union(geom1 public.geometry, geom2 public.geometry, gridsize double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_union(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_union(geom1 public.geometry, geom2 public.geometry, gridsize double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_union(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_union(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_union(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_union(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_union(public.geometry, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_union(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_union(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_union(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_union(public.geometry[]) TO dbimporter;
+
+--
+-- Name: FUNCTION st_voronoilines(g1 public.geometry, tolerance double precision, extend_to public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_voronoilines(g1 public.geometry, tolerance double precision, extend_to public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_voronoilines(g1 public.geometry, tolerance double precision, extend_to public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_voronoipolygons(g1 public.geometry, tolerance double precision, extend_to public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_voronoipolygons(g1 public.geometry, tolerance double precision, extend_to public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_voronoipolygons(g1 public.geometry, tolerance double precision, extend_to public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_within(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_within(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_within(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_wkbtosql(wkb bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_wkbtosql(wkb bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_wkbtosql(wkb bytea) TO dbimporter;
+
+--
+-- Name: FUNCTION st_wkttosql(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_wkttosql(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_wkttosql(text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_wrapx(geom public.geometry, wrap double precision, move double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_wrapx(geom public.geometry, wrap double precision, move double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_wrapx(geom public.geometry, wrap double precision, move double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_x(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_x(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_x(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_xmax(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_xmax(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_xmax(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_xmin(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_xmin(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_xmin(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_y(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_y(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_y(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ymax(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ymax(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ymax(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_ymin(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_ymin(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_ymin(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_z(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_z(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_z(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_zmax(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_zmax(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_zmax(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION st_zmflag(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_zmflag(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_zmflag(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_zmin(public.box3d); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_zmin(public.box3d) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_zmin(public.box3d) TO dbimporter;
+
+--
+-- Name: FUNCTION text(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.text(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.text(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION time_dist(time without time zone, time without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.time_dist(time without time zone, time without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.time_dist(time without time zone, time without time zone) TO dbimporter;
+
+--
+-- Name: FUNCTION ts_dist(timestamp without time zone, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.ts_dist(timestamp without time zone, timestamp without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.ts_dist(timestamp without time zone, timestamp without time zone) TO dbimporter;
+
+--
+-- Name: FUNCTION tstz_dist(timestamp with time zone, timestamp with time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with time zone) TO dbimporter;
+
+--
+-- Name: FUNCTION unlockrows(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.unlockrows(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.unlockrows(text) TO dbimporter;
+
+--
+-- Name: FUNCTION updategeometrysrid(catalogn_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.updategeometrysrid(catalogn_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.updategeometrysrid(catalogn_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer) TO dbimporter;
+
+--
+-- Name: FUNCTION updategeometrysrid(character varying, character varying, character varying, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.updategeometrysrid(character varying, character varying, character varying, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.updategeometrysrid(character varying, character varying, character varying, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION updategeometrysrid(character varying, character varying, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.updategeometrysrid(character varying, character varying, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.updategeometrysrid(character varying, character varying, integer) TO dbimporter;
+
+--
+-- Name: TABLE geography_columns; Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE public.geography_columns TO dbhasura;
+GRANT SELECT ON TABLE public.geography_columns TO dbimporter;
+
+--
+-- Name: TABLE geometry_columns; Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE public.geometry_columns TO dbhasura;
+GRANT SELECT ON TABLE public.geometry_columns TO dbimporter;
+
+--
+-- Name: TABLE spatial_ref_sys; Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE public.spatial_ref_sys TO dbhasura;
+GRANT SELECT ON TABLE public.spatial_ref_sys TO dbimporter;
 
 --
 -- Name: TABLE vehicle_mode; Type: ACL; Schema: reusable_components; Owner: dbhasura
@@ -3991,6 +11636,12 @@ CREATE SCHEMA journey_pattern;
 
 
 ALTER SCHEMA journey_pattern OWNER TO dbhasura;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: dbadmin
+--
+
+ALTER SCHEMA public OWNER TO dbadmin;
 
 --
 -- Name: reusable_components; Type: SCHEMA; Schema: -; Owner: dbhasura

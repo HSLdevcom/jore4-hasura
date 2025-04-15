@@ -38,6 +38,13 @@ GRANT USAGE ON SCHEMA journey_pattern TO dbtimetablesapi;
 GRANT USAGE ON SCHEMA passing_times TO dbtimetablesapi;
 
 --
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dbadmin
+--
+
+GRANT ALL ON SCHEMA public TO dbhasura;
+GRANT USAGE ON SCHEMA public TO dbtimetablesapi;
+
+--
 -- Name: SCHEMA return_value; Type: ACL; Schema: -; Owner: dbhasura
 --
 
@@ -96,6 +103,2408 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE journey_pattern.journey_pattern_ref T
 --
 
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE passing_times.timetabled_passing_time TO dbtimetablesapi;
+
+--
+-- Name: TABLE pg_aggregate; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_aggregate TO dbhasura;
+
+--
+-- Name: TABLE pg_am; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_am TO dbhasura;
+
+--
+-- Name: TABLE pg_amop; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_amop TO dbhasura;
+
+--
+-- Name: TABLE pg_amproc; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_amproc TO dbhasura;
+
+--
+-- Name: TABLE pg_attrdef; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_attrdef TO dbhasura;
+
+--
+-- Name: TABLE pg_attribute; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_attribute TO dbhasura;
+
+--
+-- Name: TABLE pg_auth_members; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_auth_members TO dbhasura;
+
+--
+-- Name: TABLE pg_authid; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_authid TO dbhasura;
+
+--
+-- Name: TABLE pg_available_extension_versions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_available_extension_versions TO dbhasura;
+
+--
+-- Name: TABLE pg_available_extensions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_available_extensions TO dbhasura;
+
+--
+-- Name: TABLE pg_backend_memory_contexts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_backend_memory_contexts TO dbhasura;
+
+--
+-- Name: TABLE pg_cast; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_cast TO dbhasura;
+
+--
+-- Name: TABLE pg_class; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_class TO dbhasura;
+
+--
+-- Name: TABLE pg_collation; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_collation TO dbhasura;
+
+--
+-- Name: TABLE pg_config; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_config TO dbhasura;
+
+--
+-- Name: TABLE pg_constraint; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_constraint TO dbhasura;
+
+--
+-- Name: TABLE pg_conversion; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_conversion TO dbhasura;
+
+--
+-- Name: TABLE pg_cursors; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_cursors TO dbhasura;
+
+--
+-- Name: TABLE pg_database; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_database TO dbhasura;
+
+--
+-- Name: TABLE pg_db_role_setting; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_db_role_setting TO dbhasura;
+
+--
+-- Name: TABLE pg_default_acl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_default_acl TO dbhasura;
+
+--
+-- Name: TABLE pg_depend; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_depend TO dbhasura;
+
+--
+-- Name: TABLE pg_description; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_description TO dbhasura;
+
+--
+-- Name: TABLE pg_enum; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_enum TO dbhasura;
+
+--
+-- Name: TABLE pg_event_trigger; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_event_trigger TO dbhasura;
+
+--
+-- Name: TABLE pg_extension; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_extension TO dbhasura;
+
+--
+-- Name: TABLE pg_file_settings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_file_settings TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_data_wrapper; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_data_wrapper TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_server; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_server TO dbhasura;
+
+--
+-- Name: TABLE pg_foreign_table; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_foreign_table TO dbhasura;
+
+--
+-- Name: TABLE pg_group; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_group TO dbhasura;
+
+--
+-- Name: TABLE pg_hba_file_rules; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_hba_file_rules TO dbhasura;
+
+--
+-- Name: TABLE pg_ident_file_mappings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ident_file_mappings TO dbhasura;
+
+--
+-- Name: TABLE pg_index; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_index TO dbhasura;
+
+--
+-- Name: TABLE pg_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_inherits; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_inherits TO dbhasura;
+
+--
+-- Name: TABLE pg_init_privs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_init_privs TO dbhasura;
+
+--
+-- Name: TABLE pg_language; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_language TO dbhasura;
+
+--
+-- Name: TABLE pg_largeobject; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_largeobject TO dbhasura;
+
+--
+-- Name: TABLE pg_largeobject_metadata; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_largeobject_metadata TO dbhasura;
+
+--
+-- Name: TABLE pg_locks; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_locks TO dbhasura;
+
+--
+-- Name: TABLE pg_matviews; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_matviews TO dbhasura;
+
+--
+-- Name: TABLE pg_namespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_namespace TO dbhasura;
+
+--
+-- Name: TABLE pg_opclass; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_opclass TO dbhasura;
+
+--
+-- Name: TABLE pg_operator; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_operator TO dbhasura;
+
+--
+-- Name: TABLE pg_opfamily; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_opfamily TO dbhasura;
+
+--
+-- Name: TABLE pg_parameter_acl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_parameter_acl TO dbhasura;
+
+--
+-- Name: TABLE pg_partitioned_table; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_partitioned_table TO dbhasura;
+
+--
+-- Name: TABLE pg_policies; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_policies TO dbhasura;
+
+--
+-- Name: TABLE pg_policy; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_policy TO dbhasura;
+
+--
+-- Name: TABLE pg_prepared_statements; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_prepared_statements TO dbhasura;
+
+--
+-- Name: TABLE pg_prepared_xacts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_prepared_xacts TO dbhasura;
+
+--
+-- Name: TABLE pg_proc; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_proc TO dbhasura;
+
+--
+-- Name: TABLE pg_publication; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_namespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_namespace TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_rel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_rel TO dbhasura;
+
+--
+-- Name: TABLE pg_publication_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_publication_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_range; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_range TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_origin; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_origin TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_origin_status; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_origin_status TO dbhasura;
+
+--
+-- Name: TABLE pg_replication_slots; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_replication_slots TO dbhasura;
+
+--
+-- Name: TABLE pg_rewrite; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_rewrite TO dbhasura;
+
+--
+-- Name: TABLE pg_roles; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_roles TO dbhasura;
+
+--
+-- Name: TABLE pg_rules; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_rules TO dbhasura;
+
+--
+-- Name: TABLE pg_seclabel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_seclabel TO dbhasura;
+
+--
+-- Name: TABLE pg_seclabels; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_seclabels TO dbhasura;
+
+--
+-- Name: TABLE pg_sequence; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_sequence TO dbhasura;
+
+--
+-- Name: TABLE pg_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_settings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_settings TO dbhasura;
+
+--
+-- Name: TABLE pg_shadow; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shadow TO dbhasura;
+
+--
+-- Name: TABLE pg_shdepend; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shdepend TO dbhasura;
+
+--
+-- Name: TABLE pg_shdescription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shdescription TO dbhasura;
+
+--
+-- Name: TABLE pg_shmem_allocations; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shmem_allocations TO dbhasura;
+
+--
+-- Name: TABLE pg_shseclabel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shseclabel TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_activity; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_activity TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_all_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_all_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_archiver; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_archiver TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_bgwriter; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_bgwriter TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_database; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_database TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_database_conflicts; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_database_conflicts TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_gssapi; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_gssapi TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_analyze; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_analyze TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_basebackup; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_basebackup TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_cluster; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_cluster TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_copy; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_copy TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_create_index; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_create_index TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_progress_vacuum; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_progress_vacuum TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_recovery_prefetch; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_recovery_prefetch TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_replication; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_replication TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_replication_slots; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_replication_slots TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_slru; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_slru TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_ssl; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_ssl TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_subscription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_subscription TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_subscription_stats; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_subscription_stats TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_sys_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_sys_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_functions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_functions TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_wal; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_wal TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_wal_receiver; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_wal_receiver TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_user_functions; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_user_functions TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_xact_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_xact_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_all_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_all_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_sys_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_sys_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_indexes; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_indexes TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_sequences; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_sequences TO dbhasura;
+
+--
+-- Name: TABLE pg_statio_user_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statio_user_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic_ext; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic_ext TO dbhasura;
+
+--
+-- Name: TABLE pg_statistic_ext_data; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_statistic_ext_data TO dbhasura;
+
+--
+-- Name: TABLE pg_stats; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats TO dbhasura;
+
+--
+-- Name: TABLE pg_stats_ext; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats_ext TO dbhasura;
+
+--
+-- Name: TABLE pg_stats_ext_exprs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stats_ext_exprs TO dbhasura;
+
+--
+-- Name: TABLE pg_subscription; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_subscription TO dbhasura;
+
+--
+-- Name: TABLE pg_subscription_rel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_subscription_rel TO dbhasura;
+
+--
+-- Name: TABLE pg_tables; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_tables TO dbhasura;
+
+--
+-- Name: TABLE pg_tablespace; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_tablespace TO dbhasura;
+
+--
+-- Name: TABLE pg_timezone_abbrevs; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_timezone_abbrevs TO dbhasura;
+
+--
+-- Name: TABLE pg_timezone_names; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_timezone_names TO dbhasura;
+
+--
+-- Name: TABLE pg_transform; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_transform TO dbhasura;
+
+--
+-- Name: TABLE pg_trigger; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_trigger TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_config; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_config TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_config_map; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_config_map TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_dict; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_dict TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_parser; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_parser TO dbhasura;
+
+--
+-- Name: TABLE pg_ts_template; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_ts_template TO dbhasura;
+
+--
+-- Name: TABLE pg_type; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_type TO dbhasura;
+
+--
+-- Name: TABLE pg_user; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user TO dbhasura;
+
+--
+-- Name: TABLE pg_user_mapping; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user_mapping TO dbhasura;
+
+--
+-- Name: TABLE pg_user_mappings; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_user_mappings TO dbhasura;
+
+--
+-- Name: TABLE pg_views; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_views TO dbhasura;
+
+--
+-- Name: FUNCTION armor(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.armor(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.armor(bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION armor(bytea, text[], text[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.armor(bytea, text[], text[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.armor(bytea, text[], text[]) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION cash_dist(money, money); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbhasura;
+GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION crypt(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.crypt(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.crypt(text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION date_dist(date, date); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.date_dist(date, date) TO dbhasura;
+GRANT ALL ON FUNCTION public.date_dist(date, date) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION dearmor(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.dearmor(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.dearmor(text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION decrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.decrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.decrypt(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION decrypt_iv(bytea, bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION digest(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.digest(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.digest(bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION digest(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.digest(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.digest(text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION encrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.encrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.encrypt(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION encrypt_iv(bytea, bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION float4_dist(real, real); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.float4_dist(real, real) TO dbhasura;
+GRANT ALL ON FUNCTION public.float4_dist(real, real) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION float8_dist(double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.float8_dist(double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.float8_dist(double precision, double precision) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_consistent(internal, bit, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_consistent(internal, bit, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_consistent(internal, bit, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bit_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_consistent(internal, boolean, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_consistent(internal, boolean, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_consistent(internal, boolean, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bool_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bpchar_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bpchar_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bpchar_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bpchar_consistent(internal, character, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_consistent(internal, bytea, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_consistent(internal, bytea, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_consistent(internal, bytea, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_bytea_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_consistent(internal, money, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_consistent(internal, money, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_consistent(internal, money, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_distance(internal, money, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_distance(internal, money, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_distance(internal, money, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_cash_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_consistent(internal, date, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_consistent(internal, date, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_consistent(internal, date, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_distance(internal, date, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_distance(internal, date, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_distance(internal, date, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_date_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_decompress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_consistent(internal, anyenum, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_consistent(internal, anyenum, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_consistent(internal, anyenum, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_enum_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_consistent(internal, real, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_consistent(internal, real, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_consistent(internal, real, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_distance(internal, real, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_distance(internal, real, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_distance(internal, real, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_consistent(internal, double precision, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_consistent(internal, double precision, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_consistent(internal, double precision, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_distance(internal, double precision, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_distance(internal, double precision, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_distance(internal, double precision, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_float8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_consistent(internal, inet, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_consistent(internal, inet, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_consistent(internal, inet, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_inet_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_consistent(internal, smallint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_consistent(internal, smallint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_consistent(internal, smallint, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_distance(internal, smallint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_distance(internal, smallint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_distance(internal, smallint, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int2_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_consistent(internal, integer, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_consistent(internal, integer, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_consistent(internal, integer, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_distance(internal, integer, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_distance(internal, integer, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_distance(internal, integer, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_consistent(internal, bigint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_consistent(internal, bigint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_consistent(internal, bigint, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_distance(internal, bigint, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_distance(internal, bigint, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_distance(internal, bigint, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_int8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_consistent(internal, interval, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_consistent(internal, interval, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_consistent(internal, interval, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_decompress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_distance(internal, interval, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_distance(internal, interval, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_distance(internal, interval, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_intv_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_consistent(internal, macaddr, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_consistent(internal, macaddr, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_consistent(internal, macaddr, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_macad_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_consistent(internal, numeric, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_consistent(internal, numeric, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_consistent(internal, numeric, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_numeric_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_consistent(internal, oid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_consistent(internal, oid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_consistent(internal, oid, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_distance(internal, oid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_distance(internal, oid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_distance(internal, oid, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_oid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_consistent(internal, text, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_consistent(internal, text, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_consistent(internal, text, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_text_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_consistent(internal, time without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_consistent(internal, time without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_consistent(internal, time without time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_distance(internal, time without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_distance(internal, time without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_distance(internal, time without time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_time_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_timetz_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_timetz_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_timetz_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_ts_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_tstz_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_compress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_compress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_consistent(internal, uuid, smallint, oid, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_consistent(internal, uuid, smallint, oid, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_consistent(internal, uuid, smallint, oid, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_penalty(internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_penalty(internal, internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_penalty(internal, internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_picksplit(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_picksplit(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_picksplit(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_uuid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_union(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_union(internal, internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_var_decompress(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_var_decompress(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_var_decompress(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbt_var_fetch(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey16_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey16_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey16_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey16_out(public.gbtreekey16); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey16_out(public.gbtreekey16) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey16_out(public.gbtreekey16) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey2_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey2_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey2_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey2_out(public.gbtreekey2); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey2_out(public.gbtreekey2) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey2_out(public.gbtreekey2) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey32_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey32_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey32_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey32_out(public.gbtreekey32); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey32_out(public.gbtreekey32) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey32_out(public.gbtreekey32) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey4_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey4_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey4_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey4_out(public.gbtreekey4); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey4_out(public.gbtreekey4) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey4_out(public.gbtreekey4) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey8_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey8_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey8_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey8_out(public.gbtreekey8); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey8_out(public.gbtreekey8) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey8_out(public.gbtreekey8) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey_var_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey_var_in(cstring) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey_var_in(cstring) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gbtreekey_var_out(public.gbtreekey_var); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbtreekey_var_out(public.gbtreekey_var) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbtreekey_var_out(public.gbtreekey_var) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gen_random_bytes(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_random_bytes(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_random_bytes(integer) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gen_random_uuid(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_random_uuid() TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_random_uuid() TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gen_salt(text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_salt(text) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_salt(text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION gen_salt(text, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gen_salt(text, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gen_salt(text, integer) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION hmac(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.hmac(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.hmac(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION hmac(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.hmac(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.hmac(text, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION int2_dist(smallint, smallint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int2_dist(smallint, smallint) TO dbhasura;
+GRANT ALL ON FUNCTION public.int2_dist(smallint, smallint) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION int4_dist(integer, integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int4_dist(integer, integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.int4_dist(integer, integer) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION int8_dist(bigint, bigint); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.int8_dist(bigint, bigint) TO dbhasura;
+GRANT ALL ON FUNCTION public.int8_dist(bigint, bigint) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION interval_dist(interval, interval); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.interval_dist(interval, interval) TO dbhasura;
+GRANT ALL ON FUNCTION public.interval_dist(interval, interval) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION oid_dist(oid, oid); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.oid_dist(oid, oid) TO dbhasura;
+GRANT ALL ON FUNCTION public.oid_dist(oid, oid) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_armor_headers(text, OUT key text, OUT value text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_armor_headers(text, OUT key text, OUT value text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_armor_headers(text, OUT key text, OUT value text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_key_id(bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_key_id(bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_key_id(bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt(bytea, bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt(text, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt(text, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt_bytea(bytea, bytea); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_pub_encrypt_bytea(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt_bytea(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_decrypt_bytea(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt_bytea(bytea, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION pgp_sym_encrypt_bytea(bytea, text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION time_dist(time without time zone, time without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.time_dist(time without time zone, time without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.time_dist(time without time zone, time without time zone) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION ts_dist(timestamp without time zone, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.ts_dist(timestamp without time zone, timestamp without time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.ts_dist(timestamp without time zone, timestamp without time zone) TO dbtimetablesapi;
+
+--
+-- Name: FUNCTION tstz_dist(timestamp with time zone, timestamp with time zone); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with time zone) TO dbhasura;
+GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with time zone) TO dbtimetablesapi;
 
 --
 -- Name: TABLE direction; Type: ACL; Schema: route; Owner: dbhasura
@@ -2124,6 +4533,12 @@ CREATE SCHEMA passing_times;
 ALTER SCHEMA passing_times OWNER TO dbhasura;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: dbadmin
+--
+
+ALTER SCHEMA public OWNER TO dbadmin;
+
+--
 -- Name: return_value; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -2200,7 +4615,7 @@ ALTER SCHEMA vehicle_type OWNER TO dbhasura;
 --
 
 CREATE TABLE journey_pattern.journey_pattern_ref (
-    journey_pattern_ref_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    journey_pattern_ref_id uuid DEFAULT gen_random_uuid() NOT NULL,
     journey_pattern_id uuid NOT NULL,
     observation_timestamp timestamp with time zone NOT NULL,
     snapshot_timestamp timestamp with time zone NOT NULL,
@@ -2219,7 +4634,7 @@ ALTER TABLE journey_pattern.journey_pattern_ref OWNER TO dbhasura;
 --
 
 CREATE TABLE passing_times.timetabled_passing_time (
-    timetabled_passing_time_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    timetabled_passing_time_id uuid DEFAULT gen_random_uuid() NOT NULL,
     vehicle_journey_id uuid NOT NULL,
     scheduled_stop_point_in_journey_pattern_ref_id uuid NOT NULL,
     arrival_time interval,
@@ -2260,7 +4675,7 @@ ALTER TABLE route.type_of_line OWNER TO dbhasura;
 --
 
 CREATE TABLE service_calendar.day_type (
-    day_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    day_type_id uuid DEFAULT gen_random_uuid() NOT NULL,
     label text NOT NULL,
     name_i18n jsonb NOT NULL
 );
@@ -2286,7 +4701,7 @@ ALTER TABLE service_calendar.day_type_active_on_day_of_week OWNER TO dbhasura;
 --
 
 CREATE TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref (
-    scheduled_stop_point_in_journey_pattern_ref_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    scheduled_stop_point_in_journey_pattern_ref_id uuid DEFAULT gen_random_uuid() NOT NULL,
     journey_pattern_ref_id uuid NOT NULL,
     scheduled_stop_point_label text NOT NULL,
     scheduled_stop_point_sequence integer NOT NULL,
@@ -2312,7 +4727,7 @@ ALTER TABLE vehicle_journey.journey_type OWNER TO dbhasura;
 --
 
 CREATE TABLE vehicle_journey.vehicle_journey (
-    vehicle_journey_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    vehicle_journey_id uuid DEFAULT gen_random_uuid() NOT NULL,
     journey_pattern_ref_id uuid NOT NULL,
     block_id uuid NOT NULL,
     journey_name_i18n jsonb,
@@ -2329,7 +4744,7 @@ ALTER TABLE vehicle_journey.vehicle_journey OWNER TO dbhasura;
 --
 
 CREATE TABLE vehicle_schedule.vehicle_schedule_frame (
-    vehicle_schedule_frame_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    vehicle_schedule_frame_id uuid DEFAULT gen_random_uuid() NOT NULL,
     name_i18n jsonb,
     validity_start date NOT NULL,
     validity_end date NOT NULL,
@@ -2348,7 +4763,7 @@ ALTER TABLE vehicle_schedule.vehicle_schedule_frame OWNER TO dbhasura;
 --
 
 CREATE TABLE vehicle_service.block (
-    block_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    block_id uuid DEFAULT gen_random_uuid() NOT NULL,
     vehicle_service_id uuid NOT NULL,
     preparing_time interval,
     finishing_time interval,
@@ -2377,7 +4792,7 @@ ALTER TABLE vehicle_service.journey_patterns_in_vehicle_service OWNER TO dbhasur
 --
 
 CREATE TABLE vehicle_service.vehicle_service (
-    vehicle_service_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    vehicle_service_id uuid DEFAULT gen_random_uuid() NOT NULL,
     day_type_id uuid NOT NULL,
     vehicle_schedule_frame_id uuid NOT NULL,
     name_i18n jsonb
@@ -2391,7 +4806,7 @@ ALTER TABLE vehicle_service.vehicle_service OWNER TO dbhasura;
 --
 
 CREATE TABLE vehicle_type.vehicle_type (
-    vehicle_type_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    vehicle_type_id uuid DEFAULT gen_random_uuid() NOT NULL,
     label text NOT NULL,
     description_i18n jsonb
 );
