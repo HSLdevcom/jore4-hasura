@@ -236,7 +236,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       );
 
       expectErrorResponse(
-        'Not-NULL violation. null value in column \\"passing_time\\" violates not-null constraint',
+        'Not-NULL violation. null value in column \\"passing_time\\" of relation \\"timetabled_passing_time\\" violates not-null constraint',
       )(response);
     });
 
