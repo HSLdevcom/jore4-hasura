@@ -18,7 +18,7 @@ jobs:
     name: Run docker image tests
     uses: ./.github/workflows/ci.yml
 
-  push_to_registry:
+  publish_docker_image_to_docker_hub:
     needs:
       - check-prettify
       - run-docker-image-tests
@@ -123,14 +123,14 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - push_to_registry
+      - publish_docker_image_to_docker_hub
     uses: ./.github/workflows/check-dump.yml
 
   run_migration_tests:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - push_to_registry
+      - publish_docker_image_to_docker_hub
     name: Run migration tests
     runs-on: ubuntu-24.04
 
@@ -158,7 +158,7 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - push_to_registry
+      - publish_docker_image_to_docker_hub
     name: Run hasura integration tests
     runs-on: ubuntu-24.04
 
@@ -192,7 +192,7 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - push_to_registry
+      - publish_docker_image_to_docker_hub
       - run_dump_tests
       - run_migration_tests
       - run_integration_tests
