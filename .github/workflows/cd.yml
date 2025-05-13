@@ -182,6 +182,13 @@ jobs:
         with:
           hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
 
+      - name: Use Node.js version 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x' # As of writing, this is the upcoming LTS version
+          cache: 'yarn'
+          cache-dependency-path: 'test/hasura/yarn.lock'
+
       - name: Run integration tests
         run: |
           cd test/hasura
