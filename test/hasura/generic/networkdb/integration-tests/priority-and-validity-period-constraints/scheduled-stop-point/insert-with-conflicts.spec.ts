@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -17,7 +18,6 @@ import {
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -56,17 +56,15 @@ describe('Insert scheduled stop point', () => {
     toBeInserted: Partial<ScheduledStopPoint>,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(toBeInserted) },
-        })
-        .then(expectErrorResponse());
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(toBeInserted) },
+      }).then(expectErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<ScheduledStopPoint>) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });

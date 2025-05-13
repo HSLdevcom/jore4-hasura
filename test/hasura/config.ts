@@ -47,7 +47,6 @@ export const hasuraRequestTemplate = {
     'x-hasura-admin-secret':
       process.env.HASURA_GRAPHQL_ADMIN_SECRET || 'hasura',
   },
-  json: true,
 };
 
 export const writeLatestTimetablesDatasetToFile = false;

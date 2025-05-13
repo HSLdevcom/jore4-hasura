@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import {
   getPartialTableData,
   getPropNameArray,
@@ -14,7 +15,6 @@ import {
 } from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { scheduledStopPointProps } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const toBeDeleted = scheduledStopPoints[1];
 
@@ -53,7 +53,7 @@ describe('Delete scheduled_stop_point', () => {
   );
 
   it('should return correct response', async () => {
-    const response = await rp.post({
+    const response = await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });
@@ -70,7 +70,7 @@ describe('Delete scheduled_stop_point', () => {
   });
 
   it('should delete correct row from the database', async () => {
-    await rp.post({
+    await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });

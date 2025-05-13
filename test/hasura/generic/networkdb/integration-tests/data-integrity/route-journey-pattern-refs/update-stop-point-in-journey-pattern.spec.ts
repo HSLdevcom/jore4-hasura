@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,7 +14,6 @@ import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (
   journeyPatternId: string,
@@ -54,18 +54,16 @@ describe('Update scheduled stop point in journey pattern', () => {
     expectedErrorMsg: string,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: {
-            query: buildMutation(
-              scheduledStopPoint.journey_pattern_id,
-              scheduledStopPoint.scheduled_stop_point_label,
-              toBeUpdated,
-            ),
-          },
-        })
-        .then(expectErrorResponse(expectedErrorMsg));
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildMutation(
+            scheduledStopPoint.journey_pattern_id,
+            scheduledStopPoint.scheduled_stop_point_label,
+            toBeUpdated,
+          ),
+        },
+      }).then(expectErrorResponse(expectedErrorMsg));
     });
 
   const shouldNotModifyDatabase = (
@@ -73,7 +71,7 @@ describe('Update scheduled stop point in journey pattern', () => {
     toBeUpdated: Partial<ScheduledStopPointInJourneyPattern>,
   ) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
@@ -155,7 +153,7 @@ describe('Update scheduled stop point in journey pattern', () => {
     };
 
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
@@ -178,7 +176,7 @@ describe('Update scheduled stop point in journey pattern', () => {
     });
 
     it('should update the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(

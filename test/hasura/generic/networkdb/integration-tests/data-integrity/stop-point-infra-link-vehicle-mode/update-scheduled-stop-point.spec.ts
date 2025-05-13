@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,7 +14,6 @@ import {
   ScheduledStopPoint,
   scheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const createCompleteUpdated = (
   toBeUpdated: Partial<ScheduledStopPoint>,
@@ -57,20 +57,18 @@ describe('Update scheduled stop point', () => {
     };
 
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(toBeUpdated) },
-        })
-        .then(
-          expectErrorResponse(
-            'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes',
-          ),
-        );
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(toBeUpdated) },
+      }).then(
+        expectErrorResponse(
+          'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes',
+        ),
+      );
     });
 
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
       });
@@ -97,7 +95,7 @@ describe('Update scheduled stop point', () => {
     };
 
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
       });
@@ -116,7 +114,7 @@ describe('Update scheduled stop point', () => {
     });
 
     it('should update correct row in the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeUpdated) },
       });

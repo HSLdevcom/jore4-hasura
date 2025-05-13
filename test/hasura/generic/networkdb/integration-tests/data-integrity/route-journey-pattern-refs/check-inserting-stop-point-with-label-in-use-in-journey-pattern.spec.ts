@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   journeyPatterns,
@@ -21,7 +22,6 @@ import {
   journeyPatternProps,
   ScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildQuery = (toBeInserted: Partial<ScheduledStopPoint>) => {
   const checkInfraLinkStopRefsWithNewScheduledStopPointArgs: CheckInfraLinkStopRefsWithNewScheduledStopPointArgs =
@@ -62,7 +62,7 @@ describe('Checking inserting a stop point with a label in use in a journey patte
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<ScheduledStopPoint>) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildQuery(toBeInserted) },
       });
@@ -83,7 +83,7 @@ describe('Checking inserting a stop point with a label in use in a journey patte
     expectedJourneyPatterns: string[],
   ) =>
     it('should return expected response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildQuery(toBeInserted) },
       });

@@ -1,5 +1,5 @@
 import { hasuraRequestTemplate } from '@config';
-import { post } from 'request-promise';
+import { post } from '@util/fetch-request';
 
 export const postQuery = (query: string) => {
   return post({

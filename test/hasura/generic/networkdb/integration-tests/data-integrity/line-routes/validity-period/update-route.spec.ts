@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -11,7 +12,6 @@ import {
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Route, routeProps } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const buildMutation = (route: Route, toBeUpdated: Partial<Route>) => `
   mutation {
@@ -49,21 +49,19 @@ describe('Update route', () => {
     toBeUpdated: Partial<Route>,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(route, toBeUpdated) },
-        })
-        .then(
-          expectErrorResponse(
-            "route validity period must lie within its line's validity period",
-          ),
-        );
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(route, toBeUpdated) },
+      }).then(
+        expectErrorResponse(
+          "route validity period must lie within its line's validity period",
+        ),
+      );
     });
 
   const shouldNotModifyDatabase = (route: Route, toBeUpdated: Partial<Route>) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(route, toBeUpdated) },
       });
@@ -82,7 +80,7 @@ describe('Update route', () => {
     toBeUpdated: Partial<Route>,
   ) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(route, toBeUpdated) },
       });
@@ -107,7 +105,7 @@ describe('Update route', () => {
     toBeUpdated: Partial<Route>,
   ) =>
     it('should update correct row into the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(route, toBeUpdated) },
       });

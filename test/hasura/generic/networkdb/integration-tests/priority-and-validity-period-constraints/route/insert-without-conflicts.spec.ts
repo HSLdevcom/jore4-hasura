@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   defaultGenericNetworkDbData,
@@ -15,7 +16,6 @@ import {
   routeProps,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Route>) => `
   mutation {
@@ -42,7 +42,7 @@ describe('Insert route', () => {
 
   const shouldReturnCorrectResponse = (toBeInserted: Partial<Route>) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });
@@ -70,7 +70,7 @@ describe('Insert route', () => {
 
   const shouldInsertCorrectRowIntoDatabase = (toBeInserted: Partial<Route>) =>
     it('should insert correct row into the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });

@@ -2,9 +2,9 @@
 import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
 import { DateTime } from 'luxon';
-import { post } from 'request-promise';
 import {
   defaultGenericTimetablesDbData,
   vehicleScheduleFrames,

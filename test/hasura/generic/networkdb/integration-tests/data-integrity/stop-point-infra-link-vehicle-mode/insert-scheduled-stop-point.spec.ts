@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -20,7 +21,6 @@ import {
 } from 'generic/networkdb/datasets/types';
 import { GeometryObject } from 'geojson';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -81,21 +81,19 @@ describe('Insert scheduled stop point', () => {
   describe("whose vehicle mode conflicts with its infrastructure link's vehicle sub mode", () => {
     const shouldReturnErrorResponse = (vehicleMode?: VehicleMode) =>
       it('should return error response', async () => {
-        await rp
-          .post({
-            ...config.hasuraRequestTemplate,
-            body: { query: buildMutation(vehicleMode) },
-          })
-          .then(
-            expectErrorResponse(
-              'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes',
-            ),
-          );
+        await post({
+          ...config.hasuraRequestTemplate,
+          body: { query: buildMutation(vehicleMode) },
+        }).then(
+          expectErrorResponse(
+            'scheduled stop point vehicle mode must be compatible with allowed infrastructure link vehicle submodes',
+          ),
+        );
       });
 
     const shouldNotModifyDatabase = (vehicleMode?: VehicleMode) =>
       it('should not modify the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
         });
@@ -161,7 +159,7 @@ describe('Insert scheduled stop point', () => {
   describe("whose mode does NOT conflict with its infrastructure link's sub modes", () => {
     const shouldReturnCorrectResponse = (vehicleMode: VehicleMode) =>
       it('should return correct response', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
         });
@@ -191,7 +189,7 @@ describe('Insert scheduled stop point', () => {
 
     const shouldInsertCorrectRowIntoDatabase = (vehicleMode: VehicleMode) =>
       it('should insert correct row into the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(vehicleMode) },
         });

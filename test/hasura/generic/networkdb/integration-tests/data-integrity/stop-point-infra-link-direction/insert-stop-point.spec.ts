@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import {
   getPartialTableData,
@@ -23,7 +24,6 @@ import {
 } from 'generic/networkdb/datasets/types';
 import { GeometryObject } from 'geojson';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const createToBeInserted = (
   infrastructureLinkId: string,
@@ -100,23 +100,21 @@ describe('Insert scheduled stop point', () => {
       toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
       it('should return error response', async () => {
-        await rp
-          .post({
-            ...config.hasuraRequestTemplate,
-            body: { query: buildMutation(toBeInserted) },
-          })
-          .then(
-            expectErrorResponse(
-              'scheduled stop point direction must be compatible with infrastructure link direction',
-            ),
-          );
+        await post({
+          ...config.hasuraRequestTemplate,
+          body: { query: buildMutation(toBeInserted) },
+        }).then(
+          expectErrorResponse(
+            'scheduled stop point direction must be compatible with infrastructure link direction',
+          ),
+        );
       });
 
     const shouldNotModifyDatabase = (
       toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
       it('should not modify the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
         });
@@ -182,7 +180,7 @@ describe('Insert scheduled stop point', () => {
       toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
       it('should return correct response', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
         });
@@ -214,7 +212,7 @@ describe('Insert scheduled stop point', () => {
       toBeInserted: Partial<ScheduledStopPoint>,
     ) =>
       it('should insert correct row into the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(toBeInserted) },
         });

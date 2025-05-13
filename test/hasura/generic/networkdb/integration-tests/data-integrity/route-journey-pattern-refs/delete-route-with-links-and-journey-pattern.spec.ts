@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   route116TableConfig,
@@ -8,7 +9,6 @@ import {
 } from 'generic/networkdb/datasets/route116';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { routeProps } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const toBeDeleted = routes[0];
 
@@ -38,7 +38,7 @@ describe('Delete route with infra links and journey pattern', () => {
   beforeEach(() => setupDb(dbConnection, route116TableConfig));
 
   it('should return correct response', async () => {
-    const response = await rp.post({
+    const response = await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });
@@ -55,7 +55,7 @@ describe('Delete route with infra links and journey pattern', () => {
   });
 
   it('should delete correct row from the database', async () => {
-    await rp.post({
+    await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });

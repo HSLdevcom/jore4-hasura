@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -16,7 +17,6 @@ import {
   routeProps,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const toBeInserted = (
   onLineId: string,
@@ -65,18 +65,16 @@ describe('Insert route', () => {
     validityEnd: DateTime | null,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: {
-            query: buildMutation(onLineId, validityStart, validityEnd),
-          },
-        })
-        .then(
-          expectErrorResponse(
-            "route validity period must lie within its line's validity period",
-          ),
-        );
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildMutation(onLineId, validityStart, validityEnd),
+        },
+      }).then(
+        expectErrorResponse(
+          "route validity period must lie within its line's validity period",
+        ),
+      );
     });
 
   const shouldNotModifyDatabase = (
@@ -85,7 +83,7 @@ describe('Insert route', () => {
     validityEnd: DateTime | null,
   ) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(onLineId, validityStart, validityEnd),
@@ -107,7 +105,7 @@ describe('Insert route', () => {
     validityEnd: DateTime | null,
   ) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(onLineId, validityStart, validityEnd),
@@ -143,7 +141,7 @@ describe('Insert route', () => {
     validityEnd: DateTime | null,
   ) =>
     it('should insert correct row into the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(onLineId, validityStart, validityEnd),

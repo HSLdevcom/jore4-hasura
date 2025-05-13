@@ -2,6 +2,7 @@ import * as config from '@config';
 import { timetablesDbConfig } from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { setupDb } from '@util/setup';
 import { defaultTimetablesDataset } from 'hsl/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import {
@@ -9,7 +10,6 @@ import {
   hslTimetablesDbTables,
 } from 'hsl/timetablesdb/datasets/schema';
 import { differenceBy, xor } from 'lodash';
-import * as rp from 'request-promise';
 import {
   buildHslTimetablesDataset,
   createHslTableData,
@@ -45,7 +45,7 @@ describe('Delete vehicle schedule frame', () => {
   );
   const frameToDelete = builtDefaultDataset._vehicle_schedule_frames.winter2022;
   const executeDeleteMutation = () => {
-    return rp.post({
+    return post({
       ...config.hasuraRequestTemplate,
       body: {
         query: buildDeleteMutation(frameToDelete.vehicle_schedule_frame_id),

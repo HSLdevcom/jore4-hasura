@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -10,7 +11,6 @@ import {
 } from 'generic/networkdb/datasets/defaultSetup';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { infrastructureLinkProps } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (infrastructureLinkId: string) => `
   mutation {
@@ -37,16 +37,14 @@ describe('Delete infrastructure link', () => {
     const toBeDeleted = infrastructureLinks[0];
 
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
-        })
-        .then(expectErrorResponse('violates foreign key constraint'));
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
+      }).then(expectErrorResponse('violates foreign key constraint'));
     });
 
     it('should not modify database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });
@@ -83,7 +81,7 @@ describe('Delete infrastructure link', () => {
     const toBeDeleted = infrastructureLinks[2];
 
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });
@@ -100,7 +98,7 @@ describe('Delete infrastructure link', () => {
     });
 
     it('should delete correct rows from the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeDeleted.infrastructure_link_id) },
       });

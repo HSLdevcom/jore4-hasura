@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,7 +14,6 @@ import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (
   routeId: string,
@@ -56,22 +56,20 @@ describe('Update route link', () => {
       toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
       it('should return error response', async () => {
-        await rp
-          .post({
-            ...config.hasuraRequestTemplate,
-            body: {
-              query: buildMutation(
-                routeId,
-                infrastructureLinkSequence,
-                toBeUpdated,
-              ),
-            },
-          })
-          .then(
-            expectErrorResponse(
-              'route link direction must be compatible with infrastructure link direction',
+        await post({
+          ...config.hasuraRequestTemplate,
+          body: {
+            query: buildMutation(
+              routeId,
+              infrastructureLinkSequence,
+              toBeUpdated,
             ),
-          );
+          },
+        }).then(
+          expectErrorResponse(
+            'route link direction must be compatible with infrastructure link direction',
+          ),
+        );
       });
 
     const shouldNotModifyDatabase = (
@@ -80,7 +78,7 @@ describe('Update route link', () => {
       toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
       it('should not modify the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(
@@ -181,7 +179,7 @@ describe('Update route link', () => {
       toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
       it('should return correct response', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(
@@ -213,7 +211,7 @@ describe('Update route link', () => {
       toBeUpdated: Partial<InfrastructureLinkAlongRoute>,
     ) =>
       it('should update correct row in the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildMutation(

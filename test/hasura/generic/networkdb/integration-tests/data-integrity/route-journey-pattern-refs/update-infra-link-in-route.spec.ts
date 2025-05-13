@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,7 +14,6 @@ import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (
   routeId: string,
@@ -55,26 +55,24 @@ describe('Move infra link to other route', () => {
     };
 
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: {
-            query: buildMutation(
-              toBeMoved.route_id,
-              toBeMoved.infrastructure_link_id,
-              toBeUpdated,
-            ),
-          },
-        })
-        .then(
-          expectErrorResponse(
-            "route's and journey pattern's traversal paths must match each other",
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildMutation(
+            toBeMoved.route_id,
+            toBeMoved.infrastructure_link_id,
+            toBeUpdated,
           ),
-        );
+        },
+      }).then(
+        expectErrorResponse(
+          "route's and journey pattern's traversal paths must match each other",
+        ),
+      );
     });
 
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
@@ -109,7 +107,7 @@ describe('Move infra link to other route', () => {
     };
 
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(
@@ -132,7 +130,7 @@ describe('Move infra link to other route', () => {
     });
 
     it('should update the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(

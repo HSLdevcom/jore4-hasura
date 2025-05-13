@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { DbConnection } from '@util/db';
+import { post, FetchResponse } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable } from '@util/setup';
 import { scheduledStopPoints } from 'generic/networkdb/datasets/prioritizedRouteVerification';
@@ -17,8 +18,6 @@ import {
   scheduledStopPointProps,
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
-import { Response } from 'request';
-import * as rp from 'request-promise';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 
@@ -157,13 +156,13 @@ const buildCheckInfraLinkStopRefsForStopPointRemovalQuery = (
 };
 
 export const insertStopPoint = (toBeInserted: Partial<ScheduledStopPoint>) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: { query: buildInsertStopMutation(toBeInserted) },
   });
 
 export const deleteStopPoint = (label: string, priority: number) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: { query: buildDeleteStopMutation(label, priority) },
   });
@@ -173,7 +172,7 @@ export const insertRoute = (
   infraLinks: Partial<InfrastructureLinkAlongRoute>[],
   scheduledStopPointsInJourneyPattern: Partial<ScheduledStopPointInJourneyPattern>[],
 ) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: {
       query: buildInsertRouteMutation(
@@ -185,7 +184,7 @@ export const insertRoute = (
   });
 
 export const deleteRoute = (routeId: string) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: {
       query: buildDeleteRouteMutation(routeId),
@@ -196,7 +195,7 @@ export const replaceJourneyPattern = (
   route: Partial<Route>,
   scheduledStopPointsInJourneyPattern: Partial<ScheduledStopPointInJourneyPattern>[],
 ) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: {
       query: buildReplaceJourneyPatternMutation(
@@ -209,7 +208,7 @@ export const replaceJourneyPattern = (
 export const checkInfraLinkStopRefsForStopPointRemoval = (
   scheduledStopPoint: Partial<ScheduledStopPoint>,
 ) =>
-  rp.post({
+  post({
     ...config.hasuraRequestTemplate,
     body: {
       query:
@@ -237,7 +236,7 @@ export const shouldNotModifyScheduledStopPointsInDatabase = async (
 
 export const shouldReturnCorrectScheduledStopPointResponse = (
   toBeInserted: Partial<ScheduledStopPoint>,
-  response: Response,
+  response: FetchResponse,
 ) => {
   expect(response).toEqual(
     expect.objectContaining({

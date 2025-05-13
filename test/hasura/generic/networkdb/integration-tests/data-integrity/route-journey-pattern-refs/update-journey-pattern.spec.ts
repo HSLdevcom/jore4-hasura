@@ -1,5 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -9,7 +10,6 @@ import {
 } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { journeyPatternProps } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (journeyPatternId: string, newRouteId: string) => `
   mutation {
@@ -44,14 +44,12 @@ describe('Move journey pattern to other route', () => {
     expectedErrorMessage: string,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: {
-            query: buildMutation(journeyPatternId, newRouteId),
-          },
-        })
-        .then(expectErrorResponse(expectedErrorMessage));
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: {
+          query: buildMutation(journeyPatternId, newRouteId),
+        },
+      }).then(expectErrorResponse(expectedErrorMessage));
     });
 
   const shouldNotModifyDatabase = (
@@ -59,7 +57,7 @@ describe('Move journey pattern to other route', () => {
     newRouteId: string,
   ) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(journeyPatternId, newRouteId),
@@ -110,7 +108,7 @@ describe('Move journey pattern to other route', () => {
     };
 
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(toBeMoved.journey_pattern_id, newRouteId),
@@ -129,7 +127,7 @@ describe('Move journey pattern to other route', () => {
     });
 
     it('should update the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: {
           query: buildMutation(toBeMoved.journey_pattern_id, newRouteId),

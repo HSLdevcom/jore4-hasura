@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { getPropNameArray, setupDb } from '@util/setup';
 import { scheduledStopPoints } from 'generic/networkdb/datasets/defaultSetup';
@@ -13,7 +14,6 @@ import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const baseScheduledStopPoint: Partial<ScheduledStopPointInJourneyPattern> = {
   scheduled_stop_point_sequence: 0,
@@ -74,7 +74,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
   describe('with conflicts', () => {
     describe('loading time allowed but is not regulated timing point', () => {
       it('should not insert', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -95,7 +95,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: true,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -107,7 +107,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as timing point and loading time is allowed but not set as regulated timing point', () => {
       it('should not insert', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -129,7 +129,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: true,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -141,7 +141,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as regulated timing point but not set as timing point', () => {
       it('should not insert', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -162,7 +162,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: false,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -174,7 +174,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as regulated timing point, allowed loading time but is not set as timing point', () => {
       it('should not insert', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -196,7 +196,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: true,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -210,7 +210,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
   describe('without conflicts', () => {
     describe('All timing point settings are set to false', () => {
       it('should insert without conflicts', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildInsertMutation(baseScheduledStopPoint) },
         });
@@ -225,7 +225,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: false,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -236,7 +236,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as timing point but not as regulated timing point', () => {
       it('should insert without conflicts', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -256,7 +256,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: false,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -267,7 +267,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as timing point and as regulated timing point', () => {
       it('should insert without conflicts', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -288,7 +288,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: false,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });
@@ -299,7 +299,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
 
     describe('used as timing point, regulated timing point and loading time is allowed', () => {
       it('should insert without conflicts', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: {
             query: buildInsertMutation({
@@ -321,7 +321,7 @@ describe('Timing point constraints on scheduled_stop_point_on_journey_pattern', 
           is_loading_time_allowed: true,
         };
 
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildUpdateMutation(toBeUpdated) },
         });

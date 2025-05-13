@@ -1,5 +1,6 @@
 import * as config from '@config';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -11,7 +12,6 @@ import {
   InfrastructureLinkAlongRoute,
   infrastructureLinkAlongRouteProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const buildMutation = (routeId: string, linkId: string) => `
   mutation {
@@ -40,7 +40,7 @@ describe('Delete infra link from route', () => {
   beforeEach(() => setupDb(dbConnection, routesAndJourneyPatternsTableData));
 
   const postHasuraRequest = (toBeRemoved: InfrastructureLinkAlongRoute) =>
-    rp.post({
+    post({
       ...config.hasuraRequestTemplate,
       body: {
         query: buildMutation(

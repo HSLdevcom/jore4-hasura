@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { buildLocalizedString } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   defaultGenericNetworkDbData,
@@ -11,7 +12,6 @@ import { buildLine } from 'generic/networkdb/datasets/factories';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Line, lineProps, VehicleMode } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -39,7 +39,7 @@ describe('Insert line', () => {
 
   const shouldReturnCorrectResponse = (toBeInserted: Partial<Line>) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });
@@ -67,7 +67,7 @@ describe('Insert line', () => {
 
   const shouldInsertCorrectRowIntoDatabase = (toBeInserted: Partial<Line>) =>
     it('should insert correct row into the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });

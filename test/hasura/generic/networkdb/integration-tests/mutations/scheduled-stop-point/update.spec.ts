@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   defaultGenericNetworkDbData,
@@ -14,7 +15,6 @@ import {
 } from 'generic/networkdb/datasets/types';
 import { GeometryObject } from 'geojson';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const toBeUpdated: Partial<ScheduledStopPoint> = {
   located_on_infrastructure_link_id:
@@ -67,7 +67,7 @@ describe('Update scheduled_stop_point', () => {
   beforeEach(() => setupDb(dbConnection, defaultGenericNetworkDbData));
 
   it('should return correct response', async () => {
-    const response = await rp.post({
+    const response = await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });
@@ -84,7 +84,7 @@ describe('Update scheduled_stop_point', () => {
   });
 
   it('should update correct row in the database', async () => {
-    await rp.post({
+    await post({
       ...config.hasuraRequestTemplate,
       body: { query: mutation },
     });

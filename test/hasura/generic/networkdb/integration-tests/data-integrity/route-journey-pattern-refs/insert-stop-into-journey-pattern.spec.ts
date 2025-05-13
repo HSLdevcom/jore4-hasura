@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -14,7 +15,6 @@ import {
   ScheduledStopPointInJourneyPattern,
   scheduledStopPointInJourneyPatternProps,
 } from 'generic/networkdb/datasets/types';
-import * as rp from 'request-promise';
 
 const createToBeInserted = (
   journeyPatternId: string,
@@ -61,19 +61,17 @@ describe('Insert scheduled stop point into journey pattern', () => {
     expectedErrorMsg: string,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(toBeInserted) },
-        })
-        .then(expectErrorResponse(expectedErrorMsg));
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(toBeInserted) },
+      }).then(expectErrorResponse(expectedErrorMsg));
     });
 
   const shouldNotModifyDatabase = (
     toBeInserted: ScheduledStopPointInJourneyPattern,
   ) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });
@@ -97,7 +95,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
     toBeInserted: ScheduledStopPointInJourneyPattern,
   ) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });
@@ -117,7 +115,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
     toBeInserted: ScheduledStopPointInJourneyPattern,
   ) =>
     it('should update the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });

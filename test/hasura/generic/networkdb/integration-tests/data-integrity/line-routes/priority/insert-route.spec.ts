@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -16,7 +17,6 @@ import {
   routeProps,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const toBeInserted = (
   onLineId: string | undefined,
@@ -60,16 +60,14 @@ describe('Insert route', () => {
     expectedErrorMsg?: string,
   ) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(onLineId, priority) },
-        })
-        .then(
-          expectErrorResponse(
-            expectedErrorMsg || 'route priority must be >= line priority',
-          ),
-        );
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(onLineId, priority) },
+      }).then(
+        expectErrorResponse(
+          expectedErrorMsg || 'route priority must be >= line priority',
+        ),
+      );
     });
 
   const shouldNotModifyDatabase = (
@@ -77,7 +75,7 @@ describe('Insert route', () => {
     priority: number,
   ) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(onLineId, priority) },
       });
@@ -96,7 +94,7 @@ describe('Insert route', () => {
     priority: number,
   ) =>
     it('should return correct response', async () => {
-      const response = await rp.post({
+      const response = await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(onLineId, priority) },
       });
@@ -129,7 +127,7 @@ describe('Insert route', () => {
     priority: number,
   ) =>
     it('should insert correct row into the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(onLineId, priority) },
       });

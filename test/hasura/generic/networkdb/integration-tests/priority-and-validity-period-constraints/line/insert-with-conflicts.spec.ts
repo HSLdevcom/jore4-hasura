@@ -2,6 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { buildLocalizedString } from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -12,7 +13,6 @@ import { buildLine } from 'generic/networkdb/datasets/factories';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import { Line, lineProps, VehicleMode } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const buildMutation = (toBeInserted: Partial<Line>) => `
   mutation {
@@ -40,17 +40,15 @@ describe('Insert line', () => {
 
   const shouldReturnErrorResponse = (toBeInserted: Partial<Line>) =>
     it('should return error response', async () => {
-      await rp
-        .post({
-          ...config.hasuraRequestTemplate,
-          body: { query: buildMutation(toBeInserted) },
-        })
-        .then(expectErrorResponse());
+      await post({
+        ...config.hasuraRequestTemplate,
+        body: { query: buildMutation(toBeInserted) },
+      }).then(expectErrorResponse());
     });
 
   const shouldNotModifyDatabase = (toBeInserted: Partial<Line>) =>
     it('should not modify the database', async () => {
-      await rp.post({
+      await post({
         ...config.hasuraRequestTemplate,
         body: { query: buildMutation(toBeInserted) },
       });

@@ -1,6 +1,7 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -19,7 +20,6 @@ import {
   routeProps,
 } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
-import * as rp from 'request-promise';
 
 const routeToBeInserted: Partial<Route> = {
   ...buildRoute('new route'),
@@ -87,25 +87,23 @@ describe('Insert route with links', () => {
       linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[],
     ) =>
       it('should return error response', async () => {
-        await rp
-          .post({
-            ...config.hasuraRequestTemplate,
-            body: {
-              query: buildMutation(linksToBeInserted),
-            },
-          })
-          .then(
-            expectErrorResponse(
-              'route link direction must be compatible with infrastructure link direction',
-            ),
-          );
+        await post({
+          ...config.hasuraRequestTemplate,
+          body: {
+            query: buildMutation(linksToBeInserted),
+          },
+        }).then(
+          expectErrorResponse(
+            'route link direction must be compatible with infrastructure link direction',
+          ),
+        );
       });
 
     const shouldNotModifyDatabase = (
       linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[],
     ) =>
       it('should not modify the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(linksToBeInserted) },
         });
@@ -159,7 +157,7 @@ describe('Insert route with links', () => {
       linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[],
     ) =>
       it('should return correct response', async () => {
-        const response = await rp.post({
+        const response = await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(linksToBeInserted) },
         });
@@ -189,7 +187,7 @@ describe('Insert route with links', () => {
       linksToBeInserted: Partial<InfrastructureLinkAlongRoute>[],
     ) =>
       it('should insert correct row into the database', async () => {
-        await rp.post({
+        await post({
           ...config.hasuraRequestTemplate,
           body: { query: buildMutation(linksToBeInserted) },
         });
