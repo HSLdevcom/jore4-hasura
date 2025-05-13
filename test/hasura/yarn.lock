@@ -746,7 +746,7 @@
   dependencies:
     undici-types "~6.21.0"
 
-"@types/pg@^8.15.11":
+"@types/pg@^8.15.1":
   version "8.15.1"
   resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.15.1.tgz#ee6fad7608d2348f55226a5fb5118efdab97ecf9"
   integrity sha512-YKHrkGWBX5+ivzvOQ66I0fdqsQTsvxqM0AGP2i0XrVZ9DP5VA/deEbTf7VuLPGpY7fJB9uGbkZ6KjVhuHcrTkQ==
