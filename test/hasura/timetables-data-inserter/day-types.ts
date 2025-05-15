@@ -1,4 +1,6 @@
 // These are populated in migrations.
+// There is a copy of this listy in jore4-ui/cypress/datasets/timetables.ts
+// Remember to update that too, if these change.
 export const defaultDayTypeIds = {
   MONDAY_THURSDAY: '6781bd06-08cf-489e-a2bb-be9a07b15752',
   MONDAY_FRIDAY: '38853b0d-ec36-4110-b4bc-f53218c6cdcd',
