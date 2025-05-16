@@ -123,32 +123,34 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - publish_docker_image_to_docker_hub
+      - publish_generic_docker_image_to_acr
     uses: ./.github/workflows/check-dump.yml
+    with:
+      docker_image: '${{ needs.publish_generic_docker_image_to_acr.outputs.docker_image }}'
 
   run_migration_tests:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - publish_docker_image_to_docker_hub
+      - publish_generic_docker_image_to_acr
+      - publish_hsl_docker_image_to_acr
     name: Run migration tests
     runs-on: ubuntu-24.04
 
     strategy:
       matrix:
-        imagePrefix: ['generic-', 'hsl-']
+        dockerImage:
+          - '${{ needs.publish_generic_docker_image_to_acr.outputs.docker_image }}'
+          - '${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract metadata to env variables
-        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
-
       - name: start e2e env
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v8
         with:
-          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
+          hasura_version: '${{ matrix.dockerImage }}'
 
       # Running the all migrations down and up to make sure that they all work as intended
       - name: Run migration tests for both network and timetables databases
@@ -158,29 +160,27 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - publish_docker_image_to_docker_hub
+      - publish_generic_docker_image_to_acr
+      - publish_hsl_docker_image_to_acr
     name: Run hasura integration tests
     runs-on: ubuntu-24.04
 
     strategy:
       matrix:
         include:
-          - imagePrefix: 'generic-'
+          - dockerImage: '${{ needs.publish_generic_docker_image_to_acr.outputs.docker_image }}'
             testCommand: 'yarn qa' # includes linter, prettier and ts:check as well
-          - imagePrefix: 'hsl-'
+          - dockerImage: '${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}'
             testCommand: 'yarn test-hsl' # only runs the tests
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract metadata to env variables
-        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
-
       - name: start e2e env
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v8
         with:
-          hasura_version: '${{ env.IMAGE_NAME }}:${{ matrix.imagePrefix }}${{ env.COMMIT_ID }}'
+          hasura_version: '${{ matrix.dockerImage }}'
 
       - name: Use Node.js version 24.x
         uses: actions/setup-node@v4
@@ -199,7 +199,7 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - publish_docker_image_to_docker_hub
+      - publish_hsl_docker_image_to_acr
       - run_dump_tests
       - run_migration_tests
       - run_integration_tests
@@ -207,10 +207,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Extract metadata to env variables
-        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
-
       - name: Run e2e tests
         uses: HSLdevcom/jore4-tools/github-actions/run-ci@main
         with:
-          hasura_version: '${{ env.IMAGE_NAME }}:hsl-${{ env.COMMIT_ID }}'
+          hasura_version: "${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}"
