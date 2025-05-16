@@ -199,7 +199,7 @@ jobs:
     needs:
       - check-prettify
       - run-docker-image-tests
-      - publish_docker_image_to_docker_hub
+      - publish_hsl_docker_image_to_acr
       - run_dump_tests
       - run_migration_tests
       - run_integration_tests
@@ -207,10 +207,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Extract metadata to env variables
-        uses: HSLdevcom/jore4-tools/github-actions/extract-metadata@extract-metadata-v1
-
       - name: Run e2e tests
         uses: HSLdevcom/jore4-tools/github-actions/run-ci@main
         with:
-          hasura_version: '${{ env.IMAGE_NAME }}:hsl-${{ env.COMMIT_ID }}'
+          hasura_version: "${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}"
