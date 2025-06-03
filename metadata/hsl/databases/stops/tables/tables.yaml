@@ -32,7 +32,6 @@
 - "!include public_group_of_stop_places_alternative_names.yaml"
 - "!include public_group_of_stop_places_key_values.yaml"
 - "!include public_group_of_stop_places_members.yaml"
-- "!include public_group_of_stop_places_newest_version.yaml"
 - "!include public_group_of_tariff_zones.yaml"
 - "!include public_group_of_tariff_zones_key_values.yaml"
 - "!include public_group_of_tariff_zones_members.yaml"
