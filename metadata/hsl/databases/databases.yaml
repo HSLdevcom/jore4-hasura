@@ -13,4 +13,73 @@
       prefix: stops_database_
     type_names:
       prefix: stops_database_
+  logical_models:
+    - fields:
+        - name: cursor
+          type:
+            nullable: false
+            scalar: bigint
+        - name: stops
+          type:
+            nullable: false
+            scalar: jsonb
+      name: TerminalStopSearchResult
+  native_queries:
+    - arguments:
+        query:
+          description: ""
+          nullable: false
+          type: text
+      code: |-
+        WITH stopPlaceStops AS (
+            SELECT
+                spq.stop_place_id   AS stopPlaceId,
+                jsonb_agg(jsonb_build_object(
+                          'stopPlaceId',   sp.netex_id,
+                          'quayId',        q.netex_id,
+                          'name',          sp.name_value,
+                          'publicCode',    q.public_code,
+                          'priority',      priority.items,
+                          'validityStart', validityStart.items,
+                          'validityEnd',   validityEnd.items
+              )) AS stops
+
+            FROM quay AS q
+
+                 INNER JOIN quay_max_version AS qmv ON q.id = qmv.id
+                 INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
+                 INNER JOIN stop_place AS sp ON spq.stop_place_id = sp.id
+
+                 --- Require Priority
+                 INNER JOIN quay_key_values AS qkvPriority ON
+                     q.id = qkvPriority.quay_id AND qkvPriority.key_values_key = 'priority'
+                 INNER JOIN value_items AS priority ON qkvPriority.key_values_id = priority.value_id
+
+                 --- Require validity start date
+                 INNER JOIN quay_key_values AS qkvValidityStart ON
+                     q.id = qkvValidityStart.quay_id AND qkvValidityStart.key_values_key = 'validityStart'
+                 INNER JOIN value_items AS validityStart ON qkvValidityStart.key_values_id = validityStart.value_id
+
+                 --- Validity end date is optional
+                 LEFT JOIN quay_key_values AS qkvValidityEnd ON
+                     q.id = qkvValidityEnd.quay_id AND qkvValidityEnd.key_values_key = 'validityEnd'
+                 LEFT JOIN value_items AS validityEnd ON qkvValidityEnd.key_values_id = validityEnd.value_id
+
+            GROUP BY stop_place_id
+        )
+
+        SELECT
+            sp.id         AS cursor,
+            sps.stops     AS stops
+        FROM stop_place AS sp
+        INNER JOIN stop_place_max_version AS spmv ON sp.id = spmv.id
+        INNER JOIN stopPlaceStops AS sps ON sp.id = sps.stopPlaceId
+        WHERE NOT parent_stop_place AND EXISTS (
+            SELECT *
+            FROM quay AS q
+            INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
+            WHERE spq.stop_place_id = sp.id AND q.public_code LIKE {{query}}
+        );
+      returns: TerminalStopSearchResult
+      root_field_name: findStopsForTerminal
   tables: "!include stops/tables/tables.yaml"
