@@ -1,7 +1,26 @@
 table:
   name: stop_place_newest_version
   schema: public
+object_relationships:
+  - name: parent
+    using:
+      manual_configuration:
+        column_mapping:
+          id: children_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_children
+          schema: public
 array_relationships:
+  - name: children
+    using:
+      manual_configuration:
+        column_mapping:
+          id: stop_place_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_children
+          schema: public
   - name: group_of_stop_places_members
     using:
       manual_configuration:
@@ -28,15 +47,6 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_alternative_names
-          schema: public
-  - name: stop_place_children
-    using:
-      manual_configuration:
-        column_mapping:
-          id: stop_place_id
-        insertion_order: null
-        remote_table:
-          name: stop_place_children
           schema: public
   - name: stop_place_equipment_places
     using:

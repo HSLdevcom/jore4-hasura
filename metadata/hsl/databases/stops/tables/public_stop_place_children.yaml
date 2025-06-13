@@ -2,6 +2,9 @@ table:
   name: stop_place_children
   schema: public
 object_relationships:
-  - name: stop_place
+  - name: child
     using:
       foreign_key_constraint_on: children_id
+  - name: parent
+    using:
+      foreign_key_constraint_on: stop_place_id
