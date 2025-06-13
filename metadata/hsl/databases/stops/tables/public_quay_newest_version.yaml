@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: place_equipment
           schema: public
+  - name: stopPlaceParent
+    using:
+      manual_configuration:
+        column_mapping:
+          stop_place_id: children_id
+        insertion_order: null
+        remote_table:
+          name: stop_place_children
+          schema: public
   - name: stop_place
     using:
       manual_configuration:
