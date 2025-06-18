@@ -1,0 +1,14 @@
+kind: AuthConfig
+version: v3
+definition:
+  mode:
+    webhook:
+      url:
+        valueFromEnv: AUTH_WEBHOOK_URL
+      method: POST
+      customHeadersConfig:
+        body:
+          headers:
+            forward:
+              - authorization
+              - content-type

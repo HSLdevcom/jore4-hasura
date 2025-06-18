@@ -1,0 +1,40 @@
+# this Docker Compose file loads `v3-engine` along with an `ndc-postgres`
+# connector and a sample `postgres` database
+# run it with `docker compose up`, then access Graphiql at localhost:3000
+# or view traces in Jaeger at localhost:4002
+
+services:
+  jore4-hasura:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - METADATA_PATH=app/metadata.json
+      - AUTHN_CONFIG_PATH=app/auth_config.json
+      - OTLP_ENDPOINT=http://jaeger:4317
+    ports:
+      - 3000:3000
+      - "127.0.0.1:3201:8080"
+    extra_hosts:
+      - local.hasura.dev=${LOCALHOST_GATEWAY:-host-gateway}
+    volumes:
+      - ./static/auth/auth_config_v3.json:/app/auth_config.json
+      - ./static/metadata.json:/app/metadata.json
+      - ./crates/open-dds/examples/reference.json:/app/crates/open-dds/examples/reference.json
+
+  postgres_connector_ndc_v01:
+    image: ghcr.io/hasura/ndc-postgres:dev-main
+    ports:
+      - 8080:8080
+    environment:
+      CONNECTION_URI: "postgresql://postgres:password@postgres"
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
+      OTEL_SERVICE_NAME: "ndc-postgres"
+      RUST_LOG: info
+    volumes:
+      - type: bind
+        source: ./crates/engine/tests/ndc-postgres-configuration
+        target: /etc/connector
+        read_only: true
+    depends_on:
+      postgres:
+        condition: service_healthy
