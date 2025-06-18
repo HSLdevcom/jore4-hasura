@@ -16,3 +16,84 @@ services:
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+
+  jore4-flyway-network:
+    container_name: "jore4-flyway-network"
+    networks:
+      - jore4
+    build:
+      context: ../flyway
+    depends_on:
+      jore4-testdb:
+        condition: service_healthy
+    environment:
+      FLYWAY_URL: 'jdbc:postgresql://jore4-testdb:5432/jore4e2e'
+      FLYWAY_USER: 'dbadmin'
+      FLYWAY_PASSWORD: 'adminpassword'
+
+  jore4-flyway-timetables:
+    container_name: "jore4-flyway-timetables"
+    networks:
+      - jore4
+    build:
+      context: ../flyway
+    depends_on:
+      jore4-testdb:
+        condition: service_healthy
+    environment:
+      FLYWAY_URL: 'jdbc:postgresql://jore4-testdb:5432/timetables'
+      FLYWAY_USER: 'dbadmin'
+      FLYWAY_PASSWORD: 'adminpassword'
+
+  jore4-hasura-v3:
+    container_name: "jore4-hasura-v3"
+    networks:
+      - jore4
+    build:
+      context: ../v3
+    depends_on:
+      jore4-testdb:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+    environment:
+      - METADATA_PATH=app/metadata.json
+      - AUTHN_CONFIG_PATH=app/auth_config.hml
+      - OTLP_ENDPOINT=http://jaeger:4317
+      - AUTH_WEBHOOK_URL=http://localhost:3001/api/public/v1/hasura/webhook
+
+  jore4-hasura-postgres-connector:
+    image: ghcr.io/hasura/ndc-postgres:dev-main
+    container_name: "flyway"
+    networks:
+      - jore4
+#    build:
+#      context: ../connector
+    depends_on:
+      jore4-hasura-v3:
+        condition: service_healthy
+    environment:
+      CONNECTION_URI: "postgresql://jore4-testdb:5432/jore4e2e:adminpassword@dbadmin"
+#      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
+#      OTEL_SERVICE_NAME: "ndc-postgres"
+#      RUST_LOG: info
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.55
+    restart: always
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 4002:16686
+      - 14250:14250
+      - 14268:14268
+      - 14269:14269
+      - 4317:4317 # OTLP gRPC
+      - 4318:4318 # OTLP HTTP
+      - 9411:9411
+      - 16686:16686
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+      COLLECTOR_ZIPKIN_HOST_PORT: "9411"
