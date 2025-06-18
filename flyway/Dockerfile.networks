@@ -1,0 +1,25 @@
+FROM flyway/flyway:latest AS flyway
+
+WORKDIR /flyway
+
+COPY ./sql/generic/networks/migrate /flyway/sql
+COPY ./sql/hsl/networks/migrate /flyway/sql
+
+RUN mkdir -p /tmp/afterMigrate
+RUN mkdir -p /tmp/beforeMigrate
+
+COPY ./sql/generic/networks/afterMigrate /tmp/afterMigrate
+COPY ./sql/hsl/networks/afterMigrate /tmp/afterMigrate
+
+COPY ./sql/generic/networks/beforeMigrate /tmp/beforeMigrate
+COPY ./sql/hsl/networks/beforeMigrate /tmp/beforeMigrate
+
+COPY combine-sql.sh /flyway
+
+RUN /flyway/combine-sql.sh
+
+# ENV FLYWAY_URL=jdbc:postgresql://db-host:db-port/network
+# ENV FLYWAY_USER=db-user
+# ENV FLYWAY_PASSWORD=db-password
+
+CMD ["migrate"]
