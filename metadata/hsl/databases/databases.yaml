@@ -35,13 +35,14 @@
             SELECT
                 spq.stop_place_id AS stopPlaceId,
                 jsonb_agg(jsonb_build_object(
-                          'stopPlaceId',   sp.netex_id,
-                          'quayId',        q.netex_id,
-                          'name',          sp.name_value,
-                          'publicCode',    q.public_code,
-                          'priority',      priority.items,
-                          'validityStart', validityStart.items,
-                          'validityEnd',   validityEnd.items
+                          'stopPlaceId',        sp.netex_id,
+                          'stopPlaceParentId', 	sp.parent_site_ref,
+                          'quayId',             q.netex_id,
+                          'name',               sp.name_value,
+                          'publicCode',         q.public_code,
+                          'priority',           priority.items,
+                          'validityStart',      validityStart.items,
+                          'validityEnd',        validityEnd.items
                 )) AS stops
 
             FROM quay AS q
