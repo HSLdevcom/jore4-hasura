@@ -1,0 +1,3 @@
+table:
+  name: info_spot
+  schema: public
