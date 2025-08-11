@@ -93,6 +93,7 @@ remote_relationships:
           stopPlace:
             arguments:
               id: $netex_id
+              onlyMonomodalStopPlaces: true
         remote_schema: Tiamat
     name: TiamatStopPlace
   - definition:
