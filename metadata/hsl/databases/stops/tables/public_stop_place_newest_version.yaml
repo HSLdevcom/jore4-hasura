@@ -89,10 +89,12 @@ remote_relationships:
       to_remote_schema:
         lhs_fields:
           - netex_id
+          - is_area
         remote_field:
           stopPlace:
             arguments:
               id: $netex_id
+              onlyMonomodalStopPlaces: $is_area
         remote_schema: Tiamat
     name: TiamatStopPlace
   - definition:
