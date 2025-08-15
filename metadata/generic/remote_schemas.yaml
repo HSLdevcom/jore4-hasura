@@ -20,6 +20,16 @@
                 name: scheduled_stop_point
                 schema: service_pattern
           name: scheduled_stop_point
+        - definition:
+            to_remote_schema:
+              lhs_fields:
+                - parentSiteRef
+              remote_field:
+                stopPlace:
+                  arguments:
+                    id: $parentSiteRef
+              remote_schema: Tiamat
+          name: parentStopPlace
       type_name: StopPlace
     - relationships:
         - definition:
