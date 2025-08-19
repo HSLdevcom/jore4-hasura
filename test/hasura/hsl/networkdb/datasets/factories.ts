@@ -5,6 +5,7 @@ import {
 import {
   HslLine,
   HslRoute,
+  HslScheduledStopPoint,
   HslTransportTarget,
   LegacyHslMunicipality,
 } from 'hsl/networkdb/datasets/types';
@@ -30,4 +31,10 @@ export const buildHslRoute = (
     variant: null,
     ...(input || {}),
   } as HslRoute;
+};
+
+export const buildHslScheduledStopPoint = (
+  input?: Partial<HslScheduledStopPoint>,
+): HslScheduledStopPoint => {
+  return { ...input } as HslScheduledStopPoint;
 };
