@@ -54,6 +54,23 @@ jobs:
       azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+  publish_schema_reloader_image_to_acr:
+    needs:
+      - check-prettify
+    name: Publish Schema Reloader Docker image to ACR
+    permissions:
+      id-token: write
+      contents: read
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    with:
+      docker_image_name: jore4-hsl-hasura-schema-reloader
+      build_arm64_image: false
+      context: ${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:./schema_reloader
+    secrets:
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
   run_dump_tests:
     needs:
       - check-prettify
