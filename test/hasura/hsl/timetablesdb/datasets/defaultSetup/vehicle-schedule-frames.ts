@@ -1,6 +1,6 @@
+import { DateTime } from 'luxon';
 import { vehicleScheduleFrames } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
-import { DateTime } from 'luxon';
 import { buildHslVehicleScheduleFrame } from '../factories';
 import { HslVehicleScheduleFrame } from '../types';
 

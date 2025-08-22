@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 import * as config from '@config';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import {
   routesAndJourneyPatternsTableData as baseTableConfig,
@@ -17,8 +19,6 @@ import {
   VehicleSubmode,
   VehicleSubmodeOnInfrastructureLink,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
-import { v4 as uuidv4 } from 'uuid';
 
 describe('Function service_pattern.get_distances_between_stop_points_in_journey_patterns', () => {
   let dbConnection: DbConnection;

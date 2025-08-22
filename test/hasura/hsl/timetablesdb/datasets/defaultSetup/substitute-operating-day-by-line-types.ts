@@ -1,5 +1,5 @@
-import { TypeOfLine } from 'generic/timetablesdb/datasets/types';
 import { DateTime } from 'luxon';
+import { TypeOfLine } from 'generic/timetablesdb/datasets/types';
 import { DayOfWeek, SubstituteOperatingDayByLineType } from '../types';
 
 export const substituteOperatingDayByLineTypesByName = {

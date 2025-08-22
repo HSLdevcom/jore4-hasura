@@ -1,10 +1,10 @@
+import { omit } from 'lodash';
+import { DateTime } from 'luxon';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import {
   TimetablePriority,
   VehicleScheduleFrame,
 } from 'generic/timetablesdb/datasets/types';
-import { omit } from 'lodash';
-import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
   GenericTimetablesDatasetInput,

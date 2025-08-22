@@ -1,7 +1,7 @@
+import { readFileSync } from 'fs';
 import { serializeInsertInput } from '@util/dataset';
 import * as db from '@util/db';
 import { promiseSequence } from '@util/promise';
-import { readFileSync } from 'fs';
 import {
   isFileDataSource,
   isGeoProperty,

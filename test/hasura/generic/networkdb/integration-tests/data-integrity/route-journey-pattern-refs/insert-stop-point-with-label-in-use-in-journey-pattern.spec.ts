@@ -1,13 +1,12 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   route116TableConfig,
-  scheduledStopPoints,
   scheduledStopPointWithSameLabelAndOnSameLink,
   scheduledStopPointWithSameLabelOnLinkAfterNextStop,
   scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappingValidityTime,
@@ -15,12 +14,13 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+  scheduledStopPoints,
 } from 'generic/networkdb/datasets/route116';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   ScheduledStopPoint,
-  scheduledStopPointProps,
   VehicleMode,
+  scheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
 
 const VEHICLE_MODE = VehicleMode.Bus;

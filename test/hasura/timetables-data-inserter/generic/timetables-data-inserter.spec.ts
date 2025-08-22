@@ -1,19 +1,19 @@
+import { get } from 'lodash';
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable } from '@util/setup';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
-import { get } from 'lodash';
-import { DateTime } from 'luxon';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import { insertDatasetFromJson } from './data-insert';
 import testDatasetJson from './example.json';
 import {
-  GenericTimetablesDatasetOutput,
-  GenericVehicleScheduleFrameOutput,
   GenericJourneyPatternRefOutput,
   GenericScheduledStopInJourneyPatternRefOutput,
   GenericTimetabledPassingTimeOutput,
+  GenericTimetablesDatasetOutput,
   GenericVehicleJourneyOutput,
+  GenericVehicleScheduleFrameOutput,
   GenericVehicleServiceBlockOutput,
   GenericVehicleServiceOutput,
 } from './types';

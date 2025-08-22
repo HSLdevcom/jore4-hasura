@@ -1,6 +1,6 @@
 import * as config from '@config';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { defaultHslTimetablesDbData } from 'hsl/timetablesdb/datasets/defaultSetup';
 

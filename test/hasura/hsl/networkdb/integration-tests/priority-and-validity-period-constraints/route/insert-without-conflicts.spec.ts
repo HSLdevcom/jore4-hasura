@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -12,10 +13,9 @@ import { buildHslRoute } from 'hsl/networkdb/datasets/factories';
 import { hslNetworkDbSchema } from 'hsl/networkdb/datasets/schema';
 import {
   HslRoute,
-  hslRouteProps,
   RouteDirection,
+  hslRouteProps,
 } from 'hsl/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 
 const buildMutation = (toBeInserted: Partial<HslRoute>) => `
   mutation {

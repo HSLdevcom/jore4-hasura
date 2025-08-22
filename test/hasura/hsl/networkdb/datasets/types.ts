@@ -1,7 +1,7 @@
 import {
   Line as GenericLine,
-  lineProps as genericLineProps,
   Route as GenericRoute,
+  lineProps as genericLineProps,
   routeProps as genericRouteProps,
 } from 'generic/networkdb/datasets/types';
 

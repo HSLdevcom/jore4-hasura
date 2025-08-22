@@ -2,7 +2,7 @@ import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
 import { DbConnection } from '@util/db';
-import { post, FetchResponse } from '@util/fetch-request';
+import { FetchResponse, post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable } from '@util/setup';
 import { scheduledStopPoints } from 'generic/networkdb/datasets/prioritizedRouteVerification';
@@ -10,13 +10,13 @@ import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
   InfrastructureLinkAlongRoute,
-  journeyPatternProps,
   Route,
-  routeProps,
   ScheduledStopPoint,
   ScheduledStopPointInJourneyPattern,
-  scheduledStopPointProps,
   VehicleMode,
+  journeyPatternProps,
+  routeProps,
+  scheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
 
 const VEHICLE_MODE = VehicleMode.Bus;

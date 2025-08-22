@@ -1,13 +1,12 @@
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInputs } from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
   journeyPatterns,
   route116TableConfig,
-  scheduledStopPoints,
   scheduledStopPointWithSameLabelAndOnSameLink,
   scheduledStopPointWithSameLabelOnLinkAfterNextStop,
   scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappingValidityTime,
@@ -15,12 +14,13 @@ import {
   scheduledStopPointWithSameLabelOnLinkOfPrevStopBeforePrevStop,
   scheduledStopPointWithSameLabelOnPrevLink,
   scheduledStopPointWithSameLabelOnSameLinkAfterNextStop,
+  scheduledStopPoints,
 } from 'generic/networkdb/datasets/route116';
 import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   CheckInfraLinkStopRefsWithNewScheduledStopPointArgs,
-  journeyPatternProps,
   ScheduledStopPoint,
+  journeyPatternProps,
 } from 'generic/networkdb/datasets/types';
 
 const buildQuery = (toBeInserted: Partial<ScheduledStopPoint>) => {

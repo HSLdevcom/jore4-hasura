@@ -1,9 +1,9 @@
+import { DateTime } from 'luxon';
 import { defaultTimetablesDataset as defaultGenericTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import {
   TimetablePriority,
   TypeOfLine,
 } from 'generic/timetablesdb/datasets/types';
-import { DateTime } from 'luxon';
 import { mergeTimetablesDatasets } from 'timetables-data-inserter';
 import { defaultDayTypeIds } from '../../../../timetables-data-inserter/day-types';
 import { DayOfWeek } from '../types';

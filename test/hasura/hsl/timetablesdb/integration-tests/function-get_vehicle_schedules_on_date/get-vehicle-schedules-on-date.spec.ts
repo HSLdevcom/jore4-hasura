@@ -1,6 +1,7 @@
+import { DateTime, Duration } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
@@ -19,7 +20,6 @@ import {
   mapVehicleScheduleResponse,
   sortVehicleSchedulesForAssert,
 } from 'hsl/timetablesdb/test-utils';
-import { DateTime, Duration } from 'luxon';
 import {
   buildHslTimetablesDataset,
   createHslTableData,

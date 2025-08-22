@@ -2,15 +2,15 @@ import { isArray, mergeWith, omit } from 'lodash';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
 import {
-  processGenericVehicleScheduleFrame,
   processGenericJourneyPatternRef,
+  processGenericVehicleScheduleFrame,
 } from './models';
 import {
+  GenericJourneyPatternRefInput,
+  GenericJourneyPatternRefOutput,
   GenericTimetablesDatasetInput,
   GenericTimetablesDatasetOutput,
   GenericVehicleScheduleFrameInput,
-  GenericJourneyPatternRefInput,
-  GenericJourneyPatternRefOutput,
 } from './types';
 
 export const processDatasetJourneyPatternRefs = <

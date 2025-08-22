@@ -1,10 +1,11 @@
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import {
-  journeyPatterns,
   routesAndJourneyPatternsTableData as baseTableConfig,
+  journeyPatterns,
   scheduledStopPoints as sourceScheduledStopPoints,
 } from 'generic/networkdb/datasets/routesAndJourneyPatterns';
 import { GenericNetworkDbTables } from 'generic/networkdb/datasets/schema';
@@ -13,7 +14,6 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 
 describe('Function service_pattern.get_distances_between_stop_points_by_routes', () => {
   let dbConnection: DbConnection;

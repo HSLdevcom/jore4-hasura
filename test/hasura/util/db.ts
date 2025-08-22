@@ -1,6 +1,6 @@
-import { knexConfig } from '@config';
 import knex, { Knex } from 'knex';
 import { ConnectionConfig, Pool } from 'pg';
+import { knexConfig } from '@config';
 
 export type DbConnection = Pool | Knex.Transaction;
 export function isTransaction(conn: DbConnection): conn is Knex.Transaction {

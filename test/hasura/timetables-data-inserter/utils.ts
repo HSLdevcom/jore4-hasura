@@ -1,6 +1,6 @@
-import { writeLatestTimetablesDatasetToFile } from '@config';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import { writeLatestTimetablesDatasetToFile } from '@config';
 
 export const assignId = <T, K extends keyof T>(item: T, idField: K) => {
   return {

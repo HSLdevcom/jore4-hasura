@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { buildRoute } from 'generic/networkdb/datasets/factories';
 import {
   InfrastructureLinkAlongRoute,
@@ -5,7 +6,6 @@ import {
   Route,
   RouteDirection,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 import { lines } from './lines';
 

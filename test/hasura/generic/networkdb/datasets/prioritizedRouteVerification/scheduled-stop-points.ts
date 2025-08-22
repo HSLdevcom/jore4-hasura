@@ -1,3 +1,5 @@
+import { uniqBy } from 'lodash';
+import { DateTime } from 'luxon';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -5,8 +7,6 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { uniqBy } from 'lodash';
-import { DateTime } from 'luxon';
 import { basicRouteInfraLinks, otherInfraLink } from './infrastructure-links';
 
 export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [

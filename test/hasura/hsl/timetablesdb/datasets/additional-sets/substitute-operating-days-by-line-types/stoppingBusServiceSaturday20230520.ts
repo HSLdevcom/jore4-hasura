@@ -1,5 +1,5 @@
-import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
+import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import { HslTimetablesDbTables } from '../../schema';
 
 export const stoppingBusServiceSaturday20230520SubstituteOperatingDayByLineType =

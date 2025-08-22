@@ -1,7 +1,7 @@
+import { ConnectionConfig } from 'pg';
 import { timetablesDbConfig } from '@config';
 import { closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
-import { ConnectionConfig } from 'pg';
 import { buildHslTimetablesDataset } from './dataset';
 import { parseHslDatasetJson } from './json-parser';
 import { createHslTableData } from './table-data';

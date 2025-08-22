@@ -1,3 +1,4 @@
+import { Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -10,7 +11,6 @@ import {
   ScheduledStopInJourneyPatternRef,
   TimetabledPassingTime,
 } from 'generic/timetablesdb/datasets/types';
-import { Duration } from 'luxon';
 import {
   buildGenericTimetablesDataset,
   createGenericTableData,

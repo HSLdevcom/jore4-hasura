@@ -1,7 +1,8 @@
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,10 +14,9 @@ import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
-  scheduledStopPointProps,
   VehicleMode,
+  scheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 
 const VEHICLE_MODE = VehicleMode.Bus;
 

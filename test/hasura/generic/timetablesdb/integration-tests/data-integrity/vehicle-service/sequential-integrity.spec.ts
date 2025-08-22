@@ -1,3 +1,4 @@
+import { Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import {
   DbConnection,
@@ -8,7 +9,6 @@ import {
 import { setupDb } from '@util/setup';
 import { defaultJourneyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import { RouteDirection } from 'generic/timetablesdb/datasets/types';
-import { Duration } from 'luxon';
 import {
   GenericTimetablesDatasetInput,
   GenericTimetablesDatasetOutput,

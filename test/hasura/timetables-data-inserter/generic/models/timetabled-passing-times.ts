@@ -1,8 +1,8 @@
+import { omit } from 'lodash';
 import {
   TimetabledPassingTime,
   VehicleJourney,
 } from 'generic/timetablesdb/datasets/types';
-import { omit } from 'lodash';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
   GenericTimetabledPassingTimeInput,

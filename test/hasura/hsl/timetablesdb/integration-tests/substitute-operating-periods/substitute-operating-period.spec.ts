@@ -1,3 +1,4 @@
+import { DateTime, Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { postQuery } from '@util/graphql';
@@ -20,7 +21,6 @@ import {
   buildPartialUpsertSubstituteOperatingPeriod,
   wrapWithTimetablesMutation,
 } from 'hsl/timetablesdb/mutations';
-import { DateTime, Duration } from 'luxon';
 import {
   HslTimetablesDatasetOutput,
   buildHslTimetablesDataset,

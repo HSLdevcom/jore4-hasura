@@ -1,11 +1,11 @@
+import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 import * as config from '@config';
 import { buildLocalizedString } from '@util/dataset';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { Route, RouteDirection } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
-import { v4 as uuidv4 } from 'uuid';
 
 const dummyLineId = uuidv4();
 const defaultRouteLabel = 'route 1';

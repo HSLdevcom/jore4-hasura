@@ -1,3 +1,4 @@
+import { differenceBy, xor } from 'lodash';
 import * as config from '@config';
 import { timetablesDbConfig } from '@config';
 import * as db from '@util/db';
@@ -9,7 +10,6 @@ import {
   HslTimetablesDbTables,
   hslTimetablesDbTables,
 } from 'hsl/timetablesdb/datasets/schema';
-import { differenceBy, xor } from 'lodash';
 import {
   buildHslTimetablesDataset,
   createHslTableData,

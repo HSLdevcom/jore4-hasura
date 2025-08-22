@@ -1,5 +1,5 @@
-import { buildLocalizedString } from '@util/dataset';
 import { DateTime } from 'luxon';
+import { buildLocalizedString } from '@util/dataset';
 import { TimetablePriority, VehicleScheduleFrame } from './types';
 
 // can set either name_i18n (-> leave as is) or name (-> make i18n version)

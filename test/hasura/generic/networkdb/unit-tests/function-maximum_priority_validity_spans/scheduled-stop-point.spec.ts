@@ -1,9 +1,11 @@
+import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 import { networkDbConfig } from '@config';
 import { buildLocalizedString } from '@util/dataset';
 import {
+  DbConnection,
   closeDbConnection,
   createDbConnection,
-  DbConnection,
   singleQuery,
 } from '@util/db';
 import { setupDb } from '@util/setup';
@@ -15,8 +17,6 @@ import {
   RouteDirection,
   ScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
-import { v4 as uuidv4 } from 'uuid';
 
 const defaultRouteLabel = 'route 2';
 const stopLabel = 'stop A';

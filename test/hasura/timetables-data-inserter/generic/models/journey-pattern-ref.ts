@@ -1,12 +1,12 @@
+import { omit } from 'lodash';
+import { DateTime } from 'luxon';
+import { v4 as uuidv4 } from 'uuid';
 import {
   JourneyPatternRef,
   RouteDirection,
   TypeOfLine,
 } from 'generic/timetablesdb/datasets/types';
-import { omit } from 'lodash';
-import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
-import { v4 as uuidv4 } from 'uuid';
 import {
   GenericJourneyPatternRefInput,
   GenericJourneyPatternRefOutput,

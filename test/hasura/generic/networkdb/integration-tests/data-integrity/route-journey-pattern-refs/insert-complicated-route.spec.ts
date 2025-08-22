@@ -1,5 +1,5 @@
 import * as config from '@config';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable, setupDb } from '@util/setup';
 import {
   infrastructureLinkAlongRoute,

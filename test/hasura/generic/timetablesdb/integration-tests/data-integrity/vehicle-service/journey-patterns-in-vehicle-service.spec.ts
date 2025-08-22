@@ -1,9 +1,9 @@
 import { timetablesDbConfig } from '@config';
 import {
+  DbConnection,
   batchInsert,
   closeDbConnection,
   createDbConnection,
-  DbConnection,
   getKnex,
 } from '@util/db';
 import { addMutationWrapper, postQuery } from '@util/graphql';

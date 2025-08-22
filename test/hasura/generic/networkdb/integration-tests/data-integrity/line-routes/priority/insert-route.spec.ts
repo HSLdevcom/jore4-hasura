@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { expectErrorResponse } from '@util/response';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
@@ -16,7 +17,6 @@ import {
   RouteDirection,
   routeProps,
 } from 'generic/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 
 const toBeInserted = (
   onLineId: string | undefined,

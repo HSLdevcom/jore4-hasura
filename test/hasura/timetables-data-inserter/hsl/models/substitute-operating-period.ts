@@ -1,5 +1,5 @@
-import { SubstituteOperatingPeriod } from 'hsl/timetablesdb/datasets/types';
 import { omit } from 'lodash';
+import { SubstituteOperatingPeriod } from 'hsl/timetablesdb/datasets/types';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
   SubstituteOperatingPeriodInput,

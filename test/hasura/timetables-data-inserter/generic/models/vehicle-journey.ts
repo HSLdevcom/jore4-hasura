@@ -1,8 +1,8 @@
+import { omit } from 'lodash';
 import {
   VehicleJourney,
   VehicleServiceBlock,
 } from 'generic/timetablesdb/datasets/types';
-import { omit } from 'lodash';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { assignForeignKey, assignId } from 'timetables-data-inserter/utils';
 import {

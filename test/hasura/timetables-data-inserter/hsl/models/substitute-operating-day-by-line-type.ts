@@ -1,9 +1,9 @@
+import { DateTime } from 'luxon';
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import {
   SubstituteOperatingDayByLineType,
   SubstituteOperatingPeriod,
 } from 'hsl/timetablesdb/datasets/types';
-import { DateTime } from 'luxon';
 import { assignId } from 'timetables-data-inserter/utils';
 import {
   SubstituteOperatingDayByLineTypeInput,

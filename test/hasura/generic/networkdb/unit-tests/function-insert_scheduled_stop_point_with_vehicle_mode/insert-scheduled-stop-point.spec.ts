@@ -1,3 +1,5 @@
+import { GeometryObject } from 'geojson';
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import {
   asEwkb,
@@ -5,7 +7,7 @@ import {
   serializeMatcherInputs,
 } from '@util/dataset';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable, setupDb } from '@util/setup';
 import {
   defaultGenericNetworkDbData,
@@ -20,8 +22,6 @@ import {
   ScheduledStopPoint,
   VehicleMode,
 } from 'generic/networkdb/datasets/types';
-import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 
 const toBeInserted: ScheduledStopPoint = {
   scheduled_stop_point_id: '81860cb8-6947-4ecb-abbd-0720ada98b40',

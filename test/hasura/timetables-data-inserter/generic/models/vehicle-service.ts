@@ -1,8 +1,8 @@
+import { omit } from 'lodash';
 import {
   VehicleScheduleFrame,
   VehicleService,
 } from 'generic/timetablesdb/datasets/types';
-import { omit } from 'lodash';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { assignId } from 'timetables-data-inserter/utils';

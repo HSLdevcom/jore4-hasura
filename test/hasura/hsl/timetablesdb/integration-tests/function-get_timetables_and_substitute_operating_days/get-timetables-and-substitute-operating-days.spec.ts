@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { setupDb } from '@util/setup';
 import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import {
@@ -18,7 +19,6 @@ import {
   mapTimetableVersionResponse,
   sortVersionsForAssert,
 } from 'hsl/timetablesdb/test-utils';
-import { DateTime } from 'luxon';
 import {
   buildHslTimetablesDataset,
   createHslTableData,

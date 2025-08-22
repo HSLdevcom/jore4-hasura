@@ -1,6 +1,8 @@
+import { GeometryObject } from 'geojson';
+import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
-import { closeDbConnection, createDbConnection, DbConnection } from '@util/db';
+import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { getPropNameArray, queryTable, setupDb } from '@util/setup';
 import {
@@ -13,11 +15,9 @@ import { genericNetworkDbSchema } from 'generic/networkdb/datasets/schema';
 import {
   LinkDirection,
   ScheduledStopPoint,
-  scheduledStopPointProps,
   VehicleMode,
+  scheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
-import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 
 const toBeInserted: Partial<ScheduledStopPoint> = {
   scheduled_stop_point_id: 'd1e8878f-da19-474a-b156-13ac41175789',

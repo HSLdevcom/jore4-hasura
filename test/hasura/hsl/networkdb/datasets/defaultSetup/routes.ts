@@ -1,10 +1,10 @@
+import { DateTime } from 'luxon';
 import { routes as genericRoutes } from 'generic/networkdb/datasets/defaultSetup/routes';
 import {
   HslRoute,
   LegacyHslMunicipality,
   RouteDirection,
 } from 'hsl/networkdb/datasets/types';
-import { DateTime } from 'luxon';
 import { buildHslRoute } from '../factories';
 import { hslLines } from './lines';
 

@@ -1,5 +1,5 @@
-import { Line, VehicleMode } from 'generic/networkdb/datasets/types';
 import { DateTime } from 'luxon';
+import { Line, VehicleMode } from 'generic/networkdb/datasets/types';
 import { buildLine } from '../factories';
 
 export const lines: Line[] = [

@@ -1,6 +1,6 @@
+import { DateTime } from 'luxon';
 import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
-import { DateTime } from 'luxon';
 import { defaultDayTypeIds } from '../../../../../timetables-data-inserter/day-types';
 import { buildHslVehicleScheduleFrame } from '../../factories';
 import { HslTimetablesDbTables } from '../../schema';

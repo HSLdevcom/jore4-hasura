@@ -1,16 +1,16 @@
+import { z } from 'zod';
 import { TypeOfLine } from 'generic/timetablesdb/datasets/types';
 import { DayOfWeek } from 'hsl/timetablesdb/datasets/types';
 import {
   dateSchema,
   durationSchema,
   genericTimetablesJsonSchema,
-  vehicleServiceBlockSchema as genericVehicleServiceBlockSchema,
-  vehicleServiceSchema as genericVehicleServiceSchema,
   vehicleJourneySchema as genericVehicleJourneySchema,
   vehicleScheduleFrameSchema as genericVehicleScheduleFrameSchema,
+  vehicleServiceBlockSchema as genericVehicleServiceBlockSchema,
+  vehicleServiceSchema as genericVehicleServiceSchema,
   localizedStringSchema,
 } from 'timetables-data-inserter/generic/json-schemas';
-import { z } from 'zod';
 
 // Borrowed from related Luxon issue discussion: https://github.com/moment/luxon/issues/353#issuecomment-1262828949
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

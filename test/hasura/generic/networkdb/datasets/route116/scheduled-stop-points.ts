@@ -1,3 +1,5 @@
+import { uniqBy } from 'lodash';
+import { DateTime } from 'luxon';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -5,8 +7,6 @@ import {
   VehicleMode,
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
-import { uniqBy } from 'lodash';
-import { DateTime } from 'luxon';
 
 const scheduledStopPointPohjantie: ScheduledStopPoint = {
   scheduled_stop_point_id: '8025166f-27c1-4973-9f07-8b28c5ba3166',

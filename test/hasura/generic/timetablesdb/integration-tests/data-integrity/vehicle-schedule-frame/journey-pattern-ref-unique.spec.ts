@@ -1,8 +1,10 @@
+import { pick, without } from 'lodash';
+import { DateTime, Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import {
+  DbConnection,
   closeDbConnection,
   createDbConnection,
-  DbConnection,
   getKnex,
 } from '@util/db';
 import { addMutationWrapper, postQuery } from '@util/graphql';
@@ -21,13 +23,11 @@ import {
   buildUpdateVehicleScheduleFrameMutation,
   buildUpdateVehicleServiceMutation,
 } from 'generic/timetablesdb/mutations';
-import { pick, without } from 'lodash';
-import { DateTime, Duration } from 'luxon';
 import {
+  GenericTimetablesDatasetInput,
   buildGenericTimetablesDataset,
   createGenericTableData,
   defaultDayTypeIds,
-  GenericTimetablesDatasetInput,
   genericVehicleScheduleFrameToDbFormat,
   timetabledPassingTimeToDbFormat,
   vehicleJourneyToDbFormat,

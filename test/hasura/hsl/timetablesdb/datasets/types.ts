@@ -1,12 +1,12 @@
+import { DateTime, Duration } from 'luxon';
 import {
   TimetablePriority,
   TypeOfLine,
   VehicleJourney,
-  vehicleJourneyProps,
   VehicleScheduleFrame,
+  vehicleJourneyProps,
   vehicleScheduleFrameProps,
 } from 'generic/timetablesdb/datasets/types';
-import { DateTime, Duration } from 'luxon';
 
 export const hslVehicleScheduleFrameProps: Property[] = [
   ...vehicleScheduleFrameProps,
