@@ -65,7 +65,7 @@ describe('Insert route', () => {
         body: { query: buildMutation(onLineId, priority) },
       }).then(
         expectErrorResponse(
-          expectedErrorMsg || 'route priority must be >= line priority',
+          expectedErrorMsg ?? 'route priority must be >= line priority',
         ),
       );
     });

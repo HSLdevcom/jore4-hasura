@@ -28,7 +28,7 @@ export const processGenericVehicleScheduleFrame = (
   const idField = 'vehicle_schedule_frame_id';
   const result = assignId(vehicleScheduleFrame, idField);
 
-  const vehicleServices = result._vehicle_services || {};
+  const vehicleServices = result._vehicle_services ?? {};
   const processedVehicleServices = Object.fromEntries(
     Object.values(vehicleServices).map((child, i) => [
       Object.keys(vehicleServices)[i],

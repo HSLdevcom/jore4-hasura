@@ -14,7 +14,7 @@ export const mergeLists = <TItem extends ExplicitAny>(
     const replacedItem = upsertItems.find(
       (item) => valueFunction(item) === valueFunction(currentItem),
     );
-    return [...result, replacedItem || currentItem];
+    return [...result, replacedItem ?? currentItem];
   }, []);
 
   // append the new items after the replaced items

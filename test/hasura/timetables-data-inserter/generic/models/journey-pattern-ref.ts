@@ -30,7 +30,7 @@ export const processGenericJourneyPatternRef = (
   const idField = 'journey_pattern_ref_id';
   const result = assignId(journeyPatternRef, idField);
 
-  const stopPoints = (result._stop_points || []).map((child) =>
+  const stopPoints = (result._stop_points ?? []).map((child) =>
     processGenericScheduledStopPoint(child, result),
   );
 

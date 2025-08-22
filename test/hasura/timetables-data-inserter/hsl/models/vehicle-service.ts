@@ -24,7 +24,7 @@ export const processHslVehicleService = (
   );
   const result = genericVehicleService;
 
-  const blocks = vehicleService._blocks || {};
+  const blocks = vehicleService._blocks ?? {};
   const processedBlocks = Object.fromEntries(
     Object.values(blocks).map((child, i) => [
       Object.keys(blocks)[i],

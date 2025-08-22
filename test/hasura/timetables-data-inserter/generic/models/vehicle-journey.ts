@@ -42,8 +42,8 @@ export const processGenericVehicleJourney = (
     journeyPatternRef.journey_pattern_ref_id as UUID,
   );
 
-  const stopPoints = journeyPatternRef._stop_points || [];
-  const passingTimes = result._passing_times || [];
+  const stopPoints = journeyPatternRef._stop_points ?? [];
+  const passingTimes = result._passing_times ?? [];
   const processedPassingTimes = passingTimes.map((pt) => {
     const matchingStopPoint = stopPoints.find(
       (sp) => sp.scheduled_stop_point_label === pt._scheduled_stop_point_label,

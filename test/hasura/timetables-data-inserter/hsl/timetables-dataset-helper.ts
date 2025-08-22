@@ -21,7 +21,7 @@ export const createHslTimetablesDatasetHelper = (
       )
       .reduce(
         (result, [label, sodblt]) => {
-          const labelGroup = result[label] || [];
+          const labelGroup = result[label] ?? [];
           labelGroup.push(sodblt);
           return {
             ...result,

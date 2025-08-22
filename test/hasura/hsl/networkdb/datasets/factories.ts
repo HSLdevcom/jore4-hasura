@@ -28,6 +28,6 @@ export const buildHslRoute = (
     ...(postfix ? buildGenericRoute(postfix) : {}),
     legacy_hsl_municipality_code: LegacyHslMunicipality.Helsinki,
     variant: null,
-    ...(input || {}),
+    ...(input ?? {}),
   } as HslRoute;
 };

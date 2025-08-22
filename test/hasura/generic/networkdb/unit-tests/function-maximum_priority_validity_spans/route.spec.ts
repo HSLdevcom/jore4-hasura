@@ -49,12 +49,12 @@ describe('Function maximum_priority_validity_spans should return correct route r
       dbConnection,
       `SELECT *
        FROM journey_pattern.maximum_priority_validity_spans('route', '{ "${
-         routeLabel !== undefined ? routeLabel : defaultRouteLabel
+         routeLabel ?? defaultRouteLabel
        }" }', ${
          validityStart !== undefined ? `'${validityStart.toISODate()}'` : 'NULL'
        }, ${
          validityEnd !== undefined ? `'${validityEnd.toISODate()}'` : 'NULL'
-       }, ${upperPriorityLimit !== undefined ? upperPriorityLimit : 'NULL'})`,
+       }, ${upperPriorityLimit ?? 'NULL'})`,
     );
   };
 

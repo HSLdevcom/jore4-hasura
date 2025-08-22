@@ -41,7 +41,7 @@ export const createTimetablesDatasetHelper = <
     .flatMap((vsf) => Object.entries(vsf._vehicle_services))
     .reduce(
       (result, [label, vss]) => {
-        const labelGroup = result[label] || [];
+        const labelGroup = result[label] ?? [];
         labelGroup.push(vss);
         return {
           ...result,
@@ -55,7 +55,7 @@ export const createTimetablesDatasetHelper = <
     .flatMap((vs) => Object.entries(vs._blocks))
     .reduce(
       (result, [label, block]) => {
-        const labelGroup = result[label] || [];
+        const labelGroup = result[label] ?? [];
         labelGroup.push(block);
         return {
           ...result,
@@ -69,7 +69,7 @@ export const createTimetablesDatasetHelper = <
     .flatMap((block) => Object.entries(block._vehicle_journeys))
     .reduce(
       (result, [label, vj]) => {
-        const labelGroup = result[label] || [];
+        const labelGroup = result[label] ?? [];
         labelGroup.push(vj);
         return {
           ...result,

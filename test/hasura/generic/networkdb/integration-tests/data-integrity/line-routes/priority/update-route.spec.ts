@@ -57,7 +57,7 @@ describe('Update route', () => {
         body: { query: buildMutation(toBeUpdated) },
       }).then(
         expectErrorResponse(
-          expectedErrorMessage || 'route priority must be >= line priority',
+          expectedErrorMessage ?? 'route priority must be >= line priority',
         ),
       );
     });

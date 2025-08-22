@@ -55,18 +55,18 @@ export const buildHslTimetablesDataset = (
   datasetInput: HslTimetablesDatasetInput,
 ): HslTimetablesDatasetOutput => {
   const processedJourneyPatternRefs = processDatasetJourneyPatternRefs(
-    datasetInput._journey_pattern_refs || {},
+    datasetInput._journey_pattern_refs ?? {},
   );
 
   const processedVehicleScheduleFrames = processDatasetHslVehicleScheduleFrames(
-    datasetInput._vehicle_schedule_frames || {},
+    datasetInput._vehicle_schedule_frames ?? {},
     datasetInput,
     processedJourneyPatternRefs,
   );
 
   const processedSubstituteOperatingPeriods =
     processSubstituteOperatingDayPeriods(
-      datasetInput._substitute_operating_periods || {},
+      datasetInput._substitute_operating_periods ?? {},
     );
 
   const builtDataset = {

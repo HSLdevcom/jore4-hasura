@@ -21,7 +21,7 @@ export const processSubstituteOperatingPeriod = (
   );
 
   const substituteOperatingDayByLineTypes =
-    substituteOperatingPeriod._substitute_operating_day_by_line_types || {};
+    substituteOperatingPeriod._substitute_operating_day_by_line_types ?? {};
   const processedSubstituteOperatingDayByLineTypes = Object.fromEntries(
     Object.values(substituteOperatingDayByLineTypes).map((child, i) => [
       Object.keys(substituteOperatingDayByLineTypes)[i],

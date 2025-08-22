@@ -18,21 +18,21 @@ export const flattenDatasetBase = (
   dataset: GenericTimetablesDatasetOutput | HslTimetablesDatasetOutput,
 ) => {
   const vehicleScheduleFrames = Object.values(
-    dataset._vehicle_schedule_frames || {},
+    dataset._vehicle_schedule_frames ?? {},
   );
   const vehicleServices = vehicleScheduleFrames.flatMap((vsf) =>
-    Object.values(vsf._vehicle_services || {}),
+    Object.values(vsf._vehicle_services ?? {}),
   );
   const blocks = vehicleServices.flatMap((vsf) =>
-    Object.values(vsf._blocks || {}),
+    Object.values(vsf._blocks ?? {}),
   );
   const vehicleJourneys = blocks.flatMap((vsf) =>
-    Object.values(vsf._vehicle_journeys || {}),
+    Object.values(vsf._vehicle_journeys ?? {}),
   );
   const passingTimes = vehicleJourneys.flatMap(
-    (vsf) => vsf._passing_times || [],
+    (vsf) => vsf._passing_times ?? [],
   );
-  const journeyPatternRefs = Object.values(dataset._journey_pattern_refs || {});
+  const journeyPatternRefs = Object.values(dataset._journey_pattern_refs ?? {});
   const stopPoints = journeyPatternRefs.flatMap((jpr) => jpr._stop_points);
 
   return {

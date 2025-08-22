@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { DateTime, Duration, Settings } from 'luxon';
 import { ConnectionConfig, types } from 'pg';
 
-dotenv.config({ path: process.env.DOTENV_PATH || '../.env' });
+dotenv.config({ path: process.env.DOTENV_PATH ?? '../.env' });
 
 // Configure Luxon.
 Settings.throwOnInvalid = true; // Invalid dates are too easy to miss otherwise.
@@ -37,7 +37,8 @@ export const knexConfig: Knex.Config = {
 
 export type HASURA_DATABASE_SCHEMA = 'generic' | 'hsl';
 export const databaseSchema: HASURA_DATABASE_SCHEMA =
-  (process.env.HASURA_DATABASE_SCHEMA as HASURA_DATABASE_SCHEMA) || 'generic';
+  (process.env.HASURA_DATABASE_SCHEMA as HASURA_DATABASE_SCHEMA | undefined) ??
+  'generic';
 
 export const hasuraApiUri = 'http://127.0.0.1:3201/v1/graphql';
 
@@ -45,7 +46,7 @@ export const hasuraRequestTemplate = {
   uri: hasuraApiUri,
   headers: {
     'x-hasura-admin-secret':
-      process.env.HASURA_GRAPHQL_ADMIN_SECRET || 'hasura',
+      process.env.HASURA_GRAPHQL_ADMIN_SECRET ?? 'hasura',
   },
 };
 

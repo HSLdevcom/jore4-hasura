@@ -16,7 +16,7 @@ export const buildHslVehicleScheduleFrame = (
   const { booking_label, booking_description_i18n, ...rest } = input;
   return {
     ...buildVehicleScheduleFrame(rest),
-    booking_label: booking_label || buildName(input).fi_FI,
+    booking_label: booking_label ?? buildName(input).fi_FI,
     booking_description_i18n,
   };
 };

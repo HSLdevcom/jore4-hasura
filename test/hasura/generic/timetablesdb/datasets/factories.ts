@@ -12,7 +12,7 @@ export type EntityName =
  */
 export const buildName = <TEntity extends EntityName>(
   entityWithName: TEntity,
-) => entityWithName.name_i18n || buildLocalizedString(entityWithName.name);
+) => entityWithName.name_i18n ?? buildLocalizedString(entityWithName.name);
 
 export const buildVehicleScheduleFrame = (
   frame: RequiredKeys<

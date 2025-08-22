@@ -8,7 +8,7 @@ export const assignId = <T, K extends keyof T>(item: T, idField: K) => {
     // In theory the latter part should be same as Required<Pick<T, K>>, but doesn't seem so.
     ...item,
     ...({
-      [idField]: item[idField] || (uuidv4() as T[K]),
+      [idField]: item[idField] ?? (uuidv4() as T[K]),
     } as { [P in K]-?: NonNullable<T[P]> }),
   };
 };

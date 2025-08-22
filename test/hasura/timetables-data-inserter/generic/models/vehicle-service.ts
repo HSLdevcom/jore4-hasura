@@ -27,7 +27,7 @@ export const processGenericVehicleService = (
   const idField = 'vehicle_service_id';
   const result = assignId(vehicleService, idField);
 
-  const blocks = result._blocks || {};
+  const blocks = result._blocks ?? {};
   const processedBlocks = Object.fromEntries(
     Object.values(blocks).map((child, i) => [
       Object.keys(blocks)[i],

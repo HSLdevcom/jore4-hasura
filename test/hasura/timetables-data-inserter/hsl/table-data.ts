@@ -23,11 +23,11 @@ export const flattenHslDataset = <T extends HslTimetablesDatasetOutput>(
 ) => {
   const flattened = flattenDatasetBase(dataset);
   const substituteOperatingPeriods = Object.values(
-    dataset._substitute_operating_periods || {},
+    dataset._substitute_operating_periods ?? {},
   );
   const substituteOperatingDayByLineTypeIds =
     substituteOperatingPeriods.flatMap((period) =>
-      Object.values(period._substitute_operating_day_by_line_types || {}),
+      Object.values(period._substitute_operating_day_by_line_types ?? {}),
     );
   return {
     ...flattened,

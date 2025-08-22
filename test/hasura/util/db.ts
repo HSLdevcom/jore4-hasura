@@ -41,7 +41,7 @@ export const singleQuery = (
   query: string,
   parameters: Knex.RawBinding[] | Knex.ValueDict = [],
 ) => {
-  const knexQuery = getKnex().raw(query, parameters || []);
+  const knexQuery = getKnex().raw(query, parameters ?? []);
   return executeKnexQuery(conn, knexQuery);
 };
 

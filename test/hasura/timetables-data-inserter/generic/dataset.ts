@@ -66,12 +66,12 @@ export const buildGenericTimetablesDataset = (
   datasetInput: GenericTimetablesDatasetInput,
 ): GenericTimetablesDatasetOutput => {
   const processedJourneyPatternRefs = processDatasetJourneyPatternRefs(
-    datasetInput._journey_pattern_refs || {},
+    datasetInput._journey_pattern_refs ?? {},
   );
 
   const processedVehicleScheduleFrames =
     processDatasetGenericVehicleScheduleFrames(
-      datasetInput._vehicle_schedule_frames || {},
+      datasetInput._vehicle_schedule_frames ?? {},
       datasetInput,
       processedJourneyPatternRefs,
     );

@@ -28,7 +28,7 @@ export const processHslVehicleScheduleFrame = <
   );
   const result = genericFrame;
 
-  const vehicleServices = vehicleScheduleFrame._vehicle_services || {};
+  const vehicleServices = vehicleScheduleFrame._vehicle_services ?? {};
   const processedVehicleServices = Object.fromEntries(
     Object.values(vehicleServices).map((child, i) => [
       Object.keys(vehicleServices)[i],
