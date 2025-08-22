@@ -1,4 +1,5 @@
-import { differenceBy, xor } from 'lodash';
+import differenceBy from 'lodash/differenceBy';
+import xor from 'lodash/xor';
 import * as config from '@config';
 import { timetablesDbConfig } from '@config';
 import * as db from '@util/db';

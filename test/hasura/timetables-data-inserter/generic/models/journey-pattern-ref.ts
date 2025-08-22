@@ -1,4 +1,4 @@
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import {

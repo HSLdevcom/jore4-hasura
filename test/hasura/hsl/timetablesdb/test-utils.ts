@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import { TimetableVersion, VehicleSchedule } from './datasets/types';
 

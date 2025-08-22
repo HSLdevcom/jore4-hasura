@@ -1,4 +1,6 @@
-import { isArray, mergeWith, omit } from 'lodash';
+import isArray from 'lodash/isArray';
+import mergeWith from 'lodash/mergeWith';
+import omit from 'lodash/omit';
 import { TimetablesDatasetInput } from 'timetables-data-inserter/types';
 import { writeBuiltDatasetToFile } from 'timetables-data-inserter/utils';
 import {

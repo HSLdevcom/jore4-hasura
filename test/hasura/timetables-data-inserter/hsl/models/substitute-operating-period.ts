@@ -1,4 +1,4 @@
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { SubstituteOperatingPeriod } from 'hsl/timetablesdb/datasets/types';
 import { assignId } from 'timetables-data-inserter/utils';
 import {

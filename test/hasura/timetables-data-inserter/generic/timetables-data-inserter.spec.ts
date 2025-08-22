@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { DateTime } from 'luxon';
 import * as config from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';

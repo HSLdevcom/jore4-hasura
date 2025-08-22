@@ -1,4 +1,4 @@
-import { pick } from 'lodash';
+import pick from 'lodash/pick';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import { HslVehicleScheduleFrame } from 'hsl/timetablesdb/datasets/types';
 import {
