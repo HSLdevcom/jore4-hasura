@@ -7,17 +7,29 @@ const { rules: es6 } = require('./es6');
 const { rules: imports } = require('./imports');
 const { rules: strict } = require('./strict');
 const { rules: typescript } = require('./typescript');
+const { rules: jest } = require('./jest');
 
-module.exports = {
-  rules: {
-    ...bestPractices,
-    ...errors,
-    ...node,
-    ...style,
-    ...variables,
-    ...es6,
-    ...imports,
-    ...strict,
-    ...typescript,
-  },
+const hasuraRuleOverrides = {
+  'no-underscore-dangle': 'off',
 };
+
+const baseRules = {
+  ...bestPractices,
+  ...errors,
+  ...node,
+  ...style,
+  ...variables,
+  ...es6,
+  ...imports,
+  ...strict,
+  ...typescript,
+
+  ...hasuraRuleOverrides,
+};
+
+const jestRules = {
+  ...baseRules,
+  ...jest,
+};
+
+module.exports = { baseRules, jestRules };

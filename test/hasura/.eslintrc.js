@@ -1,9 +1,4 @@
-const { rules } = require('./eslint/rules');
-
-const ruleOverrides = {
-  'no-underscore-dangle': 'off',
-  'jest/expect-expect': 'off', // most of the tests call the assertions through an external function
-};
+const { baseRules, jestRules } = require('./eslint/rules');
 
 module.exports = {
   env: {
@@ -17,8 +12,6 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:eslint-comments/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest-formatting/recommended',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -34,10 +27,17 @@ module.exports = {
       },
     },
   },
-  plugins: ['@typescript-eslint', 'jest', 'jest-formatting', 'lodash'],
+  plugins: ['@typescript-eslint', 'lodash'],
   ignorePatterns: ['dist/*'],
-  rules: {
-    ...rules,
-    ...ruleOverrides,
-  },
+  rules: baseRules,
+
+  overrides: [
+    {
+      files: ['**/*.spec.ts', 'jest/*.ts'],
+      env: { jest: true },
+      extends: ['plugin:jest/recommended'],
+      plugins: ['jest'],
+      rules: jestRules,
+    },
+  ],
 };
