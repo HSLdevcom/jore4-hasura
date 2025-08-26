@@ -6,22 +6,22 @@ module.exports = {
     camelcase: ['error', { properties: 'never', ignoreDestructuring: false }],
 
     // enforce newline at the end of file, with no multiple empty lines
-    'eol-last': ['error', 'always'],
+    '@stylistic/eol-last': ['error', 'always'],
 
     // require function expressions to have a name
     // https://eslint.org/docs/rules/func-names
     'func-names': 'warn',
 
     // require or disallow an empty line between class members
-    // https://eslint.org/docs/rules/lines-between-class-members
-    'lines-between-class-members': ['error', 'always'],
+    // https://eslint.style/rules/rules/lines-between-class-members
+    '@stylistic/lines-between-class-members': ['error', 'always'],
 
     // require a capital letter for constructors
     'new-cap': ['error', { capIsNew: false }],
 
     // disallow the omission of parentheses when invoking a constructor with no arguments
-    // https://eslint.org/docs/rules/new-parens
-    'new-parens': 'error',
+    //https://eslint.style/rules/new-parens
+    '@stylistic/new-parens': 'error',
 
     // disallow use of bitwise operators
     // https://eslint.org/docs/rules/no-bitwise
@@ -40,8 +40,11 @@ module.exports = {
     'no-multi-assign': ['error'],
 
     // disallow multiple empty lines, only one newline at the end, and no new lines at the beginning
-    // https://eslint.org/docs/rules/no-multiple-empty-lines
-    'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
+    // https://eslint.style/rules/no-multiple-empty-lines
+    '@stylistic/no-multiple-empty-lines': [
+      'error',
+      { max: 1, maxBOF: 0, maxEOF: 0 },
+    ],
 
     // disallow nested ternary expressions
     'no-nested-ternary': 'error',
@@ -86,7 +89,7 @@ module.exports = {
 
     // disallow whitespace before properties
     // https://eslint.org/docs/rules/no-whitespace-before-property
-    'no-whitespace-before-property': 'error',
+    '@stylistic/no-whitespace-before-property': 'error',
 
     // allow just one var statement per function
     'one-var': ['error', 'never'],
@@ -104,8 +107,8 @@ module.exports = {
     'prefer-object-spread': 'error',
 
     // require or disallow a space immediately following the // or /* in a comment
-    // https://eslint.org/docs/rules/spaced-comment
-    'spaced-comment': [
+    // https://eslint.style/rules/spaced-comment
+    '@stylistic/spaced-comment': [
       'error',
       'always',
       {

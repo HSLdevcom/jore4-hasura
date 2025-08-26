@@ -126,8 +126,8 @@ module.exports = {
     'no-fallthrough': 'error',
 
     // disallow the use of leading or trailing decimal points in numeric literals
-    // https://eslint.org/docs/rules/no-floating-decimal
-    'no-floating-decimal': 'error',
+    // https://eslint.style/rules/no-floating-decimal
+    '@stylistic/no-floating-decimal': 'error',
 
     // disallow reassignments of native objects or read-only globals
     // https://eslint.org/docs/rules/no-global-assign
@@ -383,8 +383,12 @@ module.exports = {
     'vars-on-top': 'error',
 
     // require immediate function invocation to be wrapped in parentheses
-    // https://eslint.org/docs/rules/wrap-iife.html
-    'wrap-iife': ['error', 'outside', { functionPrototypeMethods: false }],
+    // https://eslint.style/rules/wrap-iife.html
+    '@stylistic/wrap-iife': [
+      'error',
+      'outside',
+      { functionPrototypeMethods: false },
+    ],
 
     // require or disallow Yoda conditions
     //

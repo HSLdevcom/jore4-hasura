@@ -27,7 +27,7 @@ module.exports = {
       },
     },
   },
-  plugins: ['@typescript-eslint', 'lodash'],
+  plugins: ['@typescript-eslint', 'lodash', '@stylistic'],
   ignorePatterns: ['dist/*'],
   rules: baseRules,
 
