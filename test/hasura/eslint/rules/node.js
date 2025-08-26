@@ -1,39 +1,21 @@
 module.exports = {
   rules: {
-    // enforce return after a callback
-    'callback-return': 'off',
-
     // require all requires be top-level
-    // https://eslint.org/docs/rules/global-require
-    'global-require': 'error',
-
-    // enforces error handling in callbacks (node environment)
-    'handle-callback-err': 'off',
-
-    // disallow use of the Buffer() constructor
-    // https://eslint.org/docs/rules/no-buffer-constructor
-    'no-buffer-constructor': 'error',
-
-    // disallow mixing regular variable and require declarations
-    'no-mixed-requires': ['off', false],
+    // https://github.com/eslint-community/eslint-plugin-n/blob/masters/rules/global-require
+    'n/global-require': 'error',
 
     // disallow use of new operator with the require function
-    'no-new-require': 'error',
+    'n/no-new-require': 'error',
 
     // disallow string concatenation with __dirname and __filename
-    // https://eslint.org/docs/rules/no-path-concat
-    'no-path-concat': 'error',
-
-    // disallow use of process.env
-    'no-process-env': 'off',
+    // https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-path-concat.md
+    'n/no-path-concat': 'error',
 
     // disallow process.exit()
-    'no-process-exit': 'off',
+    'n/no-process-exit': 'off',
 
-    // restrict usage of specified node modules
-    'no-restricted-modules': 'off',
-
-    // disallow use of synchronous methods (off by default)
-    'no-sync': 'off',
+    // Disable import rules as we have the specific import plugin for that
+    'n/no-missing-import': 'off',
+    'n/no-missing-require': 'off',
   },
 };

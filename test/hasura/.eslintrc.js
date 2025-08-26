@@ -12,6 +12,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:@eslint-community/eslint-comments/recommended',
+    'plugin:n/recommended-module',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -26,8 +27,9 @@ module.exports = {
         project: __dirname,
       },
     },
+    node: { version: '>=23.9.0' },
   },
-  plugins: ['@typescript-eslint', 'lodash', '@stylistic'],
+  plugins: ['@typescript-eslint', 'lodash', 'n', '@stylistic'],
   ignorePatterns: ['dist/*'],
   rules: baseRules,
 
