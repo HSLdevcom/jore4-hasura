@@ -298,8 +298,8 @@ module.exports = {
     'unicode-bom': ['error', 'never'],
 
     // Jore overrides
-    'eslint-comments/no-unused-disable': 'error', // ban unused eslint-disable comments
-    'eslint-comments/disable-enable-pair': [
+    '@eslint-community/eslint-comments/no-unused-disable': 'error', // ban unused eslint-disable comments
+    '@eslint-community/eslint-comments/disable-enable-pair': [
       'error',
       {
         // if eslint rules are disabled in the beginning of file, it usually means that it is done for a reason and it doesn't make sense to enable those again at the end of the file
