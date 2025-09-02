@@ -69,7 +69,7 @@ const infraLink: Partial<InfrastructureLink> = {
       [12.3, 10.1, 0],
     ],
   },
-  external_link_source: 'digiroad_r',
+  external_link_source: 'digiroad_r_mml',
   external_link_id: '1',
 };
 
