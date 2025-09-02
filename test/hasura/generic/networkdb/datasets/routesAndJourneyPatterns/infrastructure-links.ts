@@ -23,7 +23,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 22044,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '1',
   },
   {
@@ -46,7 +46,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 87224,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '2',
   },
   {
@@ -66,7 +66,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 16352,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '3',
   },
   {
@@ -88,7 +88,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 56844,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '4',
   },
   {
@@ -109,7 +109,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 55362,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '5',
   },
   {
@@ -130,7 +130,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 49651,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '6',
   },
   {
@@ -152,7 +152,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 61814,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '7',
   },
 ];
