@@ -38,6 +38,7 @@
 - "!include public_hsl_accessibility_properties.yaml"
 - "!include public_id_generator.yaml"
 - "!include public_info_spot.yaml"
+- "!include public_info_spot_location.yaml"
 - "!include public_info_spot_poster.yaml"
 - "!include public_installed_equipment.yaml"
 - "!include public_installed_equipment_version_structure.yaml"

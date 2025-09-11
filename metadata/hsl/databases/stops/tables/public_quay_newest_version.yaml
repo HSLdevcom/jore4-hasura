@@ -2,14 +2,14 @@ table:
   name: quay_newest_version
   schema: public
 object_relationships:
-  - name: equipment
+  - name: equipments
     using:
       manual_configuration:
         column_mapping:
-          place_equipments_id: id
+          place_equipments_id: place_equipment_id
         insertion_order: null
         remote_table:
-          name: place_equipment
+          name: installed_equipment_version_structure_installed_equipment
           schema: public
   - name: stopPlaceParent
     using:
@@ -39,6 +39,15 @@ object_relationships:
           name: stop_place_newest_version
           schema: public
 array_relationships:
+  - name: info_spot_locations
+    using:
+      manual_configuration:
+        column_mapping:
+          netex_id: location_netex_id
+        insertion_order: null
+        remote_table:
+          name: info_spot_location
+          schema: public
   - name: quay_alternative_names
     using:
       manual_configuration:

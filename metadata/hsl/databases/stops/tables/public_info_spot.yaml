@@ -1,3 +1,11 @@
 table:
   name: info_spot
   schema: public
+array_relationships:
+  - name: locations
+    using:
+      foreign_key_constraint_on:
+        column: info_spot_id
+        table:
+          name: info_spot_location
+          schema: public
