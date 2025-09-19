@@ -1,16 +1,14 @@
-FROM alpine:3.22
+FROM python:3.13-alpine
 
-RUN \
-  apk upgrade --update --no-interactive \
-  && apk add --no-interactive \
-    bash \
-    curl \
-    jq
+RUN apk upgrade --update --no-interactive
+
+COPY requirements/runtime.txt /requirements.txt
+RUN pip install -r /requirements.txt
 
 COPY \
   --chown=0:0 \
-  --chmod=755 \
-  reload_schema.sh \
-  /opt/reload_schema
+  --chmod=644 \
+  reload_schema.py \
+  /opt/reload_schema.py
 
-CMD ["/opt/reload_schema"]
+CMD ["python", "/opt/reload_schema.py"]
