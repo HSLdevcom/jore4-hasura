@@ -17,3 +17,25 @@ jobs:
       - name: Run tests
         run: |
           ./test/docker-image/string-interpolation/test.sh
+
+  schema_reloader_tests:
+    name: Run Schema Reloader Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Setup Development Environment
+        run: ./schema_reloader/development.sh create-dev-env
+
+      - name: Run Linters
+        run: ./schema_reloader/development.sh lint
+
+      - name: Run Tests
+        run: ./schema_reloader/development.sh test
