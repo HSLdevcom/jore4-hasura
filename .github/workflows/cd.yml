@@ -12,16 +12,16 @@ jobs:
     name: Check prettify
     uses: ./.github/workflows/check-prettify.yml
 
-  run-docker-image-tests:
+  run-ci:
     needs:
       - check-prettify
-    name: Run docker image tests
+    name: Run CI Workflow
     uses: ./.github/workflows/ci.yml
 
   publish_generic_docker_image_to_acr:
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
     name: Publish Generic Docker image to ACR
     permissions:
       id-token: write
@@ -39,7 +39,7 @@ jobs:
   publish_hsl_docker_image_to_acr:
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
     name: Publish HSL Docker image to ACR
     permissions:
       id-token: write
@@ -74,7 +74,7 @@ jobs:
   run_dump_tests:
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
       - publish_generic_docker_image_to_acr
     uses: ./.github/workflows/check-dump.yml
     with:
@@ -83,7 +83,7 @@ jobs:
   run_migration_tests:
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
       - publish_generic_docker_image_to_acr
       - publish_hsl_docker_image_to_acr
     name: Run migration tests
@@ -111,7 +111,7 @@ jobs:
   run_integration_tests:
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
       - publish_generic_docker_image_to_acr
       - publish_hsl_docker_image_to_acr
     name: Run hasura integration tests
@@ -151,7 +151,7 @@ jobs:
     name: Run E2E tests
     needs:
       - check-prettify
-      - run-docker-image-tests
+      - run-ci
       - publish_hsl_docker_image_to_acr
       - run_dump_tests
       - run_migration_tests
