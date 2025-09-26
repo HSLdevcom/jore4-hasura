@@ -23,7 +23,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '1',
   },
   {
@@ -43,7 +43,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1100,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '2',
   },
   {
@@ -63,7 +63,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1600,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '3',
   },
   {
@@ -83,7 +83,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1400,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '4',
   },
   {
@@ -103,7 +103,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '5',
   },
   {
@@ -123,7 +123,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1100,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '6',
   },
   {
@@ -143,7 +143,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1600,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '7',
   },
   {
@@ -163,7 +163,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1400,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '8',
   },
   {
@@ -183,7 +183,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1200,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '9',
   },
   {
@@ -203,7 +203,7 @@ export const infrastructureLinks: InfrastructureLink[] = [
       ],
     },
     estimated_length_in_metres: 1100,
-    external_link_source: 'digiroad_r',
+    external_link_source: 'digiroad_r_mml',
     external_link_id: '10',
   },
 ];
