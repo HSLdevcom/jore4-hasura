@@ -8325,6 +8325,12 @@ COMMENT ON COLUMN route.infrastructure_link_along_route.is_traversal_forwards IS
 COMMENT ON COLUMN route.infrastructure_link_along_route.route_id IS 'The ID of the route.';
 
 --
+-- Name: COLUMN line.description; Type: COMMENT; Schema: route; Owner: dbhasura
+--
+
+COMMENT ON COLUMN route.line.description IS 'The line text description of the line.';
+
+--
 -- Name: COLUMN line.label; Type: COMMENT; Schema: route; Owner: dbhasura
 --
 
@@ -11991,7 +11997,8 @@ CREATE TABLE route.line (
     validity_end date,
     priority integer NOT NULL,
     label text NOT NULL,
-    type_of_line text NOT NULL
+    type_of_line text NOT NULL,
+    description text
 );
 
 
