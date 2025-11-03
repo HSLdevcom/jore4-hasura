@@ -6,12 +6,6 @@ on:
 jobs:
   validate:
     name: Validate renovatebot config
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Validate
-        uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.1.1
-        with:
-          config_file_path: .github/renovate.json5
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-check-renovatebot-config.yml@shared-check-renovatebot-config-v1
+    with:
+      config_file_path: .github/renovate.json5
