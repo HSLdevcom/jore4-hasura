@@ -157,6 +157,6 @@ jobs:
       - run_dump_tests
       - run_migration_tests
       - run_integration_tests
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-run-e2e.yml@main
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-run-e2e.yml@seed-infrastructure-links-v4
     with:
       hasura_version: "${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}"
