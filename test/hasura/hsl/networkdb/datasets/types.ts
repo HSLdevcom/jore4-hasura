@@ -3,6 +3,8 @@ import {
   Route as GenericRoute,
   lineProps as genericLineProps,
   routeProps as genericRouteProps,
+  ScheduledStopPoint as GenericScheduledStopPoint,
+  scheduledStopPointProps as genericScheduledStopPointProps,
 } from 'generic/networkdb/datasets/types';
 
 export * from 'generic/networkdb/datasets/types';
@@ -36,6 +38,13 @@ export const hslLineProps: Property[] = [
   'transport_target',
 ];
 
+export type LineExternalId = {
+  label: string;
+  external_id: number;
+};
+
+export const lineExternalIdProps: Property[] = ['label', 'external_id'];
+
 export enum LegacyHslMunicipality {
   LegacyNotUsed = 'legacy_not_used',
   Helsinki = 'helsinki',
@@ -63,4 +72,13 @@ export const hslRouteProps: Property[] = [
   ...genericRouteProps,
   'legacy_hsl_municipality_code',
   'variant',
+];
+
+export type HslScheduledStopPoint = GenericScheduledStopPoint & {
+  external_id?: number;
+};
+
+export const hslScheduledStopPointProps: Property[] = [
+  ...genericScheduledStopPointProps,
+  'external_id',
 ];
