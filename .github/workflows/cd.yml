@@ -98,7 +98,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: start e2e env
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v9
@@ -128,7 +128,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: start e2e env
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v9
@@ -136,9 +136,9 @@ jobs:
           hasura_version: '${{ matrix.dockerImage }}'
 
       - name: Use Node.js version 24.x
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '24.x' # As of writing, this is the upcoming LTS version
+          node-version: '24.11.1' # As of writing, this is the upcoming LTS version
           cache: 'yarn'
           cache-dependency-path: 'test/hasura/yarn.lock'
 
