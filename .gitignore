@@ -6,6 +6,7 @@ __snapshots__
 *.swp
 docker/*
 !docker/docker-compose.custom.yml
+!docker/docker-compose.custom-e2e.yml
 test/hasura/.eslintcache
 test/hasura/dist/*
 test/hasura/latest-dataset.json
