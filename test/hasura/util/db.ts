@@ -69,4 +69,6 @@ export const disableTriggers = (conn: DbConnection, disable: boolean) =>
   );
 
 export const truncate = (conn: DbConnection, table: string) =>
-  singleQuery(conn, 'TRUNCATE :table: CASCADE', { table });
+  singleQuery(conn, 'TRUNCATE :table: RESTART IDENTITY CASCADE', {
+    table,
+  });
