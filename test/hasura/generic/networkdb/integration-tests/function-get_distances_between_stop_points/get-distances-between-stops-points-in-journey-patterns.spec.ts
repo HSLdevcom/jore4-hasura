@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon';
-import { v4 as uuidv4 } from 'uuid';
 import * as config from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -447,7 +446,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
       // Set a different location along the associated infrastructure link.
       const higherPriorityStopVariant: ScheduledStopPoint = {
         ...scheduledStopPoints[7],
-        scheduled_stop_point_id: uuidv4(),
+        scheduled_stop_point_id: crypto.randomUUID(),
         priority: newPriority,
         measured_location: {
           type: 'Point',
