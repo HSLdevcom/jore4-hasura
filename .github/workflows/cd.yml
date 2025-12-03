@@ -101,7 +101,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v9
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v10
         with:
           hasura_version: '${{ matrix.dockerImage }}'
 
@@ -131,7 +131,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v9
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v10
         with:
           hasura_version: '${{ matrix.dockerImage }}'
 
