@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - main
-      - 'releases/**'
+      - releases/**
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   check-prettify:
@@ -27,7 +30,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v6
     with:
       docker_image_name: jore4-generic-hasura
       build_arm64_image: true
@@ -45,7 +48,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v6
     with:
       docker_image_name: jore4-hsl-hasura
       build_arm64_image: true
@@ -62,7 +65,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v1
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-build-and-publish-docker-image.yml@shared-build-and-publish-docker-image-v6
     with:
       docker_image_name: jore4-hsl-hasura-schema-reloader
       build_arm64_image: false
