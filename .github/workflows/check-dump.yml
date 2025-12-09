@@ -7,6 +7,9 @@ on:
         type: string
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   check_dumps:
     name: Check if the generated dumps are up to date
