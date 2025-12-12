@@ -1,0 +1,1 @@
+This directory exists so the merge script will not fail due to non-existing directory.
