@@ -5,7 +5,8 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   dependency-scan:
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-dependency-scan.yml@shared-ghas-workflows-v1
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-dependency-scan.yml@shared-ghas-workflows-v2
