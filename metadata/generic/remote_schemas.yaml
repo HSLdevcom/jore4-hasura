@@ -7,6 +7,7 @@
       type_names:
         mapping: {}
         prefix: stop_registry_
+    forward_client_headers: true
   comment: Remote schema for Entur Tiamat Stop Place Register
   remote_relationships:
     - relationships:
