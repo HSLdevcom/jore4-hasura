@@ -11,7 +11,7 @@ WORKDIR /
 # Helper scripts should change rarely.
 COPY ./scripts /app/scripts
 # download script for reading docker secrets
-ADD https://raw.githubusercontent.com/HSLdevcom/jore4-tools/main/docker/read-secrets.sh /app/scripts/read-secrets.sh
+ADD --chmod=755 https://raw.githubusercontent.com/HSLdevcom/jore4-tools/main/docker/read-secrets.sh /app/scripts/read-secrets.sh
 
 # Primary change culprits, add them last to maximize layer reuse
 COPY ./migrations/generic "${HASURA_GRAPHQL_MIGRATIONS_DIR}"
