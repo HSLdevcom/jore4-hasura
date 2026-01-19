@@ -17,6 +17,9 @@ ADD --chmod=755 https://raw.githubusercontent.com/HSLdevcom/jore4-tools/main/doc
 COPY ./migrations/generic "${HASURA_GRAPHQL_MIGRATIONS_DIR}"
 COPY ./metadata/generic "${HASURA_GRAPHQL_METADATA_DIR}"
 
+# Set ownership for non-root user (10001) to allow runtime sed modifications
+RUN chown -R 10001:10001 "${HASURA_GRAPHQL_MIGRATIONS_DIR}" "${HASURA_GRAPHQL_METADATA_DIR}"
+
 ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
 CMD ["graphql-engine", "serve"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
@@ -32,3 +35,6 @@ ADD --chmod=755 https://github.com/mikefarah/yq/releases/download/v4.45.1/yq_lin
 COPY ./migrations/hsl "${HASURA_GRAPHQL_MIGRATIONS_DIR}/"
 COPY ./metadata/hsl "${HASURA_GRAPHQL_METADATA_DIR}/hsl"
 RUN /app/scripts/merge-metadata.sh ${HASURA_GRAPHQL_METADATA_DIR}/hsl ${HASURA_GRAPHQL_METADATA_DIR}
+
+# Set ownership again after adding HSL-specific files
+RUN chown -R 10001:10001 "${HASURA_GRAPHQL_MIGRATIONS_DIR}" "${HASURA_GRAPHQL_METADATA_DIR}"
