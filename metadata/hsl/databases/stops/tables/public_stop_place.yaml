@@ -71,3 +71,16 @@ array_relationships:
         table:
           name: stop_place_tariff_zones
           schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - netex_id
+          - version
+        remote_field:
+          stopPlace:
+            arguments:
+              id: $netex_id
+              version: $version
+        remote_schema: Tiamat
+    name: TiamatStopPlace
