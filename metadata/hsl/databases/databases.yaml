@@ -29,6 +29,60 @@
       prefix: stops_database_
   logical_models:
     - fields:
+        - name: netexId
+          type:
+            nullable: false
+            scalar: text
+        - name: version
+          type:
+            nullable: false
+            scalar: text
+        - name: changed
+          type:
+            nullable: true
+            scalar: timestamp
+        - name: changedBy
+          type:
+            nullable: true
+            scalar: text
+        - name: versionComment
+          type:
+            nullable: true
+            scalar: text
+        - name: validityStart
+          type:
+            nullable: true
+            scalar: text
+        - name: validityEnd
+          type:
+            nullable: true
+            scalar: text
+        - name: priority
+          type:
+            nullable: true
+            scalar: integer
+        - name: publicCode
+          type:
+            nullable: false
+            scalar: text
+        - name: privateCodeValue
+          type:
+            nullable: false
+            scalar: text
+        - name: privateCodeType
+          type:
+            nullable: true
+            scalar: text
+        - name: stopPlaceNetexId
+          type:
+            nullable: false
+            scalar: text
+        - name: stopPlaceVersion
+          type:
+            nullable: false
+            scalar: text
+      name: QuayChangeHistoryItem
+    - fields:
         - name: cursor
           type:
             nullable: false
@@ -97,4 +151,46 @@
         );
       returns: TerminalStopSearchResult
       root_field_name: findStopsForTerminal
+    - arguments: {}
+      code: |-
+        SELECT -- Quay's own fields
+               q.netex_id::TEXT           AS "netexId",
+               q.version::TEXT,
+
+               q.changed,
+               q.changed_by::TEXT         AS "changedBy",
+               q.version_comment::TEXT    AS "versionComment",
+
+               q.public_code::TEXT        AS "publicCode",
+               q.private_code_type::TEXT  AS "privateCodeType",
+               q.private_code_value::TEXT AS "privateCodeValue",
+
+               -- Stop Place info
+               sp.netex_id::TEXT          AS "stopPlaceNetexId",
+               sp.version::TEXT           AS "stopPlaceVersion",
+
+               -- HSL validity info
+               validityStart.items::TEXT  AS "validityStart",
+               validityEnd.items::TEXT    AS "validityEnd",
+               priority.items::INTEGER    AS "priority"
+
+        FROM quay AS q
+
+            INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
+
+            INNER JOIN stop_place AS sp ON spq.stop_place_id = sp.id
+
+            LEFT JOIN quay_key_values AS qkvValidityStart ON
+                q.id = qkvValidityStart.quay_id AND qkvValidityStart.key_values_key = 'validityStart'
+            LEFT JOIN value_items AS validityStart ON qkvValidityStart.key_values_id = validityStart.value_id
+
+            LEFT JOIN quay_key_values AS qkvValidityEnd ON
+                q.id = qkvValidityEnd.quay_id AND qkvValidityEnd.key_values_key = 'validityEnd'
+            LEFT JOIN value_items AS validityEnd ON qkvValidityEnd.key_values_id = validityEnd.value_id
+
+            LEFT JOIN quay_key_values AS qkvPriority ON
+                q.id = qkvPriority.quay_id AND qkvPriority.key_values_key = 'priority'
+            LEFT JOIN value_items AS priority ON qkvPriority.key_values_id = priority.value_id;
+      returns: QuayChangeHistoryItem
+      root_field_name: getQuayChangeHistory
   tables: "!include stops/tables/tables.yaml"
