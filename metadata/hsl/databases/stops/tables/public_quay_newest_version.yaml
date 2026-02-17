@@ -77,3 +77,13 @@ remote_relationships:
           name: scheduled_stop_point
           schema: service_pattern
     name: scheduled_stop_point_instance
+  - definition:
+      to_source:
+        field_mapping:
+          timing_place_id: timing_place_id
+        relationship_type: object
+        source: default
+        table:
+          name: timing_place
+          schema: timing_pattern
+    name: timing_place
