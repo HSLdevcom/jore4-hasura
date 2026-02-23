@@ -60,7 +60,7 @@
         - name: priority
           type:
             nullable: true
-            scalar: integer
+            scalar: text
         - name: publicCode
           type:
             nullable: false
@@ -176,7 +176,7 @@
                -- HSL validity info
                validityStart.items::TEXT  AS "validityStart",
                validityEnd.items::TEXT    AS "validityEnd",
-               priority.items::INTEGER    AS "priority",
+               priority.items::TEXT       AS "priority",
 
                -- Was the version imported from Jore3, created in Jore4,
                -- or is this a copy of another priority version?
