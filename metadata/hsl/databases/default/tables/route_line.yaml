@@ -5,3 +5,13 @@ object_relationships:
   - name: transportTargetByTransportTarget
     using:
       foreign_key_constraint_on: transport_target
+array_relationships:
+  - name: change_history
+    using:
+      manual_configuration:
+        column_mapping:
+          line_id: line_id
+        insertion_order: null
+        remote_table:
+          name: line_change_history
+          schema: route
