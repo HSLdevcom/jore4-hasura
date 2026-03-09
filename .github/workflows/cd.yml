@@ -141,7 +141,7 @@ jobs:
       - name: Use Node.js version 24.x
         uses: actions/setup-node@v6
         with:
-          node-version: '24.13.0' # As of writing, this is the upcoming LTS version
+          node-version: '24.14.0' # As of writing, this is the upcoming LTS version
           cache: 'yarn'
           cache-dependency-path: 'test/hasura/yarn.lock'
 
