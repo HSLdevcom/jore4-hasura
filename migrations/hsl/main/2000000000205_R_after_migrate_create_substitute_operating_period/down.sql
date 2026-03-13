@@ -1,0 +1,1 @@
+ALTER TABLE timetables.substitute_operating_period DROP CONSTRAINT substitute_operating_period_period_name_key;
