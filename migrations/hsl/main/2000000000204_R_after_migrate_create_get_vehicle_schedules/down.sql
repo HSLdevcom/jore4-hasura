@@ -1,0 +1,1 @@
+DROP FUNCTION vehicle_journey.get_vehicle_schedules_on_date;
