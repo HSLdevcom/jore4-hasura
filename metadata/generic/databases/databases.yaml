@@ -27,6 +27,21 @@
         retries: 1
       use_prepared_statements: true
   tables: "!include metadata/tables/tables.yaml"
+- name: main
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_MAIN_DATABASE_URL
+      isolation_level: serializable
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  tables: "!include main/tables/tables.yaml"
+  functions: "!include main/functions/functions.yaml"
 - name: timetables
   kind: postgres
   configuration:
