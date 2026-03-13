@@ -16,3 +16,4 @@ services:
     environment:
       # enabling the hasura console locally to ease development
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+      DB_MAIN_NAME: 'jore4main'

@@ -25,4 +25,5 @@ HASURA_GRAPHQL_ADMIN_SECRET="$HASURA_ADMIN_SECRET" \
   HASURA_TIAMAT_DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOSTNAME}:5432/${DB_TIAMAT_NAME:-undefined}" \
   HASURA_TIAMAT_SCHEMA_URL="http://${TIAMAT_HOSTNAME:-jore4-tiamat}:${TIAMAT_PORT:-1888}/services/stop_places/graphql" \
   HASURA_TIMETABLESAPI_URL="http://${TIMETABLESAPI_HOSTNAME:-jore4-timetablesapi}:${TIMETABLESAPI_PORT:-8080}" \
+  HASURA_MAIN_DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOSTNAME}:5432/${DB_MAIN_NAME:-undefined}" \
   exec /bin/docker-entrypoint.sh "$@"
