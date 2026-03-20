@@ -93,7 +93,8 @@ COMMENT ON FUNCTION infrastructure_network.find_point_direction_on_link(point_of
   Recommended upper limit for point_max_distance_in_meters parameter is 50 as increasing distance increases odds of matching errors.
   Returns null if direction could not be resolved.';
 
-CREATE OR REPLACE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) RETURNS SETOF infrastructure_network.infrastructure_link
+DROP FUNCTION IF EXISTS infrastructure_network.resolve_point_to_closest_link(public.geography); -- create or replace does not work beacause of the changed function signature
+CREATE OR REPLACE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text) RETURNS SETOF infrastructure_network.infrastructure_link
     LANGUAGE sql STABLE STRICT PARALLEL SAFE
     AS $$
 SELECT link.*
@@ -105,13 +106,15 @@ CROSS JOIN LATERAL (
         link.infrastructure_link_id,
         point_of_interest.geog <-> link.shape AS distance
     FROM infrastructure_network.infrastructure_link link
-    WHERE ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
+    INNER JOIN infrastructure_network.vehicle_submode_on_infrastructure_link vs on vs.infrastructure_link_id = link.infrastructure_link_id
+    WHERE vs.vehicle_submode = filter_vehicle_submode
+    AND ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
     ORDER BY distance
     LIMIT 1
 ) closest_link_result
 INNER JOIN infrastructure_network.infrastructure_link link ON link.infrastructure_link_id = closest_link_result.infrastructure_link_id;
 $$;
-COMMENT ON FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) IS 'Function for resolving closest infrastructure link to the given point of interest.';
+COMMENT ON FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text) IS 'Function for resolving closest infrastructure link to the given point of interest.';
 
 DROP TRIGGER IF EXISTS check_infrastructure_link_route_link_direction_trigger ON infrastructure_network.infrastructure_link;
 CREATE CONSTRAINT TRIGGER check_infrastructure_link_route_link_direction_trigger AFTER UPDATE ON infrastructure_network.infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION infrastructure_network.check_infrastructure_link_route_link_direction();
