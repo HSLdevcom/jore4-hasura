@@ -7949,10 +7949,10 @@ COMMENT ON FUNCTION infrastructure_network.find_point_direction_on_link(point_of
   Returns null if direction could not be resolved.';
 
 --
--- Name: FUNCTION resolve_point_to_closest_link(geog public.geography); Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
+-- Name: FUNCTION resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text); Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
 --
 
-COMMENT ON FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) IS 'Function for resolving closest infrastructure link to the given point of interest.';
+COMMENT ON FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text) IS 'Function for resolving closest infrastructure link to the given point of interest.';
 
 --
 -- Name: TABLE direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -9353,10 +9353,10 @@ $$;
 ALTER FUNCTION infrastructure_network.find_point_direction_on_link(point_of_interest public.geography, infrastructure_link_uuid uuid, point_max_distance_in_meters double precision) OWNER TO dbhasura;
 
 --
--- Name: resolve_point_to_closest_link(public.geography); Type: FUNCTION; Schema: infrastructure_network; Owner: dbhasura
+-- Name: resolve_point_to_closest_link(public.geography, text); Type: FUNCTION; Schema: infrastructure_network; Owner: dbhasura
 --
 
-CREATE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) RETURNS SETOF infrastructure_network.infrastructure_link
+CREATE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text) RETURNS SETOF infrastructure_network.infrastructure_link
     LANGUAGE sql STABLE STRICT PARALLEL SAFE
     AS $$
 SELECT link.*
@@ -9368,7 +9368,9 @@ CROSS JOIN LATERAL (
         link.infrastructure_link_id,
         point_of_interest.geog <-> link.shape AS distance
     FROM infrastructure_network.infrastructure_link link
-    WHERE ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
+    INNER JOIN infrastructure_network.vehicle_submode_on_infrastructure_link vs on vs.infrastructure_link_id = link.infrastructure_link_id
+    WHERE vs.vehicle_submode = filter_vehicle_submode
+    AND ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
     ORDER BY distance
     LIMIT 1
 ) closest_link_result
@@ -9376,7 +9378,7 @@ INNER JOIN infrastructure_network.infrastructure_link link ON link.infrastructur
 $$;
 
 
-ALTER FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) OWNER TO dbhasura;
+ALTER FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, filter_vehicle_submode text) OWNER TO dbhasura;
 
 --
 -- Name: insert_scheduled_stop_point_with_vehicle_mode(uuid, public.geography, uuid, text, text, date, date, integer, text, uuid); Type: FUNCTION; Schema: internal_service_pattern; Owner: dbhasura
