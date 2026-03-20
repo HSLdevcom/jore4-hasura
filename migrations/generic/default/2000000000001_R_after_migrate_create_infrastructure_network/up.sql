@@ -93,8 +93,7 @@ COMMENT ON FUNCTION infrastructure_network.find_point_direction_on_link(point_of
   Recommended upper limit for point_max_distance_in_meters parameter is 50 as increasing distance increases odds of matching errors.
   Returns null if direction could not be resolved.';
 
-DROP FUNCTION IF EXISTS infrastructure_network.resolve_point_to_closest_link(public.geography); -- create or replace does not work beacause of the changed function signature
-CREATE OR REPLACE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography, vehicle_submode text) RETURNS SETOF infrastructure_network.infrastructure_link
+CREATE OR REPLACE FUNCTION infrastructure_network.resolve_point_to_closest_link(geog public.geography) RETURNS SETOF infrastructure_network.infrastructure_link
     LANGUAGE sql STABLE STRICT PARALLEL SAFE
     AS $$
 SELECT link.*
@@ -106,9 +105,7 @@ CROSS JOIN LATERAL (
         link.infrastructure_link_id,
         point_of_interest.geog <-> link.shape AS distance
     FROM infrastructure_network.infrastructure_link link
-    JOIN infrastructure_network.vehicle_submode_on_infrastructure_link vs on vs.infrastructure_link_id = link.infrastructure_link_id
-    WHERE vs.vehicle_submode = vehicle_submode
-    AND ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
+    WHERE ST_DWithin(point_of_interest.geog, link.shape, 100) -- link filtering radius set to 100 m
     ORDER BY distance
     LIMIT 1
 ) closest_link_result
