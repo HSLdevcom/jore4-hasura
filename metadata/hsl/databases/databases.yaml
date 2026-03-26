@@ -147,11 +147,14 @@
         FROM stop_place AS sp
         INNER JOIN stop_place_max_version AS spmv ON sp.id = spmv.id
         INNER JOIN stopPlaceStops AS sps ON sp.id = sps.stopPlaceId
-        WHERE NOT parent_stop_place AND EXISTS (
+        WHERE NOT parent_stop_place AND (
+            sp.name_value ILIKE '%' || {{query}} || '%'
+                OR EXISTS (
             SELECT 1
             FROM quay AS q
             INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
-            WHERE spq.stop_place_id = sp.id AND q.public_code LIKE {{query}}
+                WHERE spq.stop_place_id = sp.id AND q.public_code LIKE {{query}}
+                )
         );
       returns: TerminalStopSearchResult
       root_field_name: findStopsForTerminal
