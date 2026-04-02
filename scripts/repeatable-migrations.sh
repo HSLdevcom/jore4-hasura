@@ -31,7 +31,7 @@ if [ "$HDB_CATALOG_EXISTS" != "t" ]; then
 fi
 
 # 2. find the repeatable migrations ("timestamp_R_name") in migrations dir
-DATABASES=( "default" "timetables" )
+DATABASES=( "default" "timetables" "main" )
 for DB in "${DATABASES[@]}"
 do
   echo "Looking for repeatable migrations for database: $DB"
