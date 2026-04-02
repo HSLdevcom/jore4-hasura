@@ -98,5 +98,5 @@ The logic for this is that:
 * All the special priorities (priority 25) are always in effect on their validity period.
 * All the substitute priorities (priority 23) are in effect on their validity period and if there is no other version in effect with the exact same day type.
 * All the temporary priorities (priority 20) are in effect on their validity period and if there is no other version in effect with the exact same day type.
-* All the standard priorities (priority 20) are in effect on their validity period and if there is no other version in effect with the exact same day type.
+* All the standard priorities (priority 10) are in effect on their validity period and if there is no other version in effect with the exact same day type.
 * Draft priorities will not be set in effect, nor they will affect other priorities';
