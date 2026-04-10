@@ -87,6 +87,52 @@
             scalar: text
       name: QuayChangeHistoryItem
     - fields:
+        - name: netexId
+          type:
+            nullable: false
+            scalar: text
+        - name: version
+          type:
+            nullable: false
+            scalar: text
+        - name: changed
+          type:
+            nullable: true
+            scalar: timestamp
+        - name: changedBy
+          type:
+            nullable: true
+            scalar: text
+        - name: versionComment
+          type:
+            nullable: true
+            scalar: text
+        - name: validityStart
+          type:
+            nullable: true
+            scalar: text
+        - name: validityEnd
+          type:
+            nullable: true
+            scalar: text
+        - name: priority
+          type:
+            nullable: true
+            scalar: text
+        - name: privateCodeValue
+          type:
+            nullable: false
+            scalar: text
+        - name: privateCodeType
+          type:
+            nullable: true
+            scalar: text
+        - name: parentStopPlace
+          type:
+            nullable: true
+            scalar: boolean
+      name: StopPlaceChangeHistoryItem
+    - fields:
         - name: cursor
           type:
             nullable: false
@@ -210,4 +256,39 @@
         LEFT JOIN value_items AS importedId ON qkvImportedId.key_values_id = importedId.value_id;
       returns: QuayChangeHistoryItem
       root_field_name: getQuayChangeHistory
+    - arguments: {}
+      code: |-
+        SELECT -- Stop Place's own fields
+               sp.netex_id::TEXT           AS "netexId",
+               sp.version::TEXT,
+
+               sp.changed,
+               sp.changed_by::TEXT         AS "changedBy",
+               sp.version_comment::TEXT    AS "versionComment",
+
+               sp.private_code_type::TEXT  AS "privateCodeType",
+               sp.private_code_value::TEXT AS "privateCodeValue",
+
+               sp.parent_stop_place        AS "parentStopPlace",
+
+               -- HSL validity info
+               validityStart.items::TEXT  AS "validityStart",
+               validityEnd.items::TEXT    AS "validityEnd",
+               priority.items::TEXT       AS "priority"
+
+        FROM stop_place AS sp
+
+        LEFT JOIN stop_place_key_values AS spkvValidityStart ON
+            sp.id = spkvValidityStart.stop_place_id AND spkvValidityStart.key_values_key = 'validityStart'
+        LEFT JOIN value_items AS validityStart ON spkvValidityStart.key_values_id = validityStart.value_id
+
+        LEFT JOIN stop_place_key_values AS spkvValidityEnd ON
+            sp.id = spkvValidityEnd.stop_place_id AND spkvValidityEnd.key_values_key = 'validityEnd'
+        LEFT JOIN value_items AS validityEnd ON spkvValidityEnd.key_values_id = validityEnd.value_id
+
+        LEFT JOIN stop_place_key_values AS spkvPriority ON
+            sp.id = spkvPriority.stop_place_id AND spkvPriority.key_values_key = 'priority'
+        LEFT JOIN value_items AS priority ON spkvPriority.key_values_id = priority.value_id;
+      returns: StopPlaceChangeHistoryItem
+      root_field_name: getStopPlaceChangeHistory
   tables: "!include stops/tables/tables.yaml"
