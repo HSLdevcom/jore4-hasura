@@ -21,7 +21,7 @@ SELECT EXISTS (
 );
 EOF
 )
-HDB_CATALOG_EXISTS=`PGPASSWORD="${DB_PASSWORD}" ${PSQL_CMD} -t -c "${HDB_CATALOG_EXISTS_QUERY}"`
+HDB_CATALOG_EXISTS="$(PGPASSWORD="${DB_PASSWORD}" ${PSQL_CMD} -Atq -c "${HDB_CATALOG_EXISTS_QUERY}")"
 echo "HDB_CATALOG_EXISTS: $HDB_CATALOG_EXISTS"
 
 # 1. hdb catalog does not exist (yet), no need to tweak migrations. Exit with success
