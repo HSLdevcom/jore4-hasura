@@ -201,7 +201,7 @@
                     SELECT 1
                     FROM quay AS q
                     INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
-                    WHERE spq.stop_place_id = sp.id AND q.public_code LIKE {{query}}
+                    WHERE spq.stop_place_id = sp.id AND q.public_code ILIKE '%' || {{query}} || '%'
                 )
             );
       returns: TerminalStopSearchResult
