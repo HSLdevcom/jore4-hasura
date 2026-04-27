@@ -32,6 +32,7 @@ fi
 
 # 2. find the repeatable migrations ("timestamp_R_name") in migrations dir
 DATABASES=( "default" "timetables" "main" )
+TIMESTAMP_WIDTH=13
 for DB in "${DATABASES[@]}"
 do
   echo "Looking for repeatable migrations for database: $DB"
@@ -39,18 +40,32 @@ do
   # use regex to find all matching migration names and grep to extract the timestamp part, then put it into an array
   TIMESTAMPS=($(find "${HASURA_GRAPHQL_MIGRATIONS_DIR}" -type d -regex ".*/${DB}/[0-9]*_R_.*" | grep -oE "[0-9]{13}"))
 
-  echo "Found repeatable migrations: $TIMESTAMPS"
+  echo "Found repeatable migrations: ${#TIMESTAMPS[@]}"
 
   for TIMESTAMP in "${TIMESTAMPS[@]}"
   do
 
-# build query to remove repeatable migrations' entries from hdb_catalog
-REMOVE_REPEATABLE_MIGRATIONS_QUERY=$(cat << EOF
-UPDATE hdb_catalog.hdb_version SET cli_state =
-  (cli_state
-  #- '{migrations,$DB,$TIMESTAMP}')
-EOF
-)
+    # Migration folder versions use a fixed width (13 chars). Hasura may store
+    # the same version key without leading zeros, so prefer the fixed-width
+    # key and otherwise fall back to the normalized key.
+    NORMALIZED_TIMESTAMP="$(echo "$TIMESTAMP" | sed -E 's/^0+//')"
+    if [ -z "$NORMALIZED_TIMESTAMP" ]; then
+      NORMALIZED_TIMESTAMP="0"
+    fi
+
+    # build query to remove one repeatable migration key from hdb_catalog.
+    # Prefer the fixed-width key when present, otherwise remove normalized key.
+    if [ "${#TIMESTAMP}" -eq "$TIMESTAMP_WIDTH" ] && [ "$NORMALIZED_TIMESTAMP" != "$TIMESTAMP" ]; then
+      REMOVE_REPEATABLE_MIGRATIONS_QUERY="UPDATE hdb_catalog.hdb_version SET cli_state = CASE
+          WHEN (cli_state->'migrations'->'$DB' ? '$TIMESTAMP')
+            THEN (cli_state #- '{migrations,$DB,$TIMESTAMP}')
+          WHEN (cli_state->'migrations'->'$DB' ? '$NORMALIZED_TIMESTAMP')
+            THEN (cli_state #- '{migrations,$DB,$NORMALIZED_TIMESTAMP}')
+          ELSE cli_state
+        END"
+    else
+      REMOVE_REPEATABLE_MIGRATIONS_QUERY="UPDATE hdb_catalog.hdb_version SET cli_state = (cli_state #- '{migrations,$DB,$TIMESTAMP}')"
+    fi
 
     # run query
     PGPASSWORD="${DB_PASSWORD}" ${PSQL_CMD} -c "${REMOVE_REPEATABLE_MIGRATIONS_QUERY}"
