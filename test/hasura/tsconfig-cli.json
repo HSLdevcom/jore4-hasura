@@ -2,8 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2024",
+    "module": "es2022",
     "noEmit": false
   },
   "exclude": ["node_modules", "**/*.spec.ts", "dist"]

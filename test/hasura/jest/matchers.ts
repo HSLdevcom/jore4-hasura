@@ -1,3 +1,6 @@
+// eslint-disable-next-line n/no-unpublished-import
+import { expect } from '@jest/globals';
+// eslint-disable-next-line n/no-unpublished-import
 import validate from 'uuid-validate';
 
 expect.extend({

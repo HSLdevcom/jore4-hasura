@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2024",
     "lib": ["es2024"],
+    "types": ["jest"],
     "allowJs": false,
     "noEmit": true,
     "skipLibCheck": true,
@@ -13,14 +14,17 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": ".",
     "paths": {
-      "@config": ["config.ts"],
-      "@util/*": ["util/*"]
+      "@config": ["./config.ts"],
+      "@util/*": ["./util/*"],
+      "generic/*": ["./generic/*"],
+      "hsl/*": ["./hsl/*"],
+      "timetables-data-inserter": ["./timetables-data-inserter/index.ts"],
+      "timetables-data-inserter/*": ["./timetables-data-inserter/*"]
     }
   },
   "include": ["**/*.ts"],
