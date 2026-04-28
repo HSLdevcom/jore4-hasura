@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-unpublished-import
 import { expect } from '@jest/globals';
 import { DateTime, Duration } from 'luxon';
 

@@ -54,12 +54,8 @@ program
   .option('--user <user>', 'The user for database config.')
   .option('--password <password>', 'The password for database config.')
   .action(async (schema, datasetJsonFilePath, options) => {
-    let datasetJson = '';
-    if (stdin) {
-      datasetJson = stdin;
-    } else {
-      datasetJson = fs.readFileSync(datasetJsonFilePath).toString();
-    }
+    const datasetJson =
+      stdin ?? fs.readFileSync(datasetJsonFilePath).toString();
 
     let result;
     if (schema === 'generic') {

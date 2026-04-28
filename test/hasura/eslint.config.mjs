@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import stylistic from '@stylistic/eslint-plugin';
 import configPrettier from 'eslint-config-prettier/flat';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import lodash from 'eslint-plugin-lodash';
 import n from 'eslint-plugin-n';
 import jest from 'eslint-plugin-jest';
