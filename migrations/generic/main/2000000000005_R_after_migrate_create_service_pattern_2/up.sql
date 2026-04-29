@@ -177,7 +177,7 @@ $$;
 COMMENT ON FUNCTION network.ssp_relative_distance_from_infrastructure_link_start IS 'The relative distance of the stop from the start of the linestring along the infrastructure link. Regardless of the specified direction, this value is the distance from the beginning of the linestring. The distance is normalized to the closed interval [0, 1].';
 
 ALTER TABLE ONLY network.scheduled_stop_point
-    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, COALESCE(stop_place_ref, '') WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
 DROP TRIGGER IF EXISTS scheduled_stop_point_vehicle_mode_by_infra_link_trigger ON infrastructure_network.vehicle_submode_on_infrastructure_link;
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger AFTER DELETE ON infrastructure_network.vehicle_submode_on_infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION network.check_scheduled_stop_point_vehicle_mode_by_infra_link();
