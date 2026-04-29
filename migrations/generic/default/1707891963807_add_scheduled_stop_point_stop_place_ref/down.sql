@@ -1,3 +1,5 @@
+ALTER TABLE service_pattern.scheduled_stop_point DROP CONSTRAINT IF EXISTS unique_validity_period;
+
 DROP INDEX service_pattern.scheduled_stop_point_stop_place_ref_idx;
 
 ALTER TABLE service_pattern.scheduled_stop_point DROP COLUMN stop_place_ref;

@@ -8949,7 +8949,7 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point
 --
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
-    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+    ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, COALESCE(stop_place_ref, ''::text) WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
 --
 -- Name: scheduled_stop_point_invariant scheduled_stop_point_invariant_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
