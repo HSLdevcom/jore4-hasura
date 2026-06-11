@@ -2,3 +2,13 @@ object_relationships:
   - name: legacyHslMunicipalityCodeByLegacyHslMunicipalityCode
     using:
       foreign_key_constraint_on: legacy_hsl_municipality_code
+array_relationships:
+  - name: change_history
+    using:
+      manual_configuration:
+        column_mapping:
+          route_id: route_id
+        insertion_order: null
+        remote_table:
+          name: line_change_history
+          schema: route
