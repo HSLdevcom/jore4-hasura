@@ -158,31 +158,16 @@
                           'quayId',             q.netex_id,
                           'name',               sp.name_value,
                           'publicCode',         q.public_code,
-                          'priority',           priority.items,
-                          'validityStart',      validityStart.items,
-                          'validityEnd',        validityEnd.items
+                          'priority',           jqe.priority,
+                          'validityStart',      jqe.validity_start,
+                          'validityEnd',        jqe.validity_end
                 )) AS stops
 
             FROM quay AS q
 
-                 INNER JOIN quay_max_version AS qmv ON q.id = qmv.id
+                 INNER JOIN jore_quay_extensions AS jqe ON q.id = jqe.id
                  INNER JOIN stop_place_quays AS spq ON q.id = spq.quays_id
                  INNER JOIN stop_place AS sp ON spq.stop_place_id = sp.id
-
-                 --- Require Priority
-                 INNER JOIN quay_key_values AS qkvPriority ON
-                     q.id = qkvPriority.quay_id AND qkvPriority.key_values_key = 'priority'
-                 INNER JOIN value_items AS priority ON qkvPriority.key_values_id = priority.value_id
-
-                 --- Require validity start date
-                 INNER JOIN quay_key_values AS qkvValidityStart ON
-                     q.id = qkvValidityStart.quay_id AND qkvValidityStart.key_values_key = 'validityStart'
-                 INNER JOIN value_items AS validityStart ON qkvValidityStart.key_values_id = validityStart.value_id
-
-                 --- Validity end date is optional
-                 LEFT JOIN quay_key_values AS qkvValidityEnd ON
-                     q.id = qkvValidityEnd.quay_id AND qkvValidityEnd.key_values_key = 'validityEnd'
-                 LEFT JOIN value_items AS validityEnd ON qkvValidityEnd.key_values_id = validityEnd.value_id
 
             GROUP BY stop_place_id
         )
