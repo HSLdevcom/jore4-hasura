@@ -18,6 +18,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "rootDir": ".",
     "paths": {
       "@config": ["./config.ts"],
       "@util/*": ["./util/*"],

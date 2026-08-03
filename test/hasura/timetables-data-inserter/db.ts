@@ -7,8 +7,7 @@ import { HslTimetablesDbTables } from 'hsl/timetablesdb/datasets/schema';
 // TODO: quite some overlap here with insertTableData in test/hasura/util/setup.ts, maybe some opportunities for refactoring.
 export const tableDataToSql = (
   tableData:
-    | TableData<HslTimetablesDbTables>[]
-    | TableData<GenericTimetablesDbTables>[],
+    TableData<HslTimetablesDbTables>[] | TableData<GenericTimetablesDbTables>[],
 ): string => {
   const insertsForTables = tableData.map((td) => {
     const { data } = td;
