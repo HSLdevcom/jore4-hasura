@@ -17,26 +17,33 @@ def main():
     _log.setLevel(logging.INFO)
 
     try:
-        oldest_tiamat_pod = get_oldest_tiamat_pod_info(os.environ["K8S_NAMESPACE"])
+        oldest_tiamat_pod = get_oldest_pod_info(os.environ["K8S_NAMESPACE"], os.environ["K8S_TIAMAT_DEPLOYMENT_NAME"])
+        oldest_auth_pod = get_oldest_pod_info(os.environ["K8S_NAMESPACE"], os.environ["K8S_AUTH_DEPLOYMENT_NAME"])
 
     except Exception:
-        _log.exception("Failed to read Tiamat pods")
+        _log.exception("Failed to read Tiamat or Auth pods")
         sys.exit(1)
 
     if not oldest_tiamat_pod:
         _log.warning("No Tiamat pods found")
         return
 
-    oldest_tiamat_pod_uptime = get_current_datetime(datetime.timezone.utc) - oldest_tiamat_pod.metadata.creation_timestamp
+    if not oldest_auth_pod:
+        _log.warning("No Auth pods found")
+        return
 
-    tiamat_uptime_threshold = datetime.timedelta(
-        seconds=int(os.environ["TIAMAT_UPTIME_THRESHOLD"]),
+    current_datetime = get_current_datetime(datetime.timezone.utc)
+    oldest_tiamat_pod_uptime = current_datetime - oldest_tiamat_pod.metadata.creation_timestamp
+    oldest_auth_pod_uptime = current_datetime - oldest_auth_pod.metadata.creation_timestamp
+
+    dependency_uptime_threshold = datetime.timedelta(
+        seconds=int(os.environ["DEPENDENCY_UPTIME_THRESHOLD"]),
     )
 
-    if oldest_tiamat_pod_uptime > tiamat_uptime_threshold:
+    if oldest_tiamat_pod_uptime > dependency_uptime_threshold or oldest_auth_pod_uptime  > dependency_uptime_threshold:
         _log.info(
-            "Hasura schema reload not needed; Tiamat has not restarted within threshold period of %s",
-            tiamat_uptime_threshold,
+            "Hasura schema reload not needed; Tiamat nor Auth have restarted within threshold period of %s",
+          dependency_uptime_threshold,
         )
         return
 
@@ -49,12 +56,13 @@ def main():
         sys.exit(1)
 
 
-def get_oldest_tiamat_pod_info(
-    namespace,
+def get_oldest_pod_info(
+    namespace: str,
+    app_name: str
 ):
     credential = azure.identity.DefaultAzureCredential()
     # The UUID here identifies the AKS Microsoft Entra client application used by kubelogin to perform public client
-    # authentication on beforalf of the user, i.e. this value is used in all AKS instances when you want to
+    # authentication on behalf of the user, i.e. this value is used in all AKS instances when you want to
     # authenticate with Azure identities.
     # See https://learn.microsoft.com/en-us/azure/aks/kubelogin-authentication#how-to-use-kubelogin-with-aks
     token = credential.get_token("6dae42f8-4368-4678-94ff-3960e28e3630/.default").token
@@ -69,7 +77,7 @@ def get_oldest_tiamat_pod_info(
 
         pods = core_v1_api.list_namespaced_pod(
             namespace=namespace,
-            label_selector=f"""app={os.environ["K8S_TIAMAT_DEPLOYMENT_NAME"]}""",
+            label_selector=f"""app={app_name}""",
         )
 
     if not pods.items:

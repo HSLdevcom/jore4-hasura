@@ -8,9 +8,15 @@ import reload_schema
 @pytest.mark.usefixtures("mocks")
 def test_reload_not_needed_due_to_no_tiamat_running(
     caplog,
-    core_v1_api_mock,
+    core_v1_api_class_mock,
+    now_mock,
+    create_pod_data_mock,
 ):
-    core_v1_api_mock.list_namespaced_pod.return_value.items = []
+    core_v1_api_class_mock.pod_responses["app=auth-deployment"] = [
+        create_pod_data_mock(
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=5),
+        )
+    ]
 
     reload_schema.main()
 
@@ -18,13 +24,44 @@ def test_reload_not_needed_due_to_no_tiamat_running(
 
 
 @pytest.mark.usefixtures("mocks")
+def test_reload_not_needed_due_to_no_auth_running(
+    caplog,
+    core_v1_api_class_mock,
+    now_mock,
+    create_pod_data_mock,
+):
+    core_v1_api_class_mock.pod_responses["app=tiamat-deployment"] = [
+        create_pod_data_mock(
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=5),
+        )
+    ]
+
+    reload_schema.main()
+
+    assert "No Auth pods found" in caplog.text
+
+
+@pytest.mark.usefixtures("mocks")
 def test_reload_not_needed_due_to_tiamat_not_restarted(
     caplog,
     post_http_request_mock,
+    core_v1_api_class_mock,
+    now_mock,
+    create_pod_data_mock,
 ):
+    core_v1_api_class_mock.pod_responses["app=auth-deployment"] = [
+        create_pod_data_mock(
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=101),
+        )
+    ]
+    core_v1_api_class_mock.pod_responses["app=tiamat-deployment"] = [
+        create_pod_data_mock(
+           creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=101),
+        )
+    ]
     reload_schema.main()
 
-    assert "Hasura schema reload not needed; Tiamat has not restarted within threshold period of" in caplog.text
+    assert "Hasura schema reload not needed; Tiamat nor Auth have restarted within threshold period of" in caplog.text
 
     assert not post_http_request_mock.called
 
@@ -32,15 +69,20 @@ def test_reload_not_needed_due_to_tiamat_not_restarted(
 @pytest.mark.usefixtures("mocks")
 def test_reload_not_needed_due_to_old_tiamat_not_terminated(
     caplog,
-    core_v1_api_mock,
+    core_v1_api_class_mock,
     now_mock,
     create_pod_data_mock,
 ):
-    core_v1_api_mock.list_namespaced_pod.return_value.items = [
+    core_v1_api_class_mock.pod_responses["app=auth-deployment"] = [
+        create_pod_data_mock(
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=10),
+        )
+    ]
+    core_v1_api_class_mock.pod_responses["app=tiamat-deployment"] = [
         create_pod_data_mock(
             creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=100),
         ),
-            # This one is older than the threshold
+        # This one is older than the threshold
         create_pod_data_mock(
             creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=101),
         ),
@@ -51,24 +93,26 @@ def test_reload_not_needed_due_to_old_tiamat_not_terminated(
 
     reload_schema.main()
 
-    assert "Hasura schema reload not needed; Tiamat has not restarted within threshold period of" in caplog.text
+    assert "Hasura schema reload not needed; Tiamat nor Auth have restarted within threshold period of" in caplog.text
 
 
 @pytest.mark.usefixtures("mocks")
 def test_reload(
     caplog,
-    core_v1_api_mock,
+    core_v1_api_class_mock,
     now_mock,
     create_pod_data_mock,
     post_http_request_mock,
 ):
-    core_v1_api_mock.list_namespaced_pod.return_value.items = [
+    core_v1_api_class_mock.pod_responses["app=auth-deployment"] = [
         create_pod_data_mock(
-            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=100),
-        ),
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=10),
+        )
+    ]
+    core_v1_api_class_mock.pod_responses["app=tiamat-deployment"] = [
         create_pod_data_mock(
-            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=5),
-        ),
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=10),
+        )
     ]
 
     reload_schema.main()
@@ -106,21 +150,26 @@ def test_fail_reading_pods_from_k8s(
 
     assert exc_info.value.args[0] == 1
 
-    assert "Failed to read Tiamat pods" in caplog.text
+    assert "Failed to read Tiamat or Auth pods" in caplog.text
 
 
 @pytest.mark.usefixtures("mocks")
 def test_fail_to_reload_hasura_remote_schemas(
     caplog,
-    core_v1_api_mock,
+    core_v1_api_class_mock,
     now_mock,
     create_pod_data_mock,
     post_http_request_mock,
 ):
-    core_v1_api_mock.list_namespaced_pod.return_value.items = [
+    core_v1_api_class_mock.pod_responses["app=auth-deployment"] = [
         create_pod_data_mock(
-            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=100),
-        ),
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=10),
+        )
+    ]
+    core_v1_api_class_mock.pod_responses["app=tiamat-deployment"] = [
+        create_pod_data_mock(
+            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=10),
+        )
     ]
 
     post_http_request_mock.return_value.raise_for_status.side_effect = Exception("Hasura API Error")
@@ -184,10 +233,11 @@ def env_mock(mocker):
     mock_environ = mocker.patch("os.environ", {})
 
     mock_environ["K8S_NAMESPACE"] = "kube-namespace"
-    mock_environ["TIAMAT_UPTIME_THRESHOLD"] = "100"
+    mock_environ["DEPENDENCY_UPTIME_THRESHOLD"] = "100"
     mock_environ["KUBERNETES_SERVICE_HOST"] = "k8s-cluster.local"
     mock_environ["KUBERNETES_SERVICE_PORT"] = "1234"
     mock_environ["K8S_TIAMAT_DEPLOYMENT_NAME"] = "tiamat-deployment"
+    mock_environ["K8S_AUTH_DEPLOYMENT_NAME"] = "auth-deployment"
     mock_environ["HASURA_ADMIN_SECRET_FILE_PATH"] = "/path/to/hasura/admin/secret"
     mock_environ["HASURA_BASE_URL"] = "http://hasura.local"
 
@@ -217,17 +267,29 @@ def core_v1_api_class_mock(
     create_pod_data_mock,
     now_mock,
 ):
+    # AI Slop follows
     core_v1_api_class_mock = mocker.patch("kubernetes.client.CoreV1Api")
-
     core_v1_api_class_mock.return_value = mocker.Mock(name="CoreV1Api")
 
-    core_v1_api_class_mock.return_value.list_namespaced_pod.return_value = mocker.Mock()
-    core_v1_api_class_mock.return_value.list_namespaced_pod.return_value.items = [
-        create_pod_data_mock(
-            creation_timestamp=now_mock.return_value - datetime.timedelta(seconds=60 * 60),
-        ),
-    ]
+    # 1. Create a dictionary to map label selectors to lists of pods
+    core_v1_api_class_mock.pod_responses = {}
 
+    # 2. Define the side_effect function
+    def list_namespaced_pod_side_effect(*args, **kwargs):
+        print("list_namespaced_pod_side_effect")
+        print(kwargs)
+        print(core_v1_api_class_mock.pod_responses)
+        label_selector = kwargs.get("label_selector")
+
+        # Create a mock response object for this specific call
+        response_mock = mocker.Mock()
+
+        # Fetch the pod list based on the selector, defaulting to an empty list if unknown
+        response_mock.items = core_v1_api_class_mock.pod_responses.get(label_selector, [])
+        return response_mock
+
+    # 3. Attach the side effect
+    core_v1_api_class_mock.return_value.list_namespaced_pod.side_effect = list_namespaced_pod_side_effect
 
     return core_v1_api_class_mock
 
@@ -267,7 +329,6 @@ def now_mock(mocker):
     now_mock = mocker.patch(
         "reload_schema.get_current_datetime",
         return_value=datetime.datetime(2025, 9, 22, 6, 0, 0, tzinfo=datetime.timezone.utc),
-
     )
 
     return now_mock
