@@ -2,7 +2,7 @@ FROM python:3.14-alpine
 
 RUN apk upgrade --update --no-interactive
 
-COPY requirements/runtime.txt /requirements.txt
+COPY requirements/runtime/requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
 COPY \
