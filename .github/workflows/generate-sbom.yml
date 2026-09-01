@@ -18,8 +18,5 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Symlink Python requirements for component-detection
-        run: ln -s requirements/runtime.txt schema_reloader/requirements.txt
-
       - name: Generate SBOM
         uses: HSLdevcom/jore4-tools/github-actions/generate-sbom@generate-sbom-v1
