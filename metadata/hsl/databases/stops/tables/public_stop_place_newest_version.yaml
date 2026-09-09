@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: stop_place_children
           schema: public
+  - name: topographic_place
+    using:
+      manual_configuration:
+        column_mapping:
+          topographic_place_id: id
+        insertion_order: null
+        remote_table:
+          name: topographic_place
+          schema: public
 array_relationships:
   - name: children
     using:
