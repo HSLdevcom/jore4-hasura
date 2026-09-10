@@ -7791,6 +7791,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.type_of_line TO dbimpo
 GRANT SELECT ON TABLE service_pattern.distance_between_stops_calculation TO dbimporter;
 
 --
+-- Name: TABLE point_type; Type: ACL; Schema: service_pattern; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE service_pattern.point_type TO dbimporter;
+
+--
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -8942,6 +8948,13 @@ ALTER TABLE ONLY service_pattern.distance_between_stops_calculation
     ADD CONSTRAINT distance_between_stops_calculation_pkey PRIMARY KEY (journey_pattern_id, route_priority, observation_date, stop_interval_sequence);
 
 --
+-- Name: point_type point_type_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.point_type
+    ADD CONSTRAINT point_type_pkey PRIMARY KEY (type);
+
+--
 -- Name: scheduled_stop_point scheduled_stop_point_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -9199,6 +9212,13 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
     ADD CONSTRAINT scheduled_stop_point_located_on_infrastructure_link_id_fkey FOREIGN KEY (located_on_infrastructure_link_id) REFERENCES infrastructure_network.infrastructure_link(infrastructure_link_id);
+
+--
+-- Name: scheduled_stop_point scheduled_stop_point_point_type_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT scheduled_stop_point_point_type_fkey FOREIGN KEY (point_type) REFERENCES service_pattern.point_type(type);
 
 --
 -- Name: scheduled_stop_point scheduled_stop_point_scheduled_stop_point_invariant_label_fkey; Type: FK CONSTRAINT; Schema: service_pattern; Owner: dbhasura
@@ -12088,6 +12108,17 @@ CREATE TABLE service_pattern.distance_between_stops_calculation (
 ALTER TABLE service_pattern.distance_between_stops_calculation OWNER TO dbhasura;
 
 --
+-- Name: point_type; Type: TABLE; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE TABLE service_pattern.point_type (
+    type text NOT NULL
+);
+
+
+ALTER TABLE service_pattern.point_type OWNER TO dbhasura;
+
+--
 -- Name: scheduled_stop_point; Type: TABLE; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -12101,7 +12132,8 @@ CREATE TABLE service_pattern.scheduled_stop_point (
     validity_end date,
     priority integer NOT NULL,
     timing_place_id uuid,
-    stop_place_ref text
+    stop_place_ref text,
+    point_type text DEFAULT 'timing_point'::text NOT NULL
 );
 
 
