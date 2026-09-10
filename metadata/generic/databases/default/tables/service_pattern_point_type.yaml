@@ -1,0 +1,4 @@
+table:
+  name: point_type
+  schema: service_pattern
+is_enum: true
