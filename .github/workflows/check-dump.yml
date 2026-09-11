@@ -24,6 +24,11 @@ jobs:
         with:
           hasura_version: '${{ inputs.docker_image }}'
 
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14.7'
+
       - name: Generate database dumps
         run: ./scripts/generate-dumps.sh
 
