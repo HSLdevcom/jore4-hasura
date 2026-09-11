@@ -9,4 +9,4 @@ permissions:
 
 jobs:
   dependency-scan:
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-dependency-scan.yml@shared-ghas-workflows-v2
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-dependency-scan.yml@main

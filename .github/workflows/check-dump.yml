@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: start e2e env
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v10
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v11
         with:
           hasura_version: '${{ inputs.docker_image }}'
 
@@ -34,7 +34,7 @@ jobs:
         run: docker rm --force hasura && docker volume prune --force
 
       - name: Restart the hasura container to rerun the repeatable migrations
-        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v10
+        uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@setup-e2e-environment-v11
         with:
           hasura_version: '${{ inputs.docker_image }}'
 
