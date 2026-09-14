@@ -1261,13 +1261,6 @@ GRANT ALL ON FUNCTION public._st_within(geom1 public.geometry, geom2 public.geom
 GRANT ALL ON FUNCTION public._st_within(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
 
 --
--- Name: FUNCTION addauth(text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.addauth(text) TO dbhasura;
-GRANT ALL ON FUNCTION public.addauth(text) TO dbimporter;
-
---
 -- Name: FUNCTION addgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer, new_type character varying, new_dim integer, use_typmod boolean); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1415,27 +1408,6 @@ GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbhasura;
 GRANT ALL ON FUNCTION public.cash_dist(money, money) TO dbimporter;
 
 --
--- Name: FUNCTION checkauth(text, text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.checkauth(text, text) TO dbhasura;
-GRANT ALL ON FUNCTION public.checkauth(text, text) TO dbimporter;
-
---
--- Name: FUNCTION checkauth(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.checkauth(text, text, text) TO dbhasura;
-GRANT ALL ON FUNCTION public.checkauth(text, text, text) TO dbimporter;
-
---
--- Name: FUNCTION checkauthtrigger(); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.checkauthtrigger() TO dbhasura;
-GRANT ALL ON FUNCTION public.checkauthtrigger() TO dbimporter;
-
---
 -- Name: FUNCTION contains_2d(public.box2df, public.box2df); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1506,13 +1478,6 @@ GRANT ALL ON FUNCTION public.digest(text, text) TO dbhasura;
 GRANT ALL ON FUNCTION public.digest(text, text) TO dbimporter;
 
 --
--- Name: FUNCTION disablelongtransactions(); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.disablelongtransactions() TO dbhasura;
-GRANT ALL ON FUNCTION public.disablelongtransactions() TO dbimporter;
-
---
 -- Name: FUNCTION dropgeometrycolumn(catalog_name character varying, schema_name character varying, table_name character varying, column_name character varying); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1553,13 +1518,6 @@ GRANT ALL ON FUNCTION public.dropgeometrytable(schema_name character varying, ta
 
 GRANT ALL ON FUNCTION public.dropgeometrytable(table_name character varying) TO dbhasura;
 GRANT ALL ON FUNCTION public.dropgeometrytable(table_name character varying) TO dbimporter;
-
---
--- Name: FUNCTION enablelongtransactions(); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.enablelongtransactions() TO dbhasura;
-GRANT ALL ON FUNCTION public.enablelongtransactions() TO dbimporter;
 
 --
 -- Name: FUNCTION encrypt(bytea, bytea, text); Type: ACL; Schema: public; Owner: dbadmin
@@ -2871,6 +2829,13 @@ GRANT ALL ON FUNCTION public.geog_brin_inclusion_add_value(internal, internal, i
 GRANT ALL ON FUNCTION public.geog_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION geog_brin_inclusion_merge(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geog_brin_inclusion_merge(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geog_brin_inclusion_merge(internal, internal) TO dbimporter;
+
+--
 -- Name: FUNCTION geography(bytea); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -3102,6 +3067,13 @@ GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_add_value(internal, internal,
 GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION geom2d_brin_inclusion_merge(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_merge(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom2d_brin_inclusion_merge(internal, internal) TO dbimporter;
+
+--
 -- Name: FUNCTION geom3d_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -3109,11 +3081,25 @@ GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_add_value(internal, internal,
 GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION geom3d_brin_inclusion_merge(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_merge(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom3d_brin_inclusion_merge(internal, internal) TO dbimporter;
+
+--
 -- Name: FUNCTION geom4d_brin_inclusion_add_value(internal, internal, internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
 GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_add_value(internal, internal, internal, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION geom4d_brin_inclusion_merge(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_merge(internal, internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.geom4d_brin_inclusion_merge(internal, internal) TO dbimporter;
 
 --
 -- Name: FUNCTION geometry(bytea); Type: ACL; Schema: public; Owner: dbadmin
@@ -3438,6 +3424,13 @@ GRANT ALL ON FUNCTION public.geometry_lt(geom1 public.geometry, geom2 public.geo
 GRANT ALL ON FUNCTION public.geometry_lt(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION geometry_neq(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.geometry_neq(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.geometry_neq(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
 -- Name: FUNCTION geometry_out(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -3732,13 +3725,6 @@ GRANT ALL ON FUNCTION public.get_proj4_from_srid(integer) TO dbhasura;
 GRANT ALL ON FUNCTION public.get_proj4_from_srid(integer) TO dbimporter;
 
 --
--- Name: FUNCTION gettransactionid(); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.gettransactionid() TO dbhasura;
-GRANT ALL ON FUNCTION public.gettransactionid() TO dbimporter;
-
---
 -- Name: FUNCTION gidx_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -3856,41 +3842,6 @@ GRANT ALL ON FUNCTION public.json(public.geometry) TO dbimporter;
 
 GRANT ALL ON FUNCTION public.jsonb(public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.jsonb(public.geometry) TO dbimporter;
-
---
--- Name: FUNCTION lockrow(text, text, text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.lockrow(text, text, text) TO dbhasura;
-GRANT ALL ON FUNCTION public.lockrow(text, text, text) TO dbimporter;
-
---
--- Name: FUNCTION lockrow(text, text, text, text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, text) TO dbhasura;
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, text) TO dbimporter;
-
---
--- Name: FUNCTION lockrow(text, text, text, text, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, text, timestamp without time zone) TO dbhasura;
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, text, timestamp without time zone) TO dbimporter;
-
---
--- Name: FUNCTION lockrow(text, text, text, timestamp without time zone); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, timestamp without time zone) TO dbhasura;
-GRANT ALL ON FUNCTION public.lockrow(text, text, text, timestamp without time zone) TO dbimporter;
-
---
--- Name: FUNCTION longtransactionsenabled(); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.longtransactionsenabled() TO dbhasura;
-GRANT ALL ON FUNCTION public.longtransactionsenabled() TO dbimporter;
 
 --
 -- Name: FUNCTION oid_dist(oid, oid); Type: ACL; Schema: public; Owner: dbadmin
@@ -4122,6 +4073,13 @@ GRANT ALL ON FUNCTION public.pgis_geometry_clusterwithin_finalfn(internal) TO db
 
 GRANT ALL ON FUNCTION public.pgis_geometry_collect_finalfn(internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.pgis_geometry_collect_finalfn(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION pgis_geometry_coverageunion_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.pgis_geometry_coverageunion_finalfn(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.pgis_geometry_coverageunion_finalfn(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION pgis_geometry_makeline_finalfn(internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -4390,11 +4348,11 @@ GRANT ALL ON FUNCTION public.postgis_dropbbox(public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.postgis_dropbbox(public.geometry) TO dbimporter;
 
 --
--- Name: FUNCTION postgis_extensions_upgrade(); Type: ACL; Schema: public; Owner: dbadmin
+-- Name: FUNCTION postgis_extensions_upgrade(target_version text); Type: ACL; Schema: public; Owner: dbadmin
 --
 
-GRANT ALL ON FUNCTION public.postgis_extensions_upgrade() TO dbhasura;
-GRANT ALL ON FUNCTION public.postgis_extensions_upgrade() TO dbimporter;
+GRANT ALL ON FUNCTION public.postgis_extensions_upgrade(target_version text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_extensions_upgrade(target_version text) TO dbimporter;
 
 --
 -- Name: FUNCTION postgis_full_version(); Type: ACL; Schema: public; Owner: dbadmin
@@ -4402,6 +4360,13 @@ GRANT ALL ON FUNCTION public.postgis_extensions_upgrade() TO dbimporter;
 
 GRANT ALL ON FUNCTION public.postgis_full_version() TO dbhasura;
 GRANT ALL ON FUNCTION public.postgis_full_version() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_geos_compiled_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_geos_compiled_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_geos_compiled_version() TO dbimporter;
 
 --
 -- Name: FUNCTION postgis_geos_noop(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -4495,6 +4460,13 @@ GRANT ALL ON FUNCTION public.postgis_noop(public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.postgis_noop(public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION postgis_proj_compiled_version(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_proj_compiled_version() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_proj_compiled_version() TO dbimporter;
+
+--
 -- Name: FUNCTION postgis_proj_version(); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -4523,6 +4495,34 @@ GRANT ALL ON FUNCTION public.postgis_scripts_released() TO dbhasura;
 GRANT ALL ON FUNCTION public.postgis_scripts_released() TO dbimporter;
 
 --
+-- Name: FUNCTION postgis_srs(auth_name text, auth_srid text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_srs(auth_name text, auth_srid text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_srs(auth_name text, auth_srid text) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_srs_all(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_srs_all() TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_srs_all() TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_srs_codes(auth_name text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_srs_codes(auth_name text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_srs_codes(auth_name text) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_srs_search(bounds public.geometry, authname text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_srs_search(bounds public.geometry, authname text) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_srs_search(bounds public.geometry, authname text) TO dbimporter;
+
+--
 -- Name: FUNCTION postgis_svn_version(); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -4535,6 +4535,13 @@ GRANT ALL ON FUNCTION public.postgis_svn_version() TO dbimporter;
 
 GRANT ALL ON FUNCTION public.postgis_transform_geometry(geom public.geometry, text, text, integer) TO dbhasura;
 GRANT ALL ON FUNCTION public.postgis_transform_geometry(geom public.geometry, text, text, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION postgis_transform_pipeline_geometry(geom public.geometry, pipeline text, forward boolean, to_srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.postgis_transform_pipeline_geometry(geom public.geometry, pipeline text, forward boolean, to_srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.postgis_transform_pipeline_geometry(geom public.geometry, pipeline text, forward boolean, to_srid integer) TO dbimporter;
 
 --
 -- Name: FUNCTION postgis_type_name(geomname character varying, coord_dimension integer, use_new_name boolean); Type: ACL; Schema: public; Owner: dbadmin
@@ -4894,11 +4901,11 @@ GRANT ALL ON FUNCTION public.st_asgeojson(geom public.geometry, maxdecimaldigits
 GRANT ALL ON FUNCTION public.st_asgeojson(geom public.geometry, maxdecimaldigits integer, options integer) TO dbimporter;
 
 --
--- Name: FUNCTION st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean); Type: ACL; Schema: public; Owner: dbadmin
+-- Name: FUNCTION st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean, id_column text); Type: ACL; Schema: public; Owner: dbadmin
 --
 
-GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean) TO dbhasura;
-GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean) TO dbimporter;
+GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean, id_column text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_asgeojson(r record, geom_column text, maxdecimaldigits integer, pretty_bool boolean, id_column text) TO dbimporter;
 
 --
 -- Name: FUNCTION st_asgeojson(text); Type: ACL; Schema: public; Owner: dbadmin
@@ -5272,6 +5279,20 @@ GRANT ALL ON FUNCTION public.st_closestpoint(geom1 public.geometry, geom2 public
 GRANT ALL ON FUNCTION public.st_closestpoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_closestpoint(public.geography, public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_closestpoint(public.geography, public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_closestpoint(public.geography, public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_closestpoint(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_closestpoint(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_closestpoint(text, text) TO dbimporter;
+
+--
 -- Name: FUNCTION st_closestpointofapproach(public.geometry, public.geometry); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -5300,6 +5321,13 @@ GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry[]) TO dbhasu
 GRANT ALL ON FUNCTION public.st_clusterintersecting(public.geometry[]) TO dbimporter;
 
 --
+-- Name: FUNCTION st_clusterintersectingwin(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterintersectingwin(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterintersectingwin(public.geometry) TO dbimporter;
+
+--
 -- Name: FUNCTION st_clusterkmeans(geom public.geometry, k integer, max_radius double precision); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -5319,6 +5347,13 @@ GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry, double precision)
 
 GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry[], double precision) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_clusterwithin(public.geometry[], double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_clusterwithinwin(public.geometry, distance double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_clusterwithinwin(public.geometry, distance double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_clusterwithinwin(public.geometry, distance double precision) TO dbimporter;
 
 --
 -- Name: FUNCTION st_collect(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -5419,6 +5454,34 @@ GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_coverageinvalidedges(geom public.geometry, tolerance double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coverageinvalidedges(geom public.geometry, tolerance double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coverageinvalidedges(geom public.geometry, tolerance double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coveragesimplify(geom public.geometry, tolerance double precision, simplifyboundary boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coveragesimplify(geom public.geometry, tolerance double precision, simplifyboundary boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coveragesimplify(geom public.geometry, tolerance double precision, simplifyboundary boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coverageunion(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coverageunion(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coverageunion(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coverageunion(public.geometry[]); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coverageunion(public.geometry[]) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coverageunion(public.geometry[]) TO dbimporter;
+
+--
 -- Name: FUNCTION st_coveredby(geog1 public.geography, geog2 public.geography); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -5473,6 +5536,13 @@ GRANT ALL ON FUNCTION public.st_cpawithin(public.geometry, public.geometry, doub
 
 GRANT ALL ON FUNCTION public.st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_crosses(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_curven(geometry public.geometry, i integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_curven(geometry public.geometry, i integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_curven(geometry public.geometry, i integer) TO dbimporter;
 
 --
 -- Name: FUNCTION st_curvetoline(geom public.geometry, tol double precision, toltype integer, flags integer); Type: ACL; Schema: public; Owner: dbadmin
@@ -6091,6 +6161,20 @@ GRANT ALL ON FUNCTION public.st_hasarc(geometry public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_hasarc(geometry public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_hasm(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hasm(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hasm(public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_hasz(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_hasz(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_hasz(public.geometry) TO dbimporter;
+
+--
 -- Name: FUNCTION st_hausdorffdistance(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -6173,6 +6257,13 @@ GRANT ALL ON FUNCTION public.st_intersects(geom1 public.geometry, geom2 public.g
 
 GRANT ALL ON FUNCTION public.st_intersects(text, text) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_intersects(text, text) TO dbimporter;
+
+--
+-- Name: FUNCTION st_inversetransformpipeline(geom public.geometry, pipeline text, to_srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_inversetransformpipeline(geom public.geometry, pipeline text, to_srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_inversetransformpipeline(geom public.geometry, pipeline text, to_srid integer) TO dbimporter;
 
 --
 -- Name: FUNCTION st_isclosed(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -6266,6 +6357,13 @@ GRANT ALL ON FUNCTION public.st_isvalidtrajectory(public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_isvalidtrajectory(public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_largestemptycircle(geom public.geometry, tolerance double precision, boundary public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_largestemptycircle(geom public.geometry, tolerance double precision, boundary public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_largestemptycircle(geom public.geometry, tolerance double precision, boundary public.geometry, OUT center public.geometry, OUT nearest public.geometry, OUT radius double precision) TO dbimporter;
+
+--
 -- Name: FUNCTION st_length(geog public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -6322,6 +6420,13 @@ GRANT ALL ON FUNCTION public.st_linecrossingdirection(line1 public.geometry, lin
 GRANT ALL ON FUNCTION public.st_linecrossingdirection(line1 public.geometry, line2 public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_lineextend(geom public.geometry, distance_forward double precision, distance_backward double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineextend(geom public.geometry, distance_forward double precision, distance_backward double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineextend(geom public.geometry, distance_forward double precision, distance_backward double precision) TO dbimporter;
+
+--
 -- Name: FUNCTION st_linefromencodedpolyline(txtin text, nprecision integer); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -6364,11 +6469,32 @@ GRANT ALL ON FUNCTION public.st_linefromwkb(bytea, integer) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_linefromwkb(bytea, integer) TO dbimporter;
 
 --
+-- Name: FUNCTION st_lineinterpolatepoint(public.geography, double precision, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geography, double precision, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geography, double precision, use_spheroid boolean) TO dbimporter;
+
+--
 -- Name: FUNCTION st_lineinterpolatepoint(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
 --
 
 GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geometry, double precision) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(public.geometry, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_lineinterpolatepoint(text, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(text, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoint(text, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_lineinterpolatepoints(public.geography, double precision, use_spheroid boolean, repeat boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geography, double precision, use_spheroid boolean, repeat boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geography, double precision, use_spheroid boolean, repeat boolean) TO dbimporter;
 
 --
 -- Name: FUNCTION st_lineinterpolatepoints(public.geometry, double precision, repeat boolean); Type: ACL; Schema: public; Owner: dbadmin
@@ -6378,11 +6504,32 @@ GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geometry, double pr
 GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(public.geometry, double precision, repeat boolean) TO dbimporter;
 
 --
+-- Name: FUNCTION st_lineinterpolatepoints(text, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(text, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_lineinterpolatepoints(text, double precision) TO dbimporter;
+
+--
 -- Name: FUNCTION st_linelocatepoint(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
 --
 
 GRANT ALL ON FUNCTION public.st_linelocatepoint(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_linelocatepoint(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linelocatepoint(public.geography, public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linelocatepoint(public.geography, public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linelocatepoint(public.geography, public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linelocatepoint(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linelocatepoint(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linelocatepoint(text, text) TO dbimporter;
 
 --
 -- Name: FUNCTION st_linemerge(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -6413,11 +6560,25 @@ GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea, integer) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_linestringfromwkb(bytea, integer) TO dbimporter;
 
 --
+-- Name: FUNCTION st_linesubstring(public.geography, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linesubstring(public.geography, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linesubstring(public.geography, double precision, double precision) TO dbimporter;
+
+--
 -- Name: FUNCTION st_linesubstring(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
 --
 
 GRANT ALL ON FUNCTION public.st_linesubstring(public.geometry, double precision, double precision) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_linesubstring(public.geometry, double precision, double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_linesubstring(text, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_linesubstring(text, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_linesubstring(text, double precision, double precision) TO dbimporter;
 
 --
 -- Name: FUNCTION st_linetocurve(geometry public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -6812,6 +6973,13 @@ GRANT ALL ON FUNCTION public.st_nrings(public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_nrings(public.geometry) TO dbimporter;
 
 --
+-- Name: FUNCTION st_numcurves(geometry public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_numcurves(geometry public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_numcurves(geometry public.geometry) TO dbimporter;
+
+--
 -- Name: FUNCTION st_numgeometries(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -7085,6 +7253,27 @@ GRANT ALL ON FUNCTION public.st_project(geog public.geography, distance double p
 GRANT ALL ON FUNCTION public.st_project(geog public.geography, distance double precision, azimuth double precision) TO dbimporter;
 
 --
+-- Name: FUNCTION st_project(geog_from public.geography, geog_to public.geography, distance double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_project(geog_from public.geography, geog_to public.geography, distance double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_project(geog_from public.geography, geog_to public.geography, distance double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_project(geom1 public.geometry, distance double precision, azimuth double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_project(geom1 public.geometry, distance double precision, azimuth double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_project(geom1 public.geometry, distance double precision, azimuth double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_project(geom1 public.geometry, geom2 public.geometry, distance double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_project(geom1 public.geometry, geom2 public.geometry, distance double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_project(geom1 public.geometry, geom2 public.geometry, distance double precision) TO dbimporter;
+
+--
 -- Name: FUNCTION st_quantizecoordinates(g public.geometry, prec_x integer, prec_y integer, prec_z integer, prec_m integer); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -7127,6 +7316,13 @@ GRANT ALL ON FUNCTION public.st_relatematch(text, text) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_relatematch(text, text) TO dbimporter;
 
 --
+-- Name: FUNCTION st_removeirrelevantpointsforview(public.geometry, public.box2d, boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_removeirrelevantpointsforview(public.geometry, public.box2d, boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_removeirrelevantpointsforview(public.geometry, public.box2d, boolean) TO dbimporter;
+
+--
 -- Name: FUNCTION st_removepoint(public.geometry, integer); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -7139,6 +7335,13 @@ GRANT ALL ON FUNCTION public.st_removepoint(public.geometry, integer) TO dbimpor
 
 GRANT ALL ON FUNCTION public.st_removerepeatedpoints(geom public.geometry, tolerance double precision) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_removerepeatedpoints(geom public.geometry, tolerance double precision) TO dbimporter;
+
+--
+-- Name: FUNCTION st_removesmallparts(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_removesmallparts(public.geometry, double precision, double precision) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_removesmallparts(public.geometry, double precision, double precision) TO dbimporter;
 
 --
 -- Name: FUNCTION st_reverse(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -7286,6 +7489,20 @@ GRANT ALL ON FUNCTION public.st_shiftlongitude(public.geometry) TO dbimporter;
 
 GRANT ALL ON FUNCTION public.st_shortestline(geom1 public.geometry, geom2 public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_shortestline(geom1 public.geometry, geom2 public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_shortestline(public.geography, public.geography, use_spheroid boolean); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_shortestline(public.geography, public.geography, use_spheroid boolean) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_shortestline(public.geography, public.geography, use_spheroid boolean) TO dbimporter;
+
+--
+-- Name: FUNCTION st_shortestline(text, text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_shortestline(text, text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_shortestline(text, text) TO dbimporter;
 
 --
 -- Name: FUNCTION st_simplify(public.geometry, double precision); Type: ACL; Schema: public; Owner: dbadmin
@@ -7482,6 +7699,13 @@ GRANT ALL ON FUNCTION public.st_transform(geom public.geometry, to_proj text) TO
 
 GRANT ALL ON FUNCTION public.st_transform(public.geometry, integer) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_transform(public.geometry, integer) TO dbimporter;
+
+--
+-- Name: FUNCTION st_transformpipeline(geom public.geometry, pipeline text, to_srid integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_transformpipeline(geom public.geometry, pipeline text, to_srid integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_transformpipeline(geom public.geometry, pipeline text, to_srid integer) TO dbimporter;
 
 --
 -- Name: FUNCTION st_translate(public.geometry, double precision, double precision); Type: ACL; Schema: public; Owner: dbadmin
@@ -7694,13 +7918,6 @@ GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with 
 GRANT ALL ON FUNCTION public.tstz_dist(timestamp with time zone, timestamp with time zone) TO dbimporter;
 
 --
--- Name: FUNCTION unlockrows(text); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.unlockrows(text) TO dbhasura;
-GRANT ALL ON FUNCTION public.unlockrows(text) TO dbimporter;
-
---
 -- Name: FUNCTION updategeometrysrid(catalogn_name character varying, schema_name character varying, table_name character varying, column_name character varying, new_srid_in integer); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -7833,12 +8050,6 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE timing_pattern.timing_place 
 COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
 
 --
--- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
-
---
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -7849,18 +8060,6 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
---
--- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
-
---
--- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 --
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -7903,12 +8102,6 @@ COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Tra
 --
 
 COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:703 ';
-
---
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: dbadmin
---
-
-COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
 
 --
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -9044,12 +9237,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT
 CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
 
 --
--- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
-
---
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -9060,18 +9247,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 --
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
---
--- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
-
---
--- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
 
 --
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: dbhasura
@@ -11726,24 +11901,6 @@ CREATE SCHEMA service_pattern;
 ALTER SCHEMA service_pattern OWNER TO dbhasura;
 
 --
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA tiger;
-
-
-ALTER SCHEMA tiger OWNER TO dbadmin;
-
---
--- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA tiger_data;
-
-
-ALTER SCHEMA tiger_data OWNER TO dbadmin;
-
---
 -- Name: timing_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -11751,15 +11908,6 @@ CREATE SCHEMA timing_pattern;
 
 
 ALTER SCHEMA timing_pattern OWNER TO dbhasura;
-
---
--- Name: topology; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA topology;
-
-
-ALTER SCHEMA topology OWNER TO dbadmin;
 
 --
 -- Name: hdb_action_log; Type: TABLE; Schema: hdb_catalog; Owner: dbhasura
