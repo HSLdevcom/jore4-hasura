@@ -19,12 +19,15 @@ docker cp testdb:/tmp/timetablesdb-dump.sql ./timetablesdb-dump.sql
 # Get the sorting tool
 curl -o ./pgdump-sort.py https://raw.githubusercontent.com/tigra564/pgdump-sort/0c05da4d5960c0293a61af4feb167d9ef89d4e70/pgdump-sort
 python3 -m venv .
-python3 -m pip install docopt
+./bin/python3 -m pip install docopt
 
 # Sort the dumps
-python3 ./pgdump-sort.py ./routesdb-dump.sql ./routesdb-sorted.sql
-python3 ./pgdump-sort.py ./timetablesdb-dump.sql ./timetablesdb-sorted.sql
+./bin/python3 ./pgdump-sort.py ./routesdb-dump.sql ./routesdb-sorted.sql
+./bin/python3 ./pgdump-sort.py ./timetablesdb-dump.sql ./timetablesdb-sorted.sql
 
 # Move the dumps to the repo dir
 cp ./routesdb-sorted.sql "${WD}/../migrations/routesdb-dump.sql"
 cp ./timetablesdb-sorted.sql "${WD}/../migrations/timetablesdb-dump.sql"
+
+cd "$WD"
+rm -r "$TEMP_DIR"
