@@ -4,6 +4,18 @@
     'github>HSLdevcom/jore4-tools//renovatebot/jore4-default-preset.json5',
   ],
 
+  // schema_reloader uses a pip-compile chain (runtime -> qa -> dev). Use the
+  // pip-compile manager so lock files are recompiled consistently, and disable
+  // the plain pip_requirements manager so it does not bump pins on its own.
+  'pip-compile': {
+    managerFilePatterns: [
+      '/schema_reloader/requirements/.+/requirements\\.txt$/',
+    ],
+  },
+  pip_requirements: {
+    enabled: false,
+  },
+
   // repository-specific additional rules about grouping, exclusions and inclusions
   // Note: if the rule feels generic enough, should consider adding it to the jore4 default preset
   packageRules: [],
