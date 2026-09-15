@@ -8050,6 +8050,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE timing_pattern.timing_place 
 COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
 
 --
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
+
+--
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -8060,6 +8066,18 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+--
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 --
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -8102,6 +8120,12 @@ COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Tra
 --
 
 COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:703 ';
+
+--
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: dbadmin
+--
+
+COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
 
 --
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -9237,6 +9261,12 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT
 CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
 
 --
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+--
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -9247,6 +9277,18 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 --
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+--
+-- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
 
 --
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: dbhasura
@@ -11901,6 +11943,24 @@ CREATE SCHEMA service_pattern;
 ALTER SCHEMA service_pattern OWNER TO dbhasura;
 
 --
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: dbadmin
+--
+
+CREATE SCHEMA tiger;
+
+
+ALTER SCHEMA tiger OWNER TO dbadmin;
+
+--
+-- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: dbadmin
+--
+
+CREATE SCHEMA tiger_data;
+
+
+ALTER SCHEMA tiger_data OWNER TO dbadmin;
+
+--
 -- Name: timing_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -11908,6 +11968,15 @@ CREATE SCHEMA timing_pattern;
 
 
 ALTER SCHEMA timing_pattern OWNER TO dbhasura;
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: dbadmin
+--
+
+CREATE SCHEMA topology;
+
+
+ALTER SCHEMA topology OWNER TO dbadmin;
 
 --
 -- Name: hdb_action_log; Type: TABLE; Schema: hdb_catalog; Owner: dbhasura
