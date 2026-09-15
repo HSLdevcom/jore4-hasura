@@ -1,0 +1,4 @@
+# Pin the lint rule set so ruff upgrades stay deterministic.
+# These match ruff's default selection prior to 0.16.
+[lint]
+select = ["E4", "E7", "E9", "F"]
