@@ -1,0 +1,22 @@
+name: Generate SBOM
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+
+permissions:
+  contents: read
+
+jobs:
+  generate-sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-26.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Generate SBOM
+        uses: HSLdevcom/jore4-tools/github-actions/generate-sbom@generate-sbom-v1
