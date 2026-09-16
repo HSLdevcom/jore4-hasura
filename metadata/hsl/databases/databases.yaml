@@ -1,3 +1,73 @@
+- name: default
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_GRAPHQL_DATABASE_URL
+      isolation_level: serializable
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  logical_models:
+    - fields:
+        - name: id
+          type:
+            nullable: false
+            scalar: text
+        - name: data
+          type:
+            nullable: false
+            scalar: text
+      name: GetLinkMVTResult
+  native_queries:
+    - arguments:
+        vehicle_submode:
+          description: ""
+          nullable: false
+          type: text
+        x:
+          description: ""
+          nullable: false
+          type: integer
+        "y":
+          description: ""
+          nullable: false
+          type: integer
+        z:
+          description: ""
+          nullable: false
+          type: integer
+      code: |-
+        WITH envelope AS (
+          SELECT
+            ST_TileEnvelope({{z}}, {{x}}, {{y}}) AS tile,
+            ST_Transform(ST_TileEnvelope({{z}}, {{x}}, {{y}}), 4326) AS geo
+        ),
+        links AS (
+          SELECT
+            NULL::INT AS id,
+            ST_AsMVTGeom(ST_Transform(ST_Force2D(il.shape::geometry), 3857), envelope.tile) AS shape,
+            il.infrastructure_link_id AS link_id,
+            il.direction
+          FROM envelope, infrastructure_network.infrastructure_link AS il
+          INNER JOIN infrastructure_network.vehicle_submode_on_infrastructure_link vsoil
+            ON vsoil.infrastructure_link_id = il.infrastructure_link_id
+          WHERE vsoil.vehicle_submode = {{vehicle_submode}} AND ST_Force2D(shape::geometry) && envelope.geo
+        )
+        SELECT
+          {{vehicle_submode}} || '|' || {{z}} || '|' || {{x}} || '|' || {{y}} AS id,
+          -- ST_AsMVT(data, layer name, 4096, geometry column, id column).
+          -- ID should be an integer, but we do not have one, so it is NULL for all features (links).
+          -- UUID id and direction get encoded as string based properties per link
+          encode(ST_AsMVT(links.*, 'links', 4096, 'shape', 'id'), 'base64') AS data
+        FROM links;
+      returns: GetLinkMVTResult
+      root_field_name: getLinkMVT
+  tables: "!include default/tables/tables.yaml"
+  functions: "!include default/functions/functions.yaml"
 - name: auth
   kind: postgres
   configuration:
