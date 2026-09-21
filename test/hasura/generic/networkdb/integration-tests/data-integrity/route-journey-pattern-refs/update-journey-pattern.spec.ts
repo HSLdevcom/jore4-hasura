@@ -77,7 +77,7 @@ describe('Move journey pattern to other route', () => {
     shouldReturnErrorMessage(
       journeyPatterns[0].journey_pattern_id,
       routes[3].route_id,
-      "route's and journey pattern's traversal paths must match each other",
+      `route's and journey pattern's traversal paths must match each other. Conflicts: route_id: ${routes[3].route_id}, journey_pattern_id: ${journeyPatterns[0].journey_pattern_id}`,
     );
 
     shouldNotModifyDatabase(
@@ -90,7 +90,7 @@ describe('Move journey pattern to other route', () => {
     shouldReturnErrorMessage(
       journeyPatterns[1].journey_pattern_id,
       routes[4].route_id,
-      "route's and journey pattern's traversal paths must match each other",
+      `route's and journey pattern's traversal paths must match each other. Conflicts: route_id: ${routes[4].route_id}, journey_pattern_id: ${journeyPatterns[1].journey_pattern_id}`,
     );
 
     shouldNotModifyDatabase(

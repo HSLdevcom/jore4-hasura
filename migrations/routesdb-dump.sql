@@ -8005,13 +8005,13 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE route.type_of_line TO dbimpo
 -- Name: TABLE distance_between_stops_calculation; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE service_pattern.distance_between_stops_calculation TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.distance_between_stops_calculation TO dbimporter;
 
 --
 -- Name: TABLE point_type; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE service_pattern.point_type TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.point_type TO dbimporter;
 
 --
 -- Name: TABLE scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -8029,7 +8029,7 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_st
 -- Name: TABLE scheduled_stop_points_with_infra_link_data; Type: ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-GRANT SELECT ON TABLE service_pattern.scheduled_stop_points_with_infra_link_data TO dbimporter;
+GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE service_pattern.scheduled_stop_points_with_infra_link_data TO dbimporter;
 
 --
 -- Name: TABLE vehicle_mode_on_scheduled_stop_point; Type: ACL; Schema: service_pattern; Owner: dbhasura
@@ -9216,7 +9216,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA infrastructure_network GRAN
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
@@ -9228,7 +9228,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: reusable_components; Owner: dbhasura
@@ -9240,19 +9240,19 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT S
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: timing_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
 
 --
 -- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
@@ -10661,23 +10661,28 @@ ALTER FUNCTION journey_pattern.truncate_scheduled_stop_point_in_journey_pattern(
 CREATE FUNCTION journey_pattern.verify_infra_link_stop_refs() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
+DECLARE
+  conflicting_ids text;
 BEGIN
   -- RAISE NOTICE 'journey_pattern.verify_infra_link_stop_refs()';
 
-  IF EXISTS(
-    WITH filter_route_ids AS (
+  WITH filter_route_ids AS (
       SELECT array_agg(DISTINCT ur.route_id) AS arr
       FROM updated_route ur
-    )
-    SELECT 1
-    FROM journey_pattern.get_broken_route_journey_patterns(
+  )
+  SELECT string_agg(
+    format('route_id: %s, journey_pattern_id: %s', jp.on_route_id, jp.journey_pattern_id),
+    '; ' ORDER BY jp.on_route_id, jp.journey_pattern_id
+  )
+  INTO conflicting_ids
+  FROM journey_pattern.get_broken_route_journey_patterns(
         (SELECT arr FROM filter_route_ids)
-      )
-      -- ensure there is something to be checked at all
-    WHERE EXISTS(SELECT 1 FROM updated_route)
-    )
-  THEN
-    RAISE EXCEPTION 'route''s and journey pattern''s traversal paths must match each other';
+      ) jp
+  -- ensure there is something to be checked at all
+  WHERE EXISTS(SELECT 1 FROM updated_route);
+
+  IF conflicting_ids IS NOT NULL THEN
+    RAISE EXCEPTION 'route''s and journey pattern''s traversal paths must match each other. Conflicts: %', conflicting_ids;
   END IF;
 
   RETURN NULL;
