@@ -9,6 +9,6 @@ permissions:
 jobs:
   validate:
     name: Validate renovatebot config
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-check-renovatebot-config.yml@shared-check-renovatebot-config-v2
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-check-renovatebot-config.yml@main
     with:
       config_file_path: .github/renovate.json5
