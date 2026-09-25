@@ -782,23 +782,28 @@ COMMENT ON FUNCTION network.truncate_scheduled_stop_point_in_journey_pattern() I
 CREATE OR REPLACE FUNCTION network.verify_infra_link_stop_refs() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
+DECLARE
+  conflicting_ids text;
 BEGIN
   -- RAISE NOTICE 'network.verify_infra_link_stop_refs()';
 
-  IF EXISTS(
-    WITH filter_route_ids AS (
+  WITH filter_route_ids AS (
       SELECT array_agg(DISTINCT ur.route_id) AS arr
       FROM updated_route ur
-    )
-    SELECT 1
-    FROM network.get_broken_route_journey_patterns(
+  )
+  SELECT string_agg(
+    format('route_id: %s, journey_pattern_id: %s', jp.on_route_id, jp.journey_pattern_id),
+    '; ' ORDER BY jp.on_route_id, jp.journey_pattern_id
+  )
+  INTO conflicting_ids
+  FROM network.get_broken_route_journey_patterns(
         (SELECT arr FROM filter_route_ids)
-      )
-      -- ensure there is something to be checked at all
-    WHERE EXISTS(SELECT 1 FROM updated_route)
-    )
-  THEN
-    RAISE EXCEPTION 'route''s and journey pattern''s traversal paths must match each other';
+      ) jp
+  -- ensure there is something to be checked at all
+  WHERE EXISTS(SELECT 1 FROM updated_route);
+
+  IF conflicting_ids IS NOT NULL THEN
+    RAISE EXCEPTION 'route''s and journey pattern''s traversal paths must match each other. Conflicts: %', conflicting_ids;
   END IF;
 
   RETURN NULL;
