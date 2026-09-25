@@ -1,4 +1,4 @@
-import omit from 'lodash/omit';
+import omit from 'lodash/omit.js';
 import { DateTime } from 'luxon';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import {
