@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
-    "@eslint/js": "^9.39.5",
+    "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.5.2",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
@@ -51,7 +51,7 @@
     "@types/pg": "^8.23.1",
     "@types/uuid-validate": "^0.0.3",
     "confusing-browser-globals": "^1.0.11",
-    "eslint": "^9.39.5",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import-x": "^4.17.1",
@@ -64,7 +64,7 @@
     "rollup": "^4.63.5",
     "ts-jest": "^29.4.14",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1",
+    "typescript-eslint": "^8.71.0",
     "uuid-validate": "^0.0.3"
   },
   "resolutions": {
