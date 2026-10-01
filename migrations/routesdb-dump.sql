@@ -11050,6 +11050,39 @@ $$;
 ALTER FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction() OWNER TO dbhasura;
 
 --
+-- Name: check_scheduled_stop_point_label_uniqueness(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION service_pattern.check_scheduled_stop_point_label_uniqueness() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.priority >= internal_utils.const_priority_draft() THEN
+    RETURN NEW;
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM service_pattern.scheduled_stop_point other
+    WHERE other.scheduled_stop_point_id != NEW.scheduled_stop_point_id
+      AND other.label = NEW.label
+      AND other.priority = NEW.priority
+      AND (other.stop_place_ref IS NULL) != (NEW.stop_place_ref IS NULL)
+      AND internal_utils.daterange_closed_upper(other.validity_start, other.validity_end) &&
+          internal_utils.daterange_closed_upper(NEW.validity_start, NEW.validity_end)
+  )
+  THEN
+    RAISE EXCEPTION 'scheduled stop point label % must be unique for overlapping validity periods', NEW.label;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION service_pattern.check_scheduled_stop_point_label_uniqueness() OWNER TO dbhasura;
+
+--
 -- Name: check_scheduled_stop_point_vehicle_mode_by_infra_link(); Type: FUNCTION; Schema: service_pattern; Owner: dbhasura
 --
 
@@ -12540,6 +12573,12 @@ CREATE TRIGGER prevent_insertion_to_distance_between_stops_calculation BEFORE IN
 --
 
 CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_infrastructure_link_direction_trigge AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction();
+
+--
+-- Name: scheduled_stop_point check_scheduled_stop_point_label_uniqueness_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_label_uniqueness_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_label_uniqueness();
 
 --
 -- Name: scheduled_stop_point queue_verify_infra_link_stop_refs_on_ssp_delete_trigger; Type: TRIGGER; Schema: service_pattern; Owner: dbhasura

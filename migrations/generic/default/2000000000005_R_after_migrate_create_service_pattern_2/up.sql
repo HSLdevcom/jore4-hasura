@@ -21,6 +21,32 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION service_pattern.check_scheduled_stop_point_label_uniqueness() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.priority >= internal_utils.const_priority_draft() THEN
+    RETURN NEW;
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM service_pattern.scheduled_stop_point other
+    WHERE other.scheduled_stop_point_id != NEW.scheduled_stop_point_id
+      AND other.label = NEW.label
+      AND other.priority = NEW.priority
+      AND (other.stop_place_ref IS NULL) != (NEW.stop_place_ref IS NULL)
+      AND internal_utils.daterange_closed_upper(other.validity_start, other.validity_end) &&
+          internal_utils.daterange_closed_upper(NEW.validity_start, NEW.validity_end)
+  )
+  THEN
+    RAISE EXCEPTION 'scheduled stop point label % must be unique for overlapping validity periods', NEW.label;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -183,6 +209,8 @@ DROP TRIGGER IF EXISTS scheduled_stop_point_vehicle_mode_by_infra_link_trigger O
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger AFTER DELETE ON infrastructure_network.vehicle_submode_on_infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link();
 DROP TRIGGER IF EXISTS check_scheduled_stop_point_infrastructure_link_direction_trigge ON service_pattern.scheduled_stop_point;
 CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_infrastructure_link_direction_trigge AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_infrastructure_link_direction();
+DROP TRIGGER IF EXISTS check_scheduled_stop_point_label_uniqueness_trigger ON service_pattern.scheduled_stop_point;
+CREATE CONSTRAINT TRIGGER check_scheduled_stop_point_label_uniqueness_trigger AFTER INSERT OR UPDATE ON service_pattern.scheduled_stop_point DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_label_uniqueness();
 DROP TRIGGER IF EXISTS prevent_update_of_vehicle_mode_on_scheduled_stop_point ON service_pattern.vehicle_mode_on_scheduled_stop_point;
 CREATE TRIGGER prevent_update_of_vehicle_mode_on_scheduled_stop_point BEFORE UPDATE ON service_pattern.vehicle_mode_on_scheduled_stop_point FOR EACH ROW EXECUTE FUNCTION internal_utils.prevent_update();
 DROP TRIGGER IF EXISTS queue_verify_infra_link_stop_refs_on_ssp_delete_trigger ON service_pattern.scheduled_stop_point;
