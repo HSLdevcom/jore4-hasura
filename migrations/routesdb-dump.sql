@@ -9172,6 +9172,13 @@ ALTER TABLE ONLY service_pattern.point_type
     ADD CONSTRAINT point_type_pkey PRIMARY KEY (type);
 
 --
+-- Name: scheduled_stop_point null_stop_place_ref_conflict; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
+--
+
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT null_stop_place_ref_conflict EXCLUDE USING gist (label WITH =, priority WITH =, ((stop_place_ref IS NULL)) WITH <>, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+
+--
 -- Name: scheduled_stop_point scheduled_stop_point_pkey; Type: CONSTRAINT; Schema: service_pattern; Owner: dbhasura
 --
 
