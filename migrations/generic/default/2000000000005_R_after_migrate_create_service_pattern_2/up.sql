@@ -178,6 +178,8 @@ COMMENT ON FUNCTION service_pattern.ssp_relative_distance_from_infrastructure_li
 
 ALTER TABLE ONLY service_pattern.scheduled_stop_point
     ADD CONSTRAINT unique_validity_period EXCLUDE USING gist (label WITH =, priority WITH =, COALESCE(stop_place_ref, '') WITH =, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
+ALTER TABLE ONLY service_pattern.scheduled_stop_point
+    ADD CONSTRAINT null_stop_place_ref_conflict EXCLUDE USING gist (label WITH =, priority WITH =, (stop_place_ref IS NULL) WITH <>, internal_utils.daterange_closed_upper(validity_start, validity_end) WITH &&) WHERE ((priority < internal_utils.const_priority_draft()));
 
 DROP TRIGGER IF EXISTS scheduled_stop_point_vehicle_mode_by_infra_link_trigger ON infrastructure_network.vehicle_submode_on_infrastructure_link;
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger AFTER DELETE ON infrastructure_network.vehicle_submode_on_infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link();
