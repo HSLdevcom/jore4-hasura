@@ -11,7 +11,7 @@ permissions:
 jobs:
   run_tests:
     name: Run docker image tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
 
   schema_reloader_tests:
     name: Run Schema Reloader Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout code
@@ -32,7 +32,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.14.7'
+          python-version: '3.14.8'
 
       - name: Setup Development Environment
         run: ./schema_reloader/development.sh create-dev-env
