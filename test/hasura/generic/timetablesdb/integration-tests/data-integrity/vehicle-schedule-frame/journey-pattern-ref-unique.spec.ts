@@ -1,5 +1,5 @@
-import pick from 'lodash/pick';
-import without from 'lodash/without';
+import pick from 'lodash/pick.js';
+import without from 'lodash/without.js';
 import { DateTime, Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import {

@@ -1,4 +1,4 @@
-import differenceBy from 'lodash/differenceBy';
+import differenceBy from 'lodash/differenceBy.js';
 
 export type ValueFunction<TItem> = (item: TItem) => ExplicitAny;
 export const mergeLists = <TItem extends ExplicitAny>(

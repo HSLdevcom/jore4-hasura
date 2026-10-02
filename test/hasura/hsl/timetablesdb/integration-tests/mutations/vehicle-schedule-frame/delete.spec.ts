@@ -1,5 +1,5 @@
-import differenceBy from 'lodash/differenceBy';
-import xor from 'lodash/xor';
+import differenceBy from 'lodash/differenceBy.js';
+import xor from 'lodash/xor.js';
 import * as config from '@config';
 import { timetablesDbConfig } from '@config';
 import * as db from '@util/db';
