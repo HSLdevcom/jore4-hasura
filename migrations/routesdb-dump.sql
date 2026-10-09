@@ -10682,7 +10682,7 @@ BEGIN
     '; ' ORDER BY jp.on_route_id, jp.journey_pattern_id
   )
   INTO conflicting_ids
-  FROM journey_pattern.get_broken_route_journey_patterns(
+  FROM network.get_broken_route_journey_patterns(
         (SELECT arr FROM filter_route_ids)
       ) jp
   -- ensure there is something to be checked at all
