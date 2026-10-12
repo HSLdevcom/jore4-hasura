@@ -3,5 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist"
   },
+  // tsc emits extensionless relative/alias imports; native ESM needs explicit .js, added by tsc-alias.
+  "tsc-alias": { "resolveFullPaths": true },
   "exclude": ["node_modules", "**/*.spec.ts", "dist"]
 }
