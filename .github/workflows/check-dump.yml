@@ -13,7 +13,7 @@ permissions:
 jobs:
   check_dumps:
     name: Check if the generated dumps are up to date
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.14.7'
+          python-version: '3.15.0'
 
       - name: Generate database dumps
         run: ./scripts/generate-dumps.sh
