@@ -2,9 +2,13 @@
 -- Sorted PostgreSQL database dump
 --
 
+\restrict routesdb
+
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -109,6 +113,12 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE journey_pattern.scheduled_st
 --
 
 GRANT SELECT ON TABLE pg_catalog.pg_aggregate TO dbhasura;
+
+--
+-- Name: TABLE pg_aios; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_aios TO dbhasura;
 
 --
 -- Name: TABLE pg_am; Type: ACL; Schema: pg_catalog; Owner: dbadmin
@@ -543,6 +553,12 @@ GRANT SELECT ON TABLE pg_catalog.pg_shdescription TO dbhasura;
 GRANT SELECT ON TABLE pg_catalog.pg_shmem_allocations TO dbhasura;
 
 --
+-- Name: TABLE pg_shmem_allocations_numa; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_shmem_allocations_numa TO dbhasura;
+
+--
 -- Name: TABLE pg_shseclabel; Type: ACL; Schema: pg_catalog; Owner: dbadmin
 --
 
@@ -579,6 +595,12 @@ GRANT SELECT ON TABLE pg_catalog.pg_stat_archiver TO dbhasura;
 GRANT SELECT ON TABLE pg_catalog.pg_stat_bgwriter TO dbhasura;
 
 --
+-- Name: TABLE pg_stat_checkpointer; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_checkpointer TO dbhasura;
+
+--
 -- Name: TABLE pg_stat_database; Type: ACL; Schema: pg_catalog; Owner: dbadmin
 --
 
@@ -595,6 +617,12 @@ GRANT SELECT ON TABLE pg_catalog.pg_stat_database_conflicts TO dbhasura;
 --
 
 GRANT SELECT ON TABLE pg_catalog.pg_stat_gssapi TO dbhasura;
+
+--
+-- Name: TABLE pg_stat_io; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_stat_io TO dbhasura;
 
 --
 -- Name: TABLE pg_stat_progress_analyze; Type: ACL; Schema: pg_catalog; Owner: dbadmin
@@ -939,6 +967,19 @@ GRANT SELECT ON TABLE pg_catalog.pg_user_mappings TO dbhasura;
 GRANT SELECT ON TABLE pg_catalog.pg_views TO dbhasura;
 
 --
+-- Name: TABLE pg_wait_events; Type: ACL; Schema: pg_catalog; Owner: dbadmin
+--
+
+GRANT SELECT ON TABLE pg_catalog.pg_wait_events TO dbhasura;
+
+--
+-- Name: FUNCTION "json"(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public."json"(public.geometry) TO dbhasura;
+GRANT ALL ON FUNCTION public."json"(public.geometry) TO dbimporter;
+
+--
 -- Name: FUNCTION _postgis_deprecate(oldname text, newname text, version text); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1035,13 +1076,6 @@ GRANT ALL ON FUNCTION public._st_bestsrid(public.geography) TO dbimporter;
 
 GRANT ALL ON FUNCTION public._st_bestsrid(public.geography, public.geography) TO dbhasura;
 GRANT ALL ON FUNCTION public._st_bestsrid(public.geography, public.geography) TO dbimporter;
-
---
--- Name: FUNCTION _st_concavehull(param_inputgeom public.geometry); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public._st_concavehull(param_inputgeom public.geometry) TO dbhasura;
-GRANT ALL ON FUNCTION public._st_concavehull(param_inputgeom public.geometry) TO dbimporter;
 
 --
 -- Name: FUNCTION _st_contains(geom1 public.geometry, geom2 public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -1548,6 +1582,13 @@ GRANT ALL ON FUNCTION public.find_srid(character varying, character varying, cha
 GRANT ALL ON FUNCTION public.find_srid(character varying, character varying, character varying) TO dbimporter;
 
 --
+-- Name: FUNCTION fips_mode(); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.fips_mode() TO dbhasura;
+GRANT ALL ON FUNCTION public.fips_mode() TO dbimporter;
+
+--
 -- Name: FUNCTION float4_dist(real, real); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1595,6 +1636,13 @@ GRANT ALL ON FUNCTION public.gbt_bit_picksplit(internal, internal) TO dbimporter
 
 GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_bit_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bit_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bit_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bit_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_bit_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -1646,6 +1694,13 @@ GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2,
 GRANT ALL ON FUNCTION public.gbt_bool_same(public.gbtreekey2, public.gbtreekey2, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_bool_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bool_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bool_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_bool_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1665,6 +1720,13 @@ GRANT ALL ON FUNCTION public.gbt_bpchar_compress(internal) TO dbimporter;
 
 GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_bpchar_consistent(internal, character, smallint, oid, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bpchar_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bpchar_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bpchar_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_bytea_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -1700,6 +1762,13 @@ GRANT ALL ON FUNCTION public.gbt_bytea_picksplit(internal, internal) TO dbimport
 
 GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_bytea_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_bytea_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_bytea_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_bytea_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_bytea_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -1758,6 +1827,13 @@ GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey1
 GRANT ALL ON FUNCTION public.gbt_cash_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_cash_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_cash_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_cash_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_cash_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1812,6 +1888,13 @@ GRANT ALL ON FUNCTION public.gbt_date_picksplit(internal, internal) TO dbimporte
 
 GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_date_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_date_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_date_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_date_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_date_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -1870,6 +1953,13 @@ GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8,
 GRANT ALL ON FUNCTION public.gbt_enum_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_enum_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_enum_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_enum_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_enum_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -1924,6 +2014,13 @@ GRANT ALL ON FUNCTION public.gbt_float4_picksplit(internal, internal) TO dbimpor
 
 GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_float4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_float4_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float4_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float4_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_float4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -1982,6 +2079,13 @@ GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreeke
 GRANT ALL ON FUNCTION public.gbt_float8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_float8_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_float8_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_float8_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_float8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2022,6 +2126,13 @@ GRANT ALL ON FUNCTION public.gbt_inet_picksplit(internal, internal) TO dbimporte
 
 GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_inet_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_inet_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_inet_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_inet_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_inet_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2080,6 +2191,13 @@ GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4,
 GRANT ALL ON FUNCTION public.gbt_int2_same(public.gbtreekey4, public.gbtreekey4, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_int2_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int2_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int2_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_int2_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2136,6 +2254,13 @@ GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8,
 GRANT ALL ON FUNCTION public.gbt_int4_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_int4_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int4_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int4_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_int4_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2190,6 +2315,13 @@ GRANT ALL ON FUNCTION public.gbt_int8_picksplit(internal, internal) TO dbimporte
 
 GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_int8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_int8_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_int8_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_int8_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_int8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2255,6 +2387,13 @@ GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey3
 GRANT ALL ON FUNCTION public.gbt_intv_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_intv_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_intv_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_intv_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_intv_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2302,6 +2441,13 @@ GRANT ALL ON FUNCTION public.gbt_macad8_picksplit(internal, internal) TO dbimpor
 
 GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_macad8_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_macad8_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macad8_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macad8_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_macad8_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2360,6 +2506,13 @@ GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_macad_union(internal, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_macaddr_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_macaddr_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_macaddr_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_numeric_compress(internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2393,6 +2546,13 @@ GRANT ALL ON FUNCTION public.gbt_numeric_picksplit(internal, internal) TO dbimpo
 
 GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_numeric_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_numeric_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_numeric_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_numeric_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_numeric_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2451,6 +2611,13 @@ GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, 
 GRANT ALL ON FUNCTION public.gbt_oid_same(public.gbtreekey8, public.gbtreekey8, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_oid_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_oid_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_oid_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_oid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2491,6 +2658,13 @@ GRANT ALL ON FUNCTION public.gbt_text_picksplit(internal, internal) TO dbimporte
 
 GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_text_same(public.gbtreekey_var, public.gbtreekey_var, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_text_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_text_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_text_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_text_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2547,6 +2721,13 @@ GRANT ALL ON FUNCTION public.gbt_time_picksplit(internal, internal) TO dbimporte
 
 GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_time_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_time_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_time_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_time_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbt_time_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
@@ -2619,6 +2800,13 @@ GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16,
 GRANT ALL ON FUNCTION public.gbt_ts_same(public.gbtreekey16, public.gbtreekey16, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_ts_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_ts_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_ts_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_ts_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2689,6 +2877,13 @@ GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey3
 GRANT ALL ON FUNCTION public.gbt_uuid_same(public.gbtreekey32, public.gbtreekey32, internal) TO dbimporter;
 
 --
+-- Name: FUNCTION gbt_uuid_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_uuid_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_uuid_sortsupport(internal) TO dbimporter;
+
+--
 -- Name: FUNCTION gbt_uuid_union(internal, internal); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -2708,6 +2903,13 @@ GRANT ALL ON FUNCTION public.gbt_var_decompress(internal) TO dbimporter;
 
 GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbhasura;
 GRANT ALL ON FUNCTION public.gbt_var_fetch(internal) TO dbimporter;
+
+--
+-- Name: FUNCTION gbt_varbit_sortsupport(internal); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gbt_varbit_sortsupport(internal) TO dbhasura;
+GRANT ALL ON FUNCTION public.gbt_varbit_sortsupport(internal) TO dbimporter;
 
 --
 -- Name: FUNCTION gbtreekey16_in(cstring); Type: ACL; Schema: public; Owner: dbadmin
@@ -3739,6 +3941,13 @@ GRANT ALL ON FUNCTION public.gidx_out(public.gidx) TO dbhasura;
 GRANT ALL ON FUNCTION public.gidx_out(public.gidx) TO dbimporter;
 
 --
+-- Name: FUNCTION gist_translate_cmptype_btree(integer); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.gist_translate_cmptype_btree(integer) TO dbhasura;
+GRANT ALL ON FUNCTION public.gist_translate_cmptype_btree(integer) TO dbimporter;
+
+--
 -- Name: FUNCTION gserialized_gist_joinsel_2d(internal, oid, internal, smallint); Type: ACL; Schema: public; Owner: dbadmin
 --
 
@@ -3828,13 +4037,6 @@ GRANT ALL ON FUNCTION public.is_contained_2d(public.box2df, public.geometry) TO 
 
 GRANT ALL ON FUNCTION public.is_contained_2d(public.geometry, public.box2df) TO dbhasura;
 GRANT ALL ON FUNCTION public.is_contained_2d(public.geometry, public.box2df) TO dbimporter;
-
---
--- Name: FUNCTION json(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
---
-
-GRANT ALL ON FUNCTION public.json(public.geometry) TO dbhasura;
-GRANT ALL ON FUNCTION public.json(public.geometry) TO dbimporter;
 
 --
 -- Name: FUNCTION jsonb(public.geometry); Type: ACL; Schema: public; Owner: dbadmin
@@ -5452,6 +5654,13 @@ GRANT ALL ON FUNCTION public.st_convexhull(public.geometry) TO dbimporter;
 
 GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbhasura;
 GRANT ALL ON FUNCTION public.st_coorddim(geometry public.geometry) TO dbimporter;
+
+--
+-- Name: FUNCTION st_coverageclean(geom public.geometry, gapmaximumwidth double precision, snappingdistance double precision, overlapmergestrategy text); Type: ACL; Schema: public; Owner: dbadmin
+--
+
+GRANT ALL ON FUNCTION public.st_coverageclean(geom public.geometry, gapmaximumwidth double precision, snappingdistance double precision, overlapmergestrategy text) TO dbhasura;
+GRANT ALL ON FUNCTION public.st_coverageclean(geom public.geometry, gapmaximumwidth double precision, snappingdistance double precision, overlapmergestrategy text) TO dbimporter;
 
 --
 -- Name: FUNCTION st_coverageinvalidedges(geom public.geometry, tolerance double precision); Type: ACL; Schema: public; Owner: dbadmin
@@ -8050,12 +8259,6 @@ GRANT SELECT,INSERT,DELETE,TRUNCATE,UPDATE ON TABLE timing_pattern.timing_place 
 COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
 
 --
--- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
-
---
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -8066,18 +8269,6 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
---
--- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
-
---
--- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 --
 -- Name: SCHEMA infrastructure_network; Type: COMMENT; Schema: -; Owner: dbhasura
@@ -8120,12 +8311,6 @@ COMMENT ON SCHEMA service_pattern IS 'The service pattern model adapted from Tra
 --
 
 COMMENT ON SCHEMA timing_pattern IS 'The timing pattern model adapted from Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=2:3:2:703 ';
-
---
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: dbadmin
---
-
-COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
 
 --
 -- Name: COLUMN infrastructure_link.direction; Type: COMMENT; Schema: infrastructure_network; Owner: dbhasura
@@ -9217,61 +9402,59 @@ ALTER TABLE ONLY timing_pattern.timing_place
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: infrastructure_network; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA infrastructure_network GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA infrastructure_network GRANT SELECT ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_service_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: internal_utils; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA internal_utils GRANT SELECT ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: journey_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: reusable_components; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT SELECT ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT SELECT ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: service_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA service_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO dbimporter;
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: timing_pattern; Owner: dbhasura
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES  TO dbimporter;
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA timing_pattern GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO dbimporter;
+
+
+
+\unrestrict routesdb
 
 --
 -- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
-
---
--- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
 
 --
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
@@ -9284,18 +9467,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 --
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
---
--- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
-
---
--- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
 
 --
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: dbhasura
@@ -11955,24 +12126,6 @@ CREATE SCHEMA service_pattern;
 ALTER SCHEMA service_pattern OWNER TO dbhasura;
 
 --
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA tiger;
-
-
-ALTER SCHEMA tiger OWNER TO dbadmin;
-
---
--- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA tiger_data;
-
-
-ALTER SCHEMA tiger_data OWNER TO dbadmin;
-
---
 -- Name: timing_pattern; Type: SCHEMA; Schema: -; Owner: dbhasura
 --
 
@@ -11980,15 +12133,6 @@ CREATE SCHEMA timing_pattern;
 
 
 ALTER SCHEMA timing_pattern OWNER TO dbhasura;
-
---
--- Name: topology; Type: SCHEMA; Schema: -; Owner: dbadmin
---
-
-CREATE SCHEMA topology;
-
-
-ALTER SCHEMA topology OWNER TO dbadmin;
 
 --
 -- Name: hdb_action_log; Type: TABLE; Schema: hdb_catalog; Owner: dbhasura
@@ -12172,7 +12316,7 @@ ALTER TABLE infrastructure_network.infrastructure_link OWNER TO dbhasura;
 --
 
 CREATE TABLE infrastructure_network.vehicle_submode_on_infrastructure_link (
-    infrastructure_link_id uuid NOT NULL,
+    infrastructure_link_id uuid CONSTRAINT vehicle_submode_on_infrastructu_infrastructure_link_id_not_null NOT NULL,
     vehicle_submode text NOT NULL
 );
 
@@ -12196,15 +12340,15 @@ ALTER TABLE journey_pattern.journey_pattern OWNER TO dbhasura;
 --
 
 CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
-    journey_pattern_id uuid NOT NULL,
-    scheduled_stop_point_sequence integer NOT NULL,
-    is_used_as_timing_point boolean DEFAULT false NOT NULL,
+    journey_pattern_id uuid CONSTRAINT scheduled_stop_point_in_journey_pat_journey_pattern_id_not_null NOT NULL,
+    scheduled_stop_point_sequence integer CONSTRAINT scheduled_stop_point_in_jou_scheduled_stop_point_seque_not_null NOT NULL,
+    is_used_as_timing_point boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_journey_patter_is_timing_point_not_null NOT NULL,
     is_via_point boolean DEFAULT false NOT NULL,
     via_point_name_i18n jsonb,
     via_point_short_name_i18n jsonb,
-    scheduled_stop_point_label text NOT NULL,
-    is_loading_time_allowed boolean DEFAULT false NOT NULL,
-    is_regulated_timing_point boolean DEFAULT false NOT NULL,
+    scheduled_stop_point_label text CONSTRAINT scheduled_stop_point_in_jou_scheduled_stop_point_label_not_null NOT NULL,
+    is_loading_time_allowed boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_journe_is_loading_time_allowed_not_null NOT NULL,
+    is_regulated_timing_point boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_jour_is_regulated_timing_point_not_null NOT NULL,
     CONSTRAINT ck_is_regulated_timing_point_state CHECK ((NOT ((is_regulated_timing_point = false) AND (is_loading_time_allowed = true)))),
     CONSTRAINT ck_is_used_as_timing_point_state CHECK ((NOT ((is_used_as_timing_point = false) AND (is_regulated_timing_point = true)))),
     CONSTRAINT ck_is_via_point_state CHECK ((((is_via_point = false) AND (via_point_name_i18n IS NULL) AND (via_point_short_name_i18n IS NULL)) OR ((is_via_point = true) AND (via_point_name_i18n IS NOT NULL) AND (via_point_short_name_i18n IS NOT NULL))))
@@ -12255,7 +12399,7 @@ ALTER TABLE route.direction OWNER TO dbhasura;
 CREATE TABLE route.infrastructure_link_along_route (
     route_id uuid NOT NULL,
     infrastructure_link_id uuid NOT NULL,
-    infrastructure_link_sequence integer NOT NULL,
+    infrastructure_link_sequence integer CONSTRAINT infrastructure_link_along_r_infrastructure_link_sequen_not_null NOT NULL,
     is_traversal_forwards boolean NOT NULL
 );
 
@@ -12327,7 +12471,7 @@ CREATE TABLE service_pattern.distance_between_stops_calculation (
     route_id uuid NOT NULL,
     route_priority integer NOT NULL,
     observation_date date NOT NULL,
-    stop_interval_sequence integer NOT NULL,
+    stop_interval_sequence integer CONSTRAINT distance_between_stops_calculat_stop_interval_sequence_not_null NOT NULL,
     start_stop_label text NOT NULL,
     end_stop_label text NOT NULL,
     distance_in_metres double precision NOT NULL
@@ -12384,7 +12528,7 @@ ALTER TABLE service_pattern.scheduled_stop_point_invariant OWNER TO dbhasura;
 --
 
 CREATE TABLE service_pattern.vehicle_mode_on_scheduled_stop_point (
-    scheduled_stop_point_id uuid NOT NULL,
+    scheduled_stop_point_id uuid CONSTRAINT vehicle_mode_on_scheduled_stop_scheduled_stop_point_id_not_null NOT NULL,
     vehicle_mode text NOT NULL
 );
 
@@ -12634,7 +12778,7 @@ CREATE VIEW service_pattern.scheduled_stop_points_with_infra_link_data AS
      LEFT JOIN service_pattern.vehicle_mode_on_scheduled_stop_point vmossp ON ((ssp.scheduled_stop_point_id = vmossp.scheduled_stop_point_id)));
 
 
-ALTER TABLE service_pattern.scheduled_stop_points_with_infra_link_data OWNER TO dbhasura;
+ALTER VIEW service_pattern.scheduled_stop_points_with_infra_link_data OWNER TO dbhasura;
 
 --
 -- Sorted dump complete
