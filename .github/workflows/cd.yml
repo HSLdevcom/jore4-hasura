@@ -138,6 +138,9 @@ jobs:
         with:
           hasura_version: '${{ matrix.dockerImage }}'
 
+      - name: Enable corepack
+        run: corepack enable
+
       - name: Install Node.js
         uses: actions/setup-node@v7
         with:
@@ -148,7 +151,7 @@ jobs:
       - name: Run integration tests
         run: |
           cd test/hasura
-          yarn --frozen-lockfile
+          yarn --immutable
           ${{ matrix.testCommand }}
 
   run_e2e_tests:
