@@ -45,7 +45,6 @@ export default tsEslint.config(
           project: './tsconfig.json',
         },
       },
-      node: { version: '>=23.9.0' },
     },
     rules: baseRules,
   },

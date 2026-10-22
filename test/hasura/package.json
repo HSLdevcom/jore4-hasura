@@ -47,7 +47,7 @@
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.27",
     "@types/luxon": "^3.7.6",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
     "@types/uuid-validate": "^0.0.3",
     "confusing-browser-globals": "^1.0.11",
@@ -68,6 +68,9 @@
     "uuid-validate": "^0.0.3"
   },
   "resolutions": {
-    "@types/node": "24.19.2"
+    "@types/node": "26.6.5"
+  },
+  "engines": {
+    "node": "^26.12.1"
   }
 }

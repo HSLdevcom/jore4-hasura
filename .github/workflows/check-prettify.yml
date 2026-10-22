@@ -17,11 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      - name: Install Node.js
+        uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version-file: 'test/hasura/package.json'
           cache: 'yarn'
-          cache-dependency-path: test/hasura/yarn.lock
+          cache-dependency-path: 'test/hasura/yarn.lock'
 
       - name: Install node_modules
         run: cd test/hasura && yarn install --frozen-lockfile
