@@ -1,5 +1,4 @@
 ---
-
 services:
   jore4-hasura:
     # build and the docker image from the local repo
@@ -15,7 +14,7 @@ services:
         condition: service_healthy
     environment:
       # enabling the hasura console locally to ease development
-      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
 
   jore4-tiamat:
     depends_on:

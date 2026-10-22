@@ -403,7 +403,7 @@ printed to testdb log.
 
 In order to run the integration/unit tests, follow the following steps:
 
-1. Install NodeJS (currently using version 18.x) and yarn (1.x)
+1. Install NodeJS (currently using version 26.x) and yarn (1.x)
 1. Make sure you have hasura and its dependencies up and running with
    `./scripts/start-dependencies.sh`.
 1. Install the required node packages:
