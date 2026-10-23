@@ -1,8 +1,8 @@
 import get from 'lodash/get';
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { queryTable } from '@util/setup';
+import { parseDateTime } from '@util/time';
 import { genericTimetablesDbSchema } from 'generic/timetablesdb/datasets/schema';
 import { defaultDayTypeIds } from 'timetables-data-inserter/day-types';
 import { insertDatasetFromJson } from './data-insert';
@@ -298,7 +298,7 @@ describe('Generic timetables data inserter json parser', () => {
             builtInboundPassingTimes[3].timetabled_passing_time_id,
         );
         expect(inboundPassingTime).toBeTruthy();
-        expect(inboundPassingTime.arrival_time.toISO()).toBe('PT7H55M');
+        expect(inboundPassingTime.arrival_time.toString()).toBe('PT7H55M');
         expect(inboundPassingTime.departure_time).toBeNull();
       });
     });
@@ -332,19 +332,19 @@ describe('Generic timetables data inserter json parser', () => {
         expect(inboundRef).toBeTruthy();
 
         expect(inboundRef.observation_timestamp).toEqual(
-          DateTime.fromISO('2023-07-01T00:00:00+00:00'),
+          parseDateTime('2023-07-01T00:00:00+00:00'),
         );
         expect(inboundRef.snapshot_timestamp).toEqual(
-          DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+          parseDateTime('2023-09-28T00:00:00+00:00'),
         );
         expect(inboundRef.type_of_line).toBe('stopping_bus_service');
         expect(inboundRef.route_label).toBe('123');
         expect(inboundRef.route_direction).toBe('inbound');
         expect(inboundRef.route_validity_start).toEqual(
-          DateTime.fromISO('2023-06-01'),
+          Temporal.PlainDate.from('2023-06-01'),
         );
         expect(inboundRef.route_validity_end).toEqual(
-          DateTime.fromISO('2051-01-01'),
+          Temporal.PlainDate.from('2051-01-01'),
         );
       });
     });

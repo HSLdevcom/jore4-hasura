@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -127,21 +126,25 @@ describe('Update route', () => {
     });
 
   describe('with a fixed validity start time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_start: DateTime.fromISO('2040-03-02') };
+    const toBeUpdated = {
+      validity_start: Temporal.PlainDate.from('2040-03-02'),
+    };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time outside of the validity time of the line', () => {
-    const toBeUpdated = { validity_end: DateTime.fromISO('2046-08-01') };
+    const toBeUpdated = { validity_end: Temporal.PlainDate.from('2046-08-01') };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);
     shouldNotModifyDatabase(routes[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time within the validity time of the line', () => {
-    const toBeUpdated = { validity_start: DateTime.fromISO('2044-12-02') };
+    const toBeUpdated = {
+      validity_start: Temporal.PlainDate.from('2044-12-02'),
+    };
 
     shouldReturnCorrectResponse(routes[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(routes[1], toBeUpdated);
@@ -157,7 +160,7 @@ describe('Update route', () => {
   describe('with a fixed validity start time of 1 day prior to the validity time of the line', () => {
     const toBeUpdated = {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      validity_start: lines[1].validity_start!.minus({ day: 1 }),
+      validity_start: lines[1].validity_start!.subtract({ days: 1 }),
     };
 
     shouldReturnErrorResponse(routes[1], toBeUpdated);

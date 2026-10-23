@@ -1,21 +1,16 @@
 import * as dotenv from 'dotenv';
 import { Knex } from 'knex';
-import { DateTime, Duration, Settings } from 'luxon';
 import { ConnectionConfig, types } from 'pg';
+import { parseDate, parseDateTime, parseTimestamp } from '@util/time';
 
 dotenv.config({ path: process.env.DOTENV_PATH ?? '../.env' });
 
-// Configure Luxon.
-Settings.throwOnInvalid = true; // Invalid dates are too easy to miss otherwise.
-Settings.defaultZone = 'Europe/Helsinki';
-
-// Set global pg config: return date(time)s as luxon DateTime objects instead of JS Date.
-const parseToLuxonDateTime = (value: string) => DateTime.fromSQL(value);
-const parseToLuxonDuration = (value: string) => Duration.fromISO(value);
-types.setTypeParser(types.builtins.DATE, parseToLuxonDateTime);
-types.setTypeParser(types.builtins.TIMESTAMP, parseToLuxonDateTime);
-types.setTypeParser(types.builtins.TIMESTAMPTZ, parseToLuxonDateTime);
-types.setTypeParser(types.builtins.INTERVAL, parseToLuxonDuration);
+types.setTypeParser(types.builtins.DATE, parseDate);
+types.setTypeParser(types.builtins.TIMESTAMP, parseTimestamp);
+types.setTypeParser(types.builtins.TIMESTAMPTZ, parseDateTime);
+// Relies on the server running with IntervalStyle=iso_8601: Temporal only
+// accepts ISO 8601 durations, and would throw on Postgres' default output.
+types.setTypeParser(types.builtins.INTERVAL, Temporal.Duration.from);
 
 export const networkDbConfig: ConnectionConfig = {
   host: '127.0.0.1',

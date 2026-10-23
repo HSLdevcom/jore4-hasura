@@ -1,5 +1,4 @@
 import uniqBy from 'lodash/uniqBy';
-import { DateTime } from 'luxon';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -25,8 +24,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: DateTime.fromISO('2025-01-01'),
-    validity_end: DateTime.fromISO('2095-01-31'),
+    validity_start: Temporal.PlainDate.from('2025-01-01'),
+    validity_end: Temporal.PlainDate.from('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -44,8 +43,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop2',
     priority: 10,
-    validity_start: DateTime.fromISO('2025-01-01'),
-    validity_end: DateTime.fromISO('2095-01-31'),
+    validity_start: Temporal.PlainDate.from('2025-01-01'),
+    validity_end: Temporal.PlainDate.from('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -63,8 +62,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: DateTime.fromISO('2025-01-01'),
-    validity_end: DateTime.fromISO('2095-01-31'),
+    validity_start: Temporal.PlainDate.from('2025-01-01'),
+    validity_end: Temporal.PlainDate.from('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -82,8 +81,8 @@ export const scheduledStopPointsOfBasicJourneyPattern: ScheduledStopPoint[] = [
     },
     label: 'stop4',
     priority: 10,
-    validity_start: DateTime.fromISO('2025-01-01'),
-    validity_end: DateTime.fromISO('2095-01-31'),
+    validity_start: Temporal.PlainDate.from('2025-01-01'),
+    validity_end: Temporal.PlainDate.from('2095-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
 ];
@@ -104,16 +103,16 @@ export const tempScheduledStopPointWithConflictingInfraLinkOrder: ScheduledStopP
     },
     label: 'stop2',
     priority: 20,
-    validity_start: DateTime.fromISO('2054-05-02'),
-    validity_end: DateTime.fromISO('2064-05-01'),
+    validity_start: Temporal.PlainDate.from('2054-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-05-01'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
 export const tempScheduledStopPointWithConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
   {
     ...tempScheduledStopPointWithConflictingInfraLinkOrder,
-    validity_start: DateTime.fromISO('2065-05-02'),
-    validity_end: DateTime.fromISO('2073-05-01'),
+    validity_start: Temporal.PlainDate.from('2065-05-02'),
+    validity_end: Temporal.PlainDate.from('2073-05-01'),
   };
 
 export const tempScheduledStopPointWithNonConflictingInfraLinkOrderValidAfterTempRoute: ScheduledStopPoint =
@@ -139,8 +138,8 @@ export const tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute: ScheduledS
     },
     label: 'stop2',
     priority: 20,
-    validity_start: DateTime.fromISO('2054-05-02'),
-    validity_end: DateTime.fromISO('2064-05-01'),
+    validity_start: Temporal.PlainDate.from('2054-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-05-01'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   };
 
@@ -148,7 +147,7 @@ export const scheduledStopPoints = scheduledStopPointsOfBasicJourneyPattern;
 export const scheduledStopPointsWithTempRoute = [
   ...scheduledStopPointsOfBasicJourneyPattern.map((scheduledStopPoint) => ({
     ...scheduledStopPoint,
-    validity_end: DateTime.fromISO('2062-05-01'),
+    validity_end: Temporal.PlainDate.from('2062-05-01'),
   })),
   tempScheduledStopPointOnInfraLinkNotPresentInBasicRoute,
 ];

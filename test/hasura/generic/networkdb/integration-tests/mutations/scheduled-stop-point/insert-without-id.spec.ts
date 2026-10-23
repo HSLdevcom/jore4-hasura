@@ -1,5 +1,4 @@
 import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -33,7 +32,7 @@ const toBeInserted: Partial<ScheduledStopPoint> = {
   } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
-  validity_end: DateTime.fromISO('2060-11-03'),
+  validity_end: Temporal.PlainDate.from('2060-11-03'),
   timing_place_id: null,
 };
 

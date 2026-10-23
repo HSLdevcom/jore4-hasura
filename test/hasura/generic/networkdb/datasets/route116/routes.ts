@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { buildRoute } from 'generic/networkdb/datasets/factories';
 import {
   InfrastructureLinkAlongRoute,
@@ -14,8 +13,8 @@ export const routes: Route[] = [
     description_i18n: null,
     direction: RouteDirection.Inbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2054-05-01'),
-    validity_end: DateTime.fromISO('2074-04-30'),
+    validity_start: Temporal.PlainDate.from('2054-05-01'),
+    validity_end: Temporal.PlainDate.from('2074-04-30'),
   },
 ];
 

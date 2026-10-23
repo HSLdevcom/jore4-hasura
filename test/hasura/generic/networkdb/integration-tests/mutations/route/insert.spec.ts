@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -22,8 +21,8 @@ const toBeInserted: Partial<Route> = {
   on_line_id: lines[1].line_id,
   direction: RouteDirection.Clockwise,
   priority: 40,
-  validity_start: DateTime.fromISO('2044-05-01'),
-  validity_end: DateTime.fromISO('2045-04-30'),
+  validity_start: Temporal.PlainDate.from('2044-05-01'),
+  validity_end: Temporal.PlainDate.from('2045-04-30'),
 };
 
 const mutation = `

@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { parseDateTime } from '@util/time';
 import { journeyPatternRefsByName } from 'generic/timetablesdb/datasets/defaultSetup';
 import { TimetablePriority } from 'generic/timetablesdb/datasets/types';
 import { defaultDayTypeIds } from '../../../../../timetables-data-inserter/day-types';
@@ -8,11 +8,11 @@ import { HslTimetablesDbTables } from '../../schema';
 export const specialAprilFools2023VehicleScheduleFrame =
   buildHslVehicleScheduleFrame({
     vehicle_schedule_frame_id: '9142d422-31c8-40b6-8c76-fcaabd004818',
-    validity_start: DateTime.fromISO('2023-04-01'),
-    validity_end: DateTime.fromISO('2023-04-01'),
+    validity_start: Temporal.PlainDate.from('2023-04-01'),
+    validity_end: Temporal.PlainDate.from('2023-04-01'),
     priority: TimetablePriority.Special,
     name: 'Aprillipäivä 2023',
-    created_at: DateTime.fromISO('2022-02-01T02:34:56.789+02:00'),
+    created_at: parseDateTime('2022-02-01T02:34:56.789+02:00'),
   });
 
 export const specialAprilFools2023VehicleService = {
@@ -65,11 +65,11 @@ export const specialAprilFools2023Dataset: TableData<HslTimetablesDbTables>[] =
 export const specialAprilFools2023Timetable = {
   _vehicle_schedule_frames: {
     aprilFools2023: {
-      validity_start: DateTime.fromISO('2023-04-01'),
-      validity_end: DateTime.fromISO('2023-04-01'),
+      validity_start: Temporal.PlainDate.from('2023-04-01'),
+      validity_end: Temporal.PlainDate.from('2023-04-01'),
       priority: TimetablePriority.Special,
       name: 'Aprillipäivä 2023',
-      created_at: DateTime.fromISO('2022-02-01T02:34:56.789+02:00'),
+      created_at: parseDateTime('2022-02-01T02:34:56.789+02:00'),
 
       _vehicle_services: {
         sat: {

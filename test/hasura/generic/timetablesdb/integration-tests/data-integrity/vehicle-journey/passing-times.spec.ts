@@ -1,4 +1,3 @@
-import { Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -137,11 +136,14 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       const nextPassingTime = journey._passing_times[3];
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const newStopTime = testPassingTime.arrival_time!.plus({ minutes: 2 });
-      expect(newStopTime.valueOf()).toBeLessThan(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        nextPassingTime.arrival_time!.valueOf(),
-      ); // Still valid.
+      const newStopTime = testPassingTime.arrival_time!.add({ minutes: 2 });
+      expect(
+        Temporal.Duration.compare(
+          newStopTime,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          nextPassingTime.arrival_time!,
+        ),
+      ).toBeLessThan(0); // Still valid.
 
       const toBeUpdated = {
         arrival_time: newStopTime,
@@ -247,7 +249,9 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
 
       const toBeUpdated = {
         arrival_time: testPassingTime.arrival_time,
-        departure_time: testPassingTime?.departure_time?.minus({ minutes: 1 }),
+        departure_time: testPassingTime?.departure_time?.subtract({
+          minutes: 1,
+        }),
       };
 
       const response = await postQuery(
@@ -310,10 +314,13 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       expect(nextPassingTime.arrival_time).not.toBeNull();
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const newStopTime = testPassingTime.arrival_time!.plus({ minutes: 10 });
-      expect(newStopTime.valueOf()).toBeGreaterThan(
-        nextPassingTime.arrival_time!.valueOf(), // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      );
+      const newStopTime = testPassingTime.arrival_time!.add({ minutes: 10 });
+      expect(
+        Temporal.Duration.compare(
+          newStopTime,
+          nextPassingTime.arrival_time!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        ),
+      ).toBeGreaterThan(0);
 
       const toBeUpdated = {
         arrival_time: newStopTime,
@@ -342,12 +349,12 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
       // but passing time as a whole is not since they overlap:
       // bus would arrive to stop3 before departing from stop2.
       const stop2PassingTimeUpdate = {
-        arrival_time: Duration.fromISO('PT7H46M'),
-        departure_time: Duration.fromISO('PT7H49M'),
+        arrival_time: Temporal.Duration.from('PT7H46M'),
+        departure_time: Temporal.Duration.from('PT7H49M'),
       };
       const stop3PassingTimeUpdate = {
-        arrival_time: Duration.fromISO('PT7H48M'),
-        departure_time: Duration.fromISO('PT7H50M'),
+        arrival_time: Temporal.Duration.from('PT7H48M'),
+        departure_time: Temporal.Duration.from('PT7H50M'),
       };
 
       // Setup, nothing wrong with this yet.

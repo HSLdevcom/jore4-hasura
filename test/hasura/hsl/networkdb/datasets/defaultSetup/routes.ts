@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { routes as genericRoutes } from 'generic/networkdb/datasets/defaultSetup/routes';
 import {
   HslRoute,
@@ -20,7 +19,7 @@ export const hslRoutes: HslRoute[] = genericRoutes
         direction: RouteDirection.Westbound,
         priority: 20,
         validity_start: null,
-        validity_end: DateTime.fromISO('2044-09-01'),
+        validity_end: Temporal.PlainDate.from('2044-09-01'),
       },
       '6',
     ),

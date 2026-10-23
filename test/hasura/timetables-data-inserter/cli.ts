@@ -1,6 +1,7 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { ConnectionConfig } from 'pg';
+import { replaceTemporalJsonValue } from '@util/time';
 import { insertDatasetFromJson as insertGenericDatasetFromJson } from './generic/data-insert';
 import { insertDatasetFromJson as insertHslDatasetFromJson } from './hsl/data-insert';
 
@@ -72,7 +73,7 @@ program
       throw new Error(`Unrecognized schema ${schema}.`);
     }
 
-    process.stdout.write(JSON.stringify(result, null, 2));
+    process.stdout.write(JSON.stringify(result, replaceTemporalJsonValue, 2));
   });
 
 // From https://github.com/tj/commander.js/issues/137

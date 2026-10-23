@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { buildLocalizedString } from '@util/dataset';
 import { TimetablePriority, VehicleScheduleFrame } from './types';
 
@@ -22,8 +21,8 @@ export const buildVehicleScheduleFrame = (
     EntityName,
 ) => {
   const vehicleFrame = {
-    validity_start: DateTime.fromISO('2020-01-01'),
-    validity_end: DateTime.fromISO('2050-12-31'),
+    validity_start: Temporal.PlainDate.from('2020-01-01'),
+    validity_end: Temporal.PlainDate.from('2050-12-31'),
     priority: TimetablePriority.Standard,
     label: buildName(frame).fi_FI,
     ...frame,

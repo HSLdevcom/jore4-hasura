@@ -1,4 +1,3 @@
-import { Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import {
   DbConnection,
@@ -65,7 +64,7 @@ describe('Vehicle service sequential integrity', () => {
       );
     }
     const [hours, minutes] = hoursMinutes.split(':');
-    return Duration.fromISO(`PT${hours}H${minutes}M`);
+    return Temporal.Duration.from(`PT${hours}H${minutes}M`);
   };
 
   type PassingTimeParameters = [

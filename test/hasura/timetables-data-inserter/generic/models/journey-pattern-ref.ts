@@ -1,5 +1,5 @@
 import omit from 'lodash/omit';
-import { DateTime } from 'luxon';
+import { parseDateTime } from '@util/time';
 import {
   JourneyPatternRef,
   RouteDirection,
@@ -15,12 +15,12 @@ import { processGenericScheduledStopPoint } from './scheduled-stop-point';
 const getJourneyPatternRefDefaults = () => ({
   journey_pattern_id: crypto.randomUUID(),
   type_of_line: TypeOfLine.StoppingBusService,
-  observation_timestamp: DateTime.fromISO('2023-07-01T00:00:00+00:00'),
-  snapshot_timestamp: DateTime.fromISO('2023-09-28T00:00:00+00:00'),
+  observation_timestamp: parseDateTime('2023-07-01T00:00:00+00:00'),
+  snapshot_timestamp: parseDateTime('2023-09-28T00:00:00+00:00'),
   route_label: 'DEFAULT_ROUTE_LABEL',
   route_direction: RouteDirection.Outbound,
-  route_validity_start: DateTime.fromISO('2023-06-01T00:00:00+00:00'),
-  route_validity_end: DateTime.fromISO('2051-01-01T00:00:00+00:00'),
+  route_validity_start: Temporal.PlainDate.from('2023-06-01'),
+  route_validity_end: Temporal.PlainDate.from('2051-01-01'),
 });
 
 export const processGenericJourneyPatternRef = (

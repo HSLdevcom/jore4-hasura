@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import {
   SubstituteOperatingDayByLineType,
@@ -12,7 +11,7 @@ import {
 
 const getSubstituteOperatingDayByLineTypeDefaults = () => ({
   type_of_line: TypeOfLine.StoppingBusService,
-  superseded_date: DateTime.fromISO('2023-01-01'),
+  superseded_date: Temporal.PlainDate.from('2023-01-01'),
   substitute_day_of_week: null,
   begin_time: null,
   end_time: null,

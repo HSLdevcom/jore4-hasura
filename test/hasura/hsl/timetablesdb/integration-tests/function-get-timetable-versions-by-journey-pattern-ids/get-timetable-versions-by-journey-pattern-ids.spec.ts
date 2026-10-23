@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -38,18 +37,18 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   const getTimetableVersions = async (
     dataset: TableData<HslTimetablesDbTables>[],
     journeyPatternIds: string[],
-    startDate: DateTime,
-    endDate: DateTime,
-    observationDate: DateTime,
+    startDate: Temporal.PlainDate,
+    endDate: Temporal.PlainDate,
+    observationDate: Temporal.PlainDate,
   ): Promise<Array<TimetableVersion>> => {
     await setupDb(dbConnection, dataset);
     const response = await db.singleQuery(
       dbConnection,
       `SELECT * FROM vehicle_service.get_timetable_versions_by_journey_pattern_ids(
         '{${journeyPatternIds}}'::uuid[],
-        '${startDate.toISODate()}'::date,
-        '${endDate.toISODate()}'::date,
-        '${observationDate.toISODate()}'::date
+        '${startDate.toString()}'::date,
+        '${endDate.toString()}'::date,
+        '${observationDate.toString()}'::date
       )`,
     );
 
@@ -57,9 +56,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   };
 
   it('should have empty result from a timerange where no timetables are valid', async () => {
-    const startDate = DateTime.fromISO('2021-01-01');
-    const endDate = DateTime.fromISO('2021-06-30');
-    const observationDate = DateTime.fromISO('2021-05-01');
+    const startDate = Temporal.PlainDate.from('2021-01-01');
+    const endDate = Temporal.PlainDate.from('2021-06-30');
+    const observationDate = Temporal.PlainDate.from('2021-05-01');
 
     const builtDataset = buildHslTimetablesDataset(defaultTimetablesDataset);
     const response = await getTimetableVersions(
@@ -76,9 +75,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   describe('dataset has priorities: standard (Mon-Fri, Sat, Sun), temporary and substitute operating day by line type (Sat)', () => {
     describe('only standard priority is valid on observation date', () => {
       it(`should have only the standard priority versions in effect`, async () => {
-        const startDate = DateTime.fromISO('2023-04-01');
-        const endDate = DateTime.fromISO('2023-04-30');
-        const observationDate = DateTime.fromISO('2023-04-16');
+        const startDate = Temporal.PlainDate.from('2023-04-01');
+        const endDate = Temporal.PlainDate.from('2023-04-30');
+        const observationDate = Temporal.PlainDate.from('2023-04-16');
 
         const mergedDataset = mergeTimetablesDatasets([
           defaultTimetablesDataset,
@@ -150,9 +149,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
 
     describe('standard and temporary priority are valid on observation date', () => {
       it(`should have temporary priority in effect (Saturday)`, async () => {
-        const startDate = DateTime.fromISO('2023-04-01');
-        const endDate = DateTime.fromISO('2023-04-30');
-        const observationDate = DateTime.fromISO('2023-04-14');
+        const startDate = Temporal.PlainDate.from('2023-04-01');
+        const endDate = Temporal.PlainDate.from('2023-04-30');
+        const observationDate = Temporal.PlainDate.from('2023-04-14');
 
         const mergedDataset = mergeTimetablesDatasets([
           defaultTimetablesDataset,
@@ -224,9 +223,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
 
     describe('standard, temporary and substitute by line type priority are valid on observation date', () => {
       it(`should have substitute day by line type priority in effect (Saturday)`, async () => {
-        const startDate = DateTime.fromISO('2023-04-01');
-        const endDate = DateTime.fromISO('2023-04-30');
-        const observationDate = DateTime.fromISO('2023-04-01');
+        const startDate = Temporal.PlainDate.from('2023-04-01');
+        const endDate = Temporal.PlainDate.from('2023-04-30');
+        const observationDate = Temporal.PlainDate.from('2023-04-01');
 
         const mergedDataset = mergeTimetablesDatasets([
           defaultTimetablesDataset,
@@ -300,9 +299,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   describe('dataset has priorities: standard (Mon-Fri, Sat, Sun), temporary, substitute operating day by line type and special (Sat)', () => {
     describe('standard, temporary and substitute by line type and special priority are valid on observation date', () => {
       it(`should have special priority in effect (Saturday)`, async () => {
-        const startDate = DateTime.fromISO('2023-04-01');
-        const endDate = DateTime.fromISO('2023-04-30');
-        const observationDate = DateTime.fromISO('2023-04-01');
+        const startDate = Temporal.PlainDate.from('2023-04-01');
+        const endDate = Temporal.PlainDate.from('2023-04-30');
+        const observationDate = Temporal.PlainDate.from('2023-04-01');
 
         const mergedDataset = mergeTimetablesDatasets([
           defaultTimetablesDataset,
@@ -384,9 +383,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   describe('dataset has standard priorities (Mon-Fri, Sat, Sun) and special day (Thu)', () => {
     describe('standard priorities and special priority are valid on observation date', () => {
       it('should have ALL standard priorities AND special day in effect (not 1:1 overlap on day type)', async () => {
-        const startDate = DateTime.fromISO('2023-05-01');
-        const endDate = DateTime.fromISO('2023-05-31');
-        const observationDate = DateTime.fromISO('2023-05-18');
+        const startDate = Temporal.PlainDate.from('2023-05-01');
+        const endDate = Temporal.PlainDate.from('2023-05-31');
+        const observationDate = Temporal.PlainDate.from('2023-05-18');
 
         const builtDataset = buildHslTimetablesDataset(
           defaultTimetablesDataset,
@@ -449,9 +448,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   describe('dataset has substitute operating day for a different type of line (Express bus)', () => {
     describe('substitute operating day would be valid on observation date', () => {
       it('should not include or be affected by the different type of line (Express bus) substitute operating day', async () => {
-        const startDate = DateTime.fromISO('2023-05-01');
-        const endDate = DateTime.fromISO('2023-05-31');
-        const observationDate = DateTime.fromISO('2023-05-20');
+        const startDate = Temporal.PlainDate.from('2023-05-01');
+        const endDate = Temporal.PlainDate.from('2023-05-31');
+        const observationDate = Temporal.PlainDate.from('2023-05-20');
 
         const mergedDataset = mergeTimetablesDatasets([
           defaultTimetablesDataset,
@@ -517,9 +516,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
   describe('dataset has standard priorities (Mon-Fri, Sat, Sun)', () => {
     describe('observation date is out of startDate - endDate range and also out of vehicle_schedule_frame validity range', () => {
       it('should return rows but nothing should be in effect', async () => {
-        const startDate = DateTime.fromISO('2023-01-01');
-        const endDate = DateTime.fromISO('2023-01-31');
-        const observationDate = DateTime.fromISO('2021-01-01');
+        const startDate = Temporal.PlainDate.from('2023-01-01');
+        const endDate = Temporal.PlainDate.from('2023-01-31');
+        const observationDate = Temporal.PlainDate.from('2021-01-01');
 
         const builtDataset = buildHslTimetablesDataset(
           defaultTimetablesDataset,
@@ -573,9 +572,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
 
     describe('observation date is out of startDate - endDate range but inside vehicle_schedule_frame validity range', () => {
       it('should return rows that are in effect on observation date and valid on observation date and the time range', async () => {
-        const startDate = DateTime.fromISO('2023-02-01');
-        const endDate = DateTime.fromISO('2023-02-28');
-        const observationDate = DateTime.fromISO('2023-01-01');
+        const startDate = Temporal.PlainDate.from('2023-02-01');
+        const endDate = Temporal.PlainDate.from('2023-02-28');
+        const observationDate = Temporal.PlainDate.from('2023-01-01');
 
         const builtDataset = buildHslTimetablesDataset(
           defaultTimetablesDataset,
@@ -632,9 +631,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
     describe('time range hits timetables on both journey patterns timetables (winter and summer)', () => {
       describe('observation date is on summer timetables validity range', () => {
         it('should have only the summer timetable version in effect', async () => {
-          const startDate = DateTime.fromISO('2023-01-01');
-          const endDate = DateTime.fromISO('2023-06-30');
-          const observationDate = DateTime.fromISO('2023-06-01');
+          const startDate = Temporal.PlainDate.from('2023-01-01');
+          const endDate = Temporal.PlainDate.from('2023-06-30');
+          const observationDate = Temporal.PlainDate.from('2023-06-01');
 
           const builtDataset = buildHslTimetablesDataset(
             defaultTimetablesDataset,
@@ -715,9 +714,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
 
       describe('observation date is on winter timetables validity range', () => {
         it('should have only the winter timetable version in effect', async () => {
-          const startDate = DateTime.fromISO('2023-01-01');
-          const endDate = DateTime.fromISO('2023-06-30');
-          const observationDate = DateTime.fromISO('2023-01-30');
+          const startDate = Temporal.PlainDate.from('2023-01-01');
+          const endDate = Temporal.PlainDate.from('2023-06-30');
+          const observationDate = Temporal.PlainDate.from('2023-01-30');
 
           const builtDataset = buildHslTimetablesDataset(
             defaultTimetablesDataset,
@@ -800,9 +799,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
 
   describe('draft and staging priorities', () => {
     it('should not be affected by draft priority (Standard priorities should be in effect)', async () => {
-      const startDate = DateTime.fromISO('2023-04-01');
-      const endDate = DateTime.fromISO('2023-04-30');
-      const observationDate = DateTime.fromISO('2023-04-10');
+      const startDate = Temporal.PlainDate.from('2023-04-01');
+      const endDate = Temporal.PlainDate.from('2023-04-30');
+      const observationDate = Temporal.PlainDate.from('2023-04-10');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
@@ -870,9 +869,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
     });
 
     it('should not have draft in effect, even if it is the only valid version', async () => {
-      const startDate = DateTime.fromISO('2024-04-01');
-      const endDate = DateTime.fromISO('2024-04-30');
-      const observationDate = DateTime.fromISO('2024-04-10');
+      const startDate = Temporal.PlainDate.from('2024-04-01');
+      const endDate = Temporal.PlainDate.from('2024-04-30');
+      const observationDate = Temporal.PlainDate.from('2024-04-10');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
@@ -902,9 +901,9 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
     });
 
     it('should not return staging priorities at all', async () => {
-      const startDate = DateTime.fromISO('2024-04-01');
-      const endDate = DateTime.fromISO('2024-04-30');
-      const observationDate = DateTime.fromISO('2024-04-10');
+      const startDate = Temporal.PlainDate.from('2024-04-01');
+      const endDate = Temporal.PlainDate.from('2024-04-30');
+      const observationDate = Temporal.PlainDate.from('2024-04-10');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
