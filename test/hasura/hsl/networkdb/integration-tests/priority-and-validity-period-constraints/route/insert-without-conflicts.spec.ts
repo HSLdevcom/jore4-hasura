@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -102,7 +101,7 @@ describe('Insert route', () => {
         direction: RouteDirection.Northbound,
         variant: 3,
         priority: 10,
-        validity_start: DateTime.fromISO('2044-05-02'),
+        validity_start: Temporal.PlainDate.from('2044-05-02'),
         validity_end: null,
       },
       '6',

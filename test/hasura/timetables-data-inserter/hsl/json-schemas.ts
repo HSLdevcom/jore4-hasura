@@ -12,7 +12,6 @@ import {
   localizedStringSchema,
 } from 'timetables-data-inserter/generic/json-schemas';
 
-// Borrowed from related Luxon issue discussion: https://github.com/moment/luxon/issues/353#issuecomment-1262828949
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validTimezones = (Intl as any).supportedValuesOf('timeZone');
 export const timezoneSchema = z

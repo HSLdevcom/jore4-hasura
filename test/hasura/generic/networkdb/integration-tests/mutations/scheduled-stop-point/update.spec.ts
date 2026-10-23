@@ -1,5 +1,4 @@
 import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -28,8 +27,8 @@ const toBeUpdated: Partial<ScheduledStopPoint> = {
     },
   } as GeometryObject,
   priority: 30,
-  validity_start: DateTime.fromISO('2077-10-22'),
-  validity_end: DateTime.fromISO('2079-10-21'),
+  validity_start: Temporal.PlainDate.from('2077-10-22'),
+  validity_end: Temporal.PlainDate.from('2079-10-21'),
   timing_place_id: null,
 };
 

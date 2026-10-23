@@ -71,7 +71,7 @@ describe('Creating a temporary route with different stop order', () => {
       ...tempRouteWithSameLinks,
       validity_start: tempRouteWithSameLinks.validity_start,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      validity_end: tempRouteWithSameLinks.validity_end!.minus({ day: 1 }),
+      validity_end: tempRouteWithSameLinks.validity_end!.subtract({ days: 1 }),
     };
     await insertRoute(
       tempRouteWithSameLinksAndTooShortValidityTime,

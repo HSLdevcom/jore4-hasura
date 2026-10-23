@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { parseDateTime } from '@util/time';
 import { defaultTimetablesDataset as defaultGenericTimetablesDataset } from 'generic/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import {
   TimetablePriority,
@@ -12,11 +12,11 @@ const defaultTimetablesDatasetHslAdditions = {
   _vehicle_schedule_frames: {
     specialAscensionDay2023: {
       vehicle_schedule_frame_id: '52c5afdb-9a04-4aed-8769-4bdb761aa6f6',
-      validity_start: DateTime.fromISO('2023-05-18'),
-      validity_end: DateTime.fromISO('2023-05-18'),
+      validity_start: Temporal.PlainDate.from('2023-05-18'),
+      validity_end: Temporal.PlainDate.from('2023-05-18'),
       priority: TimetablePriority.Special,
       name: 'Helatorstai 2023',
-      created_at: DateTime.fromISO('2022-02-01T02:34:56.789+02:00'),
+      created_at: parseDateTime('2022-02-01T02:34:56.789+02:00'),
       _vehicle_services: {
         thursday: {
           day_type_id: defaultDayTypeIds.THURSDAY,
@@ -44,7 +44,7 @@ const defaultTimetablesDatasetHslAdditions = {
       _substitute_operating_day_by_line_types: {
         aprilFools: {
           type_of_line: TypeOfLine.StoppingBusService,
-          superseded_date: DateTime.fromISO('2023-04-01'),
+          superseded_date: Temporal.PlainDate.from('2023-04-01'),
           substitute_day_of_week: DayOfWeek.Friday,
         },
       },

@@ -1,11 +1,11 @@
-import { DateTime, Duration } from 'luxon';
+import { parseDateTime } from '@util/time';
 import { defaultDayTypeIds } from '../../../../../timetables-data-inserter/day-types';
 
 export const winter2022VehicleScheduleFrame = {
-  validity_start: DateTime.fromISO('2022-07-01'),
-  validity_end: DateTime.fromISO('2023-05-31'),
+  validity_start: Temporal.PlainDate.from('2022-07-01'),
+  validity_end: Temporal.PlainDate.from('2023-05-31'),
   name: 'Talvi 2022',
-  created_at: DateTime.fromISO('2021-01-01T02:34:56.789+02:00'),
+  created_at: parseDateTime('2021-01-01T02:34:56.789+02:00'),
   _vehicle_services: {
     monFri: {
       day_type_id: defaultDayTypeIds.MONDAY_FRIDAY,
@@ -18,21 +18,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2201',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT7H5M'),
+                  departure_time: Temporal.Duration.from('PT7H5M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT7H15M'),
-                  departure_time: Duration.fromISO('PT7H15M'),
+                  arrival_time: Temporal.Duration.from('PT7H15M'),
+                  departure_time: Temporal.Duration.from('PT7H15M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT7H22M'),
-                  departure_time: Duration.fromISO('PT7H22M'),
+                  arrival_time: Temporal.Duration.from('PT7H22M'),
+                  departure_time: Temporal.Duration.from('PT7H22M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2204',
-                  arrival_time: Duration.fromISO('PT7H27M'),
+                  arrival_time: Temporal.Duration.from('PT7H27M'),
                   departure_time: null,
                 },
               ],
@@ -43,21 +43,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2204',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT7H35M'),
+                  departure_time: Temporal.Duration.from('PT7H35M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT7H45M'),
-                  departure_time: Duration.fromISO('PT7H45M'),
+                  arrival_time: Temporal.Duration.from('PT7H45M'),
+                  departure_time: Temporal.Duration.from('PT7H45M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT7H49M'),
-                  departure_time: Duration.fromISO('PT7H49M'),
+                  arrival_time: Temporal.Duration.from('PT7H49M'),
+                  departure_time: Temporal.Duration.from('PT7H49M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2201',
-                  arrival_time: Duration.fromISO('PT7H55M'),
+                  arrival_time: Temporal.Duration.from('PT7H55M'),
                   departure_time: null,
                 },
               ],
@@ -68,21 +68,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2201',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT8H5M'),
+                  departure_time: Temporal.Duration.from('PT8H5M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT8H15M'),
-                  departure_time: Duration.fromISO('PT8H15M'),
+                  arrival_time: Temporal.Duration.from('PT8H15M'),
+                  departure_time: Temporal.Duration.from('PT8H15M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT8H22M'),
-                  departure_time: Duration.fromISO('PT8H22M'),
+                  arrival_time: Temporal.Duration.from('PT8H22M'),
+                  departure_time: Temporal.Duration.from('PT8H22M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2204',
-                  arrival_time: Duration.fromISO('PT8H27M'),
+                  arrival_time: Temporal.Duration.from('PT8H27M'),
                   departure_time: null,
                 },
               ],
@@ -93,21 +93,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2204',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT8H35M'),
+                  departure_time: Temporal.Duration.from('PT8H35M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT8H45M'),
-                  departure_time: Duration.fromISO('PT8H45M'),
+                  arrival_time: Temporal.Duration.from('PT8H45M'),
+                  departure_time: Temporal.Duration.from('PT8H45M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT8H49M'),
-                  departure_time: Duration.fromISO('PT8H49M'),
+                  arrival_time: Temporal.Duration.from('PT8H49M'),
+                  departure_time: Temporal.Duration.from('PT8H49M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2201',
-                  arrival_time: Duration.fromISO('PT8H55M'),
+                  arrival_time: Temporal.Duration.from('PT8H55M'),
                   departure_time: null,
                 },
               ],
@@ -118,21 +118,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2201',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT9H5M'),
+                  departure_time: Temporal.Duration.from('PT9H5M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT9H15M'),
-                  departure_time: Duration.fromISO('PT9H15M'),
+                  arrival_time: Temporal.Duration.from('PT9H15M'),
+                  departure_time: Temporal.Duration.from('PT9H15M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT9H22M'),
-                  departure_time: Duration.fromISO('PT9H22M'),
+                  arrival_time: Temporal.Duration.from('PT9H22M'),
+                  departure_time: Temporal.Duration.from('PT9H22M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2204',
-                  arrival_time: Duration.fromISO('PT9H27M'),
+                  arrival_time: Temporal.Duration.from('PT9H27M'),
                   departure_time: null,
                 },
               ],
@@ -143,21 +143,21 @@ export const winter2022VehicleScheduleFrame = {
                 {
                   _scheduled_stop_point_label: 'H2204',
                   arrival_time: null,
-                  departure_time: Duration.fromISO('PT9H35M'),
+                  departure_time: Temporal.Duration.from('PT9H35M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2203',
-                  arrival_time: Duration.fromISO('PT9H45M'),
-                  departure_time: Duration.fromISO('PT9H45M'),
+                  arrival_time: Temporal.Duration.from('PT9H45M'),
+                  departure_time: Temporal.Duration.from('PT9H45M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2202',
-                  arrival_time: Duration.fromISO('PT9H49M'),
-                  departure_time: Duration.fromISO('PT9H49M'),
+                  arrival_time: Temporal.Duration.from('PT9H49M'),
+                  departure_time: Temporal.Duration.from('PT9H49M'),
                 },
                 {
                   _scheduled_stop_point_label: 'H2201',
-                  arrival_time: Duration.fromISO('PT9H55M'),
+                  arrival_time: Temporal.Duration.from('PT9H55M'),
                   departure_time: null,
                 },
               ],

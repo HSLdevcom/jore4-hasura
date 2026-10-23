@@ -1,5 +1,5 @@
-import { DateTime, Duration } from 'luxon';
 import { z } from 'zod';
+import { parseDate, parseDateTime } from '@util/time';
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import {
   RouteDirection,
@@ -7,20 +7,39 @@ import {
 } from 'generic/timetablesdb/datasets/types';
 import { defaultDayTypeIds } from '../day-types';
 
-// TODO: could add some validation?
+// Temporal throws a RangeError on input it cannot parse. Report that as a
+// validation issue, so that bad input in a dataset is reported the same way as
+// any other schema violation.
+const parseTemporalValue =
+  <T>(parse: (value: string) => T) =>
+  (value: string, ctx: z.RefinementCtx) => {
+    try {
+      return parse(value);
+    } catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Invalid input',
+      });
+      return z.NEVER;
+    }
+  };
+
+// Only accept date-only strings: Temporal.PlainDate.from() would otherwise
+// silently drop the time and offset of a date-time string and keep its UTC
+// calendar date, which is rarely the date the caller meant.
 export const dateSchema = z
   .string()
-  .transform((dateTime) => DateTime.fromISO(dateTime));
+  .date()
+  .transform(parseTemporalValue(parseDate));
 
 export const dateTimeSchema = z
   .string()
   .datetime({ offset: true })
-  .transform((dateTime) => DateTime.fromISO(dateTime));
+  .transform(parseTemporalValue(parseDateTime));
 
 export const durationSchema = z
   .string()
-  .transform((duration) => Duration.fromISO(duration))
-  .refine((duration) => duration.isValid);
+  .transform(parseTemporalValue(Temporal.Duration.from));
 
 export const localizedStringSchema = z
   .object({

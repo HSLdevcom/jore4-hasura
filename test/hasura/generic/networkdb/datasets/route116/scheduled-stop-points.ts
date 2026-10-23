@@ -1,5 +1,4 @@
 import uniqBy from 'lodash/uniqBy';
-import { DateTime } from 'luxon';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -22,8 +21,8 @@ const scheduledStopPointPohjantie: ScheduledStopPoint = {
   direction: LinkDirection.Backward,
   label: 'Pohjantie (42)',
   priority: 10,
-  validity_start: DateTime.fromISO('2044-05-01'),
-  validity_end: DateTime.fromISO('2084-04-30'),
+  validity_start: Temporal.PlainDate.from('2044-05-01'),
+  validity_end: Temporal.PlainDate.from('2084-04-30'),
   timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
 };
 
@@ -106,8 +105,8 @@ export const scheduledStopPointWithSameLabelOnLinkAfterNextStopWithNonOverlappin
   {
     ...scheduledStopPointWithSameLabelOnLinkAfterNextStop,
     scheduled_stop_point_id: '45458d15-eef6-4306-9614-d90ef4528747',
-    validity_start: DateTime.fromISO('2075-05-01'),
-    validity_end: DateTime.fromISO('2099-04-30'),
+    validity_start: Temporal.PlainDate.from('2075-05-01'),
+    validity_end: Temporal.PlainDate.from('2099-04-30'),
   };
 
 export const scheduledStopPoints: ScheduledStopPoint[] = [
@@ -125,8 +124,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'WeeGee-talo',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -143,8 +142,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Kaskenkaataja',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -161,8 +160,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Ahertajankuja',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -179,8 +178,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Kulttuuriaukio',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -197,8 +196,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tapiolan uimahalli',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -215,8 +214,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Sateentie (24)',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -233,8 +232,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tuuliniitty (31)',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -251,8 +250,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tuuliniitty (32)',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -269,8 +268,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Tapionaukio',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -287,8 +286,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Sateentie (23)',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -305,8 +304,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tuulikuja',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -323,8 +322,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Sateenkaari',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -341,8 +340,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Backward,
     label: 'Länsituulenkuja',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -359,8 +358,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     direction: LinkDirection.Forward,
     label: 'Tapiola (M) (11)',
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-01'),
-    validity_end: DateTime.fromISO('2084-04-30'),
+    validity_start: Temporal.PlainDate.from('2044-05-01'),
+    validity_end: Temporal.PlainDate.from('2084-04-30'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   scheduledStopPointPohjantie,

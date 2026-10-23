@@ -1,9 +1,9 @@
-import { DateTime, Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { postQuery } from '@util/graphql';
 import { expectErrorResponse, expectNoErrorResponse } from '@util/response';
 import { queryTable, setupDb } from '@util/setup';
+import { parseDateTime } from '@util/time';
 import { TypeOfLine } from 'generic/networkdb/datasets/types';
 import { defaultTimetablesDataset } from 'hsl/timetablesdb/datasets/defaultSetup/default-timetables-dataset';
 import { hslTimetablesDbSchema } from 'hsl/timetablesdb/datasets/schema';
@@ -91,12 +91,12 @@ describe('substitute operating periods', () => {
             data: [
               {
                 type_of_line: TypeOfLine.CityTramService,
-                superseded_date: DateTime.fromISO('2023-05-20'),
+                superseded_date: Temporal.PlainDate.from('2023-05-20'),
                 substitute_day_of_week: DayOfWeek.Sunday,
               },
               {
                 type_of_line: TypeOfLine.RegionalBusService,
-                superseded_date: DateTime.fromISO('2023-05-20'),
+                superseded_date: Temporal.PlainDate.from('2023-05-20'),
                 substitute_day_of_week: DayOfWeek.Sunday,
               },
             ],
@@ -122,17 +122,17 @@ describe('substitute operating periods', () => {
         expect.arrayContaining([
           expect.objectContaining({
             type_of_line: TypeOfLine.CityTramService,
-            superseded_date: DateTime.fromISO('2023-05-20'),
+            superseded_date: Temporal.PlainDate.from('2023-05-20'),
             substitute_day_of_week: DayOfWeek.Sunday,
-            begin_datetime: DateTime.fromISO('2023-05-20T04:30:00.000+03:00'),
-            end_datetime: DateTime.fromISO('2023-05-21T04:30:00.000+03:00'),
+            begin_datetime: parseDateTime('2023-05-20T04:30:00.000+03:00'),
+            end_datetime: parseDateTime('2023-05-21T04:30:00.000+03:00'),
           }),
           expect.objectContaining({
             type_of_line: TypeOfLine.RegionalBusService,
-            superseded_date: DateTime.fromISO('2023-05-20'),
+            superseded_date: Temporal.PlainDate.from('2023-05-20'),
             substitute_day_of_week: DayOfWeek.Sunday,
-            begin_datetime: DateTime.fromISO('2023-05-20T04:30:00.000+03:00'),
-            end_datetime: DateTime.fromISO('2023-05-21T04:30:00.000+03:00'),
+            begin_datetime: parseDateTime('2023-05-20T04:30:00.000+03:00'),
+            end_datetime: parseDateTime('2023-05-21T04:30:00.000+03:00'),
           }),
         ]),
       );
@@ -153,7 +153,7 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-01'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-01'),
                   substitute_day_of_week: DayOfWeek.Sunday,
                 },
               ],
@@ -183,12 +183,12 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.FerryService,
-                  superseded_date: DateTime.fromISO('2023-04-01'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-01'),
                   substitute_day_of_week: DayOfWeek.Tuesday,
                 },
                 {
                   type_of_line: TypeOfLine.CityTramService,
-                  superseded_date: DateTime.fromISO('2023-04-01'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-01'),
                   substitute_day_of_week: DayOfWeek.Tuesday,
                 },
               ],
@@ -216,17 +216,17 @@ describe('substitute operating periods', () => {
           expect.arrayContaining([
             expect.objectContaining({
               type_of_line: TypeOfLine.FerryService,
-              superseded_date: DateTime.fromISO('2023-04-01'),
+              superseded_date: Temporal.PlainDate.from('2023-04-01'),
               substitute_day_of_week: DayOfWeek.Tuesday,
-              begin_datetime: DateTime.fromISO('2023-04-01T04:30:00.000+03:00'),
-              end_datetime: DateTime.fromISO('2023-04-02T04:30:00.000+03:00'),
+              begin_datetime: parseDateTime('2023-04-01T04:30:00.000+03:00'),
+              end_datetime: parseDateTime('2023-04-02T04:30:00.000+03:00'),
             }),
             expect.objectContaining({
               type_of_line: TypeOfLine.FerryService,
-              superseded_date: DateTime.fromISO('2023-04-01'),
+              superseded_date: Temporal.PlainDate.from('2023-04-01'),
               substitute_day_of_week: DayOfWeek.Tuesday,
-              begin_datetime: DateTime.fromISO('2023-04-01T04:30:00.000+03:00'),
-              end_datetime: DateTime.fromISO('2023-04-02T04:30:00.000+03:00'),
+              begin_datetime: parseDateTime('2023-04-01T04:30:00.000+03:00'),
+              end_datetime: parseDateTime('2023-04-02T04:30:00.000+03:00'),
             }),
           ]),
         );
@@ -247,17 +247,17 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.MetroService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: DayOfWeek.Sunday,
-                  begin_time: Duration.fromISO('PT8H5M'),
-                  end_time: Duration.fromISO('PT10H5M'),
+                  begin_time: Temporal.Duration.from('PT8H5M'),
+                  end_time: Temporal.Duration.from('PT10H5M'),
                 },
                 {
                   type_of_line: TypeOfLine.MetroService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: DayOfWeek.Sunday,
-                  begin_time: Duration.fromISO('PT12H5M'),
-                  end_time: Duration.fromISO('PT24H5M'),
+                  begin_time: Temporal.Duration.from('PT12H5M'),
+                  end_time: Temporal.Duration.from('PT24H5M'),
                 },
               ],
             },
@@ -282,17 +282,17 @@ describe('substitute operating periods', () => {
           expect.arrayContaining([
             expect.objectContaining({
               type_of_line: TypeOfLine.MetroService,
-              superseded_date: DateTime.fromISO('2023-04-02'),
+              superseded_date: Temporal.PlainDate.from('2023-04-02'),
               substitute_day_of_week: DayOfWeek.Sunday,
-              begin_datetime: DateTime.fromISO('2023-04-02T08:05:00.000+03:00'),
-              end_datetime: DateTime.fromISO('2023-04-02T10:05:00.000+03:00'),
+              begin_datetime: parseDateTime('2023-04-02T08:05:00.000+03:00'),
+              end_datetime: parseDateTime('2023-04-02T10:05:00.000+03:00'),
             }),
             expect.objectContaining({
               type_of_line: TypeOfLine.MetroService,
-              superseded_date: DateTime.fromISO('2023-04-02'),
+              superseded_date: Temporal.PlainDate.from('2023-04-02'),
               substitute_day_of_week: DayOfWeek.Sunday,
-              begin_datetime: DateTime.fromISO('2023-04-02T12:05:00.000+03:00'),
-              end_datetime: DateTime.fromISO('2023-04-03T00:05:00.000+03:00'),
+              begin_datetime: parseDateTime('2023-04-02T12:05:00.000+03:00'),
+              end_datetime: parseDateTime('2023-04-03T00:05:00.000+03:00'),
             }),
           ]),
         );
@@ -311,17 +311,17 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: DayOfWeek.Sunday,
-                  begin_time: Duration.fromISO('PT8H5M'),
-                  end_time: Duration.fromISO('PT10H5M'),
+                  begin_time: Temporal.Duration.from('PT8H5M'),
+                  end_time: Temporal.Duration.from('PT10H5M'),
                 },
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: null,
-                  begin_time: Duration.fromISO('PT12H5M'),
-                  end_time: Duration.fromISO('PT24H5M'),
+                  begin_time: Temporal.Duration.from('PT12H5M'),
+                  end_time: Temporal.Duration.from('PT24H5M'),
                 },
               ],
             },
@@ -352,7 +352,7 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: 10,
                 },
               ],
@@ -383,7 +383,7 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
                   substitute_day_of_week: null,
                 },
               ],
@@ -410,10 +410,10 @@ describe('substitute operating periods', () => {
           expect.arrayContaining([
             expect.objectContaining({
               type_of_line: TypeOfLine.StoppingBusService,
-              superseded_date: DateTime.fromISO('2023-04-02'),
+              superseded_date: Temporal.PlainDate.from('2023-04-02'),
               substitute_day_of_week: null,
-              begin_datetime: DateTime.fromISO('2023-04-02T04:30:00.000+03:00'),
-              end_datetime: DateTime.fromISO('2023-04-03T04:30:00.000+03:00'),
+              begin_datetime: parseDateTime('2023-04-02T04:30:00.000+03:00'),
+              end_datetime: parseDateTime('2023-04-03T04:30:00.000+03:00'),
             }),
           ]),
         );
@@ -434,8 +434,8 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
-                  begin_time: Duration.fromISO('PT2H5M'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
+                  begin_time: Temporal.Duration.from('PT2H5M'),
                 },
               ],
             },
@@ -464,9 +464,9 @@ describe('substitute operating periods', () => {
               data: [
                 {
                   type_of_line: TypeOfLine.StoppingBusService,
-                  superseded_date: DateTime.fromISO('2023-04-02'),
-                  begin_time: Duration.fromISO('PT9H5M'),
-                  end_time: Duration.fromISO('PT8H5M'),
+                  superseded_date: Temporal.PlainDate.from('2023-04-02'),
+                  begin_time: Temporal.Duration.from('PT9H5M'),
+                  end_time: Temporal.Duration.from('PT8H5M'),
                 },
               ],
             },
@@ -497,8 +497,8 @@ describe('substitute operating periods', () => {
             data: [
               {
                 type_of_line: TypeOfLine.StoppingBusService,
-                superseded_date: DateTime.fromISO('2023-04-02'),
-                end_time: Duration.fromISO('PT29H5M'),
+                superseded_date: Temporal.PlainDate.from('2023-04-02'),
+                end_time: Temporal.Duration.from('PT29H5M'),
               },
             ],
           },
@@ -555,10 +555,10 @@ describe('substitute operating periods', () => {
         daysToInsert: [
           {
             type_of_line: TypeOfLine.StoppingBusService,
-            superseded_date: DateTime.fromISO('2023-04-02'),
+            superseded_date: Temporal.PlainDate.from('2023-04-02'),
             substitute_day_of_week: DayOfWeek.Sunday,
-            begin_time: Duration.fromISO('PT8H5M'),
-            end_time: Duration.fromISO('PT10H5M'),
+            begin_time: Temporal.Duration.from('PT8H5M'),
+            end_time: Temporal.Duration.from('PT10H5M'),
             substitute_operating_period_id: sopIdInDB,
           },
         ],
@@ -582,11 +582,11 @@ describe('substitute operating periods', () => {
         expect.arrayContaining([
           expect.objectContaining({
             type_of_line: TypeOfLine.StoppingBusService,
-            superseded_date: DateTime.fromISO('2023-04-02'),
+            superseded_date: Temporal.PlainDate.from('2023-04-02'),
             substitute_day_of_week: DayOfWeek.Sunday,
             substitute_operating_period_id: sopIdInDB,
-            end_datetime: DateTime.fromISO('2023-04-02T10:05:00.000+03:00'),
-            begin_datetime: DateTime.fromISO('2023-04-02T08:05:00.000+03:00'),
+            end_datetime: parseDateTime('2023-04-02T10:05:00.000+03:00'),
+            begin_datetime: parseDateTime('2023-04-02T08:05:00.000+03:00'),
             timezone: 'Europe/Helsinki',
             substitute_operating_day_by_line_type_id: expect.any(String),
           }),
@@ -619,18 +619,18 @@ describe('substitute operating periods', () => {
         daysToInsert: [
           {
             type_of_line: TypeOfLine.StoppingBusService,
-            superseded_date: DateTime.fromISO('2023-04-02'),
+            superseded_date: Temporal.PlainDate.from('2023-04-02'),
             substitute_day_of_week: DayOfWeek.Sunday,
-            begin_time: Duration.fromISO('PT8H5M'),
-            end_time: Duration.fromISO('PT10H5M'),
+            begin_time: Temporal.Duration.from('PT8H5M'),
+            end_time: Temporal.Duration.from('PT10H5M'),
             substitute_operating_period_id: sopIdInDB,
           },
           {
             type_of_line: TypeOfLine.StoppingBusService,
-            superseded_date: DateTime.fromISO('2023-04-02'),
+            superseded_date: Temporal.PlainDate.from('2023-04-02'),
             substitute_day_of_week: DayOfWeek.Sunday,
-            begin_time: Duration.fromISO('PT8H5M'),
-            end_time: Duration.fromISO('PT10H5M'),
+            begin_time: Temporal.Duration.from('PT8H5M'),
+            end_time: Temporal.Duration.from('PT10H5M'),
             substitute_operating_period_id: sopIdInDB,
           },
         ],
@@ -656,11 +656,11 @@ describe('substitute operating periods', () => {
         expect.arrayContaining([
           expect.objectContaining({
             type_of_line: TypeOfLine.StoppingBusService,
-            superseded_date: DateTime.fromISO('2023-04-01'),
+            superseded_date: Temporal.PlainDate.from('2023-04-01'),
             substitute_day_of_week: DayOfWeek.Friday,
             substitute_operating_period_id: sopIdInDB,
-            begin_datetime: DateTime.fromISO('2023-04-01T04:30:00.000+03:00'),
-            end_datetime: DateTime.fromISO('2023-04-02T04:30:00.000+03:00'),
+            begin_datetime: parseDateTime('2023-04-01T04:30:00.000+03:00'),
+            end_datetime: parseDateTime('2023-04-02T04:30:00.000+03:00'),
             timezone: 'Europe/Helsinki',
             substitute_operating_day_by_line_type_id: expect.any(String),
           }),

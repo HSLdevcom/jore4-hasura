@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { serializeMatcherInput, serializeMatcherInputs } from '@util/dataset';
@@ -124,8 +123,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop2',
       priority: 10,
-      validity_start: DateTime.fromISO('2062-01-03'),
-      validity_end: DateTime.fromISO('2063-01-02'),
+      validity_start: Temporal.PlainDate.from('2062-01-03'),
+      validity_end: Temporal.PlainDate.from('2063-01-02'),
       timing_place_id: null,
     };
 
@@ -149,8 +148,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop2A',
       priority: 30,
-      validity_start: DateTime.fromISO('2062-01-03'),
-      validity_end: DateTime.fromISO('2063-01-02'),
+      validity_start: Temporal.PlainDate.from('2062-01-03'),
+      validity_end: Temporal.PlainDate.from('2063-01-02'),
       timing_place_id: null,
     };
 
@@ -174,8 +173,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop2',
       priority: 30,
-      validity_start: DateTime.fromISO('2064-01-03'),
-      validity_end: DateTime.fromISO('2065-01-02'),
+      validity_start: Temporal.PlainDate.from('2064-01-03'),
+      validity_end: Temporal.PlainDate.from('2065-01-02'),
       timing_place_id: null,
     };
 
@@ -199,8 +198,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 10,
-      validity_start: DateTime.fromISO('2060-01-16'),
-      validity_end: DateTime.fromISO('2061-04-30'),
+      validity_start: Temporal.PlainDate.from('2060-01-16'),
+      validity_end: Temporal.PlainDate.from('2061-04-30'),
       timing_place_id: null,
     };
 
@@ -224,8 +223,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stop1',
       priority: 20,
-      validity_start: DateTime.fromISO('2065-01-05'),
-      validity_end: DateTime.fromISO('2065-01-07'),
+      validity_start: Temporal.PlainDate.from('2065-01-05'),
+      validity_end: Temporal.PlainDate.from('2065-01-07'),
       timing_place_id: null,
     };
 
@@ -249,8 +248,8 @@ describe('Insert scheduled stop point', () => {
       },
       label: 'stopZ2',
       priority: 30,
-      validity_start: DateTime.fromISO('2063-01-05'),
-      validity_end: DateTime.fromISO('2064-01-07'),
+      validity_start: Temporal.PlainDate.from('2063-01-05'),
+      validity_end: Temporal.PlainDate.from('2064-01-07'),
       timing_place_id: null,
     };
 

@@ -27,6 +27,7 @@ export default tsEslint.config(
       globals: {
         ...globals.es2024,
         ...globals.node,
+        Temporal: 'readonly',
       },
       parserOptions: {
         ecmaVersion: 15,
@@ -45,8 +46,12 @@ export default tsEslint.config(
           project: './tsconfig.json',
         },
       },
+      node: { version: '>=26' },
     },
-    rules: baseRules,
+    rules: {
+      ...baseRules,
+      'no-restricted-imports': ['error', 'luxon'],
+    },
   },
   {
     files: ['**/*.spec.ts', 'jest/*.ts'],

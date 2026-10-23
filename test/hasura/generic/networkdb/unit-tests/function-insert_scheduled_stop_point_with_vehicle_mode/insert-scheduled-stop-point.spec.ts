@@ -1,5 +1,4 @@
 import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import {
   asEwkb,
@@ -38,8 +37,8 @@ const toBeInserted: ScheduledStopPoint = {
   } as GeometryObject,
   label: 'inserted stop point',
   priority: 50,
-  validity_start: DateTime.fromISO('2036-11-03'),
-  validity_end: DateTime.fromISO('2060-11-03'),
+  validity_start: Temporal.PlainDate.from('2036-11-03'),
+  validity_end: Temporal.PlainDate.from('2060-11-03'),
   timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
 };
 
@@ -69,8 +68,8 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
       `'${scheduledStopPoint.located_on_infrastructure_link_id}'::uuid`,
       `'${scheduledStopPoint.direction}'::text`,
       `'${scheduledStopPoint.label}'::text`,
-      `'${scheduledStopPoint.validity_start?.toISODate()}'::date`,
-      `'${scheduledStopPoint.validity_end?.toISODate()}'::date`,
+      `'${scheduledStopPoint.validity_start?.toString()}'::date`,
+      `'${scheduledStopPoint.validity_end?.toString()}'::date`,
       `${scheduledStopPoint.priority}::int`,
       `'${vehicleMode}'::text`,
     ];

@@ -1,6 +1,5 @@
 import pick from 'lodash/pick';
 import without from 'lodash/without';
-import { DateTime, Duration } from 'luxon';
 import { timetablesDbConfig } from '@config';
 import {
   DbConnection,
@@ -140,13 +139,13 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       {
         ...dataset.passingTimes[0],
         arrival_time: null,
-        departure_time: Duration.fromISO('PT18H12M'),
+        departure_time: Temporal.Duration.from('PT18H12M'),
         scheduled_stop_point_in_journey_pattern_ref_id:
           newStops[0].scheduled_stop_point_in_journey_pattern_ref_id,
       },
       {
         ...dataset.passingTimes[3], // Last stop.
-        arrival_time: Duration.fromISO('PT18H23M'),
+        arrival_time: Temporal.Duration.from('PT18H23M'),
         departure_time: null,
         scheduled_stop_point_in_journey_pattern_ref_id:
           newStops[1].scheduled_stop_point_in_journey_pattern_ref_id,
@@ -205,10 +204,10 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       //   conflicting schedules detected:
       //   vehicle schedule frame 0e37fdb8-e35e-4d5a-9e5b-88e1b35c0a18 and vehicle schedule frame 792ff598-371b-41dd-8865-3a506f391409,
       //   priority 10, journey_pattern_id 55bab728-c76c-4ce6-9cc6-f6e51c1c5dca, overlapping on [2022-07-01,2023-05-31) on day of week 1
-      const validityStart = dataset.frame.validity_start?.toISODate();
+      const validityStart = dataset.frame.validity_start?.toString();
       const validityEndClosedUpper = dataset.frame.validity_end
-        ?.plus({ days: 1 })
-        ?.toISODate();
+        ?.add({ days: 1 })
+        ?.toString();
       const expectedValidityRange = `[${validityStart},${validityEndClosedUpper})`;
       const expectedParts = {
         prefix: 'conflicting schedules detected: ',
@@ -241,7 +240,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
 
       it('should fail if trying to insert with same priority if priority is Special (or lower)', async () => {
         // Special day priority frames must have validity of exactly one day, so need to set that as well.
-        const specialDay = DateTime.fromISO('2023-01-23');
+        const specialDay = Temporal.PlainDate.from('2023-01-23');
         await updateBaseDatasetFrame({
           validity_start: specialDay,
           validity_end: specialDay,
@@ -281,22 +280,22 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       it('should succeed when validity periods do not overlap', async () => {
         const dataset = cloneBaseDataset();
         // A sanity check: these tests need to be updated in case the base data is modified.
-        expect(dataset.frame.validity_start?.toISODate()).toEqual('2022-07-01');
-        expect(dataset.frame.validity_end?.toISODate()).toEqual('2023-05-31');
+        expect(dataset.frame.validity_start?.toString()).toEqual('2022-07-01');
+        expect(dataset.frame.validity_end?.toString()).toEqual('2023-05-31');
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        dataset.frame.validity_start = dataset.frame.validity_end!.plus({
+        dataset.frame.validity_start = dataset.frame.validity_end!.add({
           days: 1,
         });
-        dataset.frame.validity_end = DateTime.fromISO('2023-12-31');
+        dataset.frame.validity_end = Temporal.PlainDate.from('2023-12-31');
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
       });
 
       it('should fail when validity periods overlap partially', async () => {
         const dataset = cloneBaseDataset();
-        dataset.frame.validity_start = DateTime.fromISO('2023-01-01');
-        dataset.frame.validity_end = DateTime.fromISO('2023-12-31');
+        dataset.frame.validity_start = Temporal.PlainDate.from('2023-01-01');
+        dataset.frame.validity_end = Temporal.PlainDate.from('2023-12-31');
 
         await expect(insertDataset(dataset)).rejects.toThrow(
           'conflicting schedules detected',
@@ -310,7 +309,7 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         const dataset = cloneBaseDataset();
         dataset.frame.validity_start = dataset.frame.validity_end;
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        dataset.frame.validity_end = dataset.frame.validity_end!.plus({
+        dataset.frame.validity_end = dataset.frame.validity_end!.add({
           months: 2,
         });
 
@@ -416,8 +415,8 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
       it('should run validation when validity period is updated', async () => {
         const dataset = cloneBaseDataset();
         const baseDatasetValidityStart = dataset.frame.validity_start;
-        dataset.frame.validity_start = DateTime.fromISO('2023-11-01');
-        dataset.frame.validity_end = DateTime.fromISO('2023-12-31');
+        dataset.frame.validity_start = Temporal.PlainDate.from('2023-11-01');
+        dataset.frame.validity_end = Temporal.PlainDate.from('2023-12-31');
 
         await expect(insertDataset(dataset)).resolves.not.toThrow();
 

@@ -1,7 +1,11 @@
 // Need to use old version of geojson, since CRS-properties are not allowed in newer versions, but postgis allows them.
 import { GeometryObject } from 'geojson';
-import { DateTime, Duration } from 'luxon';
 import { Geometry } from 'wkx';
+import {
+  isTemporalValue,
+  replaceTemporalJsonValue,
+  serializeDateTime,
+} from '@util/time';
 
 function isGeometryObject(object: ExplicitAny): object is GeometryObject {
   return (
@@ -34,13 +38,13 @@ export const serializePlainObject = (
 
 // serializes values sent to SQL INSERT INTO commands
 export const serializeInsertValue: SerializerFunction = (value: unknown) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (value && (value as any).isLuxonDateTime) {
-    return (value as DateTime).toISO();
+  // ZonedDateTime.toString() would append a "[Europe/Helsinki]" annotation,
+  // which Postgres does not accept.
+  if (value instanceof Temporal.ZonedDateTime) {
+    return serializeDateTime(value);
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (value && (value as any).isLuxonDuration) {
-    return (value as Duration).toString();
+  if (isTemporalValue(value)) {
+    return value.toString();
   }
   if (isGeometryObject(value)) {
     return asEwkb(value);
@@ -68,7 +72,7 @@ export const toGraphQlObject = (
   obj: { [propName: string]: unknown },
   enumProps: string[] = [],
 ) =>
-  JSON.stringify(obj)
+  JSON.stringify(obj, replaceTemporalJsonValue)
     // strip quotes from all keys
     .replace(/"(\w+)"\s*:/g, '$1:')
     // strip quotes from enum values
@@ -77,13 +81,23 @@ export const toGraphQlObject = (
       '$1: $2',
     );
 
+function serializeGraphQlDateValue(value: unknown) {
+  if (value instanceof Temporal.PlainDate) {
+    return value.toString();
+  }
+  if (value instanceof Temporal.ZonedDateTime) {
+    return value.toPlainDate().toString();
+  }
+  return value;
+}
+
 export const asGraphQlDateObject = (obj: { [propName: string]: unknown }) =>
   Object.keys(obj).reduce((mapped, prop) => {
     const value = obj[prop];
     return {
       ...mapped,
       // format dates YYYY-MM-DD
-      [prop]: value instanceof DateTime ? value.toISODate() : value,
+      [prop]: serializeGraphQlDateValue(value),
     };
   }, {});
 

@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { networkDbConfig } from '@config';
 import { buildLocalizedString } from '@util/dataset';
 import {
@@ -42,8 +41,8 @@ const route: Partial<Route> = {
   label: defaultRouteLabel,
   direction: RouteDirection.Outbound,
   priority: 10,
-  validity_start: DateTime.fromISO('2018-01-02'),
-  validity_end: DateTime.fromISO('2027-01-01'),
+  validity_start: Temporal.PlainDate.from('2018-01-02'),
+  validity_end: Temporal.PlainDate.from('2027-01-01'),
   name_i18n: buildLocalizedString('route 1'),
 };
 
@@ -84,8 +83,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
   const getMaximumPriorityValiditySpansOfStops = async (
     stopData: Partial<ScheduledStopPoint>[],
     routeLabel?: string,
-    validityStart?: DateTime,
-    validityEnd?: DateTime,
+    validityStart?: Temporal.PlainDate,
+    validityEnd?: Temporal.PlainDate,
     upperPriorityLimit?: number,
   ) => {
     await setupDb(
@@ -132,9 +131,9 @@ describe('Function maximum_priority_validity_spans should return correct schedul
        FROM journey_pattern.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
          routeLabel ?? defaultRouteLabel
        }" }', ${
-         validityStart !== undefined ? `'${validityStart.toISODate()}'` : 'NULL'
+         validityStart !== undefined ? `'${validityStart.toString()}'` : 'NULL'
        }, ${
-         validityEnd !== undefined ? `'${validityEnd.toISODate()}'` : 'NULL'
+         validityEnd !== undefined ? `'${validityEnd.toString()}'` : 'NULL'
        }, ${upperPriorityLimit ?? 'NULL'})`,
     );
   };
@@ -149,10 +148,10 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const earlierStopId = crypto.randomUUID();
     const laterStopId = crypto.randomUUID();
 
-    const earlierStopValidityStart = DateTime.fromISO('2020-01-04');
-    const earlierStopValidityEnd = DateTime.fromISO('2021-04-05');
-    const laterStopValidityStart = DateTime.fromISO('2024-01-04');
-    const laterStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const earlierStopValidityStart = Temporal.PlainDate.from('2020-01-04');
+    const earlierStopValidityEnd = Temporal.PlainDate.from('2021-04-05');
+    const laterStopValidityStart = Temporal.PlainDate.from('2024-01-04');
+    const laterStopValidityEnd = Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -199,10 +198,10 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const earlierStopId = crypto.randomUUID();
     const laterStopId = crypto.randomUUID();
 
-    const earlierStopValidityStart = DateTime.fromISO('2020-01-04');
-    const earlierStopValidityEnd = DateTime.fromISO('2021-04-05');
-    const laterStopValidityStart = earlierStopValidityEnd.plus({ day: 1 });
-    const laterStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const earlierStopValidityStart = Temporal.PlainDate.from('2020-01-04');
+    const earlierStopValidityEnd = Temporal.PlainDate.from('2021-04-05');
+    const laterStopValidityStart = earlierStopValidityEnd.add({ days: 1 });
+    const laterStopValidityEnd = Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -247,10 +246,14 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const earlierLowerPrioStopId = crypto.randomUUID();
     const laterHigherPrioStopId = crypto.randomUUID();
 
-    const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
-    const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
-    const laterHigherPrioStopValidityStart = DateTime.fromISO('2021-04-05');
-    const laterHigherPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const earlierLowerPrioStopValidityStart =
+      Temporal.PlainDate.from('2020-01-04');
+    const earlierLowerPrioStopValidityEnd =
+      Temporal.PlainDate.from('2024-04-05');
+    const laterHigherPrioStopValidityStart =
+      Temporal.PlainDate.from('2021-04-05');
+    const laterHigherPrioStopValidityEnd =
+      Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -278,7 +281,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           id: earlierLowerPrioStopId,
           validity_start: earlierLowerPrioStopValidityStart,
-          validity_end: laterHigherPrioStopValidityStart.minus({ day: 1 }), // sic
+          validity_end: laterHigherPrioStopValidityStart.subtract({ days: 1 }), // sic
         },
         {
           id: laterHigherPrioStopId,
@@ -299,10 +302,14 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const earlierLowerPrioStopId = crypto.randomUUID();
     const laterHigherPrioStopId = crypto.randomUUID();
 
-    const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
-    const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
-    const laterHigherPrioStopValidityStart = DateTime.fromISO('2023-04-05');
-    const laterHigherPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const earlierLowerPrioStopValidityStart =
+      Temporal.PlainDate.from('2020-01-04');
+    const earlierLowerPrioStopValidityEnd =
+      Temporal.PlainDate.from('2024-04-05');
+    const laterHigherPrioStopValidityStart =
+      Temporal.PlainDate.from('2023-04-05');
+    const laterHigherPrioStopValidityEnd =
+      Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -324,8 +331,8 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const response = await getMaximumPriorityValiditySpansOfStops(
       stopData,
       undefined,
-      DateTime.fromISO('2021-02-03'),
-      DateTime.fromISO('2022-04-05'),
+      Temporal.PlainDate.from('2021-02-03'),
+      Temporal.PlainDate.from('2022-04-05'),
     );
 
     expect(response.rowCount).toEqual(1);
@@ -353,10 +360,14 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const earlierLowerPrioStopId = crypto.randomUUID();
     const laterHigherPrioStopId = crypto.randomUUID();
 
-    const earlierLowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
-    const earlierLowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
-    const laterHigherPrioStopValidityStart = DateTime.fromISO('2021-04-05');
-    const laterHigherPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const earlierLowerPrioStopValidityStart =
+      Temporal.PlainDate.from('2020-01-04');
+    const earlierLowerPrioStopValidityEnd =
+      Temporal.PlainDate.from('2024-04-05');
+    const laterHigherPrioStopValidityStart =
+      Temporal.PlainDate.from('2021-04-05');
+    const laterHigherPrioStopValidityEnd =
+      Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -395,10 +406,10 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const lowerPrioStopId = crypto.randomUUID();
     const higherPrioStopId = crypto.randomUUID();
 
-    const lowerPrioStopValidityStart = DateTime.fromISO('2020-01-04');
-    const lowerPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
-    const higherPrioStopValidityStart = DateTime.fromISO('2022-04-05');
-    const higherPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
+    const lowerPrioStopValidityStart = Temporal.PlainDate.from('2020-01-04');
+    const lowerPrioStopValidityEnd = Temporal.PlainDate.from('2025-04-05');
+    const higherPrioStopValidityStart = Temporal.PlainDate.from('2022-04-05');
+    const higherPrioStopValidityEnd = Temporal.PlainDate.from('2024-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -426,7 +437,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         {
           id: lowerPrioStopId,
           validity_start: lowerPrioStopValidityStart,
-          validity_end: higherPrioStopValidityStart.minus({ day: 1 }),
+          validity_end: higherPrioStopValidityStart.subtract({ days: 1 }),
         },
         {
           id: higherPrioStopId,
@@ -435,7 +446,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
         },
         {
           id: lowerPrioStopId,
-          validity_start: higherPrioStopValidityEnd.plus({ day: 1 }),
+          validity_start: higherPrioStopValidityEnd.add({ days: 1 }),
           validity_end: lowerPrioStopValidityEnd,
         },
       ]),
@@ -452,10 +463,10 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const lowerPrioStopId = crypto.randomUUID();
     const higherPrioStopId = crypto.randomUUID();
 
-    const lowerPrioStopValidityStart = DateTime.fromISO('2022-01-04');
-    const lowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
-    const higherPrioStopValidityStart = DateTime.fromISO('2020-04-05');
-    const higherPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const lowerPrioStopValidityStart = Temporal.PlainDate.from('2022-01-04');
+    const lowerPrioStopValidityEnd = Temporal.PlainDate.from('2024-04-05');
+    const higherPrioStopValidityStart = Temporal.PlainDate.from('2020-04-05');
+    const higherPrioStopValidityEnd = Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
@@ -499,10 +510,10 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     const lowerPrioStopId = crypto.randomUUID();
     const higherPrioStopId = crypto.randomUUID();
 
-    const lowerPrioStopValidityStart = DateTime.fromISO('2022-01-04');
-    const lowerPrioStopValidityEnd = DateTime.fromISO('2024-04-05');
-    const higherPrioStopValidityStart = DateTime.fromISO('2020-04-05');
-    const higherPrioStopValidityEnd = DateTime.fromISO('2025-04-05');
+    const lowerPrioStopValidityStart = Temporal.PlainDate.from('2022-01-04');
+    const lowerPrioStopValidityEnd = Temporal.PlainDate.from('2024-04-05');
+    const higherPrioStopValidityStart = Temporal.PlainDate.from('2020-04-05');
+    const higherPrioStopValidityEnd = Temporal.PlainDate.from('2025-04-05');
 
     const stopData: Partial<ScheduledStopPoint>[] = [
       {
