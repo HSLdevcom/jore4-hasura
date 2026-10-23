@@ -1,5 +1,4 @@
 import omit from 'lodash/omit';
-import { DateTime } from 'luxon';
 import { EntityName, buildName } from 'generic/timetablesdb/datasets/factories';
 import {
   TimetablePriority,
@@ -16,8 +15,8 @@ import { processGenericVehicleService } from './vehicle-service';
 const getVehicleScheduleFrameDefaults = (result: EntityName) => ({
   label: buildName(result).fi_FI,
   name_i18n: buildName(result),
-  validity_start: DateTime.fromISO('2023-01-01'),
-  validity_end: DateTime.fromISO('2023-12-31'),
+  validity_start: Temporal.PlainDate.from('2023-01-01'),
+  validity_end: Temporal.PlainDate.from('2023-12-31'),
   priority: TimetablePriority.Standard,
 });
 

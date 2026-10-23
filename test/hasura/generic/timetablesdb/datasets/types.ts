@@ -1,5 +1,3 @@
-import { DateTime, Duration } from 'luxon';
-
 export type UUID = string;
 
 export enum TimetablePriority {
@@ -40,10 +38,10 @@ export type VehicleScheduleFrame = {
   vehicle_schedule_frame_id: UUID;
   label: string;
   name_i18n: LocalizedString;
-  validity_start: DateTime;
-  validity_end: DateTime;
+  validity_start: Temporal.PlainDate;
+  validity_end: Temporal.PlainDate;
   priority: TimetablePriority;
-  created_at?: DateTime;
+  created_at?: Temporal.ZonedDateTime;
 };
 
 export const vehicleScheduleFrameProps: Property[] = [
@@ -83,8 +81,8 @@ export const journeyPatternsInVehicleServiceProps: Property[] = [
 export type VehicleServiceBlock = {
   block_id: UUID;
   vehicle_service_id: UUID;
-  preparing_time: Duration | null;
-  finishing_time: Duration | null;
+  preparing_time: Temporal.Duration | null;
+  finishing_time: Temporal.Duration | null;
 };
 
 export const vehicleServiceBlockProps: Property[] = [
@@ -98,8 +96,8 @@ export type VehicleJourney = {
   vehicle_journey_id: UUID;
   block_id: UUID;
   journey_pattern_ref_id: UUID;
-  turnaround_time: Duration | null;
-  layover_time: Duration | null;
+  turnaround_time: Temporal.Duration | null;
+  layover_time: Temporal.Duration | null;
 };
 
 export const vehicleJourneyProps: Property[] = [
@@ -112,8 +110,8 @@ export const vehicleJourneyProps: Property[] = [
 
 export type TimetabledPassingTime = {
   timetabled_passing_time_id: UUID;
-  arrival_time: Duration | null;
-  departure_time: Duration | null;
+  arrival_time: Temporal.Duration | null;
+  departure_time: Temporal.Duration | null;
   vehicle_journey_id: UUID;
   scheduled_stop_point_in_journey_pattern_ref_id: UUID;
 };
@@ -144,14 +142,14 @@ export const scheduledStopInJourneyPatternRefProps: Property[] = [
 
 export type JourneyPatternRef = {
   journey_pattern_ref_id: UUID;
-  observation_timestamp: DateTime;
-  snapshot_timestamp: DateTime;
+  observation_timestamp: Temporal.ZonedDateTime;
+  snapshot_timestamp: Temporal.ZonedDateTime;
   journey_pattern_id: UUID;
   type_of_line: TypeOfLine;
   route_label: string;
   route_direction: RouteDirection;
-  route_validity_start: DateTime | null;
-  route_validity_end: DateTime | null;
+  route_validity_start: Temporal.PlainDate | null;
+  route_validity_end: Temporal.PlainDate | null;
 };
 
 export const journeyPatternRefProps: Property[] = [

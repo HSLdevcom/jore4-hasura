@@ -1,5 +1,4 @@
 import { GeometryObject } from 'geojson';
-import { DateTime } from 'luxon';
 
 export type NamedCoordinateReferenceSystemObject = {
   type: 'name';
@@ -108,8 +107,8 @@ export type ScheduledStopPoint = {
   measured_location: GeometryObjectWithOptionalCRS;
   label: string;
   priority: number;
-  validity_start: DateTime | null;
-  validity_end: DateTime | null;
+  validity_start: Temporal.PlainDate | null;
+  validity_end: Temporal.PlainDate | null;
   timing_place_id: string | null;
 };
 export const scheduledStopPointProps: Property[] = [
@@ -145,8 +144,8 @@ export type Route = {
   label: string;
   direction: RouteDirection;
   priority: number;
-  validity_start: DateTime | null;
-  validity_end: DateTime | null;
+  validity_start: Temporal.PlainDate | null;
+  validity_end: Temporal.PlainDate | null;
 };
 
 export const routeProps: Property[] = [
@@ -186,8 +185,8 @@ export type Line = {
   label: string;
   type_of_line: TypeOfLine;
   priority: number;
-  validity_start: DateTime | null;
-  validity_end: DateTime | null;
+  validity_start: Temporal.PlainDate | null;
+  validity_end: Temporal.PlainDate | null;
 };
 export const lineProps: Property[] = [
   'line_id',
@@ -239,8 +238,8 @@ export type CheckInfraLinkStopRefsWithNewScheduledStopPointArgs = {
   new_measured_location: GeometryObject | null;
   new_direction: LinkDirection | null;
   new_label: string | null;
-  new_validity_start: DateTime | null;
-  new_validity_end: DateTime | null;
+  new_validity_start: Temporal.PlainDate | null;
+  new_validity_end: Temporal.PlainDate | null;
   new_priority: number | null;
 };
 

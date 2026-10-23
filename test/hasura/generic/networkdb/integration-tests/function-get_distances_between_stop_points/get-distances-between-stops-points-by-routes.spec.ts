@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -81,13 +80,13 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
   const getDistancesBetweenStopPoints = async (
     dataset: TableData<GenericNetworkDbTables>[],
     routeIds: string[],
-    observationDate: DateTime,
+    observationDate: Temporal.PlainDate,
   ): Promise<Array<StopIntervalLength>> => {
     await setupDb(dbConnection, dataset);
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toISODate()}'::date)`,
+      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toString()}'::date)`,
     );
 
     return response.rows.map((row: ExplicitAny) => {
@@ -106,7 +105,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
     const routeId = journeyPattern.on_route_id;
     const routeId2 = journeyPattern2.on_route_id;
 
-    const observationDate = DateTime.fromISO('2044-05-02');
+    const observationDate = Temporal.PlainDate.from('2044-05-02');
 
     const response = await getDistancesBetweenStopPoints(
       getTableDataToBePopulated(),

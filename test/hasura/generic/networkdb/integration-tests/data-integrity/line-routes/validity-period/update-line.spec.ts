@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -124,21 +123,25 @@ describe('Update line', () => {
     });
 
   describe('with a fixed validity start time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: DateTime.fromISO('2045-03-02') };
+    const toBeUpdated = {
+      validity_start: Temporal.PlainDate.from('2045-03-02'),
+    };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity end time not spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_end: DateTime.fromISO('2044-08-01') };
+    const toBeUpdated = { validity_end: Temporal.PlainDate.from('2044-08-01') };
 
     shouldReturnErrorResponse(lines[1], toBeUpdated);
     shouldNotModifyDatabase(lines[1], toBeUpdated);
   });
 
   describe('with a fixed validity start time spanning the validity time of a route belonging to the line', () => {
-    const toBeUpdated = { validity_start: DateTime.fromISO('2043-03-02') };
+    const toBeUpdated = {
+      validity_start: Temporal.PlainDate.from('2043-03-02'),
+    };
 
     shouldReturnCorrectResponse(lines[1], toBeUpdated);
     shouldUpdateCorrectRowInDatabase(lines[1], toBeUpdated);

@@ -1,4 +1,3 @@
-import { DateTime, Duration } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -39,14 +38,14 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
   const getVehicleSchedulesOnDate = async (
     dataset: TableData<HslTimetablesDbTables>[],
     journeyPatternId: UUID,
-    observationDate: DateTime,
+    observationDate: Temporal.PlainDate,
   ): Promise<Array<VehicleSchedule>> => {
     await setupDb(dbConnection, dataset);
     const response = await db.singleQuery(
       dbConnection,
       `SELECT * FROM vehicle_journey.get_vehicle_schedules_on_date(
         '${journeyPatternId}'::uuid,
-        '${observationDate.toISODate()}'::date
+        '${observationDate.toString()}'::date
       )`,
     );
 
@@ -57,7 +56,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     describe('dataset has priorities: standard(Mon-Fri, Sat, Sun), temporary (Sat), special (Sat, Thu)', () => {
       describe('only standard priorities are valid on observation date', () => {
         it('should return rows for standard priority vehicle schedules', async () => {
-          const observationDate = DateTime.fromISO('2023-04-16');
+          const observationDate = Temporal.PlainDate.from('2023-04-16');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -143,7 +142,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
       describe('standard priority (all) and temporary priority (Sat) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sun) and temporary (Sat)', async () => {
-          const observationDate = DateTime.fromISO('2023-04-14');
+          const observationDate = Temporal.PlainDate.from('2023-04-14');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -231,7 +230,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
       describe('standard priority (all), temporary and special priority (Sat) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sun) and special (Sat)', async () => {
-          const observationDate = DateTime.fromISO('2023-04-01');
+          const observationDate = Temporal.PlainDate.from('2023-04-01');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -317,7 +316,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
       describe('standard priority (all) and special priority (Thu) are valid on observation date', () => {
         it('should return rows for standard (Mon-Fri, Sat, Sun) and special (Thu)', async () => {
-          const observationDate = DateTime.fromISO('2023-05-18');
+          const observationDate = Temporal.PlainDate.from('2023-05-18');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -418,7 +417,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     describe('dataset has standard, draft and staging priorities', () => {
       describe('draft and standard priorities are valid on observation date', () => {
         it('should not include draft priorities in the result set', async () => {
-          const observationDate = DateTime.fromISO('2023-04-02');
+          const observationDate = Temporal.PlainDate.from('2023-04-02');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             draftSunApril2023Timetable,
@@ -503,7 +502,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
       describe('staging priority is the only valid on observation date', () => {
         it('should return empty array', async () => {
-          const observationDate = DateTime.fromISO('2024-04-07');
+          const observationDate = Temporal.PlainDate.from('2024-04-07');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             draftSunApril2023Timetable,
@@ -526,7 +525,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     describe('dataset has priorities: standard(Mon-Fri, Sat, Sun), temporary and substitute (Sat (operated like Friday))', () => {
       describe('standard, temporary and substitute are valid on observation date', () => {
         it('should have substitute priority for saturday which has same vehicle_journey_id as Mon-Fri rows', async () => {
-          const observationDate = DateTime.fromISO('2023-04-01');
+          const observationDate = Temporal.PlainDate.from('2023-04-01');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -633,7 +632,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     describe('dataset has priorities: standard(Mon-Fri, Sat, Sun), substitute(Thu (operated like Sunday))', () => {
       describe('standard, temporary and substitute are valid on observation date', () => {
         it('should have all standard priority vehicle_schedules and also substitute for Thursday(same vj_id as Sunday)', async () => {
-          const observationDate = DateTime.fromISO('2023-04-06');
+          const observationDate = Temporal.PlainDate.from('2023-04-06');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             stoppingBusServiceSubstitutesSaturday20230406Dataset,
@@ -730,7 +729,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     describe('dataset has priorities: standard(Mon-Fri, Sat, Sun), temporary, special and substitute (Sat (operated like Friday))', () => {
       describe('standard, temporary, special and substitute are valid on observation date', () => {
         it('should return standard priority (Mon-Fri, Sun) and special (Sat) vehicle schedules', async () => {
-          const observationDate = DateTime.fromISO('2023-04-01');
+          const observationDate = Temporal.PlainDate.from('2023-04-01');
           const mergedDataset = mergeTimetablesDatasets([
             defaultTimetablesDataset,
             temporarySatFirstHalfApril2023Timetable,
@@ -819,7 +818,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
       describe('standard and susbstitute day are valid on observation date', () => {
         describe('substitute day is no-operation day (substitute_day_of_week is null)', () => {
           it('should have the generated no-operating row for substitute day (Sat)', async () => {
-            const observationDate = DateTime.fromISO('2023-05-20');
+            const observationDate = Temporal.PlainDate.from('2023-05-20');
             const mergedDataset = mergeTimetablesDatasets([
               defaultTimetablesDataset,
               stoppingBusServiceSubstitutesSaturday20230520Dataset,
@@ -902,7 +901,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
         describe('substitute day target has no departures on given time restrictions', () => {
           describe('begin_time is after the last departure of target day', () => {
             it('should have the generated no-operating row for substitute day (Sat)', async () => {
-              const observationDate = DateTime.fromISO('2023-05-20');
+              const observationDate = Temporal.PlainDate.from('2023-05-20');
               const saturdaySubstitute =
                 stoppingBusServiceSubstitutesSaturday20230520Dataset
                   ._substitute_operating_periods.saturday20230520
@@ -914,7 +913,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                       saturday20230520: {
                         ...saturdaySubstitute,
                         substitute_day_of_week: DayOfWeek.Friday,
-                        begin_time: Duration.fromISO('PT12H'),
+                        begin_time: Temporal.Duration.from('PT12H'),
                       },
                     },
                   },
@@ -1009,7 +1008,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
           describe('end_time is before the first departure of target day (Fri)', () => {
             it('should have the generated no-operating row for substitute day (Sat)', async () => {
-              const observationDate = DateTime.fromISO('2023-05-20');
+              const observationDate = Temporal.PlainDate.from('2023-05-20');
               const saturdaySubstitute =
                 stoppingBusServiceSubstitutesSaturday20230520Dataset
                   ._substitute_operating_periods.saturday20230520
@@ -1021,7 +1020,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                       saturday20230520: {
                         ...saturdaySubstitute,
                         substitute_day_of_week: DayOfWeek.Friday,
-                        end_time: Duration.fromISO('PT06H'),
+                        end_time: Temporal.Duration.from('PT06H'),
                       },
                     },
                   },
@@ -1118,7 +1117,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
         describe('substitute day target has restricted departures on given time restrictions', () => {
           describe('begin_time is after the first departure of target day (Fri)', () => {
             it('should leave out the first target (Fri) departure for substitute day (Sat)', async () => {
-              const observationDate = DateTime.fromISO('2023-05-20');
+              const observationDate = Temporal.PlainDate.from('2023-05-20');
               const saturdaySubstitute =
                 stoppingBusServiceSubstitutesSaturday20230520Dataset
                   ._substitute_operating_periods.saturday20230520
@@ -1130,7 +1129,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                       saturday20230520: {
                         ...saturdaySubstitute,
                         substitute_day_of_week: DayOfWeek.Friday,
-                        begin_time: Duration.fromISO('PT8H'),
+                        begin_time: Temporal.Duration.from('PT8H'),
                       },
                     },
                   },
@@ -1237,7 +1236,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
           describe('end_time is before the last departure of target day (Fri)', () => {
             it('should leave out the last target (Fri) departure for substitute day (Sat)', async () => {
-              const observationDate = DateTime.fromISO('2023-05-20');
+              const observationDate = Temporal.PlainDate.from('2023-05-20');
               const saturdaySubstitute =
                 stoppingBusServiceSubstitutesSaturday20230520Dataset
                   ._substitute_operating_periods.saturday20230520
@@ -1249,7 +1248,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                       saturday20230520: {
                         ...saturdaySubstitute,
                         substitute_day_of_week: DayOfWeek.Friday,
-                        end_time: Duration.fromISO('PT9H'),
+                        end_time: Temporal.Duration.from('PT9H'),
                       },
                     },
                   },
@@ -1356,7 +1355,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
           describe('begin_time is after first and end_time is before the last departure of target day (Fri)', () => {
             it('should leave out the first and last target days (Fri) departure for substitute day (Sat)', async () => {
-              const observationDate = DateTime.fromISO('2023-05-20');
+              const observationDate = Temporal.PlainDate.from('2023-05-20');
               const saturdaySubstitute =
                 stoppingBusServiceSubstitutesSaturday20230520Dataset
                   ._substitute_operating_periods.saturday20230520
@@ -1368,8 +1367,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
                       saturday20230520: {
                         ...saturdaySubstitute,
                         substitute_day_of_week: DayOfWeek.Friday,
-                        begin_time: Duration.fromISO('PT8H'),
-                        end_time: Duration.fromISO('PT9H'),
+                        begin_time: Temporal.Duration.from('PT8H'),
+                        end_time: Temporal.Duration.from('PT9H'),
                       },
                     },
                   },

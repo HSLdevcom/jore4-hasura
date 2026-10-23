@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-import { DateTime } from 'luxon';
 import { hasuraRequestTemplate, timetablesDbConfig } from '@config';
 import { asGraphQlDateObject, toGraphQlObject } from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
 import { post } from '@util/fetch-request';
 import { buildPropNameArray, queryTable, setupDb } from '@util/setup';
+import { parseDateTime } from '@util/time';
 import {
   defaultGenericTimetablesDbData,
   vehicleScheduleFrames,
@@ -18,8 +18,8 @@ const toBeInserted: Partial<VehicleScheduleFrame> = {
     vehicle_schedule_frame_id: '7e587ab7-a610-4d05-840d-8b5292b80322',
     label: 'Label 1',
     name: 'Frame 1',
-    validity_start: DateTime.fromISO('2022-12-01'),
-    validity_end: DateTime.fromISO('2023-02-28'),
+    validity_start: Temporal.PlainDate.from('2022-12-01'),
+    validity_end: Temporal.PlainDate.from('2023-02-28'),
   }),
 };
 
@@ -62,10 +62,13 @@ describe('Insert vehicle schedule frame', () => {
       response.data.timetables
         .timetables_insert_vehicle_schedule_vehicle_schedule_frame.returning[0];
 
-    const createdAt = DateTime.fromISO(created_at);
-    expect(createdAt.isValid).toBe(true);
-    expect(createdAt.diffNow().as('milliseconds')).toBeLessThan(0);
-    expect(createdAt.diffNow().as('milliseconds')).toBeGreaterThan(-5000);
+    const createdAt = parseDateTime(created_at);
+    const millisecondsSinceNow = createdAt
+      .toInstant()
+      .since(Temporal.Now.instant())
+      .total('milliseconds');
+    expect(millisecondsSinceNow).toBeLessThan(0);
+    expect(millisecondsSinceNow).toBeGreaterThan(-5000);
 
     expect(response).toEqual(
       expect.objectContaining({

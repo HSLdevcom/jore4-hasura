@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { buildLocalizedString } from '@util/dataset';
@@ -15,7 +14,7 @@ import { Route, routeProps } from 'generic/networkdb/datasets/types';
 const toBeUpdated: Partial<Route> = {
   description_i18n: buildLocalizedString('updated route'),
   priority: 50,
-  validity_end: DateTime.fromISO('2045-03-31'),
+  validity_end: Temporal.PlainDate.from('2045-03-31'),
 };
 
 const completeUpdated: Route = {

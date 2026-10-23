@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as dataset from '@util/dataset';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -99,8 +98,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: DateTime.fromISO('2024-09-02'),
-      validity_end: DateTime.fromISO('2034-09-01'),
+      validity_start: Temporal.PlainDate.from('2024-09-02'),
+      validity_end: Temporal.PlainDate.from('2034-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -115,8 +114,8 @@ describe('Insert route', () => {
       label: 'route 3X',
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: DateTime.fromISO('2024-09-02'),
-      validity_end: DateTime.fromISO('2034-09-01'),
+      validity_start: Temporal.PlainDate.from('2024-09-02'),
+      validity_end: Temporal.PlainDate.from('2034-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -130,8 +129,8 @@ describe('Insert route', () => {
       on_line_id: lines[4].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: DateTime.fromISO('2044-09-02'),
-      validity_end: DateTime.fromISO('2045-05-31'),
+      validity_start: Temporal.PlainDate.from('2044-09-02'),
+      validity_end: Temporal.PlainDate.from('2045-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -145,8 +144,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: DateTime.fromISO('2044-06-02'),
-      validity_end: DateTime.fromISO('2045-05-31'),
+      validity_start: Temporal.PlainDate.from('2044-06-02'),
+      validity_end: Temporal.PlainDate.from('2045-05-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -160,8 +159,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 20,
-      validity_start: DateTime.fromISO('2044-04-02'),
-      validity_end: DateTime.fromISO('2044-07-31'),
+      validity_start: Temporal.PlainDate.from('2044-04-02'),
+      validity_end: Temporal.PlainDate.from('2044-07-31'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);
@@ -175,8 +174,8 @@ describe('Insert route', () => {
       on_line_id: lines[2].line_id,
       direction: RouteDirection.Eastbound,
       priority: 30,
-      validity_start: DateTime.fromISO('2042-09-02'),
-      validity_end: DateTime.fromISO('2043-09-01'),
+      validity_start: Temporal.PlainDate.from('2042-09-02'),
+      validity_end: Temporal.PlainDate.from('2043-09-01'),
     };
 
     shouldReturnCorrectResponse(toBeInserted);

@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { buildRoute } from 'generic/networkdb/datasets/factories';
 import {
   InfrastructureLinkAlongRoute,
@@ -15,7 +14,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
   {
@@ -24,8 +23,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: DateTime.fromISO('2044-05-02'),
-    validity_end: DateTime.fromISO('2064-02-01'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-02-01'),
   },
   {
     ...buildRoute('3'),
@@ -33,8 +32,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: DateTime.fromISO('2044-05-02'),
-    validity_end: DateTime.fromISO('2064-04-01'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-04-01'),
   },
   {
     ...buildRoute('4'),
@@ -42,8 +41,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Southbound,
     priority: 20,
-    validity_start: DateTime.fromISO('2044-05-02'),
-    validity_end: DateTime.fromISO('2064-06-01'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-06-01'),
   },
   {
     ...buildRoute('2A'),
@@ -51,8 +50,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
-    validity_end: DateTime.fromISO('2064-08-01'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-08-01'),
   },
   {
     ...buildRoute('5'),
@@ -60,8 +59,8 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
-    validity_end: DateTime.fromISO('2064-10-01'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
+    validity_end: Temporal.PlainDate.from('2064-10-01'),
   },
   {
     ...buildRoute('6'),
@@ -69,7 +68,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 30,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
   {
@@ -78,7 +77,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
   {
@@ -87,7 +86,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
   {
@@ -96,7 +95,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
   {
@@ -105,7 +104,7 @@ export const routes: Route[] = [
     on_line_id: lines[0].line_id,
     direction: RouteDirection.Northbound,
     priority: 10,
-    validity_start: DateTime.fromISO('2044-05-02'),
+    validity_start: Temporal.PlainDate.from('2044-05-02'),
     validity_end: null,
   },
 ];

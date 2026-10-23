@@ -1,4 +1,3 @@
-import { DateTime, Duration } from 'luxon';
 import {
   TimetablePriority,
   TypeOfLine,
@@ -51,13 +50,13 @@ export const SubstituteOperatingPeriodProps: Property[] = [
 export type SubstituteOperatingDayByLineType = {
   substitute_operating_day_by_line_type_id: UUID;
   type_of_line: TypeOfLine;
-  superseded_date: DateTime;
+  superseded_date: Temporal.PlainDate;
   substitute_day_of_week?: DayOfWeek | null;
-  begin_time?: Duration | null;
-  end_time?: Duration | null;
+  begin_time?: Temporal.Duration | null;
+  end_time?: Temporal.Duration | null;
   timezone?: string;
-  begin_datetime?: DateTime;
-  end_datetime?: DateTime;
+  begin_datetime?: Temporal.ZonedDateTime;
+  end_datetime?: Temporal.ZonedDateTime;
   substitute_operating_period_id: UUID;
 };
 
@@ -67,8 +66,8 @@ export type TimetableVersion = {
   in_effect: boolean;
   priority: TimetablePriority;
   day_type_id: UUID;
-  validity_start: DateTime;
-  validity_end: DateTime;
+  validity_start: Temporal.PlainDate;
+  validity_end: Temporal.PlainDate;
 };
 
 export type VehicleSchedule = {
@@ -77,9 +76,9 @@ export type VehicleSchedule = {
   substitute_operating_day_by_line_type_id: UUID | null;
   priority: TimetablePriority;
   day_type_id: UUID;
-  validity_start: DateTime;
-  validity_end: DateTime;
-  created_at: DateTime;
+  validity_start: Temporal.PlainDate;
+  validity_end: Temporal.PlainDate;
+  created_at: Temporal.ZonedDateTime;
 };
 
 export type SubstituteOperatingPeriod = {

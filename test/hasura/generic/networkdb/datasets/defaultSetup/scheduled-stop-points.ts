@@ -1,5 +1,4 @@
 import uniqBy from 'lodash/uniqBy';
-import { DateTime } from 'luxon';
 import {
   LinkDirection,
   ScheduledStopPoint,
@@ -25,8 +24,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop1',
     priority: 10,
-    validity_start: DateTime.fromISO('2065-01-01'),
-    validity_end: DateTime.fromISO('2065-01-31'),
+    validity_start: Temporal.PlainDate.from('2065-01-01'),
+    validity_end: Temporal.PlainDate.from('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -44,7 +43,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stop3',
     priority: 10,
-    validity_start: DateTime.fromISO('2065-02-03'),
+    validity_start: Temporal.PlainDate.from('2065-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
@@ -64,7 +63,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stop2',
     priority: 20,
     validity_start: null,
-    validity_end: DateTime.fromISO('2064-01-02'),
+    validity_end: Temporal.PlainDate.from('2064-01-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -82,8 +81,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopX',
     priority: 10,
-    validity_start: DateTime.fromISO('2035-01-01'),
-    validity_end: DateTime.fromISO('2065-01-31'),
+    validity_start: Temporal.PlainDate.from('2035-01-01'),
+    validity_end: Temporal.PlainDate.from('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -101,7 +100,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopY',
     priority: 10,
-    validity_start: DateTime.fromISO('2035-02-03'),
+    validity_start: Temporal.PlainDate.from('2035-02-03'),
     validity_end: null,
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
@@ -120,8 +119,8 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     },
     label: 'stopZ',
     priority: 10,
-    validity_start: DateTime.fromISO('2035-01-01'),
-    validity_end: DateTime.fromISO('2065-01-31'),
+    validity_start: Temporal.PlainDate.from('2035-01-01'),
+    validity_end: Temporal.PlainDate.from('2065-01-31'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
   {
@@ -140,7 +139,7 @@ export const scheduledStopPoints: ScheduledStopPoint[] = [
     label: 'stopZ2',
     priority: 30,
     validity_start: null,
-    validity_end: DateTime.fromISO('2064-01-02'),
+    validity_end: Temporal.PlainDate.from('2064-01-02'),
     timing_place_id: '7b6663b6-0feb-466b-89ed-200e889de472',
   },
 ];

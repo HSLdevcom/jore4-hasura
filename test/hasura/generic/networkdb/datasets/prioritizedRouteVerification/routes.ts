@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { buildRoute } from 'generic/networkdb/datasets/factories';
 import {
   InfrastructureLinkAlongRoute,
@@ -15,8 +14,8 @@ export const basicRoute: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 10,
-  validity_start: DateTime.fromISO('2044-05-02'),
-  validity_end: DateTime.fromISO('2074-05-01'),
+  validity_start: Temporal.PlainDate.from('2044-05-02'),
+  validity_end: Temporal.PlainDate.from('2074-05-01'),
 };
 
 export const tempRouteWithSameLinks: Route = {
@@ -25,8 +24,8 @@ export const tempRouteWithSameLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: DateTime.fromISO('2054-05-02'),
-  validity_end: DateTime.fromISO('2064-05-01'),
+  validity_start: Temporal.PlainDate.from('2054-05-02'),
+  validity_end: Temporal.PlainDate.from('2064-05-01'),
 };
 
 export const tempRouteWithOtherLinks: Route = {
@@ -35,8 +34,8 @@ export const tempRouteWithOtherLinks: Route = {
   ...buildRoute('1'),
   direction: RouteDirection.Northbound,
   priority: 20,
-  validity_start: DateTime.fromISO('2054-05-02'),
-  validity_end: DateTime.fromISO('2064-05-01'),
+  validity_start: Temporal.PlainDate.from('2054-05-02'),
+  validity_end: Temporal.PlainDate.from('2064-05-01'),
 };
 
 export const routes: Route[] = [basicRoute];

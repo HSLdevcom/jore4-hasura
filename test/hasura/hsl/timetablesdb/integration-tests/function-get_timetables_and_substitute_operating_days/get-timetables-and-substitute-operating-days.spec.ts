@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import * as config from '@config';
 import * as db from '@util/db';
 import { DbConnection, closeDbConnection, createDbConnection } from '@util/db';
@@ -39,16 +38,16 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
   const getTimetablesAndSubstituteOperatingDays = async (
     dataset: TableData<HslTimetablesDbTables>[],
     journeyPatternIds: string[],
-    startDate: DateTime,
-    endDate: DateTime,
+    startDate: Temporal.PlainDate,
+    endDate: Temporal.PlainDate,
   ): Promise<Array<TimetableVersion>> => {
     await setupDb(dbConnection, dataset);
     const response = await db.singleQuery(
       dbConnection,
       `SELECT * FROM vehicle_service.get_timetables_and_substitute_operating_days('
         {${journeyPatternIds}}'::uuid[],
-        '${startDate.toISODate()}'::date,
-        '${endDate.toISODate()}'::date
+        '${startDate.toString()}'::date,
+        '${endDate.toString()}'::date
       )`,
     );
 
@@ -57,8 +56,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
   describe('dataset has priorities: standard, temporary, substitute by line type (express bus and stopping bus service) and special', () => {
     it('should return rows for everything else but express bus substitute operating day by line type', async () => {
-      const startDate = DateTime.fromISO('2023-01-01');
-      const endDate = DateTime.fromISO('2023-12-31');
+      const startDate = Temporal.PlainDate.from('2023-01-01');
+      const endDate = Temporal.PlainDate.from('2023-12-31');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
@@ -155,8 +154,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
 
   describe('draft and staging priorities', () => {
     it('should return rows for draft priorities', async () => {
-      const startDate = DateTime.fromISO('2024-04-01');
-      const endDate = DateTime.fromISO('2024-04-30');
+      const startDate = Temporal.PlainDate.from('2024-04-01');
+      const endDate = Temporal.PlainDate.from('2024-04-30');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
@@ -187,8 +186,8 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     });
 
     it('should not return rows for staging priorities', async () => {
-      const startDate = DateTime.fromISO('2024-04-01');
-      const endDate = DateTime.fromISO('2024-04-30');
+      const startDate = Temporal.PlainDate.from('2024-04-01');
+      const endDate = Temporal.PlainDate.from('2024-04-30');
 
       const mergedDataset = mergeTimetablesDatasets([
         defaultTimetablesDataset,
