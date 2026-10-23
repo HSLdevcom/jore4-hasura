@@ -32,7 +32,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.14.7'
+          python-version: '3.15.1'
 
       - name: Setup Development Environment
         run: ./schema_reloader/development.sh create-dev-env
