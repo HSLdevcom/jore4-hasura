@@ -25,6 +25,10 @@ REVOKE DELETE ON ALL TABLES IN SCHEMA route FROM xxx_db_jore3importer_username_x
 REVOKE TRUNCATE ON ALL TABLES IN SCHEMA route FROM xxx_db_jore3importer_username_xxx;
 ALTER DEFAULT PRIVILEGES IN SCHEMA route
 	REVOKE SELECT,INSERT,UPDATE,DELETE ON TABLES FROM xxx_db_jore3importer_username_xxx;
+REVOKE USAGE ON ALL SEQUENCES IN SCHEMA route FROM xxx_db_jore3importer_username_xxx;
+ALTER DEFAULT PRIVILEGES IN SCHEMA route
+  REVOKE USAGE ON SEQUENCES FROM xxx_db_jore3importer_username_xxx;
+
 
 REVOKE INSERT ON ALL TABLES IN SCHEMA timing_pattern FROM xxx_db_jore3importer_username_xxx;
 REVOKE UPDATE ON ALL TABLES IN SCHEMA timing_pattern FROM xxx_db_jore3importer_username_xxx;

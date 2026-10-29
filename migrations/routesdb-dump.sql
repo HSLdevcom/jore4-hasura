@@ -9429,6 +9429,12 @@ ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA journey_pattern GRANT SELEC
 ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA reusable_components GRANT SELECT ON TABLES TO dbimporter;
 
 --
+-- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE dbhasura IN SCHEMA route GRANT USAGE ON SEQUENCES TO dbimporter;
+
+--
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: route; Owner: dbhasura
 --
 
