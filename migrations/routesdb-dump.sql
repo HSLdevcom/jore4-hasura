@@ -12355,6 +12355,9 @@ CREATE TABLE journey_pattern.scheduled_stop_point_in_journey_pattern (
     scheduled_stop_point_label text CONSTRAINT scheduled_stop_point_in_jou_scheduled_stop_point_label_not_null NOT NULL,
     is_loading_time_allowed boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_journe_is_loading_time_allowed_not_null NOT NULL,
     is_regulated_timing_point boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_jour_is_regulated_timing_point_not_null NOT NULL,
+    is_destination_point boolean DEFAULT false CONSTRAINT scheduled_stop_point_in_journey_p_is_destination_point_not_null NOT NULL,
+    destination_point_name_i18n jsonb,
+    destination_point_short_name_i18n jsonb,
     CONSTRAINT ck_is_regulated_timing_point_state CHECK ((NOT ((is_regulated_timing_point = false) AND (is_loading_time_allowed = true)))),
     CONSTRAINT ck_is_used_as_timing_point_state CHECK ((NOT ((is_used_as_timing_point = false) AND (is_regulated_timing_point = true)))),
     CONSTRAINT ck_is_via_point_state CHECK ((((is_via_point = false) AND (via_point_name_i18n IS NULL) AND (via_point_short_name_i18n IS NULL)) OR ((is_via_point = true) AND (via_point_name_i18n IS NOT NULL) AND (via_point_short_name_i18n IS NOT NULL))))
