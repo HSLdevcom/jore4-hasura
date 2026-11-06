@@ -376,7 +376,7 @@ BEGIN
     route.name_i18n->>'fi_FI',
     route.version_comment,
     current_setting('hasura.user', TRUE)::JSON->>'x-hasura-user-id',
-    route.collect_line_info_for_history(route.on_line_id)
+    network.collect_line_info_for_history(route.on_line_id)
   FROM network.route
   INNER JOIN network.line ON line.line_id = route.on_line_id
   WHERE route.route_id = routeId
