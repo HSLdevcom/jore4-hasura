@@ -3189,7 +3189,7 @@ COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_pattern_ref_id IS 'The
 -- Name: COLUMN vehicle_journey.journey_type; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
 --
 
-COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_type IS 'STANDARD | DRY_RUN | SERVICE_JOURNEY';
+COMMENT ON COLUMN vehicle_journey.vehicle_journey.journey_type IS 'STANDARD | DEAD_RUN | SERVICE_JOURNEY';
 
 --
 -- Name: COLUMN vehicle_journey.layover_time; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
@@ -3220,6 +3220,12 @@ COMMENT ON TABLE vehicle_journey.journey_type IS 'Enum table for defining allowe
 --
 
 COMMENT ON TABLE vehicle_journey.vehicle_journey IS 'The planned movement of a public transport vehicle on a DAY TYPE from the start point to the end point of a JOURNEY PATTERN on a specified ROUTE. Transmodel: https://www.transmodel-cen.eu/model/index.htm?goto=3:1:1:831 ';
+
+--
+-- Name: TRIGGER normalize_deprecated_journey_type_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+COMMENT ON TRIGGER normalize_deprecated_journey_type_trigger ON vehicle_journey.vehicle_journey IS 'Normalizes the deprecated journey type DRY_RUN to DEAD_RUN on write.';
 
 --
 -- Name: TRIGGER process_queued_validation_on_vj_trigger ON vehicle_journey; Type: COMMENT; Schema: vehicle_journey; Owner: dbhasura
@@ -4125,6 +4131,24 @@ $$;
 
 
 ALTER FUNCTION passing_times.validate_passing_time_sequences() OWNER TO dbhasura;
+
+--
+-- Name: normalize_deprecated_journey_type(); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE FUNCTION vehicle_journey.normalize_deprecated_journey_type() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.journey_type = 'DRY_RUN' THEN
+    NEW.journey_type := 'DEAD_RUN';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION vehicle_journey.normalize_deprecated_journey_type() OWNER TO dbhasura;
 
 --
 -- Name: queue_validation_by_vj_id(); Type: FUNCTION; Schema: vehicle_journey; Owner: dbhasura
@@ -5086,6 +5110,12 @@ CREATE TRIGGER queue_jpr_validation_on_ssp_insert_trigger AFTER INSERT ON servic
 --
 
 CREATE TRIGGER queue_jpr_validation_on_ssp_update_trigger AFTER UPDATE ON service_pattern.scheduled_stop_point_in_journey_pattern_ref REFERENCING NEW TABLE AS modified_table FOR EACH STATEMENT EXECUTE FUNCTION journey_pattern.queue_validation_by_jpr_id();
+
+--
+-- Name: vehicle_journey normalize_deprecated_journey_type_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE TRIGGER normalize_deprecated_journey_type_trigger BEFORE INSERT OR UPDATE ON vehicle_journey.vehicle_journey FOR EACH ROW EXECUTE FUNCTION vehicle_journey.normalize_deprecated_journey_type();
 
 --
 -- Name: vehicle_journey process_queued_validation_on_vj_trigger; Type: TRIGGER; Schema: vehicle_journey; Owner: dbhasura
