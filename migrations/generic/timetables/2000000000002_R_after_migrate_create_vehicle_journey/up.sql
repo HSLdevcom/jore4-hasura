@@ -30,3 +30,30 @@ RETURNS interval AS $$
   FROM passing_times.timetabled_passing_time tpt
   WHERE tpt.vehicle_journey_id = vj.vehicle_journey_id;
 $$ LANGUAGE sql STABLE;
+
+-- Backwards compatibility: the journey type DRY_RUN was renamed to DEAD_RUN.
+-- Clients that still write the deprecated value get it normalized here, so that
+-- DRY_RUN is never persisted. Remove this trigger (and the DRY_RUN row in
+-- vehicle_journey.journey_type) once all clients have been migrated.
+--
+-- NOTE: the condition is deliberately evaluated inside the function body instead
+-- of a WHEN clause or UPDATE OF journey_type. Both of those would make the
+-- trigger depend on the journey_type column, which breaks the down migration of
+-- 1676027954829_add_hastus_fields (it drops that column).
+CREATE OR REPLACE FUNCTION vehicle_journey.normalize_deprecated_journey_type()
+RETURNS trigger AS $$
+BEGIN
+  IF NEW.journey_type = 'DRY_RUN' THEN
+    NEW.journey_type := 'DEAD_RUN';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS normalize_deprecated_journey_type_trigger ON vehicle_journey.vehicle_journey;
+CREATE TRIGGER normalize_deprecated_journey_type_trigger
+  BEFORE INSERT OR UPDATE ON vehicle_journey.vehicle_journey
+  FOR EACH ROW
+  EXECUTE FUNCTION vehicle_journey.normalize_deprecated_journey_type();
+COMMENT ON TRIGGER normalize_deprecated_journey_type_trigger ON vehicle_journey.vehicle_journey
+IS 'Normalizes the deprecated journey type DRY_RUN to DEAD_RUN on write.';
