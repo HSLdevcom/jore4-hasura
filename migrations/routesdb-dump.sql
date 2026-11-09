@@ -12453,7 +12453,8 @@ CREATE TABLE route.route (
     origin_short_name_i18n jsonb,
     destination_name_i18n jsonb,
     destination_short_name_i18n jsonb,
-    unique_label text GENERATED ALWAYS AS (label) STORED
+    unique_label text GENERATED ALWAYS AS (label) STORED,
+    accounting_distance_in_metres double precision
 );
 
 
