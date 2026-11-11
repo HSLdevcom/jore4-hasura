@@ -25,6 +25,7 @@ do
   else
     # if the file does not exist yet -> copy it
     echo "Copying yaml file: $SOURCE_YAML_FILE"
+    mkdir -p "$(dirname "$DESTINATION_DIR/$SOURCE_YAML_FILE")"
     cp "$SOURCE_DIR/$SOURCE_YAML_FILE" "$DESTINATION_DIR/$SOURCE_YAML_FILE"
   fi
 done
@@ -40,6 +41,7 @@ do
   else
     # if the file does not exist yet -> copy it
     echo "Copying graphql file: $SOURCE_GRAPHQL_FILE"
+    mkdir -p "$(dirname "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE")"
     cp "$SOURCE_DIR/$SOURCE_GRAPHQL_FILE" "$DESTINATION_DIR/$SOURCE_GRAPHQL_FILE"
   fi
 done

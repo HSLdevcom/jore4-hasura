@@ -816,7 +816,7 @@ CREATE VIEW dssview.stopregistry_path_junction_key_values AS
     SELECT
         key_values_key,
         path_junction_id,
-        key_values_id 
+        key_values_id
     FROM stopregistry.path_junction_key_values;
 CREATE VIEW dssview.stopregistry_path_link AS
     SELECT
@@ -933,7 +933,7 @@ CREATE VIEW dssview.stopregistry_purpose_of_grouping AS
         name_value,
         changed_by,
         version_comment,
-        id 
+        id
     FROM stopregistry.purpose_of_grouping;
 CREATE VIEW dssview.stopregistry_purpose_of_grouping_key_values AS
     SELECT
@@ -1237,6 +1237,6 @@ CREATE VIEW dssview.stopregistry_quay AS
        stop_place_netex_id
     FROM stopregistry.quay_newest_version q
     WHERE EXISTS (
-      SELECT 1 FROM dssview.dssview.network_scheduled_stop_point ssp
+      SELECT 1 FROM dssview.network_scheduled_stop_point ssp
       WHERE ssp.stop_place_ref = q.netex_id
     );
