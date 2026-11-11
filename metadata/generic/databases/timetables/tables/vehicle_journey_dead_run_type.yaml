@@ -1,0 +1,4 @@
+table:
+  name: dead_run_type
+  schema: vehicle_journey
+is_enum: true
