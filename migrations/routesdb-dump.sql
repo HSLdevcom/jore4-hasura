@@ -8495,6 +8495,18 @@ COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.journe
 COMMENT ON COLUMN journey_pattern.scheduled_stop_point_in_journey_pattern.scheduled_stop_point_sequence IS 'The order of the scheduled stop point within the journey pattern.';
 
 --
+-- Name: FUNCTION check_dead_run_consistency(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION journey_pattern.check_dead_run_consistency() IS 'Ensures that the is_dead_run flag of a journey pattern matches the flag of its route.';
+
+--
+-- Name: FUNCTION check_dead_run_stop_properties(); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
+--
+
+COMMENT ON FUNCTION journey_pattern.check_dead_run_stop_properties() IS 'Disallows passenger loading time on the stops of a dead run journey pattern.';
+
+--
 -- Name: FUNCTION check_infra_link_stop_refs_with_new_scheduled_stop_point(replace_scheduled_stop_point_id uuid, new_located_on_infrastructure_link_id uuid, new_measured_location public.geography, new_direction text, new_label text, new_validity_start date, new_validity_end date, new_priority integer, new_vehicle_mode text); Type: COMMENT; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -10017,6 +10029,58 @@ $$;
 
 
 ALTER FUNCTION internal_utils.st_linelocatepoint(a_linestring public.geography, a_point public.geography) OWNER TO dbhasura;
+
+--
+-- Name: check_dead_run_consistency(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION journey_pattern.check_dead_run_consistency() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  route_is_dead_run boolean;
+BEGIN
+  SELECT is_dead_run INTO route_is_dead_run
+    FROM route.route
+    WHERE route_id = NEW.on_route_id;
+
+  IF NEW.is_dead_run != route_is_dead_run THEN
+    RAISE EXCEPTION 'journey_pattern.is_dead_run (%) does not match route.is_dead_run (%) for route %',
+      NEW.is_dead_run, route_is_dead_run, NEW.on_route_id;
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION journey_pattern.check_dead_run_consistency() OWNER TO dbhasura;
+
+--
+-- Name: check_dead_run_stop_properties(); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE FUNCTION journey_pattern.check_dead_run_stop_properties() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  journey_pattern_is_dead_run boolean;
+BEGIN
+  SELECT is_dead_run INTO journey_pattern_is_dead_run
+    FROM journey_pattern.journey_pattern
+    WHERE journey_pattern_id = NEW.journey_pattern_id;
+
+  IF journey_pattern_is_dead_run IS TRUE AND NEW.is_loading_time_allowed IS TRUE THEN
+    RAISE EXCEPTION 'Passenger loading time cannot be allowed on a dead run journey pattern (stop sequence %)',
+      NEW.scheduled_stop_point_sequence;
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+
+ALTER FUNCTION journey_pattern.check_dead_run_stop_properties() OWNER TO dbhasura;
 
 --
 -- Name: check_infra_link_stop_refs_with_new_scheduled_stop_point(uuid, uuid, public.geography, text, text, date, date, integer, text); Type: FUNCTION; Schema: journey_pattern; Owner: dbhasura
@@ -11880,6 +11944,12 @@ CREATE UNIQUE INDEX infrastructure_link_external_link_id_external_link_source_id
 CREATE INDEX vehicle_submode_on_infrastruc_vehicle_submode_infrastructur_idx ON infrastructure_network.vehicle_submode_on_infrastructure_link USING btree (vehicle_submode, infrastructure_link_id);
 
 --
+-- Name: idx_journey_pattern_is_dead_run; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE INDEX idx_journey_pattern_is_dead_run ON journey_pattern.journey_pattern USING btree (is_dead_run);
+
+--
 -- Name: idx_scheduled_stop_point_in_journey_pattern_via_point_name_i18n; Type: INDEX; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -11962,6 +12032,12 @@ CREATE INDEX idx_route_destination_short_name_i18n ON route.route USING gin (des
 --
 
 CREATE INDEX idx_route_direction ON route.route USING btree (direction);
+
+--
+-- Name: idx_route_is_dead_run; Type: INDEX; Schema: route; Owner: dbhasura
+--
+
+CREATE INDEX idx_route_is_dead_run ON route.route USING btree (is_dead_run);
 
 --
 -- Name: idx_route_name_i18n; Type: INDEX; Schema: route; Owner: dbhasura
@@ -12335,7 +12411,8 @@ ALTER TABLE infrastructure_network.vehicle_submode_on_infrastructure_link OWNER 
 
 CREATE TABLE journey_pattern.journey_pattern (
     journey_pattern_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    on_route_id uuid NOT NULL
+    on_route_id uuid NOT NULL,
+    is_dead_run boolean DEFAULT false NOT NULL
 );
 
 
@@ -12454,7 +12531,8 @@ CREATE TABLE route.route (
     destination_name_i18n jsonb,
     destination_short_name_i18n jsonb,
     unique_label text GENERATED ALWAYS AS (label) STORED,
-    accounting_distance_in_metres double precision
+    accounting_distance_in_metres double precision,
+    is_dead_run boolean DEFAULT false NOT NULL
 );
 
 
@@ -12583,6 +12661,12 @@ CREATE TRIGGER prevent_update_of_vehicle_submode_on_infrastructure_link BEFORE U
 CREATE CONSTRAINT TRIGGER scheduled_stop_point_vehicle_mode_by_infra_link_trigger AFTER DELETE ON infrastructure_network.vehicle_submode_on_infrastructure_link DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION service_pattern.check_scheduled_stop_point_vehicle_mode_by_infra_link();
 
 --
+-- Name: journey_pattern check_dead_run_consistency_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER check_dead_run_consistency_trigger AFTER INSERT OR UPDATE ON journey_pattern.journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.check_dead_run_consistency();
+
+--
 -- Name: journey_pattern queue_verify_infra_link_stop_refs_on_jp_update_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
 --
 
@@ -12593,6 +12677,12 @@ CREATE TRIGGER queue_verify_infra_link_stop_refs_on_jp_update_trigger AFTER UPDA
 --
 
 CREATE CONSTRAINT TRIGGER verify_infra_link_stop_refs_on_journey_pattern_trigger AFTER UPDATE ON journey_pattern.journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN ((NOT journey_pattern.infra_link_stop_refs_already_verified())) EXECUTE FUNCTION journey_pattern.verify_infra_link_stop_refs();
+
+--
+-- Name: scheduled_stop_point_in_journey_pattern check_dead_run_stop_properties_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura
+--
+
+CREATE CONSTRAINT TRIGGER check_dead_run_stop_properties_trigger AFTER INSERT OR UPDATE ON journey_pattern.scheduled_stop_point_in_journey_pattern DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION journey_pattern.check_dead_run_stop_properties();
 
 --
 -- Name: scheduled_stop_point_in_journey_pattern queue_verify_infra_link_stop_refs_on_sspijp_insert_trigger; Type: TRIGGER; Schema: journey_pattern; Owner: dbhasura

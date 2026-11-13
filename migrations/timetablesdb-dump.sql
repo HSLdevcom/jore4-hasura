@@ -2746,6 +2746,12 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_calendar.day_type_active_on_d
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref TO dbtimetablesapi;
 
 --
+-- Name: TABLE dead_run_type; Type: ACL; Schema: vehicle_journey; Owner: dbhasura
+--
+
+GRANT SELECT ON TABLE vehicle_journey.dead_run_type TO dbtimetablesapi;
+
+--
 -- Name: TABLE journey_type; Type: ACL; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -3545,6 +3551,13 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point_in_journey_pattern_ref
     ADD CONSTRAINT scheduled_stop_point_in_journey_pattern_ref_pkey PRIMARY KEY (scheduled_stop_point_in_journey_pattern_ref_id);
 
 --
+-- Name: dead_run_type dead_run_type_pkey; Type: CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_journey.dead_run_type
+    ADD CONSTRAINT dead_run_type_pkey PRIMARY KEY (type);
+
+--
 -- Name: journey_type journey_type_pkey; Type: CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -3736,6 +3749,13 @@ ALTER TABLE ONLY service_pattern.scheduled_stop_point_in_journey_pattern_ref
 
 ALTER TABLE ONLY vehicle_journey.vehicle_journey
     ADD CONSTRAINT vehicle_journey_block_id_fkey FOREIGN KEY (block_id) REFERENCES vehicle_service.block(block_id) ON DELETE CASCADE;
+
+--
+-- Name: vehicle_journey vehicle_journey_dead_run_type_fkey; Type: FK CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
+--
+
+ALTER TABLE ONLY vehicle_journey.vehicle_journey
+    ADD CONSTRAINT vehicle_journey_dead_run_type_fkey FOREIGN KEY (dead_run_type) REFERENCES vehicle_journey.dead_run_type(type);
 
 --
 -- Name: vehicle_journey vehicle_journey_journey_pattern_ref_id_fkey; Type: FK CONSTRAINT; Schema: vehicle_journey; Owner: dbhasura
@@ -4686,6 +4706,12 @@ CREATE UNIQUE INDEX service_pattern_scheduled_stop_point_in_journey_pattern_ref_
 CREATE INDEX idx_vehicle_journey_block ON vehicle_journey.vehicle_journey USING btree (block_id);
 
 --
+-- Name: idx_vehicle_journey_dead_run_type; Type: INDEX; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE INDEX idx_vehicle_journey_dead_run_type ON vehicle_journey.vehicle_journey USING btree (dead_run_type) WHERE (dead_run_type IS NOT NULL);
+
+--
 -- Name: idx_vehicle_journey_journey_pattern_ref; Type: INDEX; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -4949,6 +4975,17 @@ CREATE TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref (
 ALTER TABLE service_pattern.scheduled_stop_point_in_journey_pattern_ref OWNER TO dbhasura;
 
 --
+-- Name: dead_run_type; Type: TABLE; Schema: vehicle_journey; Owner: dbhasura
+--
+
+CREATE TABLE vehicle_journey.dead_run_type (
+    type text NOT NULL
+);
+
+
+ALTER TABLE vehicle_journey.dead_run_type OWNER TO dbhasura;
+
+--
 -- Name: journey_type; Type: TABLE; Schema: vehicle_journey; Owner: dbhasura
 --
 
@@ -4970,7 +5007,9 @@ CREATE TABLE vehicle_journey.vehicle_journey (
     journey_name_i18n jsonb,
     turnaround_time interval,
     layover_time interval,
-    journey_type text DEFAULT 'STANDARD'::text NOT NULL
+    journey_type text DEFAULT 'STANDARD'::text NOT NULL,
+    dead_run_type text,
+    CONSTRAINT check_dead_run_type_consistency CHECK ((((journey_type = 'DEAD_RUN'::text) AND (dead_run_type IS NOT NULL)) OR ((journey_type <> 'DEAD_RUN'::text) AND (dead_run_type IS NULL))))
 );
 
 
