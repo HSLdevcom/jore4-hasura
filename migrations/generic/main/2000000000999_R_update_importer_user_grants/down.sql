@@ -15,3 +15,6 @@ REVOKE SELECT, INSERT, UPDATE, DELETE, TRUNCATE
   ON ALL TABLES IN SCHEMA network FROM xxx_db_jore3importer_username_xxx;
 ALTER DEFAULT PRIVILEGES IN SCHEMA network
   REVOKE SELECT ON TABLES FROM xxx_db_jore3importer_username_xxx;
+REVOKE USAGE ON ALL SEQUENCES IN SCHEMA network FROM xxx_db_jore3importer_username_xxx;
+ALTER DEFAULT PRIVILEGES IN SCHEMA network
+  REVOKE USAGE ON SEQUENCES FROM xxx_db_jore3importer_username_xxx;

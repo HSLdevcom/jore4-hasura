@@ -15,3 +15,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE
   ON ALL TABLES IN SCHEMA network TO xxx_db_jore3importer_username_xxx;
 ALTER DEFAULT PRIVILEGES IN SCHEMA network
   GRANT SELECT,INSERT,UPDATE,DELETE   ON TABLES TO xxx_db_jore3importer_username_xxx;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA network TO xxx_db_jore3importer_username_xxx;
+ALTER DEFAULT PRIVILEGES IN SCHEMA network
+  GRANT USAGE ON SEQUENCES TO xxx_db_jore3importer_username_xxx;

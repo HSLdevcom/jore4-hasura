@@ -81,11 +81,15 @@ The migrations are organized to the following directory structure
   contexts as well
   - `/default`: generic database schema for infrastructure, routes and lines
   - `/timetables`: generic database schema for timetables
+  - `/main`: combined database schema, with infrastructure, routes and lines in
+    `network` and timetables in `timetables`. Port applicable changes from
+    `/default` and `/timetables` here, adapting schema references.
 - `/migrations/hsl`: HSL-specific schema changes. These contain custom additions
   on top of the Transmodel schema to support HSL's own needs
   - `/default`: HSL-specific schema additions for infrastructure, routes and
     lines
   - `/timetables`: HSL-specific schema additions for timetables
+  - `/main`: HSL-specific additions for the combined database
 - `/migrations/seed-data`: Seed data migrations to ease development and to
   verify that the migrations are also functional if there's existing data in the
   database. These are added on top of the HSL schema.
