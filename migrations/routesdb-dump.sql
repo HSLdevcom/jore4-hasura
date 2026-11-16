@@ -12335,7 +12335,8 @@ ALTER TABLE infrastructure_network.vehicle_submode_on_infrastructure_link OWNER 
 
 CREATE TABLE journey_pattern.journey_pattern (
     journey_pattern_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    on_route_id uuid NOT NULL
+    on_route_id uuid NOT NULL,
+    is_dead_run boolean DEFAULT false NOT NULL
 );
 
 
@@ -12454,7 +12455,8 @@ CREATE TABLE route.route (
     destination_name_i18n jsonb,
     destination_short_name_i18n jsonb,
     unique_label text GENERATED ALWAYS AS (label) STORED,
-    accounting_distance_in_metres double precision
+    accounting_distance_in_metres double precision,
+    is_dead_run boolean DEFAULT false NOT NULL
 );
 
 
