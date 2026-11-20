@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -eu
 
@@ -14,6 +14,9 @@ REPLACE_PLACEHOLDERS_SCRIPT='/app/scripts/replace-placeholders-in-sql-schema-mig
 
 # Tweak Hasura internal database to enable repeatable migrations
 /app/scripts/repeatable-migrations.sh
+
+# Filter stdout without putting Hasura in a pipeline
+exec > >(grep --line-buffered -vP '^(?=.*"level"\s*:\s*"info")(?=.*"status"\s*:\s*200\s*[,}])(?=.*"url"\s*:\s*"/healthz")')
 
 # Pass on the execution to Hasura's own docker-entrypoint.sh file to (re)run the migrations
 # Tiamat database is only needed in HSL schema, if it is not defined it should not stop the container from running
