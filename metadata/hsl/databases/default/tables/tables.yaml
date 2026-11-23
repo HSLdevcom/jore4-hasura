@@ -1,3 +1,4 @@
 - "!include hsl_route_legacy_hsl_municipality_code.yaml"
 - "!include hsl_route_transport_target.yaml"
 - "!include route_line_change_history.yaml"
+- "!include route_search.yaml"
