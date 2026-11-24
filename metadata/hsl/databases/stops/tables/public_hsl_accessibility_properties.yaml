@@ -1,3 +1,5 @@
 table:
   name: hsl_accessibility_properties
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: hsl_accessibility_properties

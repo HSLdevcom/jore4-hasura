@@ -1,6 +1,8 @@
 table:
   name: block
-  schema: vehicle_service
+  schema: timetables
+configuration:
+  custom_name: vehicle_service_block
 object_relationships:
   - name: vehicle_service
     using:
@@ -15,4 +17,4 @@ array_relationships:
         column: block_id
         table:
           name: vehicle_journey
-          schema: vehicle_journey
+          schema: timetables

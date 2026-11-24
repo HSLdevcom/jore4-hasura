@@ -1,6 +1,8 @@
 table:
   name: vehicle_journey
-  schema: vehicle_journey
+  schema: timetables
+configuration:
+  custom_name: vehicle_journey_vehicle_journey
 object_relationships:
   - name: block
     using:
@@ -15,15 +17,15 @@ array_relationships:
         column: vehicle_journey_id
         table:
           name: timetabled_passing_time
-          schema: passing_times
+          schema: timetables
 computed_fields:
   - name: end_time
     definition:
       function:
         name: vehicle_journey_end_time
-        schema: vehicle_journey
+        schema: timetables
   - name: start_time
     definition:
       function:
         name: vehicle_journey_start_time
-        schema: vehicle_journey
+        schema: timetables

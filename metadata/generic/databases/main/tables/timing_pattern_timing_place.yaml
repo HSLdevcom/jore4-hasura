@@ -1,6 +1,8 @@
 table:
   name: timing_place
-  schema: timing_pattern
+  schema: network
+configuration:
+  custom_name: timing_pattern_timing_place
 array_relationships:
   - name: scheduled_stop_points
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: timing_place_id
         table:
           name: scheduled_stop_point
-          schema: service_pattern
+          schema: network

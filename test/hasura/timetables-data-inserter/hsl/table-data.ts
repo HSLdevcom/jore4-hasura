@@ -45,45 +45,45 @@ export const createHslTableData = (
 
   const tableData: TableData<HslTimetablesDbTables>[] = [
     {
-      name: 'vehicle_schedule.vehicle_schedule_frame',
+      name: 'timetables.vehicle_schedule_frame',
       data: flattenedDataset.vehicleScheduleFrames.map(
         hslVehicleScheduleFrameToDbFormat,
       ),
     },
     {
-      name: 'vehicle_service.vehicle_service',
+      name: 'timetables.vehicle_service',
       data: flattenedDataset.vehicleServices.map(vehicleServiceToDbFormat),
     },
     {
-      name: 'vehicle_service.block',
+      name: 'timetables.block',
       data: flattenedDataset.blocks.map(vehicleServiceBlockToDbFormat),
     },
     {
-      name: 'journey_pattern.journey_pattern_ref',
+      name: 'timetables.journey_pattern_ref',
       data: flattenedDataset.journeyPatternRefs.map(
         journeyPatternRefToDbFormat,
       ),
     },
     {
-      name: 'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+      name: 'timetables.scheduled_stop_point_in_journey_pattern_ref',
       data: flattenedDataset.stopPoints.map(scheduledStopPointToDbFormat),
     },
     {
-      name: 'vehicle_journey.vehicle_journey',
+      name: 'timetables.vehicle_journey',
       data: flattenedDataset.vehicleJourneys.map(vehicleJourneyToDbFormat),
     },
     {
-      name: 'passing_times.timetabled_passing_time',
+      name: 'timetables.timetabled_passing_time',
       data: flattenedDataset.passingTimes.map(timetabledPassingTimeToDbFormat),
     },
     {
-      name: 'service_calendar.substitute_operating_period',
+      name: 'timetables.substitute_operating_period',
       data: flattenedDataset.substituteOperatingPeriods.map(
         substituteOperatingPeriodToDbFormat,
       ),
     },
     {
-      name: 'service_calendar.substitute_operating_day_by_line_type',
+      name: 'timetables.substitute_operating_day_by_line_type',
       data: flattenedDataset.substituteOperatingDayByLineTypeIds.map(
         substituteOperatingDayByLineTypeToDbFormat,
       ),

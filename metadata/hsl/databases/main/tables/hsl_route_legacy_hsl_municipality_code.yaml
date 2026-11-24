@@ -1,6 +1,8 @@
 table:
   name: legacy_hsl_municipality_code
-  schema: hsl_route
+  schema: network
+configuration:
+  custom_name: hsl_route_legacy_hsl_municipality_code
 array_relationships:
   - name: lines
     using:
@@ -8,11 +10,11 @@ array_relationships:
         column: legacy_hsl_municipality_code
         table:
           name: line
-          schema: route
+          schema: network
   - name: routes
     using:
       foreign_key_constraint_on:
         column: legacy_hsl_municipality_code
         table:
           name: route
-          schema: route
+          schema: network

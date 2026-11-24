@@ -1,6 +1,8 @@
 table:
   name: route
-  schema: route
+  schema: network
+configuration:
+  custom_name: route_route
 object_relationships:
   - name: route_line
     using:
@@ -10,7 +12,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: line
-          schema: route
+          schema: network
 array_relationships:
   - name: infrastructure_links_along_route
     using:
@@ -20,7 +22,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: infrastructure_link_along_route
-          schema: route
+          schema: network
   - name: route_journey_patterns
     using:
       manual_configuration:
@@ -29,10 +31,10 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: journey_pattern
-          schema: journey_pattern
+          schema: network
 computed_fields:
   - name: route_shape
     definition:
       function:
         name: route_shape
-        schema: route
+        schema: network

@@ -37,16 +37,14 @@ describe('substitute operating periods', () => {
   const getSubstituteOperatingPeriods = () => {
     return queryTable(
       dbConnection,
-      hslTimetablesDbSchema['service_calendar.substitute_operating_period'],
+      hslTimetablesDbSchema['timetables.substitute_operating_period'],
     );
   };
 
   const getSubstituteOperatingDaysByLineTypes = () => {
     return queryTable(
       dbConnection,
-      hslTimetablesDbSchema[
-        'service_calendar.substitute_operating_day_by_line_type'
-      ],
+      hslTimetablesDbSchema['timetables.substitute_operating_day_by_line_type'],
     );
   };
 

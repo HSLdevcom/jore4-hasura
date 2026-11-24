@@ -1,3 +1,5 @@
 table:
   name: persistable_polygon
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: persistable_polygon

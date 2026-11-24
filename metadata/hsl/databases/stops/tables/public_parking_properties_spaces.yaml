@@ -1,3 +1,5 @@
 table:
   name: parking_properties_spaces
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: parking_properties_spaces

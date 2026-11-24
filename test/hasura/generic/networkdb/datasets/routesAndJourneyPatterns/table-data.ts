@@ -27,39 +27,39 @@ export const routesAndJourneyPatternsTableData: TableData<GenericNetworkDbTables
       data: vehicleSubmodeOnInfrastructureLink,
     },
     {
-      name: 'timing_pattern.timing_place',
+      name: 'network.timing_place',
       data: timingPlaces,
     },
     {
-      name: 'service_pattern.scheduled_stop_point_invariant',
+      name: 'network.scheduled_stop_point_invariant',
       data: scheduledStopPointInvariants,
     },
     {
-      name: 'service_pattern.scheduled_stop_point',
+      name: 'network.scheduled_stop_point',
       data: scheduledStopPoints,
     },
     {
-      name: 'service_pattern.vehicle_mode_on_scheduled_stop_point',
+      name: 'network.vehicle_mode_on_scheduled_stop_point',
       data: vehicleModeOnScheduledStopPoint,
     },
     {
-      name: 'route.line',
+      name: 'network.line',
       data: lines,
     },
     {
-      name: 'route.route',
+      name: 'network.route',
       data: routes,
     },
     {
-      name: 'route.infrastructure_link_along_route',
+      name: 'network.infrastructure_link_along_route',
       data: infrastructureLinkAlongRoute,
     },
     {
-      name: 'journey_pattern.journey_pattern',
+      name: 'network.journey_pattern',
       data: journeyPatterns,
     },
     {
-      name: 'journey_pattern.scheduled_stop_point_in_journey_pattern',
+      name: 'network.scheduled_stop_point_in_journey_pattern',
       data: scheduledStopPointInJourneyPattern,
     },
   ];

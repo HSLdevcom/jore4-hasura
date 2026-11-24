@@ -42,7 +42,7 @@ describe('Insert scheduled stop point after temp route', () => {
 
       const stopResponse = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(stopResponse.rowCount).toEqual(
@@ -75,7 +75,7 @@ describe('Insert scheduled stop point after temp route', () => {
 
       const stopResponse = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(stopResponse.rowCount).toEqual(

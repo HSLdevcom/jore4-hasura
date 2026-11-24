@@ -1,6 +1,8 @@
 table:
   name: line
-  schema: route
+  schema: network
+configuration:
+  custom_name: route_line
 object_relationships:
   - name: typeOfLineByTypeOfLine
     using:
@@ -17,4 +19,4 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: route
-          schema: route
+          schema: network

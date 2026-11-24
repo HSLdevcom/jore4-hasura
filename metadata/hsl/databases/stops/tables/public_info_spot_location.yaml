@@ -1,6 +1,8 @@
 table:
   name: info_spot_location
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: info_spot_location
 object_relationships:
   - name: info_spot
     using:

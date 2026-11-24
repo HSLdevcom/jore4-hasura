@@ -1,6 +1,8 @@
 table:
   name: quay_newest_version
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: quay_newest_version
 object_relationships:
   - name: equipments
     using:
@@ -10,7 +12,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: installed_equipment_version_structure_installed_equipment
-          schema: public
+          schema: stopregistry
   - name: stopPlaceParent
     using:
       manual_configuration:
@@ -19,7 +21,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_children
-          schema: public
+          schema: stopregistry
   - name: stop_place
     using:
       manual_configuration:
@@ -28,7 +30,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: stop_place
-          schema: public
+          schema: stopregistry
   - name: stop_place_newest_version
     using:
       manual_configuration:
@@ -37,7 +39,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_newest_version
-          schema: public
+          schema: stopregistry
 array_relationships:
   - name: info_spot_locations
     using:
@@ -47,7 +49,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: info_spot_location
-          schema: public
+          schema: stopregistry
   - name: quay_alternative_names
     using:
       manual_configuration:
@@ -56,7 +58,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: quay_alternative_names
-          schema: public
+          schema: stopregistry
   - name: quay_key_values
     using:
       manual_configuration:
@@ -65,25 +67,25 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: quay_key_values
-          schema: public
+          schema: stopregistry
 remote_relationships:
   - definition:
       to_source:
         field_mapping:
           netex_id: stop_place_ref
         relationship_type: object
-        source: default
+        source: main
         table:
           name: scheduled_stop_point
-          schema: service_pattern
+          schema: network
     name: scheduled_stop_point_instance
   - definition:
       to_source:
         field_mapping:
           timing_place_id: timing_place_id
         relationship_type: object
-        source: default
+        source: main
         table:
           name: timing_place
-          schema: timing_pattern
+          schema: network
     name: timing_place

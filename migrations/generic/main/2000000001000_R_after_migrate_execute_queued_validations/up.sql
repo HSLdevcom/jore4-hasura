@@ -8,17 +8,17 @@ BEGIN
   -- At least for refresh_journey_patterns_in_vehicle_service there is such case (vehicle_journey delete)
   PERFORM internal_utils.create_validation_queue_temp_tables();
 
-  -- RAISE LOG 'before vehicle_service.refresh_journey_patterns_in_vehicle_service()';
-  PERFORM vehicle_service.refresh_journey_patterns_in_vehicle_service();
+  -- RAISE LOG 'before timetables.refresh_journey_patterns_in_vehicle_service()';
+  PERFORM timetables.refresh_journey_patterns_in_vehicle_service();
 
-  -- RAISE LOG 'before vehicle_schedule.validate_queued_schedules_uniqueness()';
-  PERFORM vehicle_schedule.validate_queued_schedules_uniqueness();
+  -- RAISE LOG 'before timetables.validate_queued_schedules_uniqueness()';
+  PERFORM timetables.validate_queued_schedules_uniqueness();
 
-  -- RAISE LOG 'before passing_times.validate_passing_time_sequences()';
-  PERFORM passing_times.validate_passing_time_sequences();
+  -- RAISE LOG 'before timetables.validate_passing_time_sequences()';
+  PERFORM timetables.validate_passing_time_sequences();
 
-  -- RAISE LOG 'before vehicle_service.validate_service_sequential_integrity()';
-  PERFORM vehicle_service.validate_service_sequential_integrity();
+  -- RAISE LOG 'before timetables.validate_service_sequential_integrity()';
+  PERFORM timetables.validate_service_sequential_integrity();
 
   -- RAISE LOG 'internal_utils.execute_queued_validations() finished';
 

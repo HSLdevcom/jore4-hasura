@@ -66,11 +66,39 @@ To create a new migration, start up the test database and the hasura server,
 then call:
 
 ```sh
-hasura migrate create ${SENSIBLE_SNAKE_CASE_MIGRATION_NAME}
+hasura migrate create ${SENSIBLE_SNAKE_CASE_MIGRATION_NAME} --database-name main
 ```
 
 Write your SQL schema changes in the files `up.sql` and `down.sql`, then move
-them to the correct folder.
+them to the correct folder. New network and timetables migrations belong in
+`migrations/*/main`, and the `hasura migrate` commands for them need
+`--database-name main`.
+
+#### Databases and Hasura sources
+
+The GraphQL API is served from the `jore4main` database, and Hasura's metadata
+store (`hdb_catalog`) is in `jore4main` too. Hasura has the following sources:
+
+| Source                    | Database       | Role                                                                                                                                          |
+| ------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main`                    | `jore4main`    | Network API (infrastructure, routes, lines, scheduled stop points, ...). Runs the `main` migrations.                                          |
+| `timetables_on_jore4main` | `jore4main`    | Timetables API, under the `timetables` root namespace and with the `timetables_` prefixes. Has no migrations of its own.                      |
+| `stops` (HSL)             | `jore4main`    | Direct stop registry API, backed by the `stopregistry` schema that Tiamat migrates. Has no migrations of its own.                             |
+| `auth` (HSL)              | auth database  | Login audit. Has no migrations of its own.                                                                                                    |
+| `metadata`                | `jore4main`    | Hasura's metadata store. Tracks nothing.                                                                                                      |
+| `default`                 | `jore4e2e`     | Migration-only: runs the legacy `default` migrations. Tracks nothing, so the data in this database is not visible through the API.            |
+| `timetables`              | `timetablesdb` | Migration-only: runs the legacy `timetables` migrations. Tracks nothing and has no customization, so the data is not visible through the API. |
+
+The tables and functions in `jore4main` keep their earlier GraphQL names through
+`custom_name` in the metadata. For example, `network.line` is still exposed as
+`route_line`, and `timetables.vehicle_service` as
+`timetables_vehicle_service_vehicle_service` under the `timetables` namespace.
+
+Hasura keeps the migration history of every source, including the legacy ones,
+in `jore4main`. Therefore always reset or reinitialize all the databases
+together, never `jore4main` alone. Anything that cleans up `jore4main` (tests,
+external reset processes) must truncate explicit table lists and leave
+`hdb_catalog` alone.
 
 #### Migrations directory structure
 
@@ -79,17 +107,21 @@ The migrations are organized to the following directory structure
 - `/migrations/generic`: generic database schema migrations. These are pretty
   much Transmodel compatible and are reusable in other public transportation
   contexts as well
-  - `/default`: generic database schema for infrastructure, routes and lines
-  - `/timetables`: generic database schema for timetables
-  - `/main`: combined database schema, with infrastructure, routes and lines in
-    `network` and timetables in `timetables`. Port applicable changes from
-    `/default` and `/timetables` here, adapting schema references.
+  - `/main`: the database schema served by the API, with infrastructure, routes
+    and lines in `network` and timetables in `timetables`. New network and
+    timetables migrations go here.
+  - `/default`: legacy generic database schema for infrastructure, routes and
+    lines, applied to the migration-only `default` source (`jore4e2e`)
+  - `/timetables`: legacy generic database schema for timetables, applied to the
+    migration-only `timetables` source (`timetablesdb`)
+  - `/timetables_on_jore4main`, `/stops`, `/auth` and `/metadata`: placeholders
+    for sources that have no migrations
 - `/migrations/hsl`: HSL-specific schema changes. These contain custom additions
   on top of the Transmodel schema to support HSL's own needs
-  - `/default`: HSL-specific schema additions for infrastructure, routes and
-    lines
-  - `/timetables`: HSL-specific schema additions for timetables
-  - `/main`: HSL-specific additions for the combined database
+  - `/main`: HSL-specific additions for the database schema served by the API
+  - `/default`: legacy HSL-specific schema additions for infrastructure, routes
+    and lines
+  - `/timetables`: legacy HSL-specific schema additions for timetables
 - `/migrations/seed-data`: Seed data migrations to ease development and to
   verify that the migrations are also functional if there's existing data in the
   database. These are added on top of the HSL schema.
@@ -272,9 +304,9 @@ metadata when starting up the HSL Docker container. See the merge script
 
 For example, to add a new HSL specific relationship to `route_line` table, a new
 file should be created. The original file to be patched would be
-`/metadata/hsl/databases/detault/tables/route_line.yaml`.
+`/metadata/generic/databases/main/tables/route_line.yaml`.
 
-Patch file: `/metadata/hsl/databases/detault/tables/route_line.yaml`:
+Patch file: `/metadata/hsl/databases/main/tables/route_line.yaml`:
 
 ```
 object_relationships:
@@ -419,6 +451,12 @@ In order to run the integration/unit tests, follow the following steps:
    ```
 4. Run the tests in the `test/hasura`-directory: `yarn test`
 
+The tests set up their data by writing directly to the `network` and
+`timetables` schemas in `jore4main` (see `test/hasura/config.ts`), and check the
+results through the GraphQL API. The cleanup truncates only the tables listed in
+the datasets. Do not truncate the seeded enum tables `network.route_direction`
+and `network.type_of_line`, which the network and timetables data share.
+
 ### HSL schema specific tests
 
 HSL schema specific features have their own tests and datasets (which extend the
@@ -463,10 +501,12 @@ hasura image target in `./docker/docker-compose.custom.yml` to
 ### Dump tests
 
 We're using the generated dumps `./migrations/routesdb-dump.sql` and
-`./migrations/timetablesdb-dump.sql` to see the latest version of the database
-schema. This helps to see what actual changes happened after a potentially long
-and verbose migration script. Note that these dumps are sorted for comparability
-using the [pgdump-sort](https://github.com/tigra564/pgdump-sort) tool.
+`./migrations/timetablesdb-dump.sql` to see the latest version of the legacy
+database schemas (`jore4e2e` and `timetablesdb`). This helps to see what actual
+changes happened after a potentially long and verbose migration script. The
+dumps exclude Hasura's `hdb_catalog` schema. Note that these dumps are sorted
+for comparability using the
+[pgdump-sort](https://github.com/tigra564/pgdump-sort) tool.
 
 These dumps are generated within the testdb docker container to assure version
 compatibility and to avoid unnecessary changes in git. To generate the dumps,
@@ -495,24 +535,22 @@ the secrets and delivers them to Hasura.
 
 Our Docker image expects the following secrets to be bound to the container:
 
-| Secret file                | Description                                                             |
-| -------------------------- | ----------------------------------------------------------------------- |
-| hasura-admin-secret        | Password with which admins can access the console and other features    |
-| db-hostname                | Hostname/IP address for the default database                            |
-| db-name                    | Name of the database instance to connect to within the default database |
-| db-timetables-name         | Name of the logical database for timetables                             |
-| db-main-name               | Name of the logical main database                                       |
-| db-username                | Username for the default database                                       |
-| db-password                | Password for the default database                                       |
-| db-auth-username           | Name of the sql user that is used by the auth backend service           |
-| db-jore3importer-username  | Name of the sql user that is used by the jore3 importer service         |
-| db-timetables-api-username | Name of the sql user that is used by the timetables API service         |
+| Secret file                | Description                                                                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| hasura-admin-secret        | Password with which admins can access the console and other features                                |
+| db-hostname                | Hostname/IP address for the database server                                                         |
+| db-name                    | Name of the legacy database for the migration-only `default` source                                 |
+| db-timetables-name         | Name of the legacy database for the migration-only `timetables` source                              |
+| db-jore4-main-name         | Name of the main database (`jore4main`). Serves the API and holds Hasura's metadata store. Required |
+| db-username                | Username for the database server                                                                    |
+| db-password                | Password for the database server                                                                    |
+| db-auth-username           | Name of the sql user that is used by the auth backend service                                       |
+| db-jore3importer-username  | Name of the sql user that is used by the jore3 importer service                                     |
+| db-timetables-api-username | Name of the sql user that is used by the timetables API service                                     |
 
-Additionally, when using HSL schema, the following secrets should be bound:
-
-| Secret file    | Description                                    |
-| -------------- | ---------------------------------------------- |
-| db-tiamat-name | Name of the logical database for stop registry |
+The HSL image no longer needs the `db-tiamat-name` secret, because the `stops`
+source now reads the stop registry from `jore4main`. The secret is still
+accepted but unused.
 
 ### Use of the Docker image
 

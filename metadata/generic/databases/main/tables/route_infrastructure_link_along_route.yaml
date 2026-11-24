@@ -1,6 +1,8 @@
 table:
   name: infrastructure_link_along_route
-  schema: route
+  schema: network
+configuration:
+  custom_name: route_infrastructure_link_along_route
 object_relationships:
   - name: infrastructure_link
     using:

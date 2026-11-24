@@ -1,6 +1,8 @@
 table:
   name: value
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: value
 array_relationships:
   - name: value_items
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: value_id
         table:
           name: value_items
-          schema: public
+          schema: stopregistry

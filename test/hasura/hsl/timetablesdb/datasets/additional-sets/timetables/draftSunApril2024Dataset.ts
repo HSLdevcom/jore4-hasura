@@ -45,19 +45,19 @@ export const draftSunApril2024VehicleJourneysByName = {
 
 export const draftSunApril2024Dataset: TableData<HslTimetablesDbTables>[] = [
   {
-    name: 'vehicle_schedule.vehicle_schedule_frame',
+    name: 'timetables.vehicle_schedule_frame',
     data: [draftSunApril2024VehicleScheduleFrame],
   },
   {
-    name: 'vehicle_service.vehicle_service',
+    name: 'timetables.vehicle_service',
     data: [draftSunApril2024VehicleService],
   },
   {
-    name: 'vehicle_service.block',
+    name: 'timetables.block',
     data: [draftSunApril2024VehicleServiceBlock],
   },
   {
-    name: 'vehicle_journey.vehicle_journey',
+    name: 'timetables.vehicle_journey',
     data: [...Object.values(draftSunApril2024VehicleJourneysByName)],
   },
 ];

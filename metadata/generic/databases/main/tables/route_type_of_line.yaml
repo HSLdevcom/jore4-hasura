@@ -1,7 +1,9 @@
 table:
   name: type_of_line
-  schema: route
+  schema: network
 is_enum: true
+configuration:
+  custom_name: route_type_of_line
 object_relationships:
   - name: vehicle_mode
     using:
@@ -13,4 +15,4 @@ array_relationships:
         column: type_of_line
         table:
           name: line
-          schema: route
+          schema: network

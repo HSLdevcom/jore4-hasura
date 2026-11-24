@@ -65,7 +65,7 @@ describe('HSL timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const vehicleScheduleFrames = await queryTable(
           dbConnection,
-          hslTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+          hslTimetablesDbSchema['timetables.vehicle_schedule_frame'],
         );
 
         expect(vehicleScheduleFrames.rowCount).toBe(1);
@@ -98,7 +98,7 @@ describe('HSL timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const vehicleJourneys = await queryTable(
           dbConnection,
-          hslTimetablesDbSchema['vehicle_journey.vehicle_journey'],
+          hslTimetablesDbSchema['timetables.vehicle_journey'],
         );
 
         expect(vehicleJourneys.rowCount).toBe(4);
@@ -137,7 +137,7 @@ describe('HSL timetables data inserter json parser', () => {
         const vehicleScheduleFrames = await queryTable(
           dbConnection,
           hslTimetablesDbSchema[
-            'service_calendar.substitute_operating_day_by_line_type'
+            'timetables.substitute_operating_day_by_line_type'
           ],
         );
 

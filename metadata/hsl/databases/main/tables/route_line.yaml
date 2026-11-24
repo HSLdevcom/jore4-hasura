@@ -14,4 +14,4 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: line_change_history
-          schema: route
+          schema: network

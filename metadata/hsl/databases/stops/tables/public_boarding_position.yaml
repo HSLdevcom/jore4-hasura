@@ -1,6 +1,8 @@
 table:
   name: boarding_position
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: boarding_position
 object_relationships:
   - name: installed_equipment_version_structure
     using:
@@ -15,18 +17,18 @@ array_relationships:
         column: boarding_position_id
         table:
           name: boarding_position_alternative_names
-          schema: public
+          schema: stopregistry
   - name: boarding_position_equipment_places
     using:
       foreign_key_constraint_on:
         column: boarding_position_id
         table:
           name: boarding_position_equipment_places
-          schema: public
+          schema: stopregistry
   - name: boarding_position_key_values
     using:
       foreign_key_constraint_on:
         column: boarding_position_id
         table:
           name: boarding_position_key_values
-          schema: public
+          schema: stopregistry

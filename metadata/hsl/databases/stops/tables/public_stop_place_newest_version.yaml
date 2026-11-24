@@ -1,6 +1,8 @@
 table:
   name: stop_place_newest_version
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: stop_place_newest_version
 object_relationships:
   - name: parent
     using:
@@ -10,7 +12,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_children
-          schema: public
+          schema: stopregistry
   - name: topographic_place
     using:
       manual_configuration:
@@ -19,7 +21,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: topographic_place
-          schema: public
+          schema: stopregistry
 array_relationships:
   - name: children
     using:
@@ -29,7 +31,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_children
-          schema: public
+          schema: stopregistry
   - name: group_of_stop_places_members
     using:
       manual_configuration:
@@ -38,7 +40,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: group_of_stop_places_members
-          schema: public
+          schema: stopregistry
   - name: stop_place_access_spaces
     using:
       manual_configuration:
@@ -47,7 +49,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_access_spaces
-          schema: public
+          schema: stopregistry
   - name: stop_place_alternative_names
     using:
       manual_configuration:
@@ -56,7 +58,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_alternative_names
-          schema: public
+          schema: stopregistry
   - name: stop_place_equipment_places
     using:
       manual_configuration:
@@ -65,7 +67,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_equipment_places
-          schema: public
+          schema: stopregistry
   - name: stop_place_key_values
     using:
       manual_configuration:
@@ -74,7 +76,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_key_values
-          schema: public
+          schema: stopregistry
   - name: stop_place_quays
     using:
       manual_configuration:
@@ -83,7 +85,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_quays
-          schema: public
+          schema: stopregistry
   - name: stop_place_tariff_zones
     using:
       manual_configuration:
@@ -92,7 +94,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_tariff_zones
-          schema: public
+          schema: stopregistry
 remote_relationships:
   - definition:
       to_remote_schema:
@@ -113,8 +115,8 @@ remote_relationships:
         field_mapping:
           netex_id: stop_place_ref
         relationship_type: object
-        source: default
+        source: main
         table:
           name: scheduled_stop_point
-          schema: service_pattern
+          schema: network
     name: scheduled_stop_point_instance

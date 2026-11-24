@@ -99,7 +99,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+          genericNetworkDbSchema['network.scheduled_stop_point'],
         );
 
         expect(stopPointResponse.rowCount).toEqual(scheduledStopPoints.length);
@@ -110,7 +110,7 @@ describe('Insert scheduled stop point', () => {
         const vehicleModeResponse = await queryTable(
           dbConnection,
           genericNetworkDbSchema[
-            'service_pattern.vehicle_mode_on_scheduled_stop_point'
+            'network.vehicle_mode_on_scheduled_stop_point'
           ],
         );
 
@@ -123,9 +123,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema[
-            'service_pattern.scheduled_stop_point_invariant'
-          ],
+          genericNetworkDbSchema['network.scheduled_stop_point_invariant'],
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(
@@ -195,7 +193,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+          genericNetworkDbSchema['network.scheduled_stop_point'],
         );
 
         expect(stopPointResponse.rowCount).toEqual(
@@ -218,7 +216,7 @@ describe('Insert scheduled stop point', () => {
         const vehicleModeResponse = await queryTable(
           dbConnection,
           genericNetworkDbSchema[
-            'service_pattern.vehicle_mode_on_scheduled_stop_point'
+            'network.vehicle_mode_on_scheduled_stop_point'
           ],
         );
 
@@ -238,9 +236,7 @@ describe('Insert scheduled stop point', () => {
 
         const stopPointInvariantResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema[
-            'service_pattern.scheduled_stop_point_invariant'
-          ],
+          genericNetworkDbSchema['network.scheduled_stop_point_invariant'],
         );
 
         expect(stopPointInvariantResponse.rowCount).toEqual(

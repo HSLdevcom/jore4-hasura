@@ -1,6 +1,8 @@
 table:
   name: quay_boarding_positions
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: quay_boarding_positions
 object_relationships:
   - name: boarding_position
     using:

@@ -1,6 +1,8 @@
 table:
   name: fare_zone_neighbours
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: fare_zone_neighbours
 object_relationships:
   - name: fare_zone
     using:

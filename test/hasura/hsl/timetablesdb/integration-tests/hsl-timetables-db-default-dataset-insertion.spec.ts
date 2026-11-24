@@ -18,7 +18,7 @@ describe('Inserting hsl timetables specific data', () => {
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_calendar.substitute_operating_day_by_line_type`,
+      `SELECT * FROM timetables.substitute_operating_day_by_line_type`,
     );
 
     expect(response.rows.length).toBeGreaterThan(0);

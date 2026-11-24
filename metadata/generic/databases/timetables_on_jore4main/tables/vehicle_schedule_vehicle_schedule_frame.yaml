@@ -1,6 +1,8 @@
 table:
   name: vehicle_schedule_frame
-  schema: vehicle_schedule
+  schema: timetables
+configuration:
+  custom_name: vehicle_schedule_vehicle_schedule_frame
 array_relationships:
   - name: vehicle_services
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: vehicle_schedule_frame_id
         table:
           name: vehicle_service
-          schema: vehicle_service
+          schema: timetables

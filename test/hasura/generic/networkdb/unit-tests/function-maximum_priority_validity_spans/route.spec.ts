@@ -36,7 +36,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
       dbConnection,
       [
         {
-          name: 'route.route',
+          name: 'network.route',
           data: routeData,
         },
       ],
@@ -46,7 +46,7 @@ describe('Function maximum_priority_validity_spans should return correct route r
     return db.singleQuery(
       dbConnection,
       `SELECT *
-       FROM journey_pattern.maximum_priority_validity_spans('route', '{ "${
+       FROM network.maximum_priority_validity_spans('route', '{ "${
          routeLabel ?? defaultRouteLabel
        }" }', ${
          validityStart !== undefined ? `'${validityStart.toString()}'` : 'NULL'

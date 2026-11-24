@@ -787,7 +787,7 @@ describe('Vehicle service sequential integrity', () => {
       await expect(
         singleQuery(
           dbConnection,
-          `UPDATE vehicle_service.block
+          `UPDATE timetables.block
            SET "finishing_time" = 'PT12M'
            WHERE "block_id" = '${firstBlock.block_id}'`,
         ),
@@ -803,7 +803,7 @@ describe('Vehicle service sequential integrity', () => {
       await expect(
         singleQuery(
           dbConnection,
-          `UPDATE vehicle_journey.vehicle_journey
+          `UPDATE timetables.vehicle_journey
              SET "turnaround_time" = 'PT12M'
              WHERE "vehicle_journey_id" = '${secondBlockFirstJourney.vehicle_journey_id}'`,
         ),
@@ -818,7 +818,7 @@ describe('Vehicle service sequential integrity', () => {
       await expect(
         singleQuery(
           dbConnection,
-          `UPDATE passing_times.timetabled_passing_time
+          `UPDATE timetables.timetabled_passing_time
            SET "arrival_time" = 'PT7H45M'
            WHERE "timetabled_passing_time_id" = '${firstBlockLastStop.timetabled_passing_time_id}'`,
         ),

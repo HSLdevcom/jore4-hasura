@@ -21,11 +21,11 @@ export const stoppingBusServiceThursday20230406SubstituteOperatingPeriod = {
 export const stoppingBusServiceSaturday20230406Dataset: TableData<HslTimetablesDbTables>[] =
   [
     {
-      name: 'service_calendar.substitute_operating_period',
+      name: 'timetables.substitute_operating_period',
       data: [stoppingBusServiceThursday20230406SubstituteOperatingPeriod],
     },
     {
-      name: 'service_calendar.substitute_operating_day_by_line_type',
+      name: 'timetables.substitute_operating_day_by_line_type',
       data: [
         stoppingBusServiceThursday20230406SubstituteOperatingDayByLineType,
       ],

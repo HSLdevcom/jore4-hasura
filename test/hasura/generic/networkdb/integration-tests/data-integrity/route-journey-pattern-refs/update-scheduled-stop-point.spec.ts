@@ -96,7 +96,7 @@ describe('Move scheduled stop point to other infra link', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -187,7 +187,7 @@ describe('Move scheduled stop point to other infra link', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -252,7 +252,7 @@ describe('Change scheduled stop point timing place', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -317,7 +317,7 @@ describe('Change scheduled stop point timing place', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);

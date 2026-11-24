@@ -24,7 +24,7 @@ describe('Inserting a complicated route', () => {
   it('should create the route correctly in the database', async () => {
     const routeResponse = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['route.route'],
+      genericNetworkDbSchema['network.route'],
     );
 
     expect(routeResponse.rowCount).toEqual(routes.length);
@@ -32,7 +32,7 @@ describe('Inserting a complicated route', () => {
 
     const infrastructureLinkAlongRouteResponse = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['route.infrastructure_link_along_route'],
+      genericNetworkDbSchema['network.infrastructure_link_along_route'],
     );
 
     expect(infrastructureLinkAlongRouteResponse.rowCount).toEqual(
@@ -46,7 +46,7 @@ describe('Inserting a complicated route', () => {
   it('should create the journey pattern correctly in the database', async () => {
     const journeyPatternResponse = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['journey_pattern.journey_pattern'],
+      genericNetworkDbSchema['network.journey_pattern'],
     );
 
     expect(journeyPatternResponse.rowCount).toEqual(journeyPatterns.length);
@@ -56,9 +56,7 @@ describe('Inserting a complicated route', () => {
 
     const scheduledStopPointInJourneyPatternResponse = await queryTable(
       dbConnection,
-      genericNetworkDbSchema[
-        'journey_pattern.scheduled_stop_point_in_journey_pattern'
-      ],
+      genericNetworkDbSchema['network.scheduled_stop_point_in_journey_pattern'],
     );
 
     expect(scheduledStopPointInJourneyPatternResponse.rowCount).toEqual(

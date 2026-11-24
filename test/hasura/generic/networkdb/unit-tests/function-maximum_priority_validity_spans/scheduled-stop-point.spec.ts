@@ -91,26 +91,26 @@ describe('Function maximum_priority_validity_spans should return correct schedul
       dbConnection,
       [
         {
-          // infra link is needed, since it is used by the service_pattern.scheduled_stop_point view
+          // infra link is needed, since it is used by the network.scheduled_stop_point view
           name: 'infrastructure_network.infrastructure_link',
           data: [infraLink],
         },
         {
-          name: 'service_pattern.scheduled_stop_point',
+          name: 'network.scheduled_stop_point',
           data: stopData,
         },
         // the scheduled stop points are filtered by route label, and because of this we have to
         // establish the connection: route -> journey pattern -> journey pattern in ssp -> ssp
         {
-          name: 'route.route',
+          name: 'network.route',
           data: [route],
         },
         {
-          name: 'journey_pattern.journey_pattern',
+          name: 'network.journey_pattern',
           data: [journeyPattern],
         },
         {
-          name: 'journey_pattern.scheduled_stop_point_in_journey_pattern',
+          name: 'network.scheduled_stop_point_in_journey_pattern',
           data: stopData.map((stop, index) => ({
             journey_pattern_id: journeyPattern.journey_pattern_id,
             scheduled_stop_point_label: stop.label,
@@ -128,7 +128,7 @@ describe('Function maximum_priority_validity_spans should return correct schedul
     return singleQuery(
       dbConnection,
       `SELECT *
-       FROM journey_pattern.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
+       FROM network.maximum_priority_validity_spans('scheduled_stop_point', '{ "${
          routeLabel ?? defaultRouteLabel
        }" }', ${
          validityStart !== undefined ? `'${validityStart.toString()}'` : 'NULL'

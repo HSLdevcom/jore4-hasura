@@ -1,6 +1,8 @@
 table:
   name: substitute_operating_period
-  schema: service_calendar
+  schema: timetables
+configuration:
+  custom_name: service_calendar_substitute_operating_period
 array_relationships:
   - name: substitute_operating_day_by_line_types
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: substitute_operating_period_id
         table:
           name: substitute_operating_day_by_line_type
-          schema: service_calendar
+          schema: timetables

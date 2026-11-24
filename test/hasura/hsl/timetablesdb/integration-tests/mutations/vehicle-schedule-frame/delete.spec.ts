@@ -68,30 +68,30 @@ describe('Delete vehicle schedule frame', () => {
   type TableAndSortColumn = [HslTimetablesDbTables, string];
   const tablesWithSortColumn: Record<string, TableAndSortColumn> = {
     vehicleScheduleFrame: [
-      'vehicle_schedule.vehicle_schedule_frame',
+      'timetables.vehicle_schedule_frame',
       'vehicle_schedule_frame_id',
     ],
-    vehicleService: ['vehicle_service.vehicle_service', 'vehicle_service_id'],
-    block: ['vehicle_service.block', 'block_id'],
-    vehicleJourney: ['vehicle_journey.vehicle_journey', 'vehicle_journey_id'],
+    vehicleService: ['timetables.vehicle_service', 'vehicle_service_id'],
+    block: ['timetables.block', 'block_id'],
+    vehicleJourney: ['timetables.vehicle_journey', 'vehicle_journey_id'],
     timetabledPassingTime: [
-      'passing_times.timetabled_passing_time',
+      'timetables.timetabled_passing_time',
       'timetabled_passing_time_id',
     ],
     journeyPatternRef: [
-      'journey_pattern.journey_pattern_ref',
+      'timetables.journey_pattern_ref',
       'journey_pattern_ref_id',
     ],
     scheduledStopPointInJourneyPatternRef: [
-      'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+      'timetables.scheduled_stop_point_in_journey_pattern_ref',
       'scheduled_stop_point_in_journey_pattern_ref_id',
     ],
     substituteOperatingDayByLineType: [
-      'service_calendar.substitute_operating_day_by_line_type',
+      'timetables.substitute_operating_day_by_line_type',
       'substitute_operating_day_by_line_type_id',
     ],
     substituteOperatingPeriod: [
-      'service_calendar.substitute_operating_period',
+      'timetables.substitute_operating_period',
       'substitute_operating_period_id',
     ],
   };
@@ -263,13 +263,13 @@ describe('Delete vehicle schedule frame', () => {
     // to ensure this test is kept up to date when new tables are added.
     const affectedTables: Array<HslTimetablesDbTables> = [
       // These are checked in previous test.
-      'vehicle_schedule.vehicle_schedule_frame',
-      'vehicle_service.vehicle_service',
-      'vehicle_service.block',
-      'vehicle_journey.vehicle_journey',
-      'passing_times.timetabled_passing_time',
+      'timetables.vehicle_schedule_frame',
+      'timetables.vehicle_service',
+      'timetables.block',
+      'timetables.vehicle_journey',
+      'timetables.timetabled_passing_time',
       // This is an automatically generated table, not relevant.
-      'vehicle_service.journey_patterns_in_vehicle_service',
+      'timetables.journey_patterns_in_vehicle_service',
     ];
     const nonAffectedTables = xor(hslTimetablesDbTables, affectedTables);
     expect(nonAffectedTables).toHaveLength(

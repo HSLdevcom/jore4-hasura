@@ -1,6 +1,8 @@
 table:
   name: level_key_values
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: level_key_values
 object_relationships:
   - name: value
     using:

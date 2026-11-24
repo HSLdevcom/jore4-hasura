@@ -1,3 +1,5 @@
+# Migration-only source for the legacy network database (jore4e2e). The network
+# API is served from the "main" source. Keep this source free of tracked objects.
 - name: default
   kind: postgres
   configuration:
@@ -11,8 +13,7 @@
         max_connections: 50
         retries: 1
       use_prepared_statements: true
-  tables: "!include default/tables/tables.yaml"
-  functions: "!include default/functions/functions.yaml"
+  tables: []
 - name: metadata
   kind: postgres
   configuration:
@@ -42,12 +43,17 @@
       use_prepared_statements: true
   tables: "!include main/tables/tables.yaml"
   functions: "!include main/functions/functions.yaml"
-- name: timetables
+# The source name affects the GraphQL schema. Hasura shares the
+# route_direction enum comparison type between "main" and this source, and the
+# first source built (in hash order of source names) names it. This name keeps
+# "timetables_route_direction_enum_comparison_exp", which clients depend on.
+# Do not rename this source without re-checking that type name.
+- name: timetables_on_jore4main
   kind: postgres
   configuration:
     connection_info:
       database_url:
-        from_env: HASURA_TIMETABLES_DATABASE_URL
+        from_env: HASURA_MAIN_DATABASE_URL
       isolation_level: serializable
       pool_settings:
         connection_lifetime: 600
@@ -62,5 +68,22 @@
       prefix: timetables_
     type_names:
       prefix: timetables_
-  tables: "!include timetables/tables/tables.yaml"
-  functions: "!include timetables/functions/functions.yaml"
+  tables: "!include timetables_on_jore4main/tables/tables.yaml"
+  functions: "!include timetables_on_jore4main/functions/functions.yaml"
+# Migration-only source for the legacy timetables database (timetablesdb). The
+# timetables API is served from the "timetables_on_jore4main" source. Keep this source
+# free of tracked objects and customization.
+- name: timetables
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_TIMETABLES_DATABASE_URL
+      isolation_level: serializable
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  tables: []

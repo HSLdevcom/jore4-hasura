@@ -10,12 +10,12 @@ export type HslNetworkDbTables = (typeof hslNetworkDbTables)[number];
 
 export const hslNetworkDbSchema: TableSchemaMap<HslNetworkDbTables> = {
   ...genericNetworkDbSchema,
-  'route.line': {
-    name: 'route.line',
+  'network.line': {
+    name: 'network.line',
     props: hslLineProps,
   },
-  'route.route': {
-    name: 'route.route',
+  'network.route': {
+    name: 'network.route',
     props: hslRouteProps,
   },
 };

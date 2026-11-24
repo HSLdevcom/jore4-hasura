@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: day_type
-          schema: service_calendar
+          schema: timetables
   - name: substitute_operating_day_by_line_type
     using:
       manual_configuration:
@@ -19,7 +19,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: substitute_operating_day_by_line_type
-          schema: service_calendar
+          schema: timetables
   - name: vehicle_schedule_frame
     using:
       manual_configuration:
@@ -28,4 +28,4 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: vehicle_schedule_frame
-          schema: vehicle_schedule
+          schema: timetables

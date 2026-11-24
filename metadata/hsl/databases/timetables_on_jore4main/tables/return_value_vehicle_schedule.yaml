@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: day_type
-          schema: service_calendar
+          schema: timetables
   - name: vehicle_journey
     using:
       manual_configuration:
@@ -19,4 +19,4 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: vehicle_journey
-          schema: vehicle_journey
+          schema: timetables

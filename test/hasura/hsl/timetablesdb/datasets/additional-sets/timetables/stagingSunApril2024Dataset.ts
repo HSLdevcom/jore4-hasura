@@ -45,19 +45,19 @@ export const stagingSunApril2024VehicleJourneysByName = {
 
 export const stagingSunApril2024Dataset: TableData<HslTimetablesDbTables>[] = [
   {
-    name: 'vehicle_schedule.vehicle_schedule_frame',
+    name: 'timetables.vehicle_schedule_frame',
     data: [stagingSunApril2024VehicleScheduleFrame],
   },
   {
-    name: 'vehicle_service.vehicle_service',
+    name: 'timetables.vehicle_service',
     data: [stagingSunApril2024VehicleService],
   },
   {
-    name: 'vehicle_service.block',
+    name: 'timetables.block',
     data: [stagingSunApril2024VehicleServiceBlock],
   },
   {
-    name: 'vehicle_journey.vehicle_journey',
+    name: 'timetables.vehicle_journey',
     data: [...Object.values(stagingSunApril2024VehicleJourneysByName)],
   },
 ];

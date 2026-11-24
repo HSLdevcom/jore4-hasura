@@ -1,3 +1,5 @@
 table:
   name: contact
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: contact

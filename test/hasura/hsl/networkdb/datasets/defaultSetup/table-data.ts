@@ -9,11 +9,11 @@ export const defaultHslNetworkDbData: TableData<HslNetworkDbTables>[] =
     defaultGenericNetworkDbData,
     [
       {
-        name: 'route.line',
+        name: 'network.line',
         data: hslLines,
       },
       {
-        name: 'route.route',
+        name: 'network.route',
         data: hslRoutes,
       },
     ],

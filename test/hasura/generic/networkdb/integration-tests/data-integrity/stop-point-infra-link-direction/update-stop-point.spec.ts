@@ -54,11 +54,11 @@ describe('Update scheduled stop point', () => {
       getPartialTableData(defaultGenericNetworkDbData, [
         'infrastructure_network.infrastructure_link',
         'infrastructure_network.vehicle_submode_on_infrastructure_link',
-        'service_pattern.scheduled_stop_point_invariant',
-        'service_pattern.scheduled_stop_point',
-        'service_pattern.vehicle_mode_on_scheduled_stop_point',
-        'route.line',
-        'route.route',
+        'network.scheduled_stop_point_invariant',
+        'network.scheduled_stop_point',
+        'network.vehicle_mode_on_scheduled_stop_point',
+        'network.line',
+        'network.route',
       ]),
     ),
   );
@@ -91,7 +91,7 @@ describe('Update scheduled stop point', () => {
 
         const response = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+          genericNetworkDbSchema['network.scheduled_stop_point'],
         );
 
         expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -216,7 +216,7 @@ describe('Update scheduled stop point', () => {
 
           const response = await queryTable(
             dbConnection,
-            genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+            genericNetworkDbSchema['network.scheduled_stop_point'],
           );
 
           expect(response.rowCount).toEqual(scheduledStopPoints.length);

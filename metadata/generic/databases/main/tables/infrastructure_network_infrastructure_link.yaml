@@ -15,7 +15,7 @@ array_relationships:
         column: infrastructure_link_id
         table:
           name: infrastructure_link_along_route
-          schema: route
+          schema: network
   - name: scheduled_stop_points_located_on_infrastructure_link
     using:
       manual_configuration:
@@ -24,7 +24,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: scheduled_stop_point
-          schema: service_pattern
+          schema: network
   - name: vehicle_submode_on_infrastructure_link
     using:
       manual_configuration:

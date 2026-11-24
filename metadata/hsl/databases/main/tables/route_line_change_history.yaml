@@ -1,3 +1,5 @@
 table:
   name: line_change_history
-  schema: route
+  schema: network
+configuration:
+  custom_name: route_line_change_history

@@ -1,6 +1,8 @@
 table:
   name: vehicle_service
-  schema: vehicle_service
+  schema: timetables
+configuration:
+  custom_name: vehicle_service_vehicle_service
 object_relationships:
   - name: day_type
     using:
@@ -15,11 +17,11 @@ array_relationships:
         column: vehicle_service_id
         table:
           name: block
-          schema: vehicle_service
+          schema: timetables
   - name: journey_patterns_in_vehicle_service
     using:
       foreign_key_constraint_on:
         column: vehicle_service_id
         table:
           name: journey_patterns_in_vehicle_service
-          schema: vehicle_service
+          schema: timetables

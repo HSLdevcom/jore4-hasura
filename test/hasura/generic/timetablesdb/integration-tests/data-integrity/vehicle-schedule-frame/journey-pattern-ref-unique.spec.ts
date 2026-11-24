@@ -83,23 +83,23 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
   ) => {
     const dbData: TableData<GenericTimetablesDbTables>[] = [
       {
-        name: 'vehicle_schedule.vehicle_schedule_frame',
+        name: 'timetables.vehicle_schedule_frame',
         data: [dataset.frame],
       },
       {
-        name: 'vehicle_service.vehicle_service',
+        name: 'timetables.vehicle_service',
         data: [dataset.service],
       },
       {
-        name: 'vehicle_service.block',
+        name: 'timetables.block',
         data: [dataset.block],
       },
       {
-        name: 'vehicle_journey.vehicle_journey',
+        name: 'timetables.vehicle_journey',
         data: [dataset.journey],
       },
       {
-        name: 'passing_times.timetabled_passing_time',
+        name: 'timetables.timetabled_passing_time',
         data: dataset.passingTimes,
       },
     ];
@@ -365,8 +365,8 @@ describe('Vehicle schedule frame - journey pattern ref uniqueness constraint', (
         const dbData = buildTableDataForBaseDataset(dataset);
         const allTableNames = dbData.map((td) => td.name);
         const vehicleJourneyTableNames: GenericTimetablesDbTables[] = [
-          'vehicle_journey.vehicle_journey',
-          'passing_times.timetabled_passing_time',
+          'timetables.vehicle_journey',
+          'timetables.timetabled_passing_time',
         ];
         const tableDataWithoutVehicleJourney = getPartialTableData(
           dbData,

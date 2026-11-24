@@ -1,6 +1,8 @@
 table:
   name: timetabled_passing_time
-  schema: passing_times
+  schema: timetables
+configuration:
+  custom_name: passing_times_timetabled_passing_time
 object_relationships:
   - name: scheduled_stop_point_in_journey_pattern_ref
     using:

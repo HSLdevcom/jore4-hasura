@@ -1,6 +1,8 @@
 table:
   name: scheduled_stop_point_in_journey_pattern_ref
-  schema: service_pattern
+  schema: timetables
+configuration:
+  custom_name: service_pattern_scheduled_stop_point_in_journey_pattern_ref
 object_relationships:
   - name: journey_pattern_ref
     using:
@@ -12,15 +14,15 @@ array_relationships:
         column: scheduled_stop_point_in_journey_pattern_ref_id
         table:
           name: timetabled_passing_time
-          schema: passing_times
+          schema: timetables
 remote_relationships:
   - definition:
       to_source:
         field_mapping:
           scheduled_stop_point_label: label
         relationship_type: array
-        source: default
+        source: main
         table:
           name: scheduled_stop_point
-          schema: service_pattern
+          schema: network
     name: scheduled_stop_point_instances

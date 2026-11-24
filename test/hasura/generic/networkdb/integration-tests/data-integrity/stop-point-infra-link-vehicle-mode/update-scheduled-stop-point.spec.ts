@@ -75,7 +75,7 @@ describe('Update scheduled stop point', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);
@@ -121,7 +121,7 @@ describe('Update scheduled stop point', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length);

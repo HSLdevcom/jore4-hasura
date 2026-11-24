@@ -1,6 +1,8 @@
 table:
   name: equipment_position_key_values
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: equipment_position_key_values
 object_relationships:
   - name: value
     using:

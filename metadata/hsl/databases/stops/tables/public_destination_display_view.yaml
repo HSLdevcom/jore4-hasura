@@ -1,3 +1,5 @@
 table:
   name: destination_display_view
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: destination_display_view

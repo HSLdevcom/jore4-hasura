@@ -56,7 +56,7 @@ mutation {
     ) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
+          genericTimetablesDbSchema['timetables.timetabled_passing_time'],
         )}
       }
     }
@@ -69,7 +69,7 @@ mutation {
       timetabled_passing_time_id: "${timetabledPassingTimeId}"
     ) {
       ${buildPropNameArray(
-        genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
+        genericTimetablesDbSchema['timetables.timetabled_passing_time'],
       )}
     }
 `;
@@ -96,7 +96,7 @@ mutation {
         object: ${toGraphQlObject(toInsert)}
       ) {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
+          genericTimetablesDbSchema['timetables.timetabled_passing_time'],
         )}
       }
     }
@@ -120,7 +120,7 @@ ${alias}: timetables_update_service_pattern_scheduled_stop_point_in_journey_patt
   returning {
     ${buildPropNameArray(
       genericTimetablesDbSchema[
-        'service_pattern.scheduled_stop_point_in_journey_pattern_ref'
+        'timetables.scheduled_stop_point_in_journey_pattern_ref'
       ],
     )}
   }

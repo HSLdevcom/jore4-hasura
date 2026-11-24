@@ -1,6 +1,8 @@
 table:
   name: installed_equipment_version_structure
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: installed_equipment_version_structure
 array_relationships:
   - name: installed_equipment_version_structure_installed_equipments
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: place_equipment_id
         table:
           name: installed_equipment_version_structure_installed_equipment
-          schema: public
+          schema: stopregistry

@@ -1,3 +1,5 @@
 table:
   name: vehicle_type
-  schema: vehicle_type
+  schema: timetables
+configuration:
+  custom_name: vehicle_type_vehicle_type

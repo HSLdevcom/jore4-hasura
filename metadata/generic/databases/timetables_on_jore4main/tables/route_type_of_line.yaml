@@ -1,3 +1,5 @@
 table:
   name: type_of_line
-  schema: route
+  schema: network
+configuration:
+  custom_name: route_type_of_line

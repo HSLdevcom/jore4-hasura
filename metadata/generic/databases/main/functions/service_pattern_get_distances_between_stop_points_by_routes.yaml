@@ -1,3 +1,5 @@
 function:
   name: get_distances_between_stop_points_by_routes
-  schema: service_pattern
+  schema: network
+configuration:
+  custom_name: service_pattern_get_distances_between_stop_points_by_routes

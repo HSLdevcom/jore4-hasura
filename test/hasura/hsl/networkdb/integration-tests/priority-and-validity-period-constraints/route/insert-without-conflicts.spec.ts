@@ -78,7 +78,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(
         dbConnection,
-        hslNetworkDbSchema['route.route'],
+        hslNetworkDbSchema['network.route'],
       );
 
       expect(response.rowCount).toEqual(hslRoutes.length + 1);

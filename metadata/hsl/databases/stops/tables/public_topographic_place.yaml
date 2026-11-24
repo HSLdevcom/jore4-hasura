@@ -1,6 +1,8 @@
 table:
   name: topographic_place
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: topographic_place
 object_relationships:
   - name: persistable_polygon
     using:
@@ -12,4 +14,4 @@ array_relationships:
         column: topographic_place_id
         table:
           name: topographic_place_key_values
-          schema: public
+          schema: stopregistry

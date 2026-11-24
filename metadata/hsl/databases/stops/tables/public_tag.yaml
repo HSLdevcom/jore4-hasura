@@ -1,3 +1,5 @@
 table:
   name: tag
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: tag

@@ -10,31 +10,31 @@ import { vehicleServices } from './vehicle-services';
 export const defaultGenericTimetablesDbData: TableData<GenericTimetablesDbTables>[] =
   [
     {
-      name: 'vehicle_schedule.vehicle_schedule_frame',
+      name: 'timetables.vehicle_schedule_frame',
       data: vehicleScheduleFrames,
     },
     {
-      name: 'vehicle_service.vehicle_service',
+      name: 'timetables.vehicle_service',
       data: vehicleServices,
     },
     {
-      name: 'vehicle_service.block',
+      name: 'timetables.block',
       data: vehicleServiceBlocks,
     },
     {
-      name: 'journey_pattern.journey_pattern_ref',
+      name: 'timetables.journey_pattern_ref',
       data: journeyPatternRefs,
     },
     {
-      name: 'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+      name: 'timetables.scheduled_stop_point_in_journey_pattern_ref',
       data: scheduledStopPointsInJourneyPatternRef,
     },
     {
-      name: 'vehicle_journey.vehicle_journey',
+      name: 'timetables.vehicle_journey',
       data: vehicleJourneys,
     },
     {
-      name: 'passing_times.timetabled_passing_time',
+      name: 'timetables.timetabled_passing_time',
       data: timetabledPassingTimes,
     },
   ];

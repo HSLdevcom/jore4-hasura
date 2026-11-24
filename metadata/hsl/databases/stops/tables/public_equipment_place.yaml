@@ -1,6 +1,8 @@
 table:
   name: equipment_place
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: equipment_place
 object_relationships:
   - name: persistable_polygon
     using:
@@ -12,11 +14,11 @@ array_relationships:
         column: equipment_place_id
         table:
           name: equipment_place_equipment_positions
-          schema: public
+          schema: stopregistry
   - name: equipment_place_key_values
     using:
       foreign_key_constraint_on:
         column: equipment_place_id
         table:
           name: equipment_place_key_values
-          schema: public
+          schema: stopregistry

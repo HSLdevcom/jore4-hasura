@@ -1,6 +1,8 @@
 table:
   name: accessibility_assessment
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: accessibility_assessment
 array_relationships:
   - name: accessibility_assessment_limitations
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: accessibility_assessment_id
         table:
           name: accessibility_assessment_limitations
-          schema: public
+          schema: stopregistry

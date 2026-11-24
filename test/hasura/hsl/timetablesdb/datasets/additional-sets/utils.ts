@@ -44,23 +44,20 @@ export const getDbDataWithAdditionalDatasets = ({
     ...mergeLists(
       dbData,
       [
-        getCombinedData(datasets, 'vehicle_schedule.vehicle_schedule_frame'),
-        getCombinedData(datasets, 'vehicle_service.vehicle_service'),
-        getCombinedData(datasets, 'vehicle_service.block'),
-        getCombinedData(datasets, 'journey_pattern.journey_pattern_ref'),
+        getCombinedData(datasets, 'timetables.vehicle_schedule_frame'),
+        getCombinedData(datasets, 'timetables.vehicle_service'),
+        getCombinedData(datasets, 'timetables.block'),
+        getCombinedData(datasets, 'timetables.journey_pattern_ref'),
         getCombinedData(
           datasets,
-          'service_pattern.scheduled_stop_point_in_journey_pattern_ref',
+          'timetables.scheduled_stop_point_in_journey_pattern_ref',
         ),
-        getCombinedData(datasets, 'vehicle_journey.vehicle_journey'),
+        getCombinedData(datasets, 'timetables.vehicle_journey'),
         getCombinedData(
           datasets,
-          'service_calendar.substitute_operating_day_by_line_type',
+          'timetables.substitute_operating_day_by_line_type',
         ),
-        getCombinedData(
-          datasets,
-          'service_calendar.substitute_operating_period',
-        ),
+        getCombinedData(datasets, 'timetables.substitute_operating_period'),
       ],
       (tableSchema) => tableSchema.name,
     ),

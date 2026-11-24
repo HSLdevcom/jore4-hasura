@@ -1,6 +1,8 @@
 table:
   name: fare_zone
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: fare_zone
 object_relationships:
   - name: persistable_polygon
     using:
@@ -12,18 +14,18 @@ array_relationships:
         column: fare_zone_id
         table:
           name: fare_zone_key_values
-          schema: public
+          schema: stopregistry
   - name: fare_zone_members
     using:
       foreign_key_constraint_on:
         column: fare_zone_id
         table:
           name: fare_zone_members
-          schema: public
+          schema: stopregistry
   - name: fare_zone_neighbours
     using:
       foreign_key_constraint_on:
         column: fare_zone_id
         table:
           name: fare_zone_neighbours
-          schema: public
+          schema: stopregistry

@@ -29,7 +29,7 @@ export const buildUpdateVehicleScheduleFrameMutation = (
     ) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+          genericTimetablesDbSchema['timetables.vehicle_schedule_frame'],
         )}
       }
     }
@@ -47,7 +47,7 @@ export const buildInsertVehicleServiceMutation = (
     )}) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+          genericTimetablesDbSchema['timetables.vehicle_service'],
         )}
       }
     }
@@ -67,7 +67,7 @@ export const buildUpdateVehicleServiceMutation = (
     ) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+          genericTimetablesDbSchema['timetables.vehicle_service'],
         )}
       }
     }
@@ -88,9 +88,7 @@ export const buildUpdateBlockMutation = (
       _set: ${toGraphQlObject(toBeUpdated)}
     ) {
       returning {
-        ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_service.block'],
-        )}
+        ${buildPropNameArray(genericTimetablesDbSchema['timetables.block'])}
       }
     }
   }
@@ -107,7 +105,7 @@ export const buildInsertVehicleJourneyMutation = (
     )}) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_journey.vehicle_journey'],
+          genericTimetablesDbSchema['timetables.vehicle_journey'],
         )}
       }
     }
@@ -127,7 +125,7 @@ export const buildUpdateVehicleJourneyMutation = (
     ) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['vehicle_journey.vehicle_journey'],
+          genericTimetablesDbSchema['timetables.vehicle_journey'],
         )}
       }
     }
@@ -161,7 +159,7 @@ export const buildUpdateJourneyPatternRefMutation = (
     ) {
       returning {
         ${buildPropNameArray(
-          genericTimetablesDbSchema['journey_pattern.journey_pattern_ref'],
+          genericTimetablesDbSchema['timetables.journey_pattern_ref'],
         )}
       }
     }

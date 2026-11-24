@@ -1,6 +1,8 @@
 table:
   name: journey_pattern
-  schema: journey_pattern
+  schema: network
+configuration:
+  custom_name: journey_pattern_journey_pattern
 object_relationships:
   - name: journey_pattern_route
     using:
@@ -10,7 +12,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: route
-          schema: route
+          schema: network
 array_relationships:
   - name: scheduled_stop_point_in_journey_patterns
     using:
@@ -18,25 +20,25 @@ array_relationships:
         column: journey_pattern_id
         table:
           name: scheduled_stop_point_in_journey_pattern
-          schema: journey_pattern
+          schema: network
 remote_relationships:
   - definition:
       to_source:
         field_mapping:
           journey_pattern_id: journey_pattern_id
         relationship_type: array
-        source: timetables
+        source: timetables_on_jore4main
         table:
           name: journey_pattern_ref
-          schema: journey_pattern
+          schema: timetables
     name: journey_pattern_refs
   - definition:
       to_source:
         field_mapping:
           journey_pattern_id: journey_pattern_id
         relationship_type: array
-        source: timetables
+        source: timetables_on_jore4main
         table:
           name: journey_patterns_in_vehicle_service
-          schema: vehicle_service
+          schema: timetables
     name: journey_pattern_vehicle_services

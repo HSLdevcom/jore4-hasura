@@ -80,7 +80,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     return db.singleQuery(
       dbConnection,
-      `SELECT internal_service_pattern.insert_scheduled_stop_point_with_vehicle_mode(${params})`,
+      `SELECT network.insert_scheduled_stop_point_with_vehicle_mode(${params})`,
     );
   };
 
@@ -92,7 +92,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+      genericNetworkDbSchema['network.scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -113,9 +113,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema[
-        'service_pattern.vehicle_mode_on_scheduled_stop_point'
-      ],
+      genericNetworkDbSchema['network.vehicle_mode_on_scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(
@@ -147,7 +145,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+      genericNetworkDbSchema['network.scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -173,7 +171,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point_invariant'],
+      genericNetworkDbSchema['network.scheduled_stop_point_invariant'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPointInvariants.length + 1);
@@ -199,7 +197,7 @@ describe('Function insert_scheduled_stop_point_with_vehicle_mode', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point_invariant'],
+      genericNetworkDbSchema['network.scheduled_stop_point_invariant'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPointInvariants.length);

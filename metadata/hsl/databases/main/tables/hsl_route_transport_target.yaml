@@ -1,7 +1,9 @@
 table:
   name: transport_target
-  schema: hsl_route
+  schema: network
 is_enum: true
+configuration:
+  custom_name: hsl_route_transport_target
 array_relationships:
   - name: lines
     using:
@@ -9,4 +11,4 @@ array_relationships:
         column: transport_target
         table:
           name: line
-          schema: route
+          schema: network

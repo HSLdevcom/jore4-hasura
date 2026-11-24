@@ -1,6 +1,8 @@
 table:
   name: quay
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: quay
 object_relationships:
   - name: accessibility_assessment
     using:
@@ -18,25 +20,25 @@ array_relationships:
         column: quay_id
         table:
           name: quay_alternative_names
-          schema: public
+          schema: stopregistry
   - name: quay_boarding_positions
     using:
       foreign_key_constraint_on:
         column: quay_id
         table:
           name: quay_boarding_positions
-          schema: public
+          schema: stopregistry
   - name: quay_equipment_places
     using:
       foreign_key_constraint_on:
         column: quay_id
         table:
           name: quay_equipment_places
-          schema: public
+          schema: stopregistry
   - name: quay_key_values
     using:
       foreign_key_constraint_on:
         column: quay_id
         table:
           name: quay_key_values
-          schema: public
+          schema: stopregistry

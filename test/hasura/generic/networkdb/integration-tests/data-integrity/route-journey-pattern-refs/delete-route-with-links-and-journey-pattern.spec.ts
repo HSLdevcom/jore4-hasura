@@ -62,7 +62,7 @@ describe('Delete route with infra links and journey pattern', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['route.route'],
+      genericNetworkDbSchema['network.route'],
     );
 
     expect(response.rowCount).toEqual(routes.length - 1);
