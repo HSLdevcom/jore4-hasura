@@ -1,0 +1,6 @@
+table:
+  name: point_type
+  schema: network
+is_enum: true
+configuration:
+  custom_name: service_pattern_point_type

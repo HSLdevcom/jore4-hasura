@@ -1,6 +1,8 @@
 table:
   name: group_of_stop_places_members
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: group_of_stop_places_members
 object_relationships:
   - name: group_of_stop_place
     using:
@@ -13,4 +15,4 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: stop_place_newest_version
-          schema: public
+          schema: stopregistry

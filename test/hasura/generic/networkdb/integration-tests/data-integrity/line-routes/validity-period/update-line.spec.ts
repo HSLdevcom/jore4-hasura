@@ -66,7 +66,7 @@ describe('Update line', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.line'],
+        genericNetworkDbSchema['network.line'],
       );
 
       expect(response.rowCount).toEqual(lines.length);
@@ -108,7 +108,7 @@ describe('Update line', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.line'],
+        genericNetworkDbSchema['network.line'],
       );
 
       const updated = completeUpdated(line, toBeUpdated);

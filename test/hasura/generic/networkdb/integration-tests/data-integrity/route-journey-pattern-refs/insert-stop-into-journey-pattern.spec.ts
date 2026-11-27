@@ -79,7 +79,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
       const response = await queryTable(
         dbConnection,
         genericNetworkDbSchema[
-          'journey_pattern.scheduled_stop_point_in_journey_pattern'
+          'network.scheduled_stop_point_in_journey_pattern'
         ],
       );
 
@@ -123,7 +123,7 @@ describe('Insert scheduled stop point into journey pattern', () => {
       const response = await queryTable(
         dbConnection,
         genericNetworkDbSchema[
-          'journey_pattern.scheduled_stop_point_in_journey_pattern'
+          'network.scheduled_stop_point_in_journey_pattern'
         ],
       );
 

@@ -1,0 +1,18 @@
+table:
+  name: route_direction
+  schema: network
+is_enum: true
+configuration:
+  custom_name: route_direction
+object_relationships:
+  - name: directionByTheOppositeOfDirection
+    using:
+      foreign_key_constraint_on: the_opposite_of_direction
+array_relationships:
+  - name: directions
+    using:
+      foreign_key_constraint_on:
+        column: the_opposite_of_direction
+        table:
+          name: route_direction
+          schema: network

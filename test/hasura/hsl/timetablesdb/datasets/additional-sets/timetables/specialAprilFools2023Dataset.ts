@@ -45,19 +45,19 @@ export const specialAprilFools2023VehicleJourneysByName = {
 export const specialAprilFools2023Dataset: TableData<HslTimetablesDbTables>[] =
   [
     {
-      name: 'vehicle_schedule.vehicle_schedule_frame',
+      name: 'timetables.vehicle_schedule_frame',
       data: [specialAprilFools2023VehicleScheduleFrame],
     },
     {
-      name: 'vehicle_service.vehicle_service',
+      name: 'timetables.vehicle_service',
       data: [specialAprilFools2023VehicleService],
     },
     {
-      name: 'vehicle_service.block',
+      name: 'timetables.block',
       data: [specialAprilFools2023VehicleServiceBlock],
     },
     {
-      name: 'vehicle_journey.vehicle_journey',
+      name: 'timetables.vehicle_journey',
       data: [...Object.values(specialAprilFools2023VehicleJourneysByName)],
     },
   ];

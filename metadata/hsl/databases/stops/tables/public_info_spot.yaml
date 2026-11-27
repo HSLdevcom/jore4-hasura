@@ -1,6 +1,8 @@
 table:
   name: info_spot
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: info_spot
 array_relationships:
   - name: locations
     using:
@@ -8,4 +10,4 @@ array_relationships:
         column: info_spot_id
         table:
           name: info_spot_location
-          schema: public
+          schema: stopregistry

@@ -1,0 +1,7 @@
+function:
+  name: get_timetables_and_substitute_operating_days
+  schema: timetables
+configuration:
+  custom_name: vehicle_service_get_timetables_and_substitute_operating_days
+  custom_root_fields: {}
+  exposed_as: query

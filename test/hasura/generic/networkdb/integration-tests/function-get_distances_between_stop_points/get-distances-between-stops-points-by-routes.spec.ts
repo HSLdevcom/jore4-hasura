@@ -14,7 +14,7 @@ import {
   VehicleModeOnScheduledStopPoint,
 } from 'generic/networkdb/datasets/types';
 
-describe('Function service_pattern.get_distances_between_stop_points_by_routes', () => {
+describe('Function network.get_distances_between_stop_points_by_routes', () => {
   let dbConnection: DbConnection;
 
   beforeAll(() => {
@@ -38,13 +38,11 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
     const tableConfig = [...baseTableConfig];
 
     const scheduledStopPointsIndex = baseTableConfig.findIndex((elem) => {
-      return elem.name === 'service_pattern.scheduled_stop_point';
+      return elem.name === 'network.scheduled_stop_point';
     });
 
     const vehicleModeOnStopPointIndex = baseTableConfig.findIndex((elem) => {
-      return (
-        elem.name === 'service_pattern.vehicle_mode_on_scheduled_stop_point'
-      );
+      return elem.name === 'network.vehicle_mode_on_scheduled_stop_point';
     });
 
     // Override scheduled stop points in base dataset.
@@ -86,7 +84,7 @@ describe('Function service_pattern.get_distances_between_stop_points_by_routes',
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toString()}'::date)`,
+      `SELECT * FROM network.get_distances_between_stop_points_by_routes('{${routeIds}}'::uuid[], '${observationDate.toString()}'::date)`,
     );
 
     return response.rows.map((row: ExplicitAny) => {

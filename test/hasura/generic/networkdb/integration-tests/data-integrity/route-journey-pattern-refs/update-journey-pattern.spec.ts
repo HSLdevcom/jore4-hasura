@@ -66,7 +66,7 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['journey_pattern.journey_pattern'],
+        genericNetworkDbSchema['network.journey_pattern'],
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);
@@ -136,7 +136,7 @@ describe('Move journey pattern to other route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['journey_pattern.journey_pattern'],
+        genericNetworkDbSchema['network.journey_pattern'],
       );
 
       expect(response.rowCount).toEqual(journeyPatterns.length);

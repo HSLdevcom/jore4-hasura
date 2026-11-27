@@ -18,7 +18,7 @@ import {
   VehicleSubmodeOnInfrastructureLink,
 } from 'generic/networkdb/datasets/types';
 
-describe('Function service_pattern.get_distances_between_stop_points_in_journey_patterns', () => {
+describe('Function network.get_distances_between_stop_points_in_journey_patterns', () => {
   let dbConnection: DbConnection;
 
   beforeAll(() => {
@@ -52,13 +52,11 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
     const tableConfig = [...baseTableConfig];
 
     const scheduledStopPointsIndex = baseTableConfig.findIndex((elem) => {
-      return elem.name === 'service_pattern.scheduled_stop_point';
+      return elem.name === 'network.scheduled_stop_point';
     });
 
     const vehicleModeOnStopPointIndex = baseTableConfig.findIndex((elem) => {
-      return (
-        elem.name === 'service_pattern.vehicle_mode_on_scheduled_stop_point'
-      );
+      return elem.name === 'network.vehicle_mode_on_scheduled_stop_point';
     });
 
     const infrastructureLinksIndex = baseTableConfig.findIndex((elem) => {
@@ -129,7 +127,7 @@ describe('Function service_pattern.get_distances_between_stop_points_in_journey_
 
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM service_pattern.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toString()}'::date, ${includeDraftStopPoints})`,
+      `SELECT * FROM network.get_distances_between_stop_points_in_journey_patterns('{${journeyPatternIds}}'::uuid[], '${observationDate.toString()}'::date, ${includeDraftStopPoints})`,
     );
 
     return response.rows.map((row: ExplicitAny) => {

@@ -1,6 +1,8 @@
 table:
   name: parking_area_equipment_places
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: parking_area_equipment_places
 object_relationships:
   - name: equipment_place
     using:

@@ -1,3 +1,5 @@
 table:
   name: multilingual_string_entity
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: multilingual_string_entity

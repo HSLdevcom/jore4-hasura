@@ -1,0 +1,5 @@
+table:
+  name: vehicle_mode_on_scheduled_stop_point
+  schema: network
+configuration:
+  custom_name: service_pattern_vehicle_mode_on_scheduled_stop_point

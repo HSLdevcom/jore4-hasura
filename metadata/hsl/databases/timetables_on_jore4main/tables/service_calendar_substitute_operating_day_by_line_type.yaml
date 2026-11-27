@@ -1,0 +1,5 @@
+table:
+  name: substitute_operating_day_by_line_type
+  schema: timetables
+configuration:
+  custom_name: service_calendar_substitute_operating_day_by_line_type

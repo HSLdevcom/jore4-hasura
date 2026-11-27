@@ -1,6 +1,8 @@
 table:
   name: stop_place_access_spaces
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: stop_place_access_spaces
 object_relationships:
   - name: access_space
     using:

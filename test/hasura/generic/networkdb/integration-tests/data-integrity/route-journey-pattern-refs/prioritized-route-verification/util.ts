@@ -225,7 +225,7 @@ export const shouldNotModifyScheduledStopPointsInDatabase = async (
 ) => {
   const stopResponse = await queryTable(
     dbConnection,
-    genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+    genericNetworkDbSchema['network.scheduled_stop_point'],
   );
 
   expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
@@ -260,7 +260,7 @@ export const shouldInsertScheduledStopPointCorrectlyIntoDatabase = async (
 ) => {
   const response = await queryTable(
     dbConnection,
-    genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+    genericNetworkDbSchema['network.scheduled_stop_point'],
   );
 
   expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);

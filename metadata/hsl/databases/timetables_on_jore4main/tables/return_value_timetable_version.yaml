@@ -1,0 +1,31 @@
+table:
+  name: timetable_version
+  schema: return_value
+object_relationships:
+  - name: day_type
+    using:
+      manual_configuration:
+        column_mapping:
+          day_type_id: day_type_id
+        insertion_order: null
+        remote_table:
+          name: day_type
+          schema: timetables
+  - name: substitute_operating_day_by_line_type
+    using:
+      manual_configuration:
+        column_mapping:
+          substitute_operating_day_by_line_type_id: substitute_operating_day_by_line_type_id
+        insertion_order: null
+        remote_table:
+          name: substitute_operating_day_by_line_type
+          schema: timetables
+  - name: vehicle_schedule_frame
+    using:
+      manual_configuration:
+        column_mapping:
+          vehicle_schedule_frame_id: vehicle_schedule_frame_id
+        insertion_order: null
+        remote_table:
+          name: vehicle_schedule_frame
+          schema: timetables

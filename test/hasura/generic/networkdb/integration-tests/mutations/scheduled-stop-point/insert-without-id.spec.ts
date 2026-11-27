@@ -110,7 +110,7 @@ describe('Insert scheduled_stop_point', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+      genericNetworkDbSchema['network.scheduled_stop_point'],
     );
 
     expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);
@@ -130,7 +130,7 @@ describe('Insert scheduled_stop_point', () => {
 
     const stopPointInvariantResponse = await queryTable(
       dbConnection,
-      genericNetworkDbSchema['service_pattern.scheduled_stop_point_invariant'],
+      genericNetworkDbSchema['network.scheduled_stop_point_invariant'],
     );
 
     expect(stopPointInvariantResponse.rowCount).toEqual(

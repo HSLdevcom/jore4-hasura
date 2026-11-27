@@ -1,0 +1,5 @@
+function:
+  name: get_active_day_types_for_date
+  schema: timetables
+configuration:
+  custom_name: service_calendar_get_active_day_types_for_date

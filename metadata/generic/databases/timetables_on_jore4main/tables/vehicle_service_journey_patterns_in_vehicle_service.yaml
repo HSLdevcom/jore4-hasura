@@ -1,0 +1,20 @@
+table:
+  name: journey_patterns_in_vehicle_service
+  schema: timetables
+configuration:
+  custom_name: vehicle_service_journey_patterns_in_vehicle_service
+object_relationships:
+  - name: vehicle_service
+    using:
+      foreign_key_constraint_on: vehicle_service_id
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: object
+        source: main
+        table:
+          name: journey_pattern
+          schema: network
+    name: journey_pattern_instance

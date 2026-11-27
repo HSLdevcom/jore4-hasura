@@ -109,7 +109,7 @@ describe('Insert route with links', () => {
 
         const routeResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['route.route'],
+          genericNetworkDbSchema['network.route'],
         );
 
         expect(routeResponse.rowCount).toEqual(routes.length);
@@ -117,7 +117,7 @@ describe('Insert route with links', () => {
 
         const infraLinksResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['route.infrastructure_link_along_route'],
+          genericNetworkDbSchema['network.infrastructure_link_along_route'],
         );
 
         expect(infraLinksResponse.rowCount).toEqual(
@@ -193,7 +193,7 @@ describe('Insert route with links', () => {
 
         const routeResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['route.route'],
+          genericNetworkDbSchema['network.route'],
         );
 
         expect(routeResponse.rowCount).toEqual(routes.length + 1);
@@ -209,7 +209,7 @@ describe('Insert route with links', () => {
 
         const infraLinksResponse = await queryTable(
           dbConnection,
-          genericNetworkDbSchema['route.infrastructure_link_along_route'],
+          genericNetworkDbSchema['network.infrastructure_link_along_route'],
         );
 
         expect(infraLinksResponse.rowCount).toEqual(

@@ -79,7 +79,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
 
       const stopResponse = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(stopResponse.rowCount).toEqual(scheduledStopPoints.length);
@@ -130,7 +130,7 @@ describe('Inserting a stop point with a label in use in a journey pattern', () =
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['service_pattern.scheduled_stop_point'],
+        genericNetworkDbSchema['network.scheduled_stop_point'],
       );
 
       expect(response.rowCount).toEqual(scheduledStopPoints.length + 1);

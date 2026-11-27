@@ -44,7 +44,7 @@ describe('function get_timetable_versions_by_journey_pattern_ids', () => {
     await setupDb(dbConnection, dataset);
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM vehicle_service.get_timetable_versions_by_journey_pattern_ids(
+      `SELECT * FROM timetables.get_timetable_versions_by_journey_pattern_ids(
         '{${journeyPatternIds}}'::uuid[],
         '${startDate.toString()}'::date,
         '${endDate.toString()}'::date,

@@ -1,6 +1,8 @@
 table:
   name: group_of_tariff_zones
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: group_of_tariff_zones
 array_relationships:
   - name: group_of_tariff_zones_key_values
     using:
@@ -8,11 +10,11 @@ array_relationships:
         column: group_of_tariff_zones_id
         table:
           name: group_of_tariff_zones_key_values
-          schema: public
+          schema: stopregistry
   - name: group_of_tariff_zones_members
     using:
       foreign_key_constraint_on:
         column: group_of_tariff_zones_id
         table:
           name: group_of_tariff_zones_members
-          schema: public
+          schema: stopregistry

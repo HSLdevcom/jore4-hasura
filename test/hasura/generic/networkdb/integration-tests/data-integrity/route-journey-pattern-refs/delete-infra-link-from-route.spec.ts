@@ -66,7 +66,7 @@ describe('Delete infra link from route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.infrastructure_link_along_route'],
+        genericNetworkDbSchema['network.infrastructure_link_along_route'],
       );
 
       expect(response.rowCount).toEqual(infrastructureLinkAlongRoute.length);
@@ -98,7 +98,7 @@ describe('Delete infra link from route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.infrastructure_link_along_route'],
+        genericNetworkDbSchema['network.infrastructure_link_along_route'],
       );
 
       expect(response.rowCount).toEqual(

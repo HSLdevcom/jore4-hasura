@@ -1,0 +1,21 @@
+# Docker Compose override for CI, passed to setup-e2e-environment as custom_docker_compose.
+# Remove it once the docker-compose bundle configures Tiamat to use jore4main.
+services:
+  jore4-tiamat:
+    environment:
+      # Tiamat's build-jdbc-urls.sh requires it, but the bundle only provides tiamat-db-database (stopdb).
+      TIAMAT_DB_MAIN_DATABASE: jore4main
+    depends_on:
+      jore4-testdb:
+        condition: service_healthy
+    # Keeps the image's healthcheck command, but polls more often than its 1 minute interval
+    # and gives Flyway time to migrate an empty stopregistry schema.
+    healthcheck:
+      interval: 10s
+      start_period: 5m
+
+  jore4-hasura:
+    # The HSL migrations read the stopregistry tables that Tiamat creates in jore4main.
+    depends_on:
+      jore4-tiamat:
+        condition: service_healthy

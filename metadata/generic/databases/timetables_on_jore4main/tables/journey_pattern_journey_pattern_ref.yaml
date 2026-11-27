@@ -1,0 +1,31 @@
+table:
+  name: journey_pattern_ref
+  schema: timetables
+configuration:
+  custom_name: journey_pattern_journey_pattern_ref
+array_relationships:
+  - name: scheduled_stop_point_in_journey_pattern_refs
+    using:
+      foreign_key_constraint_on:
+        column: journey_pattern_ref_id
+        table:
+          name: scheduled_stop_point_in_journey_pattern_ref
+          schema: timetables
+  - name: vehicle_journeys
+    using:
+      foreign_key_constraint_on:
+        column: journey_pattern_ref_id
+        table:
+          name: vehicle_journey
+          schema: timetables
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          journey_pattern_id: journey_pattern_id
+        relationship_type: object
+        source: main
+        table:
+          name: journey_pattern
+          schema: network
+    name: journey_pattern_instance

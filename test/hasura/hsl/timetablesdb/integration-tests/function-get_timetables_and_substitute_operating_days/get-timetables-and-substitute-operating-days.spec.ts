@@ -44,7 +44,7 @@ describe('Function get_timetables_and_substitute_operating_days', () => {
     await setupDb(dbConnection, dataset);
     const response = await db.singleQuery(
       dbConnection,
-      `SELECT * FROM vehicle_service.get_timetables_and_substitute_operating_days('
+      `SELECT * FROM timetables.get_timetables_and_substitute_operating_days('
         {${journeyPatternIds}}'::uuid[],
         '${startDate.toString()}'::date,
         '${endDate.toString()}'::date

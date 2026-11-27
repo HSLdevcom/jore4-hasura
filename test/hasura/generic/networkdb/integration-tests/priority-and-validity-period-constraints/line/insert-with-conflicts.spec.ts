@@ -54,7 +54,7 @@ describe('Insert line', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.line'],
+        genericNetworkDbSchema['network.line'],
       );
 
       expect(response.rowCount).toEqual(lines.length);

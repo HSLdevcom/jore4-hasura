@@ -1,6 +1,8 @@
 table:
   name: group_of_stop_places
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: group_of_stop_places
 array_relationships:
   - name: group_of_stop_places_alternative_names
     using:
@@ -8,18 +10,18 @@ array_relationships:
         column: group_of_stop_places_id
         table:
           name: group_of_stop_places_alternative_names
-          schema: public
+          schema: stopregistry
   - name: group_of_stop_places_key_values
     using:
       foreign_key_constraint_on:
         column: group_of_stop_places_id
         table:
           name: group_of_stop_places_key_values
-          schema: public
+          schema: stopregistry
   - name: group_of_stop_places_members
     using:
       foreign_key_constraint_on:
         column: group_of_stop_places_id
         table:
           name: group_of_stop_places_members
-          schema: public
+          schema: stopregistry

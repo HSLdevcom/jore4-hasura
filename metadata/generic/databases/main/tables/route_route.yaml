@@ -1,0 +1,40 @@
+table:
+  name: route
+  schema: network
+configuration:
+  custom_name: route_route
+object_relationships:
+  - name: route_line
+    using:
+      manual_configuration:
+        column_mapping:
+          on_line_id: line_id
+        insertion_order: null
+        remote_table:
+          name: line
+          schema: network
+array_relationships:
+  - name: infrastructure_links_along_route
+    using:
+      manual_configuration:
+        column_mapping:
+          route_id: route_id
+        insertion_order: null
+        remote_table:
+          name: infrastructure_link_along_route
+          schema: network
+  - name: route_journey_patterns
+    using:
+      manual_configuration:
+        column_mapping:
+          route_id: on_route_id
+        insertion_order: null
+        remote_table:
+          name: journey_pattern
+          schema: network
+computed_fields:
+  - name: route_shape
+    definition:
+      function:
+        name: route_shape
+        schema: network

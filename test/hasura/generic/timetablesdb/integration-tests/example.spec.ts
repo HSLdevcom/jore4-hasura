@@ -31,9 +31,7 @@ const buildMutation = (scheduleFrame: Partial<VehicleScheduleFrame>) => `
       )}) {
         returning {
           ${buildPropNameArray(
-            genericTimetablesDbSchema[
-              'vehicle_schedule.vehicle_schedule_frame'
-            ],
+            genericTimetablesDbSchema['timetables.vehicle_schedule_frame'],
           )}
         }
       }
@@ -98,7 +96,7 @@ describe('Insert vehicle schedule frame', () => {
 
     const response = await queryTable(
       dbConnection,
-      genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+      genericTimetablesDbSchema['timetables.vehicle_schedule_frame'],
     );
 
     const { created_at } = response.rows[response.rows.length - 1];

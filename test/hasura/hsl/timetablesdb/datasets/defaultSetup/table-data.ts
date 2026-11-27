@@ -13,27 +13,27 @@ export const defaultHslTimetablesDbData: TableData<HslTimetablesDbTables>[] = [
     defaultGenericTimetablesDbData,
     [
       {
-        name: 'vehicle_schedule.vehicle_schedule_frame',
+        name: 'timetables.vehicle_schedule_frame',
         data: hslVehicleScheduleFrames,
       },
       {
-        name: 'vehicle_service.vehicle_service',
+        name: 'timetables.vehicle_service',
         data: hslVehicleServices,
       },
       {
-        name: 'vehicle_service.block',
+        name: 'timetables.block',
         data: hslVehicleServiceBlocks,
       },
-      { name: 'vehicle_journey.vehicle_journey', data: hslVehicleJourneys },
+      { name: 'timetables.vehicle_journey', data: hslVehicleJourneys },
     ],
     (tableSchema) => tableSchema.name,
   ),
   {
-    name: 'service_calendar.substitute_operating_period',
+    name: 'timetables.substitute_operating_period',
     data: substituteOperatingPeriod,
   },
   {
-    name: 'service_calendar.substitute_operating_day_by_line_type',
+    name: 'timetables.substitute_operating_day_by_line_type',
     data: substituteOperatingDayByLineTypes,
   },
 ];

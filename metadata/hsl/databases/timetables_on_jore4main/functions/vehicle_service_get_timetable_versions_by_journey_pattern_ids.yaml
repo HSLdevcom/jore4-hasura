@@ -1,0 +1,7 @@
+function:
+  name: get_timetable_versions_by_journey_pattern_ids
+  schema: timetables
+configuration:
+  custom_name: vehicle_service_get_timetable_versions_by_journey_pattern_ids
+  custom_root_fields: {}
+  exposed_as: query

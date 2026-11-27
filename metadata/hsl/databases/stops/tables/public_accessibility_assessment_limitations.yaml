@@ -1,6 +1,8 @@
 table:
   name: accessibility_assessment_limitations
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: accessibility_assessment_limitations
 object_relationships:
   - name: accessibility_limitation
     using:

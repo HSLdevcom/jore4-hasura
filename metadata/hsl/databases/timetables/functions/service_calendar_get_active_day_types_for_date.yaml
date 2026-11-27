@@ -1,3 +1,0 @@
-function:
-  name: get_active_day_types_for_date
-  schema: service_calendar

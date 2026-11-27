@@ -1,0 +1,13 @@
+table:
+  name: vehicle_schedule_frame
+  schema: timetables
+configuration:
+  custom_name: vehicle_schedule_vehicle_schedule_frame
+array_relationships:
+  - name: vehicle_services
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_schedule_frame_id
+        table:
+          name: vehicle_service
+          schema: timetables

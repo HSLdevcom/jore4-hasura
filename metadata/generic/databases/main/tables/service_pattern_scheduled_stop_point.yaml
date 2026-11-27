@@ -1,0 +1,82 @@
+table:
+  name: scheduled_stop_point
+  schema: network
+configuration:
+  custom_name: service_pattern_scheduled_stop_point
+object_relationships:
+  - name: located_on_infrastructure_link
+    using:
+      foreign_key_constraint_on: located_on_infrastructure_link_id
+  - name: timing_place
+    using:
+      foreign_key_constraint_on: timing_place_id
+array_relationships:
+  - name: other_label_instances
+    using:
+      manual_configuration:
+        column_mapping:
+          label: label
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point
+          schema: network
+  - name: scheduled_stop_point_in_journey_patterns
+    using:
+      manual_configuration:
+        column_mapping:
+          label: scheduled_stop_point_label
+        insertion_order: null
+        remote_table:
+          name: scheduled_stop_point_in_journey_pattern
+          schema: network
+  - name: vehicle_mode_on_scheduled_stop_point
+    using:
+      manual_configuration:
+        column_mapping:
+          scheduled_stop_point_id: scheduled_stop_point_id
+        insertion_order: null
+        remote_table:
+          name: vehicle_mode_on_scheduled_stop_point
+          schema: network
+computed_fields:
+  - name: closest_point_on_infrastructure_link
+    definition:
+      function:
+        name: scheduled_stop_point_closest_point_on_infrastructure_link
+        schema: network
+  - name: relative_distance_from_infrastructure_link_start
+    definition:
+      function:
+        name: ssp_relative_distance_from_infrastructure_link_start
+        schema: network
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          stop_place_ref: netex_id
+        relationship_type: object
+        source: stops
+        table:
+          name: quay_newest_version
+          schema: stopregistry
+    name: newest_stop_place
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - stop_place_ref
+        remote_field:
+          stopPlace:
+            arguments:
+              query: $stop_place_ref
+        remote_schema: Tiamat
+    name: stop_place
+  - definition:
+      to_source:
+        field_mapping:
+          stop_place_ref: netex_id
+        relationship_type: object
+        source: stops
+        table:
+          name: quay_newest_version
+          schema: stopregistry
+    name: newest_quay

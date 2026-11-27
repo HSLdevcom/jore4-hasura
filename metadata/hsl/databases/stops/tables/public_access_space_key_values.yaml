@@ -1,6 +1,8 @@
 table:
   name: access_space_key_values
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: access_space_key_values
 object_relationships:
   - name: value
     using:

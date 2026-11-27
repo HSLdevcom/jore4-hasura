@@ -1,6 +1,8 @@
 table:
   name: access_space_equipment_places
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: access_space_equipment_places
 object_relationships:
   - name: equipment_place
     using:

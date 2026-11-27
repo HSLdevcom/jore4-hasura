@@ -1,0 +1,5 @@
+table:
+  name: distance_between_stops_calculation
+  schema: network
+configuration:
+  custom_name: service_pattern_distance_between_stops_calculation

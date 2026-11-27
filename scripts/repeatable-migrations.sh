@@ -9,8 +9,8 @@ set -euo pipefail
 # When hasura is started, it thinks that these migrations have not been run yet so it runs them again
 # Note: we require repeatable migrations to be idempotent
 
-# psql base command
-PSQL_CMD="psql -h ${DB_HOSTNAME} -p 5432 -U ${DB_USERNAME} -d ${DB_NAME}"
+# psql base command. Hasura's metadata store (hdb_catalog) lives in the jore4main database.
+PSQL_CMD="psql -h ${DB_HOSTNAME} -p 5432 -U ${DB_USERNAME} -d ${DB_JORE4_MAIN_NAME}"
 
 # check whether hasura hdb catalog already exists
 HDB_CATALOG_EXISTS_QUERY=$(cat << EOF
@@ -35,9 +35,12 @@ DATABASES=( "default" "timetables" "main" )
 for DB in "${DATABASES[@]}"
 do
   echo "Looking for repeatable migrations for database: $DB"
+  if [[ ! -d "${HASURA_GRAPHQL_MIGRATIONS_DIR}/${DB}" ]]; then
+    continue
+  fi
 
   # use regex to find all matching migration names and grep to extract the timestamp part, then put it into an array
-  TIMESTAMPS=($(find "${HASURA_GRAPHQL_MIGRATIONS_DIR}" -type d -regex ".*/${DB}/[0-9]*_R_.*" | grep -oE "[0-9]{13}"))
+  TIMESTAMPS=($(find "${HASURA_GRAPHQL_MIGRATIONS_DIR}/${DB}" -type d | sed -nE 's|.*/([0-9]{13})_R_.*|\1|p'))
 
   echo "Found repeatable migrations: ${#TIMESTAMPS[@]}"
 

@@ -41,7 +41,7 @@ describe('Vehicle schedule frame - special day priority validity period constrai
   ) => {
     return singleQuery(
       dbConnection,
-      `UPDATE vehicle_schedule.vehicle_schedule_frame
+      `UPDATE timetables.vehicle_schedule_frame
        SET "priority" = ${priority},
        "validity_start" = '${validityStart}',
        "validity_end" = '${validityEnd}'

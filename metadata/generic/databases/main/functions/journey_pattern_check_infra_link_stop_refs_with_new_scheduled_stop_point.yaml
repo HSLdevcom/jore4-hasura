@@ -1,0 +1,5 @@
+function:
+  name: check_infra_link_stop_refs_with_new_scheduled_stop_point
+  schema: network
+configuration:
+  custom_name: journey_pattern_check_infra_link_stop_refs_with_new_scheduled_stop_point

@@ -12,17 +12,19 @@ types.setTypeParser(types.builtins.TIMESTAMPTZ, parseDateTime);
 // accepts ISO 8601 durations, and would throw on Postgres' default output.
 types.setTypeParser(types.builtins.INTERVAL, Temporal.Duration.from);
 
+// The network and timetables data both live in jore4main (schemas network and
+// timetables). The legacy databases are only migration targets and are not
+// visible through the API.
 export const networkDbConfig: ConnectionConfig = {
   host: '127.0.0.1',
   port: 6432,
-  database: 'jore4e2e',
+  database: 'jore4main',
   user: 'dbadmin',
   password: 'adminpassword',
 };
 
 export const timetablesDbConfig: ConnectionConfig = {
   ...networkDbConfig,
-  database: 'timetablesdb',
 };
 
 export const knexConfig: Knex.Config = {

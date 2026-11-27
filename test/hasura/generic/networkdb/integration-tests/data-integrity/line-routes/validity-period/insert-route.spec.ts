@@ -91,7 +91,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.route'],
+        genericNetworkDbSchema['network.route'],
       );
 
       expect(response.rowCount).toEqual(routes.length);
@@ -149,7 +149,7 @@ describe('Insert route', () => {
 
       const response = await queryTable(
         dbConnection,
-        genericNetworkDbSchema['route.route'],
+        genericNetworkDbSchema['network.route'],
       );
 
       expect(response.rowCount).toEqual(routes.length + 1);

@@ -1,6 +1,8 @@
 table:
   name: group_of_stop_places_alternative_names
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: group_of_stop_places_alternative_names
 object_relationships:
   - name: alternative_name
     using:

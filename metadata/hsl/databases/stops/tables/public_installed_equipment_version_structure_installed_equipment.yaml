@@ -1,6 +1,8 @@
 table:
   name: installed_equipment_version_structure_installed_equipment
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: installed_equipment_version_structure_installed_equipment
 object_relationships:
   - name: installed
     using:

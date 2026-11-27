@@ -1,6 +1,8 @@
 table:
   name: tariff_zone
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: tariff_zone
 object_relationships:
   - name: persistable_polygon
     using:
@@ -12,4 +14,4 @@ array_relationships:
         column: tariff_zone_id
         table:
           name: tariff_zone_key_values
-          schema: public
+          schema: stopregistry

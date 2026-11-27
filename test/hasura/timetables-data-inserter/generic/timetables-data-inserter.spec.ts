@@ -62,7 +62,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const vehicleScheduleFrames = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['vehicle_schedule.vehicle_schedule_frame'],
+          genericTimetablesDbSchema['timetables.vehicle_schedule_frame'],
         );
 
         expect(vehicleScheduleFrames.rowCount).toBe(1);
@@ -105,7 +105,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const vehicleServices = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['vehicle_service.vehicle_service'],
+          genericTimetablesDbSchema['timetables.vehicle_service'],
         );
 
         expect(vehicleServices.rowCount).toBe(3);
@@ -145,7 +145,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const blocks = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['vehicle_service.block'],
+          genericTimetablesDbSchema['timetables.block'],
         );
 
         expect(blocks.rowCount).toBe(3);
@@ -215,7 +215,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const vehicleJourneys = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['vehicle_journey.vehicle_journey'],
+          genericTimetablesDbSchema['timetables.vehicle_journey'],
         );
 
         expect(vehicleJourneys.rowCount).toBe(4);
@@ -288,7 +288,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const passingTimes = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['passing_times.timetabled_passing_time'],
+          genericTimetablesDbSchema['timetables.timetabled_passing_time'],
         );
 
         expect(passingTimes.rowCount).toBe(16);
@@ -320,7 +320,7 @@ describe('Generic timetables data inserter json parser', () => {
       it('should be inserted correctly', async () => {
         const journeyPatternRefs = await queryTable(
           dbConnection,
-          genericTimetablesDbSchema['journey_pattern.journey_pattern_ref'],
+          genericTimetablesDbSchema['timetables.journey_pattern_ref'],
         );
 
         expect(journeyPatternRefs.rowCount).toBe(3);
@@ -375,7 +375,7 @@ describe('Generic timetables data inserter json parser', () => {
         const stopPoints = await queryTable(
           dbConnection,
           genericTimetablesDbSchema[
-            'service_pattern.scheduled_stop_point_in_journey_pattern_ref'
+            'timetables.scheduled_stop_point_in_journey_pattern_ref'
           ],
         );
 

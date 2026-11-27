@@ -1,3 +1,5 @@
 table:
   name: boarding_position_check_constraints
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: boarding_position_check_constraints

@@ -1,3 +1,5 @@
 table:
   name: schema_version
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: schema_version

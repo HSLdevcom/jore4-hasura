@@ -1,6 +1,8 @@
 table:
   name: access_space
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: access_space
 object_relationships:
   - name: accessibility_assessment
     using:
@@ -18,18 +20,18 @@ array_relationships:
         column: access_space_id
         table:
           name: access_space_alternative_names
-          schema: public
+          schema: stopregistry
   - name: access_space_equipment_places
     using:
       foreign_key_constraint_on:
         column: access_space_id
         table:
           name: access_space_equipment_places
-          schema: public
+          schema: stopregistry
   - name: access_space_key_values
     using:
       foreign_key_constraint_on:
         column: access_space_id
         table:
           name: access_space_key_values
-          schema: public
+          schema: stopregistry

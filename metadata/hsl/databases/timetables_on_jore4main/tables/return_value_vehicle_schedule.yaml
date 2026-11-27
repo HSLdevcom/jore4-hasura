@@ -1,0 +1,22 @@
+table:
+  name: vehicle_schedule
+  schema: return_value
+object_relationships:
+  - name: day_type
+    using:
+      manual_configuration:
+        column_mapping:
+          day_type_id: day_type_id
+        insertion_order: null
+        remote_table:
+          name: day_type
+          schema: timetables
+  - name: vehicle_journey
+    using:
+      manual_configuration:
+        column_mapping:
+          vehicle_journey_id: vehicle_journey_id
+        insertion_order: null
+        remote_table:
+          name: vehicle_journey
+          schema: timetables

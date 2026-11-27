@@ -1,6 +1,8 @@
 table:
   name: equipment_position
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: equipment_position
 object_relationships:
   - name: multilingual_string_entity
     using:
@@ -12,4 +14,4 @@ array_relationships:
         column: equipment_position_id
         table:
           name: equipment_position_key_values
-          schema: public
+          schema: stopregistry

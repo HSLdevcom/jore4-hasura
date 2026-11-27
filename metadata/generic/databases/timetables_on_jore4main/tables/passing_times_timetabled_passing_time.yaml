@@ -1,0 +1,12 @@
+table:
+  name: timetabled_passing_time
+  schema: timetables
+configuration:
+  custom_name: passing_times_timetabled_passing_time
+object_relationships:
+  - name: scheduled_stop_point_in_journey_pattern_ref
+    using:
+      foreign_key_constraint_on: scheduled_stop_point_in_journey_pattern_ref_id
+  - name: vehicle_journey
+    using:
+      foreign_key_constraint_on: vehicle_journey_id

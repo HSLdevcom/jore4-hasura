@@ -107,6 +107,10 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@main
         with:
           hasura_version: '${{ matrix.dockerImage }}'
+          tiamat_version: 'crjore4prod001.azurecr.io/jore4-tiamat:use-main-database-2026-11-27-c117686a63aff7c1b65b38fa594cf510bae611de'
+          ui_version: 'crjore4prod001.azurecr.io/jore4-ui:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+          cypress_version: 'crjore4prod001.azurecr.io/jore4-cypress:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+          custom_docker_compose: '.github/docker-compose.ci.yml'
 
       # Running the all migrations down and up to make sure that they all work as intended
       - name: Run migration tests for both network and timetables databases
@@ -137,6 +141,10 @@ jobs:
         uses: HSLdevcom/jore4-tools/github-actions/setup-e2e-environment@main
         with:
           hasura_version: '${{ matrix.dockerImage }}'
+          tiamat_version: 'crjore4prod001.azurecr.io/jore4-tiamat:use-main-database-2026-11-27-c117686a63aff7c1b65b38fa594cf510bae611de'
+          ui_version: 'crjore4prod001.azurecr.io/jore4-ui:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+          cypress_version: 'crjore4prod001.azurecr.io/jore4-cypress:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+          custom_docker_compose: '.github/docker-compose.ci.yml'
 
       - name: Enable corepack
         run: corepack enable
@@ -163,6 +171,10 @@ jobs:
       - run_dump_tests
       - run_migration_tests
       - run_integration_tests
-    uses: HSLdevcom/jore4-tools/.github/workflows/shared-run-e2e.yml@main
+    uses: HSLdevcom/jore4-tools/.github/workflows/shared-run-e2e.yml@use-main-db
     with:
       hasura_version: "${{ needs.publish_hsl_docker_image_to_acr.outputs.docker_image }}"
+      tiamat_version: "crjore4prod001.azurecr.io/jore4-tiamat:use-main-database-2026-11-27-c117686a63aff7c1b65b38fa594cf510bae611de"
+      ui_version: 'crjore4prod001.azurecr.io/jore4-ui:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+      cypress_version: 'crjore4prod001.azurecr.io/jore4-cypress:use-main-db-2026-11-25-8031b9c198da2e3b2b75de33674e2a711c4799bd'
+      custom_docker_compose: ".github/docker-compose.ci.yml"

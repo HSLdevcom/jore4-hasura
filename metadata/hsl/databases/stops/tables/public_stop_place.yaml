@@ -1,6 +1,8 @@
 table:
   name: stop_place
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: stop_place
 object_relationships:
   - name: accessibility_assessment
     using:
@@ -17,7 +19,7 @@ object_relationships:
         column: children_id
         table:
           name: stop_place_children
-          schema: public
+          schema: stopregistry
   - name: topographic_place
     using:
       foreign_key_constraint_on: topographic_place_id
@@ -28,49 +30,49 @@ array_relationships:
         column: stop_place_id
         table:
           name: stop_place_access_spaces
-          schema: public
+          schema: stopregistry
   - name: stop_place_alternative_names
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_alternative_names
-          schema: public
+          schema: stopregistry
   - name: stop_place_children
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_children
-          schema: public
+          schema: stopregistry
   - name: stop_place_equipment_places
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_equipment_places
-          schema: public
+          schema: stopregistry
   - name: stop_place_key_values
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_key_values
-          schema: public
+          schema: stopregistry
   - name: stop_place_quays
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_quays
-          schema: public
+          schema: stopregistry
   - name: stop_place_tariff_zones
     using:
       foreign_key_constraint_on:
         column: stop_place_id
         table:
           name: stop_place_tariff_zones
-          schema: public
+          schema: stopregistry
 remote_relationships:
   - definition:
       to_remote_schema:

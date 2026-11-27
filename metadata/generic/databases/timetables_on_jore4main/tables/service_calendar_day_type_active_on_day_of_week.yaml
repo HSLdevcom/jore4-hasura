@@ -1,0 +1,9 @@
+table:
+  name: day_type_active_on_day_of_week
+  schema: timetables
+configuration:
+  custom_name: service_calendar_day_type_active_on_day_of_week
+object_relationships:
+  - name: day_type
+    using:
+      foreign_key_constraint_on: day_type_id

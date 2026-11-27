@@ -1,6 +1,8 @@
 table:
   name: parking_area
-  schema: public
+  schema: stopregistry
+configuration:
+  custom_name: parking_area
 object_relationships:
   - name: accessibility_assessment
     using:
@@ -14,7 +16,7 @@ object_relationships:
         column: parking_areas_id
         table:
           name: parking_parking_areas
-          schema: public
+          schema: stopregistry
   - name: parking_property
     using:
       foreign_key_constraint_on: parking_properties_id
@@ -28,18 +30,18 @@ array_relationships:
         column: parking_area_id
         table:
           name: parking_area_alternative_names
-          schema: public
+          schema: stopregistry
   - name: parking_area_equipment_places
     using:
       foreign_key_constraint_on:
         column: parking_area_id
         table:
           name: parking_area_equipment_places
-          schema: public
+          schema: stopregistry
   - name: parking_area_key_values
     using:
       foreign_key_constraint_on:
         column: parking_area_id
         table:
           name: parking_area_key_values
-          schema: public
+          schema: stopregistry

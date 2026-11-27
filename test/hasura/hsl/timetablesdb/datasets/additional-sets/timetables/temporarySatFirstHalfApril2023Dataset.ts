@@ -47,19 +47,19 @@ export const temporarySatFirstHalfApril2023VehicleJourneysByName = {
 export const temporarySatFirstHalfApril2023Dataset: TableData<HslTimetablesDbTables>[] =
   [
     {
-      name: 'vehicle_schedule.vehicle_schedule_frame',
+      name: 'timetables.vehicle_schedule_frame',
       data: [temporarySatFirstHalfApril2023VehicleScheduleFrame],
     },
     {
-      name: 'vehicle_service.vehicle_service',
+      name: 'timetables.vehicle_service',
       data: [temporarySatFirstHalfApril2023VehicleService],
     },
     {
-      name: 'vehicle_service.block',
+      name: 'timetables.block',
       data: [temporarySatFirstHalfApril2023VehicleServiceBlock],
     },
     {
-      name: 'vehicle_journey.vehicle_journey',
+      name: 'timetables.vehicle_journey',
       data: [
         ...Object.values(temporarySatFirstHalfApril2023VehicleJourneysByName),
       ],

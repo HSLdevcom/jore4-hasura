@@ -41,7 +41,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
     return queryTable(
       dbConnection,
       genericTimetablesDbSchema[
-        'vehicle_service.journey_patterns_in_vehicle_service'
+        'timetables.journey_patterns_in_vehicle_service'
       ],
     );
   };
@@ -189,7 +189,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
         },
       };
 
-      await batchInsert(dbConnection, 'vehicle_journey.vehicle_journey', [
+      await batchInsert(dbConnection, 'timetables.vehicle_journey', [
         newVehicleJourneys.forIncrementExistingOutbound1,
         newVehicleJourneys.forIncrementExistingOutbound2,
         newVehicleJourneys.forIncrementExistingInbound,
@@ -398,7 +398,7 @@ describe('Denormalized references to journey patterns in vehicle services', () =
       await getKnex().transaction(
         async (trx) => {
           await trx
-            .from('vehicle_service.journey_patterns_in_vehicle_service')
+            .from('timetables.journey_patterns_in_vehicle_service')
             .delete();
           deleteRan = true;
 
